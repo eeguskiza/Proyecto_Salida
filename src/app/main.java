@@ -9,8 +9,6 @@ public class main {
 
 		VentanaInicioSesion v1 = new VentanaInicioSesion();
 		v1.setVisible(true);
-		
-		//fghjm
 	}
 
 }

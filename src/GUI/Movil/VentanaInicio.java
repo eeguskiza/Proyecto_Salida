@@ -1,3 +1,5 @@
+package GUI.Movil;
+
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 import javafx.embed.swing.JFXPanel;
@@ -18,7 +20,7 @@ public class VentanaInicio extends JFrame {
         Platform.runLater(() -> {
             WebView webView = new WebView();
             jfxPanel.setScene(new Scene(webView));
-            // URL de OpenStreetMap centrada en una ubicación específica (por ejemplo, la Casa Blanca)
+            // URL de OpenStreetMap centrada en una ubicación específica
             webView.getEngine().load("https://www.openstreetmap.org/#map=17/43.27063/-2.93807");
         });
 

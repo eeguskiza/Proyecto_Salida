@@ -10,8 +10,8 @@ public class Dueño extends Usuario{
         this.locales = new ArrayList<>();
     }
 
-    public Dueño(String id, String Nombre, String Apellido, int Edad, String Contraseña, String Telefono, String Correo, ArrayList <Local> locales) {
-        super(id, Nombre, Apellido, Edad, Contraseña, Telefono, Correo);
+    public Dueño(String id, String Nombre, String Apellido, String fechaNacimiento, String Contraseña, String Telefono, String Correo, ArrayList <Local> locales) {
+        super(id, Nombre, Apellido, fechaNacimiento, Contraseña, Telefono, Correo);
         this.locales = new ArrayList<>();
     }
 
@@ -25,16 +25,29 @@ public class Dueño extends Usuario{
 
     @Override
     public String toString() {
-        return "Dueño{" +
-                "locales=" + locales +
-                ", id='" + id + '\'' +
-                ", Nombre='" + Nombre + '\'' +
-                ", Apellido='" + Apellido + '\'' +
-                ", Edad=" + Edad +
-                ", Contraseña='" + Contraseña + '\'' +
-                ", Telefono='" + Telefono + '\'' +
-                ", Correo='" + Correo + '\'' +
-                '}';
+        String result = "Cliente {" +
+                "\n\tID: '" + id + '\'' +
+                "\n\tNombre: '" + Nombre + '\'' +
+                "\n\tApellido: '" + Apellido + '\'' +
+                "\n\tEdad: " + Edad +
+                "\n\tContraseña: '" + Contraseña + '\'' +
+                "\n\tTeléfono: '+34 " + Telefono + '\'' +
+                "\n\tCorreo: '" + Correo + '\'' +
+                "\n\tVisitas: ";
+
+        for (Local local : locales) {
+            result += local.getNombre() + ", ";
+        }
+
+        // Remover la última coma y espacio si la lista no está vacía
+        if (!locales.isEmpty()) {
+            result = result.substring(0, result.length() - 2);
+        }
+
+        result += "\n}";
+        return result;
     }
+
+
 
 }

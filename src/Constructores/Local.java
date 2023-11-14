@@ -2,17 +2,19 @@ package Constructores;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Random;
 
 public abstract class Local {
     protected String id;
     protected String nombre;
     protected String direccion;
+    protected String CP; //Limitar tamaño a 5
     protected int Aforo;
     protected String telefono;
     protected int MediaEdad;
     protected int PrecioMedio;
     protected String web;
-    protected Horario[] horarios;
+    protected ArrayList<Horario> horarios;
 
     /*
     Valoraciones
@@ -25,24 +27,32 @@ public abstract class Local {
         this.id = "";
         this.nombre = "";
         this.direccion = "";
+        this.CP = "";
         this.Aforo = 0;
         this.telefono = "";
         this.MediaEdad = 0;
         this.PrecioMedio = 0;
         this.web = "";
-        this.horarios = new Horario[7];
+        this.horarios = new ArrayList<>();
     }
 
-    public Local(String id, String nombre, String direccion, int Aforo, String telefono, int MediaEdad, int PrecioMedio, String web, Horario[] horarios) {
-        this.id = id;
+    public Local(String nombre, String direccion,String CP, int Aforo, String telefono, int MediaEdad, int PrecioMedio, String web, ArrayList<Horario> horarios) {
+        this.id = generarId(nombre, CP);
         this.nombre = nombre;
         this.direccion = direccion;
+        this.CP = CP;
         this.Aforo = Aforo;
         this.telefono = telefono;
         this.MediaEdad = MediaEdad;
         this.PrecioMedio = PrecioMedio;
         this.web = web;
         this.horarios = horarios;
+
+    }
+    private static String generarId(String nombre, String CP) {
+        Random random = new Random();
+        int numeroAleatorio = 100 + random.nextInt(900);
+        return (nombre.isEmpty() ? "X" : nombre.substring(0, 1).toUpperCase()) + CP.substring(3,5) + numeroAleatorio;
     }
 
     public String getId() {
@@ -77,7 +87,7 @@ public abstract class Local {
         return web;
     }
 
-    public Horario[] getHorarios() {
+    public ArrayList<Horario> getHorarios() {
         return horarios;
     }
 
@@ -113,22 +123,8 @@ public abstract class Local {
         this.web = web;
     }
 
-    public void setHorarios(Horario[] horarios){
+    public void setHorarios(ArrayList<Horario> horarios) {
         this.horarios = horarios;
     }
 
-    @Override
-    public String toString() {
-        return "Local{" +
-                "id='" + id + '\'' +
-                ", nombre='" + nombre + '\'' +
-                ", direccion='" + direccion + '\'' +
-                ", Aforo=" + Aforo +
-                ", telefono='" + telefono + '\'' +
-                ", MediaEdad=" + MediaEdad +
-                ", PrecioMedio=" + PrecioMedio +
-                ", web='" + web + '\'' +
-                ", horarios=" + horarios +
-                '}';
-    }
 }

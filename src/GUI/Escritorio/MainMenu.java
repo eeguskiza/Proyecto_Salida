@@ -4,7 +4,6 @@ import javafx.application.Platform;
 import javafx.embed.swing.JFXPanel;
 import javafx.scene.Scene;
 import javafx.scene.web.WebView;
-
 import javax.swing.*;
 import java.awt.*;
 
@@ -19,22 +18,37 @@ public class MainMenu extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        // Top panel
-        JPanel topPanel = new JPanel();
+        // Initialize menu components
+        // Load and resize the icon image
+        ImageIcon originalIcon = new ImageIcon(getClass().getResource("/Recuros/Menu.png"));
+        Image originalImage = originalIcon.getImage();
+        Image resizedImage = originalImage.getScaledInstance(24, 24, Image.SCALE_SMOOTH);
+        ImageIcon menuIcon = new ImageIcon(resizedImage);
 
+        JMenuBar menuBar = new JMenuBar();
+        JMenu menu = new JMenu();
+        menu.setIcon(menuIcon);
 
+        JMenuItem menuItem1 = new JMenuItem("Item 1");
+        menu.add(menuItem1);
+        JMenuItem menuItem2 = new JMenuItem("Item 2");
+        menu.add(menuItem2);
+        JMenuItem menuItem3 = new JMenuItem("Item 3");
+        menu.add(menuItem3);
+        menu.addSeparator();
+        JMenuItem exitItem = new JMenuItem("Exit");
+        exitItem.addActionListener(e -> System.exit(0));
+        menu.add(exitItem);
+        menuBar.add(menu);
 
-        topPanel.setBackground(Color.BLUE);
-        topPanel.setPreferredSize(new Dimension(getWidth(), 50));
-        add(topPanel, BorderLayout.NORTH);
+        // Set the menu bar for the JFrame
+        setJMenuBar(menuBar);
 
         // Map panel
         JFXPanel jfxPanel = new JFXPanel();
-
         Platform.runLater(() -> {
             WebView webView = new WebView();
             jfxPanel.setScene(new Scene(webView));
-            // URL de OpenStreetMap centrada en una ubicación específica
             webView.getEngine().load("https://www.openstreetmap.org/#map=17/43.27063/-2.93807");
         });
 
@@ -49,6 +63,7 @@ public class MainMenu extends JFrame {
         add(splitPane, BorderLayout.CENTER);
         bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
 
+        // Set the frame visible
         this.setVisible(true);
     }
 
@@ -59,7 +74,6 @@ public class MainMenu extends JFrame {
             splitPane.setDividerLocation(0.6);
         }
     }
-
 
     public static void main(String[] args) {
         new MainMenu();

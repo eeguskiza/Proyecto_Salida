@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import Constructores.*;
+import GUI.Movil.VentanaInicio;
 import com.toedter.calendar.JDateChooser;
 import java.text.SimpleDateFormat;
 
@@ -98,7 +99,10 @@ public class Registro extends JFrame {
                     }
 
                     JOptionPane.showMessageDialog(this, "Usuario creado con éxito!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-
+                    MainMenu ventanaInicio = new MainMenu();
+                    this.dispose();
+                    padre.dispose();
+                    ventanaInicio.setVisible(true);
 
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(this, "Error al crear el usuario: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);

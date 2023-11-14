@@ -10,7 +10,7 @@ import javafx.scene.web.WebView;
 public class VentanaInicio extends JFrame {
     public VentanaInicio() {
         super("Proyecto Salida");
-        this.setSize(500, 900);
+        this.setSize(1000, 800);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         this.setLocationRelativeTo(null);
 

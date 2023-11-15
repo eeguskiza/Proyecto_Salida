@@ -1,8 +1,13 @@
 package GUI;
 
+import Constructores.Usuario;
+import GUI.Escritorio.InicioSesion;
 import GUI.Escritorio.Registro;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.HashMap;
 import javax.swing.*;
 
 public class Bienvenido extends JFrame {
@@ -46,6 +51,12 @@ public class Bienvenido extends JFrame {
         //Logica botones
         registrarse.addActionListener(e -> {
             new Registro(this);
+            this.setVisible(false);
+        });
+
+        inicioSesion.addActionListener(e -> {
+            InicioSesion i = new InicioSesion(this);
+            i.setVisible(true);
             this.setVisible(false);
         });
 

@@ -2,6 +2,8 @@ package GUI.Escritorio;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class MainMenu extends JFrame {
 
@@ -62,6 +64,64 @@ public class MainMenu extends JFrame {
         splitPane.setDividerSize(1);
         add(splitPane, BorderLayout.CENTER);
         bottomPanel.setLayout(new FlowLayout(FlowLayout.CENTER));
+
+        bottomPanel.setLayout(new GridLayout(1,3));
+
+        //PANEL 1 - ENCUESTAS
+        JPanel panel1Encuesta = new JPanel(new BorderLayout());
+        //panel1Encuesta.setBackground(Color.green);
+        JPanel pEncuesta = new JPanel(new GridLayout(3,1)); panel1Encuesta.add(pEncuesta);
+        JPanel panelStage = new JPanel(new FlowLayout(FlowLayout.LEFT)); JProgressBar pbStage = new JProgressBar(0,10); panelStage.add(new JLabel("Stage Live"));  panelStage.add(pbStage);
+        JPanel panelBack = new JPanel(new FlowLayout(FlowLayout.LEFT)); JProgressBar pbBack = new JProgressBar(0,10); panelBack.add(new JLabel("Back Room")); panelBack.add(pbBack);
+        JPanel panelMoma = new JPanel(new FlowLayout(FlowLayout.LEFT)); JProgressBar pbMoma = new JProgressBar(0,10); panelMoma.add(new JLabel("Moma"));  panelMoma.add(pbMoma);
+
+        pbStage.setForeground(Color.green);
+        pbBack.setForeground(Color.green);
+        pbMoma.setForeground(Color.green);
+
+        pEncuesta.add(panelStage);
+        pEncuesta.add(panelBack);
+        pEncuesta.add(panelMoma);
+
+        pbStage.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int currentValue = pbStage.getValue();
+                if (currentValue < pbStage.getMaximum()) {
+                    pbStage.setValue(currentValue + 1);
+                }
+            }
+        });
+
+        pbBack.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int currentValue = pbBack.getValue();
+                if (currentValue < pbBack.getMaximum()) {
+                    pbBack.setValue(currentValue + 1);
+                }
+            }
+        });
+
+        pbMoma.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                int currentValue = pbMoma.getValue();
+                if (currentValue < pbMoma.getMaximum()) {
+                    pbMoma.setValue(currentValue + 1);
+                }
+            }
+        });
+
+        //PANEL 2 - REVIEWS
+        JPanel panel2Reviews = new JPanel();
+        panel2Reviews.setBackground(Color.pink);
+
+        //PANEL 3 - PROMOCIONES
+        JPanel panel3Promociones = new JPanel();
+        panel3Promociones.setBackground(Color.yellow);
+
+        bottomPanel.add(panel1Encuesta); bottomPanel.add(panel2Reviews); bottomPanel.add(panel3Promociones);
 
         // Set the frame visible
         this.setVisible(true);

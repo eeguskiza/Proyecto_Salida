@@ -69,12 +69,14 @@ public class Registro extends JFrame {
             String apellido = ((JTextField) panel.getComponent(5)).getText();
             String fechaNacimiento = null;
 
-            Boolean tipoUsuarioSeleccionado = false; //false = cliente, true = dueño
+            Boolean tipoUsuarioSeleccionado = false; //false = DUEÑO, true = CLIENTE
 
             if (seleccion == 0) {
                 tipoUsuarioSeleccionado = true;
+                System.out.println("cliente");
             } else if (seleccion == 1) {
                 tipoUsuarioSeleccionado = false;
+                System.out.println("dueño");
             } else {
                 JOptionPane.showMessageDialog(this, "Por favor, seleccione un tipo de usuario.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -102,7 +104,7 @@ public class Registro extends JFrame {
                 JOptionPane.showMessageDialog(this, "Por favor, revise todos los campos.", "Error", JOptionPane.ERROR_MESSAGE);
             } else {
                 try {
-                    if (tipoUsuarioSeleccionado.equals(true)) {
+                    if (tipoUsuarioSeleccionado.equals(false)) {
                         Dueño nuevoUsuario = new Dueño(id, nombre, apellido, fechaNacimiento, contraseña, telefono, correo, new ArrayList<>());
                         System.out.println(nuevoUsuario.toString());
                     } else {

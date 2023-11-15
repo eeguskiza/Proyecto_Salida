@@ -1,13 +1,10 @@
 <component name="libraryTable">
   <library name="lib">
     <CLASSES>
-      <root url="file://$USER_HOME$/javafx-sdk-21.0.1/lib" />
-      <root url="jar://$USER_HOME$/Downloads/jcalendar-1.4.jar!/" />
+      <root url="file://$USER_HOME$/Downloads/javafx-sdk-21.0.1/lib" />
+      <root url="file://$USER_HOME$/Downloads/jcalendar-1.4/lib" />
     </CLASSES>
     <JAVADOC />
-    <NATIVE>
-      <root url="file://$USER_HOME$/javafx-sdk-21.0.1/lib" />
-    </NATIVE>
     <SOURCES>
       <root url="file://$USER_HOME$/Downloads/junit5-main" />
       <root url="file://$USER_HOME$/Downloads/junit5-main/documentation/src/main/java" />
@@ -61,6 +58,7 @@
       <root url="file://$USER_HOME$/Downloads/junit5-main/platform-tooling-support-tests/src/main/java" />
       <root url="file://$USER_HOME$/Downloads/junit5-main/platform-tooling-support-tests/src/test/java" />
     </SOURCES>
-    <jarDirectory url="file://$USER_HOME$/javafx-sdk-21.0.1/lib" recursive="false" />
+    <jarDirectory url="file://$USER_HOME$/Downloads/javafx-sdk-21.0.1/lib" recursive="false" />
+    <jarDirectory url="file://$USER_HOME$/Downloads/jcalendar-1.4/lib" recursive="false" />
   </library>
 </component>

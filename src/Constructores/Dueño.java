@@ -25,7 +25,7 @@ public class Dueño extends Usuario{
 
     @Override
     public String toString() {
-        String result = "Cliente {" +
+        String result = "Dueño {" +
                 "\n\tID: '" + id + '\'' +
                 "\n\tNombre: '" + Nombre + '\'' +
                 "\n\tApellido: '" + Apellido + '\'' +

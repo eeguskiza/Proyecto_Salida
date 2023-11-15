@@ -1,9 +1,14 @@
 package GUI.Escritorio;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.sql.*;
 
 public class InicioSesion extends JFrame {
+
+    private DefaultTableModel tableModel;
+    private JTable table;
 
     public InicioSesion(JFrame padre) {
         this.setTitle("Inicia Sesión");
@@ -36,6 +41,7 @@ public class InicioSesion extends JFrame {
 
         aceptar.addActionListener(e -> {
             checkCredentials(idField, passField);
+            //checkCredentials2(idField, passField);
         });
 
         cancelar.addActionListener(e -> {
@@ -53,7 +59,7 @@ public class InicioSesion extends JFrame {
         new InicioSesion(null).setVisible(true);
     }
 
-    private void checkCredentials(JTextField nombre, JPasswordField password){
+    private void checkCredentials2(JTextField nombre, JPasswordField password){
         char[] passChar = password.getPassword();
         String passwordString = new String(passChar);
         if(nombre.getText().equals(passwordString)){ //todo esto hay que quitarlo una vez la base de datos esta establecida y se pueden comprobar credenciales
@@ -63,4 +69,48 @@ public class InicioSesion extends JFrame {
             JOptionPane.showMessageDialog(null, "Usuario o Contraseña incorrectas!");
         }
     }
+
+    private void checkCredentials(JTextField idField, JPasswordField passField) {
+        String userId = idField.getText();
+        String password = new String(passField.getPassword());
+
+        // Verificar que los campos no estén vacíos
+        if (userId.isEmpty() || password.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "El ID de usuario y la contraseña no pueden estar vacíos.", "Error", JOptionPane.ERROR_MESSAGE);
+            return;
+        }
+
+        Connection conn = null;
+        Statement stmt = null;
+        ResultSet rs = null;
+
+        try {
+            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Proyecto_Salida", "erik", "0977"    );
+            // Considera usar PreparedStatement para evitar la inyección de SQL
+            stmt = conn.createStatement();
+            rs = stmt.executeQuery("SELECT * FROM clientes WHERE id = '" + userId + "' AND contraseña = '" + password + "'");
+
+            if (rs.next()) {
+                // Usuario y contraseña correctos
+                JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                new MainMenu();
+                this.dispose();
+            } else {
+                // Usuario o contraseña incorrectos
+                JOptionPane.showMessageDialog(this, "Usuario o Contraseña incorrectas!", "Error", JOptionPane.ERROR_MESSAGE);
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (stmt != null) stmt.close();
+                if (conn != null) conn.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
 }

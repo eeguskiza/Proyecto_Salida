@@ -1,9 +1,5 @@
 package GUI.Escritorio;
 
-import javafx.application.Platform;
-import javafx.embed.swing.JFXPanel;
-import javafx.scene.Scene;
-import javafx.scene.web.WebView;
 import javax.swing.*;
 import java.awt.*;
 
@@ -11,7 +7,7 @@ public class MainMenu extends JFrame {
 
     private JSplitPane splitPane;
 
-    public MainMenu() {
+    public MainMenu(String nombre) {
         setTitle("Main Menu");
         setSize(1000, 800);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -27,7 +23,7 @@ public class MainMenu extends JFrame {
         JMenu menu = new JMenu();
         menu.setIcon(menuIcon);
 
-        JMenuItem menuItem1 = new JMenuItem("Item 1");
+        JMenuItem menuItem1 = new JMenuItem("Preferencias");
         menu.add(menuItem1);
         JMenuItem menuItem2 = new JMenuItem("Item 2");
         menu.add(menuItem2);
@@ -35,7 +31,10 @@ public class MainMenu extends JFrame {
         menu.add(menuItem3);
         menu.addSeparator();
         JMenuItem exitItem = new JMenuItem("Exit");
+
+        //Logica de los botones del menu
         exitItem.addActionListener(e -> System.exit(0));
+        menuItem1.addActionListener(e -> new MenuPersonal(nombre));
         menu.add(exitItem);
         menuBar.add(menu);
 
@@ -70,6 +69,6 @@ public class MainMenu extends JFrame {
     }
 
     public static void main(String[] args) {
-        new MainMenu();
+        new MainMenu("Prueba");
     }
 }

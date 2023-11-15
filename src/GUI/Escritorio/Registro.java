@@ -119,10 +119,10 @@ public class Registro extends JFrame {
                     JOptionPane.showMessageDialog(this, "Error al crear el usuario: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
 
-                MainMenu ventanaInicio = new MainMenu();
+                InicioSesion inicioSesion = new InicioSesion(padre);
                 this.dispose();
                 padre.dispose();
-                ventanaInicio.setVisible(true);
+                inicioSesion.setVisible(true);
 
             }
         });

@@ -57,7 +57,7 @@ public class InicioSesion extends JFrame {
         char[] passChar = password.getPassword();
         String passwordString = new String(passChar);
         if(nombre.getText().equals(passwordString)){ //todo esto hay que quitarlo una vez la base de datos esta establecida y se pueden comprobar credenciales
-            new MainMenu();
+            new MainMenu(nombre.getText()); //en vez de nombre sería pasar la instancia de usuario
             dispose();
         }else{
             JOptionPane.showMessageDialog(null, "Usuario o Contraseña incorrectas!");

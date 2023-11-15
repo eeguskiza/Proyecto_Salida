@@ -81,4 +81,10 @@ public class MenuPersonal extends JFrame {
         return label;
     }
 
+    //Main de prueba
+    public static void main(String[] args) {
+        MenuPersonal nuevo = new MenuPersonal(null);
+        nuevo.setVisible(true);
+    }
+
 }

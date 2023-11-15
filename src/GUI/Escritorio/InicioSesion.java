@@ -19,8 +19,8 @@ public class InicioSesion extends JFrame {
         JPanel panel = new JPanel(new GridLayout(3, 2, 10, 10)); // Layout para los campos y etiquetas
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
-        JLabel idLabel = new JLabel("ID:");
-        JTextField idField = new JTextField("@",20);
+        JLabel idLabel = new JLabel("ID:                                       @");
+        JTextField idField = new JTextField(20);
         idField.setPreferredSize(new Dimension(200, 25));
 
         JLabel passLabel = new JLabel("Contraseña:");
@@ -86,7 +86,7 @@ public class InicioSesion extends JFrame {
 
         try {
             conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Proyecto_Salida", "erik", "0977"    );
-            // Considera usar PreparedStatement para evitar la inyección de SQL
+            // Considerar usar PreparedStatement para evitar la inyección de SQL --> Erik acuerdate de mirarlo
             stmt = conn.createStatement();
             rs = stmt.executeQuery("SELECT * FROM clientes WHERE id = '" + userId + "' AND contraseña = '" + password + "'");
 

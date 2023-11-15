@@ -93,7 +93,7 @@ public class InicioSesion extends JFrame {
             if (rs.next()) {
                 // Usuario y contraseña correctos
                 JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                new MainMenu();
+                new MainMenu("Prueba");
                 this.dispose();
             } else {
                 // Usuario o contraseña incorrectos

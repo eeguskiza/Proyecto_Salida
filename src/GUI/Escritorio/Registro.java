@@ -82,7 +82,7 @@ public class Registro extends JFrame {
             String telefono = ((JTextField) panel.getComponent(15)).getText();
             String correo = ((JTextField) panel.getComponent(17)).getText();
 
-            // Check if any fields are empty or if passwords do not match
+
             if (id.isEmpty() || nombre.isEmpty() || apellido.isEmpty() ||
                     contraseña.isEmpty() || !contraseña.equals(confirmarContraseña) ||
                     telefono.isEmpty() || correo.isEmpty()) {
@@ -113,7 +113,7 @@ public class Registro extends JFrame {
 
         cancelar.addActionListener(e -> {
             this.dispose();
-            padre.dispose();
+            padre.setVisible(true);
                 });
 
         panelBotones.add(aceptar);

@@ -18,8 +18,6 @@ public class MainMenu extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        // Initialize menu components
-        // Load and resize the icon image
         ImageIcon originalIcon = new ImageIcon(getClass().getResource("/Recuros/Menu.png"));
         Image originalImage = originalIcon.getImage();
         Image resizedImage = originalImage.getScaledInstance(24, 24, Image.SCALE_SMOOTH);
@@ -45,19 +43,15 @@ public class MainMenu extends JFrame {
         setJMenuBar(menuBar);
 
         // Map panel
-        JFXPanel jfxPanel = new JFXPanel();
-        Platform.runLater(() -> {
-            WebView webView = new WebView();
-            jfxPanel.setScene(new Scene(webView));
-            webView.getEngine().load("https://www.openstreetmap.org/#map=17/43.27063/-2.93807");
-        });
+        JPanel panelMapa = new JPanel();
+        panelMapa.setBackground(Color.BLUE);
 
         // Bottom panel
         JPanel bottomPanel = new JPanel();
         bottomPanel.setBackground(Color.RED);
 
         // Initialize the splitPane
-        splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, jfxPanel, bottomPanel);
+        splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, panelMapa, bottomPanel);
         splitPane.setResizeWeight(0.7);
         splitPane.setDividerSize(1);
         add(splitPane, BorderLayout.CENTER);

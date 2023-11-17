@@ -48,15 +48,13 @@ public class MainMenu extends JFrame {
         JPanel panelMapa = new JPanel();
         panelMapa.setBackground(Color.BLUE);
 
-        JPanel panelSalimos = new JPanel();
-
         // Bottom panel
         JPanel bottomPanel = new JPanel();
         bottomPanel.setBackground(Color.RED);
 
         // Initialize the splitPane
-        splitPane2 = new JSplitPane(JSplitPane.VERTICAL_SPLIT, panelMapa, panelSalimos);
-        splitPane2.setResizeWeight(0.9);
+        splitPane2 = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panelMapa, bottomPanel);
+        splitPane2.setResizeWeight(0.7);
         splitPane2.setDividerSize(1);
 
         splitPane = new JSplitPane(JSplitPane.VERTICAL_SPLIT, splitPane2, bottomPanel);

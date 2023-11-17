@@ -67,6 +67,7 @@ public class MainMenu extends JFrame {
 
         //PANEL 1 - ENCUESTAS
         JPanel panel1Encuesta = new JPanel(new BorderLayout());
+        panel1Encuesta.add(new JLabel("Hoy toca..."), BorderLayout.NORTH);
         //panel1Encuesta.setBackground(Color.green);
         JPanel pEncuesta = new JPanel(new GridLayout(3,1)); panel1Encuesta.add(pEncuesta);
         JPanel panelStage = new JPanel(new FlowLayout(FlowLayout.LEFT)); JProgressBar pbStage = new JProgressBar(0,10); panelStage.add(new JLabel("Stage Live"));  panelStage.add(pbStage);

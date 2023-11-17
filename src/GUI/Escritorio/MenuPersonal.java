@@ -42,7 +42,7 @@ public class MenuPersonal extends JFrame {
         JLabel label3 = clickableLabel("Lista de Visitados");
         JLabel label4 = clickableLabel("Proximos Eventos");
         JLabel label5 = clickableLabel("Bares Nuevos");
-        JLabel label6 = clickableLabel("Putetxes");
+        JLabel label6 = clickableLabel("MÁS");
 
         panel.add(label1);
         panel.add(label2);

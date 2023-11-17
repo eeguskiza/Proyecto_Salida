@@ -40,8 +40,8 @@ public class InicioSesion extends JFrame {
         panelBotones.add(cancelar);
 
         aceptar.addActionListener(e -> {
-            checkCredentials(idField, passField);
-            //checkCredentials2(idField, passField);
+            //checkCredentials(idField, passField);
+            checkCredentials2(idField, passField);
         });
 
         cancelar.addActionListener(e -> {

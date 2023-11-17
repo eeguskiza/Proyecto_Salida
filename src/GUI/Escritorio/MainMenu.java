@@ -79,6 +79,7 @@ public class MainMenu extends JFrame {
         pbBack.setForeground(Color.green);
         pbMoma.setForeground(Color.green);
 
+
         pEncuesta.add(panelStage);
         pEncuesta.add(panelBack);
         pEncuesta.add(panelMoma);

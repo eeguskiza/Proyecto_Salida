@@ -41,7 +41,7 @@ public class InicioSesion extends JFrame {
 
         aceptar.addActionListener(e -> {
             //checkCredentials(idField, passField);
-            checkCredentials2(idField, passField);
+            checkCredentials(idField, passField);
         });
 
         cancelar.addActionListener(e -> {

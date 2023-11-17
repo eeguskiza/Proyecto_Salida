@@ -17,6 +17,7 @@ public class MenuPersonal extends JFrame {
         JPanel panel = new JPanel(new GridLayout(6, 1, 10, 10));
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
+
         JPanel pEncabezado = new JPanel(new GridLayout(1,2)); add(pEncabezado, BorderLayout.NORTH);
         // Panel para la imagen a la izquierda
         JPanel panelIzquierdo = new JPanel(new FlowLayout());

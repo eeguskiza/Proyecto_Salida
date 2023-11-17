@@ -13,8 +13,6 @@
       <root url="jar://$USER_HOME$/Documents/javafx-sdk-21/lib/javafx.media.jar!/" />
       <root url="file://$USER_HOME$/Downloads/jcalendar-1.4/lib" />
       <root url="file://$USER_HOME$/Downloads/javafx-sdk-21.0.1/lib" />
-      <root url="jar://$USER_HOME$/OneDrive/Ordenagailua/jcalendar-1.4.jar!/" />
-      <root url="file://$USER_HOME$/Downloads/lib/lib" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
@@ -73,7 +71,6 @@
     </SOURCES>
     <jarDirectory url="file://$USER_HOME$/Downloads/javafx-sdk-21.0.1/lib" recursive="false" />
     <jarDirectory url="file://$USER_HOME$/Downloads/jcalendar-1.4/lib" recursive="false" />
-    <jarDirectory url="file://$USER_HOME$/Downloads/lib/lib" recursive="false" />
     <jarDirectory url="file://$USER_HOME$/Documents/javafx-sdk-21" recursive="false" type="SOURCES" />
   </library>
 </component>

@@ -1,5 +1,7 @@
 package GUI.Escritorio;
 
+import GUI.Bienvenido;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -84,8 +86,19 @@ public class MenuPersonal extends JFrame {
 
     //Main de prueba
     public static void main(String[] args) {
-        MenuPersonal nuevo = new MenuPersonal(null);
-        nuevo.setVisible(true);
+        try {
+            // Establecer el look and feel de Nimbus
+            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Manejar la excepción como prefieras
+        }
+
+        SwingUtilities.invokeLater(() -> {
+            MenuPersonal nuevo = new MenuPersonal(null);
+            nuevo.setVisible(true);
+        });
+
     }
 
 }

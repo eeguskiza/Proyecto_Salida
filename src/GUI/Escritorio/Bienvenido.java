@@ -93,8 +93,17 @@ public class Bienvenido extends JFrame {
 
     // Main
     public static void main(String[] args) {
+        try {
+            // Establecer el look and feel de Nimbus
+            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Manejar la excepción como prefieras
+        }
+
         SwingUtilities.invokeLater(() -> {
             new Bienvenido();
         });
     }
+
 }

@@ -13,6 +13,9 @@
       <root url="jar://$USER_HOME$/Documents/javafx-sdk-21/lib/javafx.media.jar!/" />
       <root url="file://$USER_HOME$/Downloads/jcalendar-1.4/lib" />
       <root url="file://$USER_HOME$/Downloads/javafx-sdk-21.0.1/lib" />
+      <root url="jar://$USER_HOME$/Downloads/flatlaf-3.2.5.jar!/" />
+      <root url="jar://$USER_HOME$/Desktop/jxbrowser-2.8.jar!/" />
+      <root url="file://$USER_HOME$/Desktop/jxbrowser-7.36.1-cross-desktop-win_mac_linux/lib" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
@@ -69,6 +72,7 @@
       <root url="file://$USER_HOME$/Downloads/junit5-main/platform-tooling-support-tests/src/test/java" />
       <root url="file://$USER_HOME$/Documents/javafx-sdk-21" />
     </SOURCES>
+    <jarDirectory url="file://$USER_HOME$/Desktop/jxbrowser-7.36.1-cross-desktop-win_mac_linux/lib" recursive="false" />
     <jarDirectory url="file://$USER_HOME$/Downloads/javafx-sdk-21.0.1/lib" recursive="false" />
     <jarDirectory url="file://$USER_HOME$/Downloads/jcalendar-1.4/lib" recursive="false" />
     <jarDirectory url="file://$USER_HOME$/Documents/javafx-sdk-21" recursive="false" type="SOURCES" />

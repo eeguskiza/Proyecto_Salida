@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import Constructores.*;
+import GUI.Bienvenido;
 import GUI.Movil.VentanaInicio;
 import com.toedter.calendar.JDateChooser;
 import java.text.SimpleDateFormat;
@@ -145,7 +146,18 @@ public class Registro extends JFrame {
     }
 
     public static void main(String[] args) {
-        new Registro(null);
+        try {
+            // Establecer el look and feel de Nimbus
+            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Manejar la excepción como prefieras
+        }
+
+        SwingUtilities.invokeLater(() -> {
+            new Registro(null);
+        });
+
     }
 
 }

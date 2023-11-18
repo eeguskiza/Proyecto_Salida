@@ -1,5 +1,7 @@
 package GUI.Escritorio;
 
+import GUI.Bienvenido;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -56,7 +58,17 @@ public class InicioSesion extends JFrame {
 
     //Main de prueba
     public static void main(String[] args) {
-        new InicioSesion(null).setVisible(true);
+        try {
+            // Establecer el look and feel de Nimbus
+            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Manejar la excepción como prefieras
+        }
+
+        SwingUtilities.invokeLater(() -> {
+            new InicioSesion(null).setVisible(true);
+        });
     }
 
     private void checkCredentials2(JTextField nombre, JPasswordField password){

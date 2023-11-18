@@ -2,6 +2,8 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
+import GUI.Bienvenido;
 import com.toedter.calendar.JCalendar;
 
 public class VentanaGustos extends JFrame {
@@ -58,6 +60,17 @@ public class VentanaGustos extends JFrame {
     }
 
     public static void main(String[] args) {
-        new VentanaGustos();
+        try {
+            // Establecer el look and feel de Nimbus
+            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Manejar la excepción como prefieras
+        }
+
+        SwingUtilities.invokeLater(() -> {
+            new VentanaGustos();
+        });
+
     }
 }

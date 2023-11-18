@@ -1,3 +1,5 @@
+package GUI.Escritorio;
+
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -53,7 +55,7 @@ public class VentanaGustos extends JFrame {
         panelPrincipal.add(gustosPanel);
 
         this.add(panelPrincipal);
-        this.setSize(500, 600); // Puede que necesites ajustar el tamaño para que todo quepa bien
+        this.setSize(500, 600);
         this.setVisible(true);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -65,7 +67,6 @@ public class VentanaGustos extends JFrame {
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
         } catch (Exception e) {
             e.printStackTrace();
-            // Manejar la excepción como prefieras
         }
 
         SwingUtilities.invokeLater(() -> {

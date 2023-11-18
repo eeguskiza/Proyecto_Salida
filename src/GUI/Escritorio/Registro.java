@@ -6,8 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 
 import Constructores.*;
-import GUI.Bienvenido;
-import GUI.Movil.VentanaInicio;
+import GUI.*;
 import com.toedter.calendar.JDateChooser;
 import java.text.SimpleDateFormat;
 

@@ -26,7 +26,7 @@ public class VentanaGustos extends JFrame {
         JCalendar calendar = new JCalendar();
         calendar.setVisible(false);
         panelPrincipal.add(calendar);
-    //hola
+
         comboBox.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

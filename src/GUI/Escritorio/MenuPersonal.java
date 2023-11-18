@@ -1,7 +1,5 @@
 package GUI.Escritorio;
 
-import GUI.Bienvenido;
-
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
@@ -9,96 +7,101 @@ import java.awt.event.MouseEvent;
 
 public class MenuPersonal extends JFrame {
 
-    public MenuPersonal(String nombreUsuario) {
+    public MenuPersonal(String nombreUsuario, MainMenu padre) {
         setTitle("Menú Personal - Usuario: " + nombreUsuario);
         setSize(350, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
         setLocationRelativeTo(null);
 
+        // Panel principal con bordes y disposición de cuadrícula
         JPanel panel = new JPanel(new GridLayout(6, 1, 10, 10));
-        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        panel.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
+        // Encabezado con la imagen del usuario y sus datos
+        JPanel pEncabezado = new JPanel(new BorderLayout(10, 0));
+        add(pEncabezado, BorderLayout.NORTH);
 
-        JPanel pEncabezado = new JPanel(new GridLayout(1,2)); add(pEncabezado, BorderLayout.NORTH);
-        // Panel para la imagen a la izquierda
-        JPanel panelIzquierdo = new JPanel(new FlowLayout());
-        ImageIcon imagen = new ImageIcon("src/Recuros/default_profile.png"); // Reemplaza con la ruta de tu imagen
-        Image imageScaled = imagen.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH); // Ajusta el tamaño de la imagen
+        // Panel para la imagen del usuario
+        JPanel panelIzquierdo = new JPanel();
+        panelIzquierdo.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
+        ImageIcon imagen = new ImageIcon("src/Recuros/default_profile.png"); // Ruta de tu imagen
+        Image imageScaled = imagen.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
         ImageIcon imagenEscalada = new ImageIcon(imageScaled);
         JLabel etiquetaImagen = new JLabel(imagenEscalada);
         panelIzquierdo.add(etiquetaImagen);
 
-        // Panel para el nombre y apellidos a la derecha
-        JPanel panelDerecho = new JPanel(new GridLayout(2,1));
-        JLabel nombreLabel = new JLabel(nombreUsuario);
-        JLabel apellidosLabel = new JLabel("Pérez González");
+        // Panel para el nombre y apellidos del usuario
+        JPanel panelDerecho = new JPanel(new GridLayout(2, 1));
+        panelDerecho.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        JLabel nombreLabel = new JLabel(nombreUsuario, SwingConstants.CENTER);
+        nombreLabel.setFont(new Font("Arial", Font.BOLD, 16));
+        JLabel apellidosLabel = new JLabel("Pérez González", SwingConstants.CENTER);
+        apellidosLabel.setFont(new Font("Arial", Font.PLAIN, 14));
         panelDerecho.add(nombreLabel);
         panelDerecho.add(apellidosLabel);
 
-        pEncabezado.add(panelIzquierdo);
-        pEncabezado.add(panelDerecho);
+        pEncabezado.add(panelIzquierdo, BorderLayout.WEST);
+        pEncabezado.add(panelDerecho, BorderLayout.CENTER);
 
-        JLabel label1 = clickableLabel("Editar Perfil");
-        JLabel label2 = clickableLabel("Ajustes");
-        JLabel label3 = clickableLabel("Lista de Visitados");
-        JLabel label4 = clickableLabel("Proximos Eventos");
-        JLabel label5 = clickableLabel("Bares Nuevos");
-        JLabel label6 = clickableLabel("MÁS");
+        // Creación de etiquetas clickeables
+        panel.add(clickableLabel("Editar Perfil"));
+        panel.add(clickableLabel("Ajustes"));
+        panel.add(clickableLabel("Lista de Visitados"));
+        panel.add(clickableLabel("Próximos Eventos"));
+        panel.add(clickableLabel("Bares Nuevos"));
+        //Boton Atras
+        JButton atras = new JButton("Atras");
+        atras.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                dispose();
+                padre.setVisible(true);
+            }
+        });
+        panel.add(atras);
 
-        panel.add(label1);
-        panel.add(label2);
-        panel.add(label3);
-        panel.add(label4);
-        panel.add(label5);
-        panel.add(label6);
 
         add(panel, BorderLayout.CENTER);
         setVisible(true);
     }
 
     private JLabel clickableLabel(String text) {
-        JLabel label = new JLabel(text);
-        label.setForeground(Color.BLACK); // Cambia el color del texto para que se vea como un enlace
-        label.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR)); // Cambia el cursor al pasar por encima como feedback visual
+        JLabel label = new JLabel(text, SwingConstants.CENTER);
+        label.setOpaque(true);
+        label.setBackground(new Color(245, 245, 245));
+        label.setFont(new Font("Arial", Font.PLAIN, 14));
+        label.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
+        label.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
         label.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 System.out.println("Has hecho click en: " + text);
             }
+
             @Override
             public void mouseEntered(MouseEvent e) {
-                // Cambia el color del texto a azul cuando el cursor está encima
-                label.setForeground(Color.BLUE);
+                label.setBackground(new Color(230, 230, 230));
             }
 
             @Override
             public void mouseExited(MouseEvent e) {
-                // Restaura el color del texto a negro cuando el cursor sale de la etiqueta
-                label.setForeground(Color.BLACK);
+                label.setBackground(new Color(245, 245, 245));
             }
         });
-
 
         return label;
     }
 
-    //Main de prueba
     public static void main(String[] args) {
+        // Configuración del look and feel
         try {
-            // Establecer el look and feel de Nimbus
             UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
         } catch (Exception e) {
             e.printStackTrace();
-            // Manejar la excepción como prefieras
         }
 
-        SwingUtilities.invokeLater(() -> {
-            MenuPersonal nuevo = new MenuPersonal(null);
-            nuevo.setVisible(true);
-        });
-
+        SwingUtilities.invokeLater(() -> new MenuPersonal("Nombre de Usuario", null).setVisible(true));
     }
-
 }

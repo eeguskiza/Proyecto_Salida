@@ -2,6 +2,8 @@ package GUI.Escritorio;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import com.formdev.flatlaf.*;
@@ -10,6 +12,7 @@ import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.engine.RenderingMode;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
+import GUI.*;
 
 public class MainMenu extends JFrame {
 
@@ -18,37 +21,65 @@ public class MainMenu extends JFrame {
 
     public MainMenu(String nombre) {
         setTitle("Main Menu");
-        setSize(1200, 1000);
+        //El tamaño sera el maximo posible de la pantalla
+        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        ImageIcon originalIcon = new ImageIcon(getClass().getResource("/Recuros/Menu.png"));
-        Image originalImage = originalIcon.getImage();
-        Image resizedImage = originalImage.getScaledInstance(24, 24, Image.SCALE_SMOOTH);
-        ImageIcon menuIcon = new ImageIcon(resizedImage);
+        // Panel para el botón del menú
+        JPanel panelMenu = new JPanel(new BorderLayout());
+        JButton menuButton = new JButton();
+        JButton salimos = new JButton("¿Salimos?");
 
-        JMenuBar menuBar = new JMenuBar();
-        JMenu menu = new JMenu();
-        menu.setIcon(menuIcon);
+        // Configuración del botón menu
+        menuButton.setBackground(Color.decode("#B4D3B2")); // Color personalizado
+        menuButton.setOpaque(true);
+        menuButton.setBorderPainted(true); // Sin borde
+        menuButton.setFocusPainted(false);
+        menuButton.setContentAreaFilled(true);
+        menuButton.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        menuButton.setPreferredSize(new Dimension(40, 40)); // Tamaño personalizado
 
-        JMenuItem menuItem1 = new JMenuItem("Preferencias");
-        menu.add(menuItem1);
-        JMenuItem menuItem2 = new JMenuItem("Item 2");
-        menu.add(menuItem2);
-        JMenuItem menuItem3 = new JMenuItem("Item 3");
-        menu.add(menuItem3);
-        menu.addSeparator();
-        JMenuItem exitItem = new JMenuItem("Exit");
+        // Configuración del botón salimos
+        salimos.setBackground(Color.decode("#B4D3B2")); // Color personalizado
+        salimos.setOpaque(true);
+        salimos.setBorderPainted(true); // Sin borde
+        salimos.setFocusPainted(false);
+        salimos.setContentAreaFilled(true);
+        salimos.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        salimos.setPreferredSize(new Dimension(150, 40)); // Tamaño personalizado
 
-        //Logica de los botones del menu
-        exitItem.addActionListener(e -> System.exit(0));
-        menuItem1.addActionListener(e -> new MenuPersonal(nombre));
-        menu.add(exitItem);
-        menuBar.add(menu);
 
-        // Set the menu bar for the JFrame
-        setJMenuBar(menuBar);
+
+        menuButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setVisible(false);
+                new MenuPersonal(nombre, MainMenu.this);
+            }
+        });
+
+        salimos.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setVisible(false);
+                //VentanaGustos
+                new VentanaGustos();
+
+            }
+        });
+
+        // Añadir el botón al panel del menú
+        panelMenu.add(menuButton, BorderLayout.WEST);
+        panelMenu.setBackground(Color.WHITE); // Fondo del panel
+
+        panelMenu.add(salimos, BorderLayout.EAST);
+        panelMenu.setBackground(Color.WHITE); // Fondo del panel
+
+        add(panelMenu, BorderLayout.NORTH);
+
+
 
         // Panel para el mapa
         JPanel panelMapa = new JPanel(new BorderLayout());
@@ -95,22 +126,58 @@ public class MainMenu extends JFrame {
         bottomPanel.setLayout(new GridLayout(1,3));
 
         //PANEL 1 - ENCUESTAS
+        // Panel para las encuestas
         JPanel panel1Encuesta = new JPanel(new BorderLayout());
-        panel1Encuesta.add(new JLabel("Hoy toca..."), BorderLayout.NORTH);
-        //panel1Encuesta.setBackground(Color.green);
-        JPanel pEncuesta = new JPanel(new GridLayout(3,1)); panel1Encuesta.add(pEncuesta);
-        JPanel panelStage = new JPanel(new FlowLayout(FlowLayout.LEFT)); JProgressBar pbStage = new JProgressBar(0,10); panelStage.add(new JLabel("Stage Live"));  panelStage.add(pbStage);
-        JPanel panelBack = new JPanel(new FlowLayout(FlowLayout.LEFT)); JProgressBar pbBack = new JProgressBar(0,10); panelBack.add(new JLabel("Back Room")); panelBack.add(pbBack);
-        JPanel panelMoma = new JPanel(new FlowLayout(FlowLayout.LEFT)); JProgressBar pbMoma = new JProgressBar(0,10); panelMoma.add(new JLabel("Moma"));  panelMoma.add(pbMoma);
+        // Crear la etiqueta y configurar el texto centrado
+        JLabel labelEncabezado = new JLabel("Hoy se sale en:");
+        labelEncabezado.setFont(new Font("Arial", Font.BOLD, 20));
 
-        //Tamaño y colores
-        setupProgressBar(pbStage, new Dimension(150, 20)); // Cambia el 150 y 20 según tus necesidades
+        labelEncabezado.setHorizontalAlignment(SwingConstants.CENTER);
+
+        // Añadir la etiqueta al panel en la parte superior (Norte)
+        panel1Encuesta.add(labelEncabezado, BorderLayout.NORTH);
+
+
+        // Panel para contener las encuestas con un GridLayout para 6 elementos
+        JPanel pEncuesta = new JPanel(new GridLayout(6, 1)); // 6 filas, 1 columna
+        panel1Encuesta.add(pEncuesta, BorderLayout.WEST);
+
+        // Creación de los paneles de encuesta con barras de progreso
+        JPanel panelStage = crearPanelEncuesta("Stage Live", 10);
+        JProgressBar pbStage = (JProgressBar) panelStage.getComponent(1);
+        setupProgressBar(pbStage, new Dimension(150, 20));
+
+        JPanel panelBack = crearPanelEncuesta("Back Room", 10);
+        JProgressBar pbBack = (JProgressBar) panelBack.getComponent(1);
         setupProgressBar(pbBack, new Dimension(150, 20));
+
+        JPanel panelMoma = crearPanelEncuesta("Moma", 10);
+        JProgressBar pbMoma = (JProgressBar) panelMoma.getComponent(1);
         setupProgressBar(pbMoma, new Dimension(150, 20));
 
+        // Añadiendo tres paneles adicionales
+        JPanel panelExtra1 = crearPanelEncuesta("Extra 1", 10);
+        JProgressBar pbExtra1 = (JProgressBar) panelExtra1.getComponent(1);
+        setupProgressBar(pbExtra1, new Dimension(150, 20));
+
+        JPanel panelExtra2 = crearPanelEncuesta("Extra 2", 10);
+        JProgressBar pbExtra2 = (JProgressBar) panelExtra2.getComponent(1);
+        setupProgressBar(pbExtra2, new Dimension(150, 20));
+
+        JPanel panelExtra3 = crearPanelEncuesta("Extra 3", 10);
+        JProgressBar pbExtra3 = (JProgressBar) panelExtra3.getComponent(1);
+        setupProgressBar(pbExtra3, new Dimension(150, 20));
+
+        // Añadiendo todos los paneles al panel de encuestas
         pEncuesta.add(panelStage);
         pEncuesta.add(panelBack);
         pEncuesta.add(panelMoma);
+        pEncuesta.add(panelExtra1);
+        pEncuesta.add(panelExtra2);
+        pEncuesta.add(panelExtra3);
+
+
+
 
         pbStage.addMouseListener(new MouseAdapter() {
             @Override
@@ -192,6 +259,15 @@ public class MainMenu extends JFrame {
         } else {
             progressBar.setForeground(new Color(244, 67, 54)); // Rojo
         }
+    }
+
+    // Método auxiliar para crear un panel de encuesta
+    private JPanel crearPanelEncuesta(String titulo, int maxValor) {
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        panel.add(new JLabel(titulo));
+        JProgressBar progressBar = new JProgressBar(0, maxValor);
+        panel.add(progressBar);
+        return panel;
     }
 
     public static void main(String[] args) {

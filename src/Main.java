@@ -52,13 +52,13 @@ public class Main {
         ArrayList<Local> localesEneko = new ArrayList<>();
         localesEneko.add(Back);
 
-        ArrayList<Local> visitadosMaialen = new ArrayList<>();
-        visitadosMaialen.add(Monty);
-        visitadosMaialen.add(Back);
+        ArrayList<Visita> visitadosMaialen = new ArrayList<>();
+        //visitadosMaialen.add(Monty); //TODO HE CAMBIADO ARRAYLIST<LOCAL> POR VISITA QUE ADENTRO DE VISITA ESTA EL LOCAL Y LLEVA MAS INFO
+        //visitadosMaialen.add(Back);
 
-        ArrayList<Local> visitadosAlex = new ArrayList<>();
-        visitadosAlex.add(Monty);
-        visitadosAlex.add(Back);
+        ArrayList<Visita> visitadosAlex = new ArrayList<>();
+        //visitadosAlex.add(Monty);
+        //visitadosAlex.add(Back);
 
         Erik.setLocales(localesErik);
         Eneko.setLocales(localesEneko);

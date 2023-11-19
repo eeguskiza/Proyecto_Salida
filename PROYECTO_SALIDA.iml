@@ -23,5 +23,6 @@
         <SOURCES />
       </library>
     </orderEntry>
+    <orderEntry type="library" name="jxbrowser-7.36.1" level="project" />
   </component>
 </module>

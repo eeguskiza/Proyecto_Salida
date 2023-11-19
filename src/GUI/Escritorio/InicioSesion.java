@@ -1,5 +1,8 @@
 package GUI.Escritorio;
 
+import Constructores.AlmacenDeDatos;
+import Constructores.Cliente;
+import Constructores.Usuario;
 import GUI.Bienvenido;
 
 import javax.swing.*;
@@ -11,12 +14,14 @@ public class InicioSesion extends JFrame {
 
     private DefaultTableModel tableModel;
     private JTable table;
+    private AlmacenDeDatos almacenDeDatos;
 
-    public InicioSesion(JFrame padre) {
+    public InicioSesion(JFrame padre, AlmacenDeDatos almacen){
         this.setTitle("Inicia Sesión");
         this.setSize(400, 200);
         this.setLocationRelativeTo(padre);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        almacenDeDatos = almacen;
 
         JPanel panel = new JPanel(new GridLayout(3, 2, 10, 10)); // Layout para los campos y etiquetas
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -43,7 +48,7 @@ public class InicioSesion extends JFrame {
 
         aceptar.addActionListener(e -> {
             //checkCredentials(idField, passField);
-            checkCredentials(idField, passField);
+            checkCredentials2(idField, passField);
         });
 
         cancelar.addActionListener(e -> {
@@ -67,18 +72,23 @@ public class InicioSesion extends JFrame {
         }
 
         SwingUtilities.invokeLater(() -> {
-            new InicioSesion(null).setVisible(true);
+            new InicioSesion(null, new AlmacenDeDatos()).setVisible(true);
         });
     }
 
     private void checkCredentials2(JTextField nombre, JPasswordField password){
         char[] passChar = password.getPassword();
         String passwordString = new String(passChar);
-        if(nombre.getText().equals(passwordString)){ //todo esto hay que quitarlo una vez la base de datos esta establecida y se pueden comprobar credenciales
-            //new MainMenu(nombre.getText()); //en vez de nombre sería pasar la instancia de usuario
-            dispose();
-        }else{
-            JOptionPane.showMessageDialog(null, "Usuario o Contraseña incorrectas!");
+        for(Usuario u : almacenDeDatos.getUsuarios().values()){
+            if(u.getId().equals(nombre.getText())){
+                if(u.getContraseña().equals(passwordString)){
+                    new MainMenu(u, almacenDeDatos); //en vez de nombre sería pasar la instancia de usuario
+                    dispose();
+                    break;
+                }else{
+                    JOptionPane.showMessageDialog(null, "Contraseña incorrectas!");
+                }
+            }
         }
     }
 
@@ -105,7 +115,10 @@ public class InicioSesion extends JFrame {
             if (rs.next()) {
                 // Usuario y contraseña correctos
                 JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                new MainMenu(rs.getString("id"));
+                //TODO ANTES ERA INICIO DE SESION CON EL ID PERO AHORA HAY QUE CREAR EL OBJETO USUARIO PARA PASARLE TODA LA INFORMACION A
+                // LA VENTANA. HASTA CORREGIR ESTO VOY A PONER QUE SE LE PASE UN USUARIO VACIO YA QUE EL METODO EN FUNCIONAMINETO ES
+                // EL MIO SIMPLE CON EL ARRAYLIST EN VEZ DE EL DE LA BASE DE DATOS. LA LINEA DE ABAJO ES LA QUE HAY QUE CAMBIAR.
+                new MainMenu(new Cliente(), new AlmacenDeDatos());
                 this.dispose();
             } else {
                 // Usuario o contraseña incorrectos

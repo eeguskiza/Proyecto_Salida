@@ -33,7 +33,7 @@ public class Dueño extends Usuario{
                 "\n\tContraseña: '" + Contraseña + '\'' +
                 "\n\tTeléfono: '+34 " + Telefono + '\'' +
                 "\n\tCorreo: '" + Correo + '\'' +
-                "\n\tVisitas: ";
+                "\n\tLocales: ";
 
         for (Local local : locales) {
             result += local.getNombre() + ", ";

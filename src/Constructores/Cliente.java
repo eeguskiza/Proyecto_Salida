@@ -3,7 +3,7 @@ package Constructores;
 import java.util.ArrayList;
 
 public class Cliente extends Usuario{
-    private ArrayList<Local> visitas;
+    private ArrayList<Visita> visitas;
 
     // Constructor vacio
     public Cliente() {
@@ -18,11 +18,11 @@ public class Cliente extends Usuario{
     }
 
     // Getters y Setters
-    public ArrayList<Local> getVisitas() {
+    public ArrayList<Visita> getVisitas() {
         return visitas;
     }
 
-    public void setVisitas(ArrayList<Local> visitas) {
+    public void setVisitas(ArrayList<Visita> visitas) {
         this.visitas = visitas;
     }
 
@@ -38,8 +38,8 @@ public class Cliente extends Usuario{
                 "\n\tCorreo: '" + Correo + '\'' +
                 "\n\tVisitas: ";
 
-        for (Local local : visitas) {
-            result += local.getNombre() + ", ";
+        for (Visita visita : visitas) {
+            result += visita.getLocal().getNombre() + ", ";
         }
 
         // Remover la última coma y espacio si la lista no está vacía

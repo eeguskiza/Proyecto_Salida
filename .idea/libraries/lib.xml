@@ -13,68 +13,13 @@
       <root url="jar://$USER_HOME$/Documents/javafx-sdk-21/lib/javafx.media.jar!/" />
       <root url="file://$USER_HOME$/Downloads/jcalendar-1.4/lib" />
       <root url="file://$USER_HOME$/Downloads/javafx-sdk-21.0.1/lib" />
-      <root url="jar://$USER_HOME$/Downloads/flatlaf-3.2.5.jar!/" />
       <root url="jar://$USER_HOME$/Desktop/jxbrowser-2.8.jar!/" />
       <root url="file://$USER_HOME$/Desktop/jxbrowser-7.36.1-cross-desktop-win_mac_linux/lib" />
     </CLASSES>
     <JAVADOC />
-    <SOURCES>
-      <root url="file://$USER_HOME$/Downloads/junit5-main" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/documentation/src/main/java" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/documentation/src/test/java" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/junit-jupiter-api/src/main/java" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/junit-jupiter-api/src/testFixtures/java" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/junit-jupiter-engine/src/main/java" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/junit-jupiter-engine/src/test/java" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/junit-jupiter-engine/src/testFixtures/java" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/junit-jupiter-migrationsupport/src/main/java" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/junit-jupiter-migrationsupport/src/test/java" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/junit-jupiter-params/src/main/java" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/junit-jupiter-params/src/test/java" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/junit-platform-commons/src/main/java" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/junit-platform-commons/src/main/java9" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/junit-platform-commons/src/testFixtures/java" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/junit-platform-console/src/main/java" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/junit-platform-console/src/main/java17" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/junit-platform-console/src/main/java9" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/junit-platform-engine/src/main/java" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/junit-platform-engine/src/testFixtures/java" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/junit-platform-jfr/src/main/java" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/junit-platform-launcher/src/main/java" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/junit-platform-launcher/src/testFixtures/java" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/junit-platform-reporting/src/main/java" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/junit-platform-runner/src/main/java" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/junit-platform-suite-api/src/main/java" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/junit-platform-suite-commons/src/main/java" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/junit-platform-suite-engine/src/main/java" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/junit-platform-testkit/src/main/java" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/junit-vintage-engine/src/main/java" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/junit-vintage-engine/src/test/java" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/junit-vintage-engine/src/testFixtures/java" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/platform-tests/src/jmh/java" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/platform-tests/src/test/java" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/platform-tests/src/test/resources/modules-2500" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/platform-tooling-support-tests/projects/ant-starter/src/main/java" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/platform-tooling-support-tests/projects/ant-starter/src/test/java" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/platform-tooling-support-tests/projects/graalvm-starter/src/main/java" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/platform-tooling-support-tests/projects/graalvm-starter/src/test/java" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/platform-tooling-support-tests/projects/gradle-missing-engine/src/test/java" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/platform-tooling-support-tests/projects/gradle-starter/src/main/java" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/platform-tooling-support-tests/projects/gradle-starter/src/test/java" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/platform-tooling-support-tests/projects/java-versions/src/test/java" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/platform-tooling-support-tests/projects/maven-starter/src/main/java" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/platform-tooling-support-tests/projects/maven-starter/src/test/java" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/platform-tooling-support-tests/projects/maven-surefire-compatibility/src/test/java" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/platform-tooling-support-tests/projects/multi-release-jar/default/src/test/java/integration" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/platform-tooling-support-tests/projects/standalone/src" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/platform-tooling-support-tests/projects/vintage/src/test/java" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/platform-tooling-support-tests/src/main/java" />
-      <root url="file://$USER_HOME$/Downloads/junit5-main/platform-tooling-support-tests/src/test/java" />
-      <root url="file://$USER_HOME$/Documents/javafx-sdk-21" />
-    </SOURCES>
+    <SOURCES />
     <jarDirectory url="file://$USER_HOME$/Desktop/jxbrowser-7.36.1-cross-desktop-win_mac_linux/lib" recursive="false" />
     <jarDirectory url="file://$USER_HOME$/Downloads/javafx-sdk-21.0.1/lib" recursive="false" />
     <jarDirectory url="file://$USER_HOME$/Downloads/jcalendar-1.4/lib" recursive="false" />
-    <jarDirectory url="file://$USER_HOME$/Documents/javafx-sdk-21" recursive="false" type="SOURCES" />
   </library>
 </component>

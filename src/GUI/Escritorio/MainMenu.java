@@ -6,6 +6,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.nio.file.Paths;
+import java.util.HashMap;
+
+import Constructores.AlmacenDeDatos;
+import Constructores.Cliente;
+import Constructores.Usuario;
 import com.formdev.flatlaf.*;
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
@@ -18,14 +24,16 @@ public class MainMenu extends JFrame {
 
     private JSplitPane splitPane;
     private JSplitPane splitPane2;
+    public AlmacenDeDatos almacen;
 
-    public MainMenu(String nombre) {
+    public MainMenu(Usuario usuario, AlmacenDeDatos almacenDeDatos) {
         setTitle("Main Menu");
         //El tamaño sera el maximo posible de la pantalla
         this.setExtendedState(JFrame.MAXIMIZED_BOTH);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
+        almacen = almacenDeDatos;
 
         // Panel para el botón del menú
         JPanel panelMenu = new JPanel(new BorderLayout());
@@ -56,7 +64,7 @@ public class MainMenu extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setVisible(false);
-                new MenuPersonal(nombre, MainMenu.this);
+                new MenuPersonal(usuario, MainMenu.this);
             }
         });
 
@@ -84,7 +92,7 @@ public class MainMenu extends JFrame {
         // Panel para el mapa
         JPanel panelMapa = new JPanel(new BorderLayout());
         panelMapa.setBackground(Color.BLUE);
-
+/*
         // Configuración de JxBrowser
         String LICENSE_KEY = "6P830J66YCEA9SQDHRL8EDTZK57189867HR8YUD4L7QAI5ZHGIZK21JI39COT5XFHX0V";
         EngineOptions options = EngineOptions.newBuilder(RenderingMode.HARDWARE_ACCELERATED)
@@ -103,11 +111,14 @@ public class MainMenu extends JFrame {
         // Añadir la vista del navegador al panel del mapa
         panelMapa.add(view, BorderLayout.CENTER);
 
+
         // URL del mapa estático OpenStreetMap centrado en una ubicación específica
         String url = "https://www.google.es/maps/preview";
         // Cargando la URL en el navegador
         browser.navigation().loadUrl(url);
 
+
+ */
         // Bottom panel
         JPanel bottomPanel = new JPanel();
         bottomPanel.setBackground(Color.RED);
@@ -270,6 +281,10 @@ public class MainMenu extends JFrame {
         return panel;
     }
 
+    public AlmacenDeDatos getAlmacen(){
+        return almacen;
+    }
+
     public static void main(String[] args) {
         try {
             // Establecer el look and feel de Nimbus
@@ -280,7 +295,7 @@ public class MainMenu extends JFrame {
         }
 
         SwingUtilities.invokeLater(() -> {
-            new MainMenu("Prueba");
+            new MainMenu(new Cliente(), new AlmacenDeDatos());
         });
     }
 

@@ -12,7 +12,7 @@ import java.text.SimpleDateFormat;
 
 public class Registro extends JFrame {
 
-    public Registro(JFrame padre) {
+    public Registro(JFrame padre, AlmacenDeDatos almacenDeDatos) {
 
         Object[] opciones = {"Cliente", "Dueño"};
         int seleccion = JOptionPane.showOptionDialog(null,
@@ -34,7 +34,7 @@ public class Registro extends JFrame {
 
 
         panel.add(new JLabel("ID:", JLabel.CENTER));
-        panel.add(new JTextField("@",20));
+        panel.add(new JTextField(20)); //TODO EL @ DE ID HAY QUE PONERLO AFUERA DEL RECUADRO PERO COMO NO SE HACERLO PUES LO QUITO ERIK PONLO CUANDO LEAS ESTO
 
         panel.add(new JLabel("Nombre:", JLabel.CENTER));
         panel.add(new JTextField(20));
@@ -107,9 +107,13 @@ public class Registro extends JFrame {
                     if (tipoUsuarioSeleccionado.equals(false)) {
                         Dueño nuevoUsuario = new Dueño(id, nombre, apellido, fechaNacimiento, contraseña, telefono, correo, new ArrayList<>());
                         System.out.println(nuevoUsuario.toString());
+                        almacenDeDatos.getUsuarios().put(nuevoUsuario.getId(), nuevoUsuario);
                     } else {
                         Cliente nuevoUsuario = new Cliente(id, nombre, apellido, fechaNacimiento, contraseña, telefono, correo, new ArrayList<>());
                         System.out.println(nuevoUsuario.toString());
+                        almacenDeDatos.getUsuarios().put(nuevoUsuario.getId(), nuevoUsuario);
+
+
                     }
 
                     JOptionPane.showMessageDialog(this, "Usuario creado con éxito!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
@@ -119,7 +123,7 @@ public class Registro extends JFrame {
                     JOptionPane.showMessageDialog(this, "Error al crear el usuario: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
 
-                InicioSesion inicioSesion = new InicioSesion(padre);
+                InicioSesion inicioSesion = new InicioSesion(padre, almacenDeDatos);
                 this.dispose();
                 padre.dispose();
                 inicioSesion.setVisible(true);
@@ -154,7 +158,7 @@ public class Registro extends JFrame {
         }
 
         SwingUtilities.invokeLater(() -> {
-            new Registro(null);
+            new Registro(null, new AlmacenDeDatos());
         });
 
     }

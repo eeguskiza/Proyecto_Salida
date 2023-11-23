@@ -7,7 +7,6 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" exported="" name="lib" level="project" />
     <orderEntry type="module-library">
       <library name="testng">
         <CLASSES>
@@ -23,6 +22,8 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="jxbrowser-7.36.1" level="project" />
+    <orderEntry type="library" name="lib1" level="project" />
+    <orderEntry type="library" name="flatlaf-3.2.5" level="project" />
+    <orderEntry type="library" name="jcalendar-1.4" level="project" />
   </component>
 </module>

@@ -1,0 +1,10 @@
+<component name="libraryTable">
+  <library name="lib1">
+    <CLASSES>
+      <root url="file://$USER_HOME$/Documents/jxbrowser-7.36.1-cross-desktop-win_mac_linux/lib" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://$USER_HOME$/Documents/jxbrowser-7.36.1-cross-desktop-win_mac_linux/lib" recursive="false" />
+  </library>
+</component>

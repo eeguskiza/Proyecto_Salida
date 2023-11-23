@@ -28,8 +28,7 @@ public class MainMenu extends JFrame {
 
     public MainMenu(Usuario usuario, AlmacenDeDatos almacenDeDatos) {
         setTitle("Main Menu");
-        //El tamaño sera el maximo posible de la pantalla
-        this.setExtendedState(JFrame.MAXIMIZED_BOTH);
+        setSize(1200, 1000);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
@@ -92,7 +91,7 @@ public class MainMenu extends JFrame {
         // Panel para el mapa
         JPanel panelMapa = new JPanel(new BorderLayout());
         panelMapa.setBackground(Color.BLUE);
-/*
+
         // Configuración de JxBrowser
         String LICENSE_KEY = "6P830J66YCEA9SQDHRL8EDTZK57189867HR8YUD4L7QAI5ZHGIZK21JI39COT5XFHX0V";
         EngineOptions options = EngineOptions.newBuilder(RenderingMode.HARDWARE_ACCELERATED)
@@ -118,7 +117,7 @@ public class MainMenu extends JFrame {
         browser.navigation().loadUrl(url);
 
 
- */
+ 
         // Bottom panel
         JPanel bottomPanel = new JPanel();
         bottomPanel.setBackground(Color.RED);

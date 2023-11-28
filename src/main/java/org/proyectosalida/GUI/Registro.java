@@ -9,8 +9,13 @@ import com.toedter.calendar.JDateChooser;
 import org.proyectosalida.Constructores.AlmacenDeDatos;
 import org.proyectosalida.Constructores.Cliente;
 import org.proyectosalida.Constructores.Dueño;
+import org.proyectosalida.Constructores.Usuario;
+import org.proyectosalida.Datos.Conexion;
+import org.proyectosalida.Datos.Provider;
 
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
+import java.util.Map;
 
 public class Registro extends JFrame {
 
@@ -109,10 +114,12 @@ public class Registro extends JFrame {
                     if (tipoUsuarioSeleccionado.equals(false)) {
                         Dueño nuevoUsuario = new Dueño(id, nombre, apellido, fechaNacimiento, contraseña, telefono, correo, new ArrayList<>());
                         System.out.println(nuevoUsuario.toString());
+                        guardarDueño(nuevoUsuario);
                         almacenDeDatos.getUsuarios().put(nuevoUsuario.getId(), nuevoUsuario);
                     } else {
                         Cliente nuevoUsuario = new Cliente(id, nombre, apellido, fechaNacimiento, contraseña, telefono, correo, new ArrayList<>());
                         System.out.println(nuevoUsuario.toString());
+                        guardarCliente(nuevoUsuario);
                         almacenDeDatos.getUsuarios().put(nuevoUsuario.getId(), nuevoUsuario);
 
 
@@ -150,6 +157,51 @@ public class Registro extends JFrame {
         this.setVisible(true);
     }
 
+    private void guardarCliente(Cliente cliente) {
+        String id = cliente.getId();  // ID del documento
+
+        try{
+            Map<String, Object> datos = new HashMap<>();
+            datos.put("Nombre", cliente.getNombre());
+            datos.put("Apellido", cliente.getApellido());
+            datos.put("Edad", cliente.getEdad());
+            datos.put("Contraseña", cliente.getContraseña());
+            datos.put("Teléfono", cliente.getTelefono());
+            datos.put("Correo", cliente.getCorreo());
+            datos.put("Visitas", cliente.getVisitas());
+
+            Provider.guardarPersona("Cliente", id, datos);
+
+
+        }
+        catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Error al registrar usuario");
+            System.out.println("Error" + e.getMessage());
+        }
+    }
+
+    private void guardarDueño(Dueño dueño) {
+        String id = dueño.getId();  // ID del documento
+
+        try{
+            Map<String, Object> datos = new HashMap<>();
+            datos.put("Nombre", dueño.getNombre());
+            datos.put("Apellido", dueño.getApellido());
+            datos.put("Edad", dueño.getEdad());
+            datos.put("Contraseña", dueño.getContraseña());
+            datos.put("Teléfono", dueño.getTelefono());
+            datos.put("Correo", dueño.getCorreo());
+            datos.put("Locales", dueño.getLocales());
+
+            Provider.guardarPersona("Dueño", id, datos);
+
+        }
+        catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Error al registrar usuario");
+            System.out.println("Error" + e.getMessage());
+        }
+    }
+
     public static void main(String[] args) {
         try {
             // Establecer el look and feel de Nimbus
@@ -160,6 +212,7 @@ public class Registro extends JFrame {
         }
 
         SwingUtilities.invokeLater(() -> {
+            Conexion.conectar();
             new Registro(null, new AlmacenDeDatos());
         });
 

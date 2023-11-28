@@ -25,12 +25,14 @@ public class Bienvenido extends JFrame {
             @Override
             protected void paintComponent(Graphics g) {
                 super.paintComponent(g);
-                ImageIcon backgroundImage = new ImageIcon("src/main/resources/images/Bilbao.jpg");
+                ImageIcon backgroundImage = new ImageIcon(getClass().getResource("/images/Bilbao.jpg"));
                 Image image = backgroundImage.getImage();
                 g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
             }
         };
         backgroundPanel.setLayout(new BorderLayout());
+
+
 
         // Título
         JLabel titleLabel = new JLabel("¡Bienvenid@!", JLabel.CENTER);

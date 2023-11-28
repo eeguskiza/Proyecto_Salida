@@ -1,10 +1,13 @@
 /Users/erikeguskiza/IdeaProjects/Proyecto_Salida/src/main/java/org/proyectosalida/Constructores/AlmacenDeDatos.java
+/Users/erikeguskiza/IdeaProjects/Proyecto_Salida/src/main/java/org/proyectosalida/Datos/Conexion.java
 /Users/erikeguskiza/IdeaProjects/Proyecto_Salida/src/main/java/org/proyectosalida/Constructores/Salida.java
 /Users/erikeguskiza/IdeaProjects/Proyecto_Salida/src/main/java/org/proyectosalida/GUI/InicioSesion.java
 /Users/erikeguskiza/IdeaProjects/Proyecto_Salida/src/main/java/org/proyectosalida/Constructores/Dueño.java
 /Users/erikeguskiza/IdeaProjects/Proyecto_Salida/src/main/java/org/proyectosalida/Constructores/DJ.java
+/Users/erikeguskiza/IdeaProjects/Proyecto_Salida/src/main/java/org/proyectosalida/Datos/Main.java
 /Users/erikeguskiza/IdeaProjects/Proyecto_Salida/src/main/java/org/proyectosalida/Constructores/Bar.java
 /Users/erikeguskiza/IdeaProjects/Proyecto_Salida/src/main/java/org/proyectosalida/GUI/Bienvenido.java
+/Users/erikeguskiza/IdeaProjects/Proyecto_Salida/src/main/java/org/proyectosalida/Datos/Provider.java
 /Users/erikeguskiza/IdeaProjects/Proyecto_Salida/src/main/java/org/proyectosalida/GUI/VentanaGustos.java
 /Users/erikeguskiza/IdeaProjects/Proyecto_Salida/src/main/java/org/proyectosalida/Constructores/Local.java
 /Users/erikeguskiza/IdeaProjects/Proyecto_Salida/src/main/java/org/proyectosalida/Constructores/Visita.java
@@ -15,6 +18,7 @@
 /Users/erikeguskiza/IdeaProjects/Proyecto_Salida/src/main/java/org/proyectosalida/GUI/Registro.java
 /Users/erikeguskiza/IdeaProjects/Proyecto_Salida/src/main/java/org/proyectosalida/GUI/VentanaAjustes.java
 /Users/erikeguskiza/IdeaProjects/Proyecto_Salida/src/main/java/org/proyectosalida/GUI/MainMenu.java
+/Users/erikeguskiza/IdeaProjects/Proyecto_Salida/src/main/java/org/proyectosalida/Datos/Ventana.java
 /Users/erikeguskiza/IdeaProjects/Proyecto_Salida/src/main/java/org/proyectosalida/GUI/Objetos.java
 /Users/erikeguskiza/IdeaProjects/Proyecto_Salida/src/main/java/org/proyectosalida/Constructores/Discoteca.java
 /Users/erikeguskiza/IdeaProjects/Proyecto_Salida/src/main/java/org/proyectosalida/Constructores/Usuario.java

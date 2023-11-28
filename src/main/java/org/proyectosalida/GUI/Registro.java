@@ -125,7 +125,7 @@ public class Registro extends JFrame {
 
                     }
 
-                    JOptionPane.showMessageDialog(this, "Usuario creado con éxito!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                    JOptionPane.showMessageDialog(this, "Usuario creado con éxito! (Local)", "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
 
                 } catch (Exception ex) {

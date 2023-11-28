@@ -8,7 +8,6 @@ org/proyectosalida/GUI/VentanaGustos.class
 org/proyectosalida/Constructores/Horario.class
 org/proyectosalida/Constructores/Dueño.class
 org/proyectosalida/Constructores/Cliente.class
-org/proyectosalida/Datos/Ventana.class
 org/proyectosalida/Datos/Conexion.class
 org/proyectosalida/Constructores/Bar.class
 org/proyectosalida/GUI/MainMenu$6.class
@@ -18,7 +17,6 @@ org/proyectosalida/GUI/Bienvenido$1.class
 org/proyectosalida/GUI/MainMenu$1.class
 org/proyectosalida/Constructores/Usuario.class
 org/proyectosalida/Constructores/Local.class
-org/proyectosalida/Datos/Ventana$1.class
 org/proyectosalida/GUI/MenuPersonal$2.class
 org/proyectosalida/GUI/MainMenu.class
 org/proyectosalida/GUI/MainMenu$4.class
@@ -31,7 +29,6 @@ org/proyectosalida/GUI/Registro.class
 org/proyectosalida/Datos/Provider.class
 org/proyectosalida/Constructores/Visita.class
 org/proyectosalida/GUI/VentanaGustos$2.class
-org/proyectosalida/Datos/Main.class
 org/proyectosalida/GUI/InicioSesion.class
 org/proyectosalida/GUI/MainMenu$2.class
 org/proyectosalida/Constructores/AlmacenDeDatos.class

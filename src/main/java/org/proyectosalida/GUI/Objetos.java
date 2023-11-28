@@ -69,6 +69,8 @@ public class Objetos {
         Alex.setVisitas(visitadosAlex);
 
 
+
+
         //Imprimimos Todo
         System.out.println(Erik);
         System.out.println(Eneko);

@@ -6,10 +6,7 @@ import java.util.ArrayList;
 
 
 import com.toedter.calendar.JDateChooser;
-import org.proyectosalida.Constructores.AlmacenDeDatos;
-import org.proyectosalida.Constructores.Cliente;
-import org.proyectosalida.Constructores.Dueño;
-import org.proyectosalida.Constructores.Usuario;
+import org.proyectosalida.Constructores.*;
 import org.proyectosalida.Datos.Conexion;
 import org.proyectosalida.Datos.Provider;
 
@@ -29,7 +26,6 @@ public class Registro extends JFrame {
                 opciones, opciones[0]);
 
         if (seleccion == JOptionPane.CLOSED_OPTION) {
-            // El usuario cerró el diálogo, podrías cerrar la aplicación o manejarlo de otra manera
             return;
         }
 
@@ -112,7 +108,22 @@ public class Registro extends JFrame {
             } else {
                 try {
                     if (tipoUsuarioSeleccionado.equals(false)) {
-                        Dueño nuevoUsuario = new Dueño(id, nombre, apellido, fechaNacimiento, contraseña, telefono, correo, new ArrayList<>());
+
+                        ArrayList<Horario> horariosMonty = new ArrayList<>();
+                        horariosMonty.add(new Horario("Lunes", "07:30", "23:30"));
+                        horariosMonty.add(new Horario("Martes", "07:30", "23:30"));
+                        horariosMonty.add(new Horario("Miercoles", "07:30", "23:30"));
+                        horariosMonty.add(new Horario("Jueves", "07:30", "23:30"));
+                        horariosMonty.add(new Horario("Viernes", "07:30", "23:30"));
+                        horariosMonty.add(new Horario("Sabado", "07:30", "23:30"));
+                        horariosMonty.add(new Horario("Domingo", "07:30", "16:00"));
+                        Bar Monty = new Bar("Monty", "Heros Kalea, 16, Bilbo, Bizkaia", "48009", 75, "944 23 63 36", 0, 0, "", horariosMonty, true);
+
+                        ArrayList<Local> localesErik = new ArrayList<>();
+                        localesErik.add(Monty);
+
+
+                        Dueño nuevoUsuario = new Dueño(id, nombre, apellido, fechaNacimiento, contraseña, telefono, correo, localesErik);
                         System.out.println(nuevoUsuario.toString());
                         guardarDueño(nuevoUsuario);
                         almacenDeDatos.getUsuarios().put(nuevoUsuario.getId(), nuevoUsuario);
@@ -194,6 +205,8 @@ public class Registro extends JFrame {
             datos.put("Locales", dueño.getLocales());
 
             Provider.guardarPersona("Dueño", id, datos);
+
+
 
         }
         catch(Exception e){

@@ -1,13 +1,15 @@
-package GUI.Escritorio;
+package org.proyectosalida.GUI;
 
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.Calendar;
 
-import Constructores.*;
-import GUI.*;
+
 import com.toedter.calendar.JDateChooser;
+import org.proyectosalida.Constructores.AlmacenDeDatos;
+import org.proyectosalida.Constructores.Cliente;
+import org.proyectosalida.Constructores.Dueño;
+
 import java.text.SimpleDateFormat;
 
 public class Registro extends JFrame {

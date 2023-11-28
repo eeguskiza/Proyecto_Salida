@@ -1,14 +1,8 @@
-package GUI;
+package org.proyectosalida.GUI;
 
-import Constructores.AlmacenDeDatos;
-import Constructores.Usuario;
-import GUI.Escritorio.InicioSesion;
-import GUI.Escritorio.Registro;
+import org.proyectosalida.Constructores.AlmacenDeDatos;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.HashMap;
 import javax.swing.*;
 
 public class Bienvenido extends JFrame {
@@ -95,7 +89,7 @@ public class Bienvenido extends JFrame {
         this.setVisible(true);
     }
 
-    // Main
+    // org.Proyecto_Salida.Escritorio.Main
     public static void main(String[] args) {
         try {
             // Establecer el look and feel de Nimbus

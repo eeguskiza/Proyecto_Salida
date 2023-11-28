@@ -1,8 +1,11 @@
-import Constructores.*;
+package org.proyectosalida.GUI;
 
 import java.util.ArrayList;
 
-public class Main {
+
+import org.proyectosalida.Constructores.*;
+
+public class Objetos {
     public static void main(String[] args) {
         System.out.println("Bienvenido al gestor base de PROYECTO_SALIDA");
 

@@ -22,8 +22,7 @@
         <SOURCES />
       </library>
     </orderEntry>
-    <orderEntry type="library" name="lib1" level="project" />
-    <orderEntry type="library" name="flatlaf-3.2.5" level="project" />
     <orderEntry type="library" name="jcalendar-1.4" level="project" />
+    <orderEntry type="library" name="flatlaf-3.2.5 2" level="project" />
   </component>
 </module>

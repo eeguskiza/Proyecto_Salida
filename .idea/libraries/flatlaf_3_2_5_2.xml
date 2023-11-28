@@ -1,0 +1,12 @@
+<component name="libraryTable">
+  <library name="flatlaf-3.2.5 2">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/Librerias/flatlaf-3.2.5 2.jar!/" />
+      <root url="jar://$PROJECT_DIR$/Librerias/jcalendar-1.4.jar!/" />
+      <root url="file://$PROJECT_DIR$/Librerias/lib" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+    <jarDirectory url="file://$PROJECT_DIR$/Librerias/lib" recursive="false" />
+  </library>
+</component>

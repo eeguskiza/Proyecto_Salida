@@ -1,4 +1,4 @@
-package GUI.Escritorio;
+package org.proyectosalida.GUI;
 
 import javax.swing.*;
 import java.awt.*;
@@ -6,19 +6,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.nio.file.Paths;
-import java.util.HashMap;
 
-import Constructores.AlmacenDeDatos;
-import Constructores.Cliente;
-import Constructores.Usuario;
+import org.proyectosalida.Constructores.AlmacenDeDatos;
+import org.proyectosalida.Constructores.Cliente;
+import org.proyectosalida.Constructores.Usuario;
 import com.formdev.flatlaf.*;
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.engine.RenderingMode;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
-import GUI.*;
 
 public class MainMenu extends JFrame {
 
@@ -27,7 +24,7 @@ public class MainMenu extends JFrame {
     public AlmacenDeDatos almacen;
 
     public MainMenu(Usuario usuario, AlmacenDeDatos almacenDeDatos) {
-        setTitle("Main Menu");
+        setTitle("org.Proyecto_Salida.Escritorio.Main Menu");
         setSize(1200, 1000);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);

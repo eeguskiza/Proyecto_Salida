@@ -1,4 +1,4 @@
-package GUI.Escritorio;
+package org.proyectosalida.GUI;
 
 import javax.swing.*;
 

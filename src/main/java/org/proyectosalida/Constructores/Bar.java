@@ -1,8 +1,6 @@
-package Constructores;
+package org.proyectosalida.Constructores;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Random;
 
 
 public class Bar extends Local {

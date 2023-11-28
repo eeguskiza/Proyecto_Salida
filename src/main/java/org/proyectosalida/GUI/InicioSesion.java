@@ -1,9 +1,8 @@
-package GUI.Escritorio;
+package org.proyectosalida.GUI;
 
-import Constructores.AlmacenDeDatos;
-import Constructores.Cliente;
-import Constructores.Usuario;
-import GUI.Bienvenido;
+import org.proyectosalida.Constructores.AlmacenDeDatos;
+import org.proyectosalida.Constructores.Cliente;
+import org.proyectosalida.Constructores.Usuario;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -61,7 +60,7 @@ public class InicioSesion extends JFrame {
 
     }
 
-    //Main de prueba
+    //org.Proyecto_Salida.Escritorio.Main de prueba
     public static void main(String[] args) {
         try {
             // Establecer el look and feel de Nimbus

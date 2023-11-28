@@ -1,4 +1,4 @@
-package Constructores;
+package org.proyectosalida.Constructores;
 
 import java.net.MalformedURLException;
 import java.net.URL;

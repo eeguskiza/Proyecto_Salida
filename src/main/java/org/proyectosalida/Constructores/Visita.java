@@ -1,4 +1,4 @@
-package Constructores;
+package org.proyectosalida.Constructores;
 
 public class Visita {
     private Cliente cliente;

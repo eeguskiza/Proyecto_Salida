@@ -1,8 +1,8 @@
-package GUI.Escritorio;
+package org.proyectosalida.GUI;
 
-import Constructores.Cliente;
-import Constructores.Dueño;
-import Constructores.Usuario;
+import org.proyectosalida.Constructores.Cliente;
+import org.proyectosalida.Constructores.Dueño;
+import org.proyectosalida.Constructores.Usuario;
 
 import javax.swing.*;
 import java.awt.*;

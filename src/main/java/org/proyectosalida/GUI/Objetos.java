@@ -59,6 +59,7 @@ public class Objetos {
 
 
 
+
         Bar Monty = new Bar("Monty", "Heros Kalea, 16, Bilbo, Bizkaia", "48009", 75, "944 23 63 36", 0, 0, link1, horariosMonty, true,caracteristicasMonty);
 
         Discoteca Back = new Discoteca("Back&Stage", "Calle de la Ronda, 35, Bilbo, Bizkaia","48005",  200, "747 48 96 30", 0, 0, link2, horariosBack, dj1, dj2,CaracteristicasBack);
@@ -81,6 +82,10 @@ public class Objetos {
         Eneko.setLocales(localesEneko);
         Maialen.setVisitas(visitadosMaialen);
         Alex.setVisitas(visitadosAlex);
+        ArrayList<Local>locales=new ArrayList<>();
+        locales.add(Monty);
+        locales.add(Back);
+
 
 
 

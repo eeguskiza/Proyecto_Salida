@@ -17,9 +17,12 @@ public class VentanaGustos extends JFrame {
     protected Caracteristica caracteristica;
 
 
+
     public VentanaGustos() {
         JPanel panelPrincipal = new JPanel((new GridLayout(6, 1)));
         panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.Y_AXIS));
+        JButton Aceptar=new JButton("ACEPTAR");
+
 
 
         JLabel preguntaLabel = new JLabel("¿Cuándo salimos?");
@@ -52,6 +55,12 @@ public class VentanaGustos extends JFrame {
 
             }
         });
+        Aceptar.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                VentanaGustos.this.setVisible(false);
+            }
+        });
 
 
 
@@ -60,6 +69,7 @@ public class VentanaGustos extends JFrame {
         JPanel gustosPanel = new JPanel(new GridLayout(0, 3, 1, 1)); // 0 filas significa cualquier cantidad de filas, 2 columnas, y espacio entre elementos
        // aqui
         ArrayList<String> caracteristicas = new ArrayList<>();
+
 
         for (Caracteristica caracteristica : Caracteristica.values()) {
             JCheckBox checkBoxCaracteristica = new JCheckBox(caracteristica.name());
@@ -86,9 +96,11 @@ public class VentanaGustos extends JFrame {
 
 
 
+
         // Añadir el panel de gustos al panel principal y alinear a la izquierda
         gustosPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
         panelPrincipal.add(gustosPanel);
+        panelPrincipal.add(Aceptar, BorderLayout.CENTER);
 
 
         this.add(panelPrincipal);

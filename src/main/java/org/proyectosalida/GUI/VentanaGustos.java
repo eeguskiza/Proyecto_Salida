@@ -6,11 +6,15 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
+import org.proyectosalida.Constructores.Caracteristica;
+
+
 
 import com.toedter.calendar.JCalendar;
 
 
 public class VentanaGustos extends JFrame {
+    protected Caracteristica caracteristica;
 
 
     public VentanaGustos() {
@@ -54,28 +58,22 @@ public class VentanaGustos extends JFrame {
 
         // Usando GridLayout para organizar los gustos en múltiples columnas
         JPanel gustosPanel = new JPanel(new GridLayout(0, 3, 1, 1)); // 0 filas significa cualquier cantidad de filas, 2 columnas, y espacio entre elementos
-        String[] gustos = {"Cerveza", "Música", "Dulce", "Terraza", "Música en vivo",
-                "Zona infantil", "Ambiente íntimo", "Vista panorámica", "Espacio para eventos",
-                "Decoración artística", "Cocina gourmet", "Barra de cócteles", "Música electrónica",
-                "Karaoke", "Pista de baile", "Juegos de mesa", "Transmisión de deportes", "Wifi gratuito",
-                "Aire acondicionado", "Zona de fumadores", "Accesibilidad para discapacitados",
-                "Estacionamiento privado", "Pet friendly"};
-        ArrayList<String>gustosos=new ArrayList<String>();
+       // aqui
+        ArrayList<String> caracteristicas = new ArrayList<>();
 
-
-        for (String gusto : gustos) {// mira gusto a gusto
-            JCheckBox checkBoxGusto = new JCheckBox(gusto);//crea un checkbox para cada gusto y lo añade al panel
-            gustosPanel.add(checkBoxGusto);
-            checkBoxGusto.addActionListener(new ActionListener() {// le damos funcion a cada checkbox
+        for (Caracteristica caracteristica : Caracteristica.values()) {
+            JCheckBox checkBoxCaracteristica = new JCheckBox(caracteristica.name());
+            gustosPanel.add(checkBoxCaracteristica);
+            checkBoxCaracteristica.addActionListener(new ActionListener() {// le damos funcion a cada checkbox
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if (checkBoxGusto.isSelected()){
-                        System.out.println("has seleccionado "+ checkBoxGusto.getText());
-                        gustosos.add(checkBoxGusto.getText());
+                    if (checkBoxCaracteristica.isSelected()){
+                        System.out.println("has seleccionado "+ checkBoxCaracteristica.getText());
+                        caracteristicas.add(checkBoxCaracteristica.getText());
                     }else{
-                        gustosos.remove(checkBoxGusto.getText());
-                        System.out.println(checkBoxGusto.getText()+" deseleccionado");
-                        gustosos.add(checkBoxGusto.getText());
+                        caracteristicas.remove(checkBoxCaracteristica.getText());
+                        System.out.println(checkBoxCaracteristica.getText()+" deseleccionado");
+                        caracteristicas.add(checkBoxCaracteristica.getText());
                     }
                 }
             });

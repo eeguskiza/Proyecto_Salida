@@ -117,7 +117,7 @@ public class Registro extends JFrame {
                         horariosMonty.add(new Horario("Viernes", "07:30", "23:30"));
                         horariosMonty.add(new Horario("Sabado", "07:30", "23:30"));
                         horariosMonty.add(new Horario("Domingo", "07:30", "16:00"));
-                        Bar Monty = new Bar("Monty", "Heros Kalea, 16, Bilbo, Bizkaia", "48009", 75, "944 23 63 36", 0, 0, "", horariosMonty, true);
+                        Bar Monty = new Bar("Monty", "Heros Kalea, 16, Bilbo, Bizkaia", "48009", 75, "944 23 63 36", 0, 0, "", horariosMonty, true,null);
 
                         ArrayList<Local> localesErik = new ArrayList<>();
                         localesErik.add(Monty);

@@ -36,6 +36,7 @@ public class Objetos {
         horariosMonty.add(new Horario("Sabado", "07:30", "23:30"));
         horariosMonty.add(new Horario("Domingo", "07:30", "16:00"));
 
+
         ArrayList<Horario> horariosBack = new ArrayList<>();
         horariosBack.add(new Horario("Lunes - Martes", "12:00", "04:00"));
         horariosBack.add(new Horario("Martes - Miercoles", "12:00", "04:00"));
@@ -45,9 +46,22 @@ public class Objetos {
         horariosBack.add(new Horario("Sabado - Domingo", "12:00", "06:00"));
         horariosBack.add(new Horario("Domingo - Lunes", "12:00", "04:00"));
 
-        Bar Monty = new Bar("Monty", "Heros Kalea, 16, Bilbo, Bizkaia", "48009", 75, "944 23 63 36", 0, 0, link1, horariosMonty, true);
+        ArrayList<Caracteristica>caracteristicasMonty=new ArrayList<>();
+        caracteristicasMonty.add(Caracteristica.PINTXOS);
+        caracteristicasMonty.add(Caracteristica.TERRAZA);
+        caracteristicasMonty.add(Caracteristica.CERVEZAS);
+        caracteristicasMonty.add(Caracteristica.COMBINADOS);
+        ArrayList<Caracteristica>CaracteristicasBack=new ArrayList<>();
+        CaracteristicasBack.add(Caracteristica.CERVEZAS);
+        CaracteristicasBack.add(Caracteristica.MUSICA);
+        CaracteristicasBack.add(Caracteristica.COMBINADOS);
+        CaracteristicasBack.add(Caracteristica.ZONA_PRIVADA);
 
-        Discoteca Back = new Discoteca("Back&Stage", "Calle de la Ronda, 35, Bilbo, Bizkaia","48005",  200, "747 48 96 30", 0, 0, link2, horariosBack, dj1, dj2);
+
+
+        Bar Monty = new Bar("Monty", "Heros Kalea, 16, Bilbo, Bizkaia", "48009", 75, "944 23 63 36", 0, 0, link1, horariosMonty, true,caracteristicasMonty);
+
+        Discoteca Back = new Discoteca("Back&Stage", "Calle de la Ronda, 35, Bilbo, Bizkaia","48005",  200, "747 48 96 30", 0, 0, link2, horariosBack, dj1, dj2,CaracteristicasBack);
 
         ArrayList<Local> localesErik = new ArrayList<>();
         localesErik.add(Monty);

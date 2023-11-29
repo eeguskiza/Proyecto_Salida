@@ -14,8 +14,10 @@ public abstract class Local {
     protected int PrecioMedio;
     protected String web;
     protected ArrayList<Horario> horarios;
+    protected ArrayList<Caracteristica>caracteristicas;
 
-    /*
+
+/*
     Valoraciones
     Visitas
     Y mas por añadir
@@ -33,9 +35,10 @@ public abstract class Local {
         this.PrecioMedio = 0;
         this.web = "";
         this.horarios = new ArrayList<>();
+        this.caracteristicas = new ArrayList<>();
     }
 
-    public Local(String nombre, String direccion,String CP, int Aforo, String telefono, int MediaEdad, int PrecioMedio, String web, ArrayList<Horario> horarios) {
+    public Local(String nombre, String direccion,String CP, int Aforo, String telefono, int MediaEdad, int PrecioMedio, String web, ArrayList<Horario> horarios,ArrayList<Caracteristica>caracteristicas) {
         this.id = generarId(nombre, CP);
         this.nombre = nombre;
         this.direccion = direccion;
@@ -46,12 +49,20 @@ public abstract class Local {
         this.PrecioMedio = PrecioMedio;
         this.web = web;
         this.horarios = horarios;
+        this.caracteristicas=caracteristicas;
 
     }
     private static String generarId(String nombre, String CP) {
         Random random = new Random();
         int numeroAleatorio = 100 + random.nextInt(900);
         return (nombre.isEmpty() ? "X" : nombre.substring(0, 1).toUpperCase()) + CP.substring(3,5) + numeroAleatorio;
+    }
+    public ArrayList<Caracteristica> getCaracteristicas() {
+        return caracteristicas;
+    }
+
+    public void setCaracteristicas(ArrayList<Caracteristica> caracteristicas) {
+        this.caracteristicas = caracteristicas;
     }
 
     public String getId() {
@@ -126,4 +137,21 @@ public abstract class Local {
         this.horarios = horarios;
     }
 
+    @Override
+    public String toString() {
+        return "Local{" +
+                "id='" + id + '\'' +
+                ", nombre='" + nombre + '\'' +
+                ", direccion='" + direccion + '\'' +
+                ", CP='" + CP + '\'' +
+                ", Aforo=" + Aforo +
+                ", telefono='" + telefono + '\'' +
+                ", MediaEdad=" + MediaEdad +
+                ", PrecioMedio=" + PrecioMedio +
+                ", web='" + web + '\'' +
+                ", horarios=" + horarios +
+                ", caracteristicas=" + caracteristicas +
+                '}';
+    }
 }
+

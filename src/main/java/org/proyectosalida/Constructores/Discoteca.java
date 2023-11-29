@@ -9,8 +9,8 @@ public class Discoteca extends Local {
     public Discoteca() {
     }
 
-    public Discoteca(String nombre, String direccion, String CP, int Aforo, String telefono, int MediaEdad, int PrecioMedio, String web, ArrayList<Horario> horarios, DJ djResidente, DJ djInvitado) {
-        super(nombre, direccion, CP, Aforo, telefono, MediaEdad, PrecioMedio, web,horarios );
+    public Discoteca(String nombre, String direccion, String CP, int Aforo, String telefono, int MediaEdad, int PrecioMedio, String web, ArrayList<Horario> horarios, DJ djResidente, DJ djInvitado,ArrayList<Caracteristica>caracteristicas) {
+        super(nombre, direccion, CP, Aforo, telefono, MediaEdad, PrecioMedio, web,horarios,caracteristicas );
         this.djResidente = djResidente;
         this.djInvitado = djInvitado;
     }
@@ -45,7 +45,7 @@ public class Discoteca extends Local {
                 "\n\tHorarios: " + horarios +
                 "\n\tDJ Residente: '" + djResidente.getNombre() + '\'' +
                 "\n\tDJ Invitado: '" + djInvitado.getNombre() + '\'' +
-                "\n}";
+                "\n}"+"\n\tWeb: '" + web + '\''+"\n\tcarcateristicas: "+caracteristicas;
     }
 
     /*

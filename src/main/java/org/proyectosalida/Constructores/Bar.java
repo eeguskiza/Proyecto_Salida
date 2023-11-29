@@ -11,8 +11,8 @@ public class Bar extends Local {
         super();
     }
 
-    public Bar(String nombre, String direccion, String CP, int Aforo, String telefono, int MediaEdad, int PrecioMedio, String web, ArrayList <Horario> horarios, Boolean terraza) {
-        super(nombre, direccion,CP, Aforo, telefono, MediaEdad, PrecioMedio, web, horarios);
+    public Bar(String nombre, String direccion, String CP, int Aforo, String telefono, int MediaEdad, int PrecioMedio, String web, ArrayList <Horario> horarios, Boolean terraza,ArrayList <Caracteristica> caracteristicas) {
+        super(nombre, direccion,CP, Aforo, telefono, MediaEdad, PrecioMedio, web, horarios,caracteristicas);
         this.terraza = terraza;
     }
 
@@ -37,7 +37,7 @@ public class Bar extends Local {
                 "\n\tTeléfono: '" + telefono + '\'' +
                 "\n\tMedia de Edad: " + MediaEdad +
                 "\n\tPrecio Medio: " + PrecioMedio +
-                "\n\tWeb: '" + web + '\'';
+                "\n\tWeb: '" + web + '\''+"\n\tcarcateristicas: "+caracteristicas;
 
         result += "\n\tHorarios:";
         for (Horario hora : horarios) {

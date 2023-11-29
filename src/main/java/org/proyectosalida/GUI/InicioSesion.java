@@ -46,7 +46,6 @@ public class InicioSesion extends JFrame {
         panelBotones.add(cancelar);
 
         aceptar.addActionListener(e -> {
-            //checkCredentials(idField, passField);
             checkCredentials2(idField, passField);
         });
 
@@ -91,50 +90,5 @@ public class InicioSesion extends JFrame {
         }
     }
 
-    private void checkCredentials(JTextField idField, JPasswordField passField) {
-        String userId = idField.getText();
-        String password = new String(passField.getPassword());
-
-        // Verificar que los campos no estén vacíos
-        if (userId.isEmpty() || password.isEmpty()) {
-            JOptionPane.showMessageDialog(this, "El ID de usuario y la contraseña no pueden estar vacíos.", "Error", JOptionPane.ERROR_MESSAGE);
-            return;
-        }
-
-        Connection conn = null;
-        Statement stmt = null;
-        ResultSet rs = null;
-
-        try {
-            conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/Proyecto_Salida", "erik", "0977"    );
-            // Considerar usar PreparedStatement para evitar la inyección de SQL --> Erik acuerdate de mirarlo
-            stmt = conn.createStatement();
-            rs = stmt.executeQuery("SELECT * FROM clientes WHERE id = '" + userId + "' AND contraseña = '" + password + "'");
-
-            if (rs.next()) {
-                // Usuario y contraseña correctos
-                JOptionPane.showMessageDialog(this, "Inicio de sesión exitoso!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                //TODO ANTES ERA INICIO DE SESION CON EL ID PERO AHORA HAY QUE CREAR EL OBJETO USUARIO PARA PASARLE TODA LA INFORMACION A
-                // LA VENTANA. HASTA CORREGIR ESTO VOY A PONER QUE SE LE PASE UN USUARIO VACIO YA QUE EL METODO EN FUNCIONAMINETO ES
-                // EL MIO SIMPLE CON EL ARRAYLIST EN VEZ DE EL DE LA BASE DE DATOS. LA LINEA DE ABAJO ES LA QUE HAY QUE CAMBIAR.
-                new MainMenu(new Cliente(), new AlmacenDeDatos());
-                this.dispose();
-            } else {
-                // Usuario o contraseña incorrectos
-                JOptionPane.showMessageDialog(this, "Usuario o Contraseña incorrectas!", "Error", JOptionPane.ERROR_MESSAGE);
-            }
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Error al conectarse a la base de datos.", "Error", JOptionPane.ERROR_MESSAGE);
-        } finally {
-            try {
-                if (rs != null) rs.close();
-                if (stmt != null) stmt.close();
-                if (conn != null) conn.close();
-            } catch (SQLException ex) {
-                ex.printStackTrace();
-            }
-        }
-    }
 
 }

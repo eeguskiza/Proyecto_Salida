@@ -137,6 +137,15 @@ public abstract class Local {
         this.horarios = horarios;
     }
 
+    public String getCP() {
+        return CP;
+    }
+
+    public void setCP(String CP) {
+        this.CP = CP;
+    }
+
+
     @Override
     public String toString() {
         return "Local{" +

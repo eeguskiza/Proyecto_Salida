@@ -108,7 +108,8 @@ public class Registro extends JFrame {
             } else {
                 try {
                     if (tipoUsuarioSeleccionado.equals(false)) {
-                        Dueño nuevoUsuario = new Dueño(id, nombre, apellido, fechaNacimiento, contraseña, telefono, correo, new ArrayList<Local>());
+                        ArrayList<Local> locales = new ArrayList<>();
+                        Dueño nuevoUsuario = new Dueño(id, nombre, apellido, fechaNacimiento, contraseña, telefono, correo, locales);
                         System.out.println(nuevoUsuario.toString());
                         //Option pane para decidir si quiere añadir locales o no (gurada un boll para llamar a la ventana)
                         boolean loc = JOptionPane.showConfirmDialog(null, "¿Desea añadir locales?", "Añadir locales", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
@@ -192,7 +193,7 @@ public class Registro extends JFrame {
         }
 
         SwingUtilities.invokeLater(() -> {
-            //Conexion.conectar();
+            Conexion.conectar();
             new Registro(null, new AlmacenDeDatos());
         });
 

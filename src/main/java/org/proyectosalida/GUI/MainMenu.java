@@ -6,6 +6,8 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.proyectosalida.Constructores.AlmacenDeDatos;
 import org.proyectosalida.Constructores.Cliente;
@@ -22,10 +24,11 @@ public class MainMenu extends JFrame {
     private JSplitPane splitPane;
     private JSplitPane splitPane2;
     public AlmacenDeDatos almacen;
+    private JLabel labelEncabezado;
 
     public MainMenu(Usuario usuario, AlmacenDeDatos almacenDeDatos) {
         setTitle("org.Proyecto_Salida.Escritorio.Main Menu");
-        setSize(1200, 1000);
+        setSize(1200, 800);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
@@ -85,33 +88,11 @@ public class MainMenu extends JFrame {
 
 
 
-        // Panel para el mapa
+        // --------------- MAPA ------------------
         JPanel panelMapa = new JPanel(new BorderLayout());
         panelMapa.setBackground(Color.BLUE);
-
-        // Configuración de JxBrowser
-        String LICENSE_KEY = "6P830J66YCEA9SQDHRL8EDTZK57189867HR8YUD4L7QAI5ZHGIZK21JI39COT5XFHX0V";
-        EngineOptions options = EngineOptions.newBuilder(RenderingMode.HARDWARE_ACCELERATED)
-                .licenseKey(LICENSE_KEY)
-                .build();
-
-        // Inicializando el motor del navegador con la clave de licencia
-        Engine engine = Engine.newInstance(options);
-
-        // Creando el navegador
-        Browser browser = engine.newBrowser();
-
-        // Crear la vista del navegador para Swing
-        BrowserView view = BrowserView.newInstance(browser);
-
-        // Añadir la vista del navegador al panel del mapa
+        BrowserView view = cargarMapa();
         panelMapa.add(view, BorderLayout.CENTER);
-
-
-        // URL del mapa estático OpenStreetMap centrado en una ubicación específica
-        String url = "https://www.google.es/maps/preview";
-        // Cargando la URL en el navegador
-        browser.navigation().loadUrl(url);
 
 
  
@@ -136,7 +117,7 @@ public class MainMenu extends JFrame {
         // Panel para las encuestas
         JPanel panel1Encuesta = new JPanel(new BorderLayout());
         // Crear la etiqueta y configurar el texto centrado
-        JLabel labelEncabezado = new JLabel("Hoy se sale en:");
+        labelEncabezado = new JLabel("¿A dónde sales hoy tú?");
         labelEncabezado.setFont(new Font("Arial", Font.BOLD, 20));
 
         labelEncabezado.setHorizontalAlignment(SwingConstants.CENTER);
@@ -152,28 +133,27 @@ public class MainMenu extends JFrame {
         // Creación de los paneles de encuesta con barras de progreso
         JPanel panelStage = crearPanelEncuesta("Stage Live", 10);
         JProgressBar pbStage = (JProgressBar) panelStage.getComponent(1);
-        setupProgressBar(pbStage, new Dimension(150, 20));
+        almacen.getProgressBarsVotaciones().add(pbStage);
 
         JPanel panelBack = crearPanelEncuesta("Back Room", 10);
         JProgressBar pbBack = (JProgressBar) panelBack.getComponent(1);
-        setupProgressBar(pbBack, new Dimension(150, 20));
+        almacen.getProgressBarsVotaciones().add( pbBack);
 
         JPanel panelMoma = crearPanelEncuesta("Moma", 10);
         JProgressBar pbMoma = (JProgressBar) panelMoma.getComponent(1);
-        setupProgressBar(pbMoma, new Dimension(150, 20));
+        almacen.getProgressBarsVotaciones().add(pbMoma);
 
-        // Añadiendo tres paneles adicionales
         JPanel panelExtra1 = crearPanelEncuesta("Extra 1", 10);
         JProgressBar pbExtra1 = (JProgressBar) panelExtra1.getComponent(1);
-        setupProgressBar(pbExtra1, new Dimension(150, 20));
+        almacen.getProgressBarsVotaciones().add( pbExtra1);
 
         JPanel panelExtra2 = crearPanelEncuesta("Extra 2", 10);
         JProgressBar pbExtra2 = (JProgressBar) panelExtra2.getComponent(1);
-        setupProgressBar(pbExtra2, new Dimension(150, 20));
+        almacen.getProgressBarsVotaciones().add(pbExtra2);
 
         JPanel panelExtra3 = crearPanelEncuesta("Extra 3", 10);
         JProgressBar pbExtra3 = (JProgressBar) panelExtra3.getComponent(1);
-        setupProgressBar(pbExtra3, new Dimension(150, 20));
+        almacen.getProgressBarsVotaciones().add(pbExtra3);
 
         // Añadiendo todos los paneles al panel de encuestas
         pEncuesta.add(panelStage);
@@ -183,38 +163,6 @@ public class MainMenu extends JFrame {
         pEncuesta.add(panelExtra2);
         pEncuesta.add(panelExtra3);
 
-
-
-
-        pbStage.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                int currentValue = pbStage.getValue();
-                if (currentValue < pbStage.getMaximum()) {
-                    pbStage.setValue(currentValue + 1);
-                }
-            }
-        });
-
-        pbBack.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                int currentValue = pbBack.getValue();
-                if (currentValue < pbBack.getMaximum()) {
-                    pbBack.setValue(currentValue + 1);
-                }
-            }
-        });
-
-        pbMoma.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                int currentValue = pbMoma.getValue();
-                if (currentValue < pbMoma.getMaximum()) {
-                    pbMoma.setValue(currentValue + 1);
-                }
-            }
-        });
 
         //PANEL 2 - REVIEWS
         JPanel panel2Reviews = new JPanel();
@@ -238,22 +186,6 @@ public class MainMenu extends JFrame {
         }
     }
 
-    private void setupProgressBar(JProgressBar progressBar, Dimension preferredSize) {
-        progressBar.setPreferredSize(preferredSize);
-        progressBar.setMinimumSize(preferredSize);
-        progressBar.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                int currentValue = progressBar.getValue();
-                if (currentValue < progressBar.getMaximum()) {
-                    progressBar.setValue(currentValue + 1);
-                    updateProgressBarColor(progressBar);
-                }
-            }
-        });
-
-        updateProgressBarColor(progressBar);
-    }
 
     private void updateProgressBarColor(JProgressBar progressBar) {
         int value = progressBar.getValue();
@@ -268,17 +200,71 @@ public class MainMenu extends JFrame {
         }
     }
 
-    // Método auxiliar para crear un panel de encuesta
-    private JPanel crearPanelEncuesta(String titulo, int maxValor) {
+    private JPanel crearPanelEncuesta(String titulo, int maxValor) { //CREA EL PANEL CON TITULO Y PROGRESSBAR CON SU CORRESP ACTION LISTENER
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         panel.add(new JLabel(titulo));
         JProgressBar progressBar = new JProgressBar(0, maxValor);
+
+        progressBar.setPreferredSize(new Dimension(150, 20));
+        progressBar.setMinimumSize(new Dimension(150, 20));
+        progressBar.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(almacen.getVotoDiarioEncuesta()==false){
+                    almacen.setVotoDiarioEncuesta(true); //no se puede volver a votar
+                    mostrarTodosLosValoresEncuesta(); //revela el resto de valores
+                    //Incrementamos uno al pb que han hecho click
+                    int currentValue = progressBar.getValue();
+                    if (currentValue < progressBar.getMaximum()) {
+                        progressBar.setValue(currentValue + 1);
+                        updateProgressBarColor(progressBar);
+                    }
+                }
+
+            }
+        });
+
         panel.add(progressBar);
         return panel;
     }
 
     public AlmacenDeDatos getAlmacen(){
         return almacen;
+    }
+
+    private void mostrarTodosLosValoresEncuesta(){
+        ArrayList<JProgressBar> pbs = almacen.getProgressBarsVotaciones();
+        ArrayList<Integer> votos = almacen.getValoresVotaciones();
+        for(int i=0; i<pbs.size(); i++){
+            pbs.get(i).setValue(votos.get(i));
+            updateProgressBarColor(pbs.get(i));
+            //TODO FALTA ACTUALIZAR EL VOTO QUE ACABO DE INGRESAS CON EL CLICK A LA BASE DE DATOS Y CAMBIAR EL HASHMAP POR BD
+        }
+        //Cambiar el texto del encabezado del panel
+        labelEncabezado.setText("¡Mira lo que hacen el resto!");
+    }
+
+    private BrowserView cargarMapa(){
+        // Configuración de JxBrowser
+        String LICENSE_KEY = "6P830J66YCEA9SQDHRL8EDTZK57189867HR8YUD4L7QAI5ZHGIZK21JI39COT5XFHX0V";
+        EngineOptions options = EngineOptions.newBuilder(RenderingMode.HARDWARE_ACCELERATED)
+                .licenseKey(LICENSE_KEY)
+                .build();
+
+        // Inicializando el motor del navegador con la clave de licencia
+        Engine engine = Engine.newInstance(options);
+
+        // Creando el navegador
+        Browser browser = engine.newBrowser();
+
+        // Crear la vista del navegador para Swing
+        BrowserView view = BrowserView.newInstance(browser);
+
+        // URL del mapa estático OpenStreetMap centrado en una ubicación específica
+        String url = "https://www.google.es/maps/preview";
+        // Cargando la URL en el navegador
+        browser.navigation().loadUrl(url);
+        return view;
     }
 
     public static void main(String[] args) {

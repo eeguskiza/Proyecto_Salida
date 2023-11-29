@@ -2,6 +2,8 @@ package org.proyectosalida.GUI;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 
@@ -15,8 +17,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class Registro extends JFrame {
+    boolean viendoContraseña;
+    JButton botonVerContraseña;
+    JTextField textFieldContraseña = null;
 
     public Registro(JFrame padre, AlmacenDeDatos almacenDeDatos) {
+
+        viendoContraseña=false;
+        botonVerContraseña = new JButton();
 
         Object[] opciones = {"Cliente", "Dueño"};
         int seleccion = JOptionPane.showOptionDialog(null,
@@ -35,6 +43,8 @@ public class Registro extends JFrame {
 
         JPanel panel = new JPanel(new GridLayout(0, 2, 10, 10)); // Layout para los campos y etiquetas
 
+        ImageIcon icon_hid = new ImageIcon("src/main/resources/images/password_hidden.jpg"); Image image_hid = icon_hid.getImage().getScaledInstance(30,30, Image.SCALE_SMOOTH);
+        ImageIcon icon_sho = new ImageIcon("src/main/resources/images/password_shown.jpg"); Image image_sho = icon_sho.getImage().getScaledInstance(30,30, Image.SCALE_SMOOTH);
 
         panel.add(new JLabel("ID:", JLabel.CENTER));
         panel.add(new JTextField(20)); //TODO EL @ DE ID HAY QUE PONERLO AFUERA DEL RECUADRO PERO COMO NO SE HACERLO PUES LO QUITO ERIK PONLO CUANDO LEAS ESTO
@@ -51,7 +61,8 @@ public class Registro extends JFrame {
         panel.add(dateChooser);
 
         panel.add(new JLabel("Contraseña:", JLabel.CENTER));
-        panel.add(new JPasswordField(20));
+        JPanel panelContraseña = new JPanel(new BorderLayout());JPasswordField passwordField = new JPasswordField(20); panelContraseña.add(passwordField); botonVerContraseña = new JButton(new ImageIcon(image_hid)); panelContraseña.add(botonVerContraseña, BorderLayout.EAST); botonVerContraseña.setBackground(Color.white);
+        panel.add(panelContraseña);
 
         panel.add(new JLabel("Comfirmar contraseña:", JLabel.CENTER));
         panel.add(new JPasswordField(20));
@@ -65,6 +76,33 @@ public class Registro extends JFrame {
         JPanel panelBotones = new JPanel();
         JButton aceptar = new JButton("Aceptar");
         JButton cancelar = new JButton("Cancelar");
+
+        botonVerContraseña.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String contraseña = String.valueOf(passwordField.getPassword());
+
+                if (viendoContraseña) {
+                    contraseña = textFieldContraseña.getText();
+                    botonVerContraseña.setIcon(new ImageIcon(image_hid));
+                    panelContraseña.removeAll();
+                    passwordField.setText(contraseña); // Restablece el texto en el JPasswordField
+                    panelContraseña.add(passwordField);
+                    viendoContraseña = false;
+                } else {
+                    botonVerContraseña.setIcon(new ImageIcon(image_sho));
+                    panelContraseña.removeAll();
+                    textFieldContraseña = new JTextField(contraseña);
+                    panelContraseña.add(textFieldContraseña);
+                    viendoContraseña = true;
+                    System.out.println(2);
+                }
+
+                panelContraseña.add(botonVerContraseña, BorderLayout.EAST);
+                panelContraseña.revalidate();
+                panelContraseña.repaint();
+            }
+        });
 
         aceptar.addActionListener(e -> {
             String id = ((JTextField) panel.getComponent(1)).getText();

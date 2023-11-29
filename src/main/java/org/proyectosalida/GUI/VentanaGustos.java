@@ -12,9 +12,10 @@ import org.proyectosalida.Constructores.Caracteristica;
 
 import com.toedter.calendar.JCalendar;
 
-
+import org.proyectosalida.Constructores.*;
 public class VentanaGustos extends JFrame {
     protected Caracteristica caracteristica;
+    protected ArrayList<Local>locales;
 
 
 
@@ -22,6 +23,7 @@ public class VentanaGustos extends JFrame {
         JPanel panelPrincipal = new JPanel((new GridLayout(6, 1)));
         panelPrincipal.setLayout(new BoxLayout(panelPrincipal, BoxLayout.Y_AXIS));
         JButton Aceptar=new JButton("ACEPTAR");
+
 
 
 

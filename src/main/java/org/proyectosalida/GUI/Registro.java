@@ -125,7 +125,9 @@ public class Registro extends JFrame {
 
                         Dueño nuevoUsuario = new Dueño(id, nombre, apellido, fechaNacimiento, contraseña, telefono, correo, localesErik);
                         System.out.println(nuevoUsuario.toString());
-                        guardarDueño(nuevoUsuario);
+
+                        //Ventana para guardar locales
+                        VentanaAddLocales ventanaAddLocales = new VentanaAddLocales(nuevoUsuario);
                         almacenDeDatos.getUsuarios().put(nuevoUsuario.getId(), nuevoUsuario);
                     } else {
                         Cliente nuevoUsuario = new Cliente(id, nombre, apellido, fechaNacimiento, contraseña, telefono, correo, new ArrayList<>());
@@ -182,30 +184,6 @@ public class Registro extends JFrame {
             datos.put("Visitas", cliente.getVisitas());
 
             Provider.guardarPersona("Cliente", id, datos);
-
-
-        }
-        catch(Exception e){
-            JOptionPane.showMessageDialog(null, "Error al registrar usuario");
-            System.out.println("Error" + e.getMessage());
-        }
-    }
-
-    private void guardarDueño(Dueño dueño) {
-        String id = dueño.getId();  // ID del documento
-
-        try{
-            Map<String, Object> datos = new HashMap<>();
-            datos.put("Nombre", dueño.getNombre());
-            datos.put("Apellido", dueño.getApellido());
-            datos.put("Edad", dueño.getEdad());
-            datos.put("Contraseña", dueño.getContraseña());
-            datos.put("Teléfono", dueño.getTelefono());
-            datos.put("Correo", dueño.getCorreo());
-            datos.put("Locales", dueño.getLocales());
-
-            Provider.guardarPersona("Dueño", id, datos);
-
 
 
         }

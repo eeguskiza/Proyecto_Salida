@@ -16,7 +16,7 @@ public class VentanaAddLocales {
         frame.pack();
         frame.setVisible(true);
     }
-
+    //hola
     private void guardarDueño(Dueño dueño) {
         String id = dueño.getId();  // ID del documento
 

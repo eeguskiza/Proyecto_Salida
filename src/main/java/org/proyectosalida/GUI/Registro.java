@@ -46,7 +46,7 @@ public class Registro extends JFrame {
         ImageIcon icon_hid = new ImageIcon("src/main/resources/images/password_hidden.jpg"); Image image_hid = icon_hid.getImage().getScaledInstance(30,30, Image.SCALE_SMOOTH);
         ImageIcon icon_sho = new ImageIcon("src/main/resources/images/password_shown.jpg"); Image image_sho = icon_sho.getImage().getScaledInstance(30,30, Image.SCALE_SMOOTH);
 
-        panel.add(new JLabel("ID:", JLabel.CENTER));
+        panel.add(new JLabel("ID (@):", JLabel.CENTER));
         panel.add(new JTextField(20)); //TODO EL @ DE ID HAY QUE PONERLO AFUERA DEL RECUADRO PERO COMO NO SE HACERLO PUES LO QUITO ERIK PONLO CUANDO LEAS ESTO
 
         panel.add(new JLabel("Nombre:", JLabel.CENTER));

@@ -40,7 +40,9 @@ public class MainMenu extends JFrame {
         JButton salimos = new JButton("¿Salimos?");
 
         // Configuración del botón menu
+        ImageIcon menu_icon = new ImageIcon("src/main/resources/images/menu_bar.png"); Image menu_image = menu_icon.getImage().getScaledInstance(30,30, Image.SCALE_SMOOTH);
         menuButton.setBackground(Color.decode("#B4D3B2")); // Color personalizado
+        menuButton.setIcon(new ImageIcon(menu_image));
         menuButton.setOpaque(true);
         menuButton.setBorderPainted(true); // Sin borde
         menuButton.setFocusPainted(false);

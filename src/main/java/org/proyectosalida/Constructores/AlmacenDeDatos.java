@@ -25,7 +25,7 @@ public class AlmacenDeDatos {
         usuarios.put(erik.getId(), erik);
 
         //muestra de votaciones de encuesta
-        valoresVotaciones.add(10);valoresVotaciones.add(8);valoresVotaciones.add(6);valoresVotaciones.add(4);valoresVotaciones.add(2);valoresVotaciones.add(0);
+        valoresVotaciones.add(3);valoresVotaciones.add(8);valoresVotaciones.add(7);valoresVotaciones.add(4);valoresVotaciones.add(3);valoresVotaciones.add(5);
 
     }
 

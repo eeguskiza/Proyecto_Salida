@@ -41,7 +41,7 @@ public class MenuPersonal extends JFrame {
         // Panel para la imagen del usuario
         JPanel panelIzquierdo = new JPanel();
         panelIzquierdo.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
-        ImageIcon imagen = new ImageIcon("src/Recuros/default_profile.png"); // Ruta de tu imagen
+        ImageIcon imagen = new ImageIcon("src/main/resources/images/default_profile.png"); // Ruta de tu imagen
         Image imageScaled = imagen.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
         ImageIcon imagenEscalada = new ImageIcon(imageScaled);
         JLabel etiquetaImagen = new JLabel(imagenEscalada);

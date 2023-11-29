@@ -7,6 +7,8 @@ import org.proyectosalida.Constructores.Usuario;
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.*;
 
 public class InicioSesion extends JFrame {
@@ -14,6 +16,8 @@ public class InicioSesion extends JFrame {
     private DefaultTableModel tableModel;
     private JTable table;
     private AlmacenDeDatos almacenDeDatos;
+    Boolean viendoContraseña = false;
+    JTextField textFieldContraseña = new JTextField();
 
     public InicioSesion(JFrame padre, AlmacenDeDatos almacen){
         this.setTitle("Inicia Sesión");
@@ -29,14 +33,21 @@ public class InicioSesion extends JFrame {
         JTextField idField = new JTextField(20);
         idField.setPreferredSize(new Dimension(200, 25));
 
+        ImageIcon icon_hid = new ImageIcon("src/main/resources/images/password_hidden.jpg"); Image image_hid = icon_hid.getImage().getScaledInstance(23,16, Image.SCALE_SMOOTH);
+        ImageIcon icon_sho = new ImageIcon("src/main/resources/images/password_shown.jpg"); Image image_sho = icon_sho.getImage().getScaledInstance(23,16, Image.SCALE_SMOOTH);
+
+
         JLabel passLabel = new JLabel("Contraseña:");
-        JPasswordField passField = new JPasswordField(20);
-        passField.setPreferredSize(new Dimension(200, 25));
+        JPanel passPanel = new JPanel(new BorderLayout());
+        JPasswordField passwordField = new JPasswordField(20);
+        passwordField.setPreferredSize(new Dimension(200, 25));
+        JButton verContraseña = new JButton(); verContraseña.setBackground(Color.white); verContraseña.setIcon(new ImageIcon(image_hid));
+        passPanel.add(passwordField); passPanel.add(verContraseña, BorderLayout.EAST);
 
         panel.add(idLabel);
         panel.add(idField);
         panel.add(passLabel);
-        panel.add(passField);
+        panel.add(passPanel);
 
         JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         JButton aceptar = new JButton("Aceptar");
@@ -45,8 +56,35 @@ public class InicioSesion extends JFrame {
         panelBotones.add(aceptar);
         panelBotones.add(cancelar);
 
+        verContraseña.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String contraseña = String.valueOf(passwordField.getPassword());
+
+                if (viendoContraseña) {
+                    contraseña = textFieldContraseña.getText();
+                    verContraseña.setIcon(new ImageIcon(image_hid));
+                    passPanel.removeAll();
+                    passwordField.setText(contraseña); // Restablece el texto en el JPasswordField
+                    passPanel.add(passwordField);
+                    viendoContraseña = false;
+                } else {
+                    verContraseña.setIcon(new ImageIcon(image_sho));
+                    passPanel.removeAll();
+                    textFieldContraseña = new JTextField(contraseña);
+                    passPanel.add(textFieldContraseña);
+                    viendoContraseña = true;
+                    System.out.println(2);
+                }
+
+                passPanel.add(verContraseña, BorderLayout.EAST);
+                passPanel.revalidate();
+                passPanel.repaint();
+            }
+        });
+
         aceptar.addActionListener(e -> {
-            checkCredentials2(idField, passField);
+            checkCredentials2(idField, passwordField);
         });
 
         cancelar.addActionListener(e -> {

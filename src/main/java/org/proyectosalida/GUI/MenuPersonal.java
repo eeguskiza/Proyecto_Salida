@@ -1,8 +1,8 @@
 package org.proyectosalida.GUI;
 
-import org.proyectosalida.Constructores.Cliente;
-import org.proyectosalida.Constructores.Dueño;
-import org.proyectosalida.Constructores.Usuario;
+import org.proyectosalida.Constructores.*;
+import org.proyectosalida.Datos.Conexion;
+import org.proyectosalida.Datos.Provider;
 
 import javax.swing.*;
 import java.awt.*;
@@ -10,6 +10,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MenuPersonal extends JFrame {
 
@@ -118,8 +121,8 @@ public class MenuPersonal extends JFrame {
         frame.setLayout(new BorderLayout());
         frame.setLocationRelativeTo(null);
 
-        ImageIcon icon_hid = new ImageIcon("src/Recuros/password_hidden.jpg"); Image image_hid = icon_hid.getImage().getScaledInstance(30,30, Image.SCALE_SMOOTH);
-        ImageIcon icon_sho = new ImageIcon("src/Recuros/password_shown.jpg"); Image image_sho = icon_sho.getImage().getScaledInstance(30,30, Image.SCALE_SMOOTH);
+        ImageIcon icon_hid = new ImageIcon("src/main/resources/images/password_hidden.jpg"); Image image_hid = icon_hid.getImage().getScaledInstance(30,30, Image.SCALE_SMOOTH);
+        ImageIcon icon_sho = new ImageIcon("src/main/resources/images/password_shown.jpg"); Image image_sho = icon_sho.getImage().getScaledInstance(30,30, Image.SCALE_SMOOTH);
 
 
         JPanel main = new JPanel(new GridLayout(7,2,10,10)); frame.add(main);
@@ -158,40 +161,45 @@ public class MenuPersonal extends JFrame {
             }
         });
 
-        guardarCambios.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                String pass="";
+        guardarCambios.addActionListener(e -> {
+            String id = ((JTextField) main.getComponent(1)).getText();
+            String nombre = ((JTextField) main.getComponent(3)).getText();
+            String apellido = ((JTextField) main.getComponent(5)).getText();
+            int edad = Integer.parseInt(((JTextField) main.getComponent(7)).getText());
+            String contraseña = "";
+            String telefono = ((JTextField) main.getComponent(11)).getText();
+            String correo = ((JTextField) main.getComponent(13)).getText();
+            ArrayList<Local> locales = new ArrayList<>();
+            Dueño dueño = new Dueño(id, nombre, apellido, "2004-08-04", contraseña, telefono, correo, locales);
+            System.out.println(dueño);
+            actualizar(dueño);
 
-                if(viewPassword){
-                    pass = contraTextField.getText();
-                    System.out.println(pass);
-                }else{
-                    pass = new String(((JPasswordField) panelContraseña.getComponent(0)).getPassword());
-                    System.out.println(pass);
-                }
-
-                if(u.getClass().equals(Dueño.class)){
-                    Dueño d = (Dueño) u;
-                    Dueño nuevo = new Dueño( ((JTextField) main.getComponent(1)).getText(), ((JTextField) main.getComponent(3)).getText(), ((JTextField) main.getComponent(5)).getText(), /*((JTextField) main.getComponent(7)).getText()*/ "2000-01-01", pass, ((JTextField) main.getComponent(11)).getText(), ((JTextField) main.getComponent(13)).getText(), d.getLocales());
-                    ventanaPadre.getAlmacen().getUsuarios().remove(u.getId()); //elimina el antiguo
-                    ventanaPadre.getAlmacen().getUsuarios().put(nuevo.getId(), nuevo); // añade el nuevo
-                    frame.dispose();
-                    setVisible(true);
-                }else{
-                    Cliente c =(Cliente) u;
-                    Cliente nuevo = new Cliente( ((JTextField) main.getComponent(1)).getText(), ((JTextField) main.getComponent(3)).getText(), ((JTextField) main.getComponent(5)).getText(), /*((JTextField) main.getComponent(7)).getText()*/ "2000-01-01", pass, ((JTextField) main.getComponent(11)).getText(), ((JTextField) main.getComponent(13)).getText(), c.getVisitas());
-                    ventanaPadre.getAlmacen().getUsuarios().remove(u.getId());
-                    ventanaPadre.getAlmacen().getUsuarios().put(nuevo.getId(), nuevo);
-                    frame.dispose();
-                    setVisible(true);
-                }
-                for(Usuario u : ventanaPadre.getAlmacen().getUsuarios().values()){
-                    System.out.println(u.toString());
-                }
-            }
         });
 
+    }
+
+
+    private void actualizar(Dueño dueño) {
+        String id = dueño.getId();  // ID del documento
+
+        try{
+            Map<String, Object> datos = new HashMap<>();
+            datos.put("Nombre", dueño.getNombre());
+            datos.put("Apellido", dueño.getApellido());
+            datos.put("Edad", dueño.getEdad());
+            datos.put("Contraseña", dueño.getContraseña());
+            datos.put("Teléfono", dueño.getTelefono());
+            datos.put("Correo", dueño.getCorreo());
+            datos.put("Locales", dueño.getLocales());
+
+            Provider.actualizarPersona("Dueño", id, datos);
+            System.out.println("Usuario actualizado correctamente");
+
+        }
+        catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Error al registrar usuario");
+            System.out.println("Error" + e.getMessage());
+        }
     }
     public static void main(String[] args) {
         // Configuración del look and feel
@@ -201,6 +209,9 @@ public class MenuPersonal extends JFrame {
             e.printStackTrace();
         }
 
-        SwingUtilities.invokeLater(() -> new MenuPersonal(new Cliente(), null).setVisible(true));
+        SwingUtilities.invokeLater(() -> {
+            Conexion.conectar();
+            new MenuPersonal(new Cliente(), null).setVisible(true);
+        });
     }
 }

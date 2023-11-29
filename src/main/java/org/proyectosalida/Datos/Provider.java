@@ -27,4 +27,19 @@ public class Provider {
         return false;
 
     }
+
+    public static boolean actualizarPersona(String collection, String documento, Map<String, Object> data) {
+        db = FirestoreClient.getFirestore();
+
+        try{
+            DocumentReference docRef = db.collection(collection).document(documento);
+            ApiFuture<WriteResult> result = docRef.update(data);
+            System.out.println("Actualizado con éxito: " + result.get().getUpdateTime());
+            return true;
+        }catch(Exception e){
+            System.out.println("Error al actualizar: " + e.getMessage());
+        }
+        return false;
+
+    }
 }

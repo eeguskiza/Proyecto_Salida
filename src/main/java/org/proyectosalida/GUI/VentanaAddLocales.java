@@ -8,7 +8,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class VentanaAddLocales {
-    //adios
+    //buenas
 
     public VentanaAddLocales(Dueño dueño) {
         JFrame frame = new JFrame("VentanaAddLocales");

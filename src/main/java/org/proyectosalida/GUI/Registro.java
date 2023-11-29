@@ -108,26 +108,15 @@ public class Registro extends JFrame {
             } else {
                 try {
                     if (tipoUsuarioSeleccionado.equals(false)) {
-
-                        ArrayList<Horario> horariosMonty = new ArrayList<>();
-                        horariosMonty.add(new Horario("Lunes", "07:30", "23:30"));
-                        horariosMonty.add(new Horario("Martes", "07:30", "23:30"));
-                        horariosMonty.add(new Horario("Miercoles", "07:30", "23:30"));
-                        horariosMonty.add(new Horario("Jueves", "07:30", "23:30"));
-                        horariosMonty.add(new Horario("Viernes", "07:30", "23:30"));
-                        horariosMonty.add(new Horario("Sabado", "07:30", "23:30"));
-                        horariosMonty.add(new Horario("Domingo", "07:30", "16:00"));
-                        Bar Monty = new Bar("Monty", "Heros Kalea, 16, Bilbo, Bizkaia", "48009", 75, "944 23 63 36", 0, 0, "", horariosMonty, true,null);
-
-                        ArrayList<Local> localesErik = new ArrayList<>();
-                        localesErik.add(Monty);
-
-
-                        Dueño nuevoUsuario = new Dueño(id, nombre, apellido, fechaNacimiento, contraseña, telefono, correo, localesErik);
+                        Dueño nuevoUsuario = new Dueño(id, nombre, apellido, fechaNacimiento, contraseña, telefono, correo, new ArrayList<Local>());
                         System.out.println(nuevoUsuario.toString());
-
-                        //Ventana para guardar locales
-                        VentanaAddLocales ventanaAddLocales = new VentanaAddLocales(nuevoUsuario);
+                        //Option pane para decidir si quiere añadir locales o no (gurada un boll para llamar a la ventana)
+                        boolean loc = JOptionPane.showConfirmDialog(null, "¿Desea añadir locales?", "Añadir locales", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+                        if (loc == true) {
+                            VentanaAddLocales ventanaAddLocales = new VentanaAddLocales(nuevoUsuario);
+                            ventanaAddLocales.setVisible(true);
+                            this.dispose();
+                        }
                         almacenDeDatos.getUsuarios().put(nuevoUsuario.getId(), nuevoUsuario);
                     } else {
                         Cliente nuevoUsuario = new Cliente(id, nombre, apellido, fechaNacimiento, contraseña, telefono, correo, new ArrayList<>());
@@ -135,20 +124,20 @@ public class Registro extends JFrame {
                         guardarCliente(nuevoUsuario);
                         almacenDeDatos.getUsuarios().put(nuevoUsuario.getId(), nuevoUsuario);
 
+                        JOptionPane.showMessageDialog(this, "Usuario creado con éxito! (Local)", "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
+                        InicioSesion inicioSesion = new InicioSesion(padre, almacenDeDatos);
+                        this.dispose();
+                        padre.dispose();
+                        inicioSesion.setVisible(true);
                     }
-
-                    JOptionPane.showMessageDialog(this, "Usuario creado con éxito! (Local)", "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
 
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(this, "Error al crear el usuario: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
                 }
 
-                InicioSesion inicioSesion = new InicioSesion(padre, almacenDeDatos);
-                this.dispose();
-                padre.dispose();
-                inicioSesion.setVisible(true);
+
 
             }
         });
@@ -203,7 +192,7 @@ public class Registro extends JFrame {
         }
 
         SwingUtilities.invokeLater(() -> {
-            Conexion.conectar();
+            //Conexion.conectar();
             new Registro(null, new AlmacenDeDatos());
         });
 

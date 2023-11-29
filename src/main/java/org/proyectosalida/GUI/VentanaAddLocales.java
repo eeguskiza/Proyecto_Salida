@@ -7,16 +7,16 @@ import javax.swing.*;
 import java.util.HashMap;
 import java.util.Map;
 
-public class VentanaAddLocales {
-    //buenas
+public class VentanaAddLocales extends JFrame {
+
 
     public VentanaAddLocales(Dueño dueño) {
-        JFrame frame = new JFrame("VentanaAddLocales");
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.pack();
-        frame.setVisible(true);
+        setTitle("Añadir locales");
+        setSize(500, 500);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
     }
-    //hola
+
     private void guardarDueño(Dueño dueño) {
         String id = dueño.getId();  // ID del documento
 
@@ -31,8 +31,6 @@ public class VentanaAddLocales {
             datos.put("Locales", dueño.getLocales());
 
             Provider.guardarPersona("Dueño", id, datos);
-
-
 
         }
         catch(Exception e){

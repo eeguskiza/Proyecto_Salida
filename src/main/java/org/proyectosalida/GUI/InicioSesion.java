@@ -1,15 +1,14 @@
 package org.proyectosalida.GUI;
 
 import org.proyectosalida.Constructores.AlmacenDeDatos;
-import org.proyectosalida.Constructores.Cliente;
 import org.proyectosalida.Constructores.Usuario;
+import org.proyectosalida.GUI.VentanasCliente.MainMenuCliente;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.*;
 
 public class InicioSesion extends JFrame {
 
@@ -118,7 +117,7 @@ public class InicioSesion extends JFrame {
         for(Usuario u : almacenDeDatos.getUsuarios().values()){
             if(u.getId().equals(nombre.getText())){
                 if(u.getContraseña().equals(passwordString)){
-                    new MainMenu(u, almacenDeDatos); //en vez de nombre sería pasar la instancia de usuario
+                    new MainMenuCliente(u, almacenDeDatos); //en vez de nombre sería pasar la instancia de usuario
                     dispose();
                     break;
                 }else{

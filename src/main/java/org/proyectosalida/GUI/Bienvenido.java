@@ -2,6 +2,7 @@ package org.proyectosalida.GUI;
 
 import org.proyectosalida.Constructores.AlmacenDeDatos;
 import org.proyectosalida.Datos.Conexion;
+import org.proyectosalida.GUI.Registro.Registro;
 
 import java.awt.*;
 import javax.swing.*;

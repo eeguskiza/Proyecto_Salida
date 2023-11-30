@@ -1,8 +1,9 @@
-package org.proyectosalida.GUI;
+package org.proyectosalida.Pruebas;
 
 import org.proyectosalida.Constructores.*;
 import org.proyectosalida.Datos.Conexion;
 import org.proyectosalida.Datos.Provider;
+import org.proyectosalida.GUI.VentanasCliente.MainMenuCliente;
 
 import javax.swing.*;
 import java.awt.*;
@@ -18,10 +19,10 @@ public class MenuPersonal extends JFrame {
 
     private Usuario u;
     private Boolean viewPassword = false;
-    private MainMenu ventanaPadre;
+    private MainMenuCliente ventanaPadre;
     private JTextField contraTextField;
 
-    public MenuPersonal(Usuario usuario, MainMenu padre) {
+    public MenuPersonal(Usuario usuario, MainMenuCliente padre) {
         setTitle("Menú Personal: " + usuario.getNombre());
         setSize(350, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

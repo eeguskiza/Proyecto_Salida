@@ -1,4 +1,4 @@
-package org.proyectosalida.GUI;
+package org.proyectosalida.GUI.VentanasCliente;
 
 import javax.swing.*;
 import java.awt.*;
@@ -7,7 +7,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import org.proyectosalida.Constructores.AlmacenDeDatos;
 import org.proyectosalida.Constructores.Cliente;
@@ -18,16 +17,18 @@ import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.engine.RenderingMode;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
+import org.proyectosalida.Pruebas.MenuPersonal;
+import org.proyectosalida.Pruebas.VentanaGustos;
 
-public class MainMenu extends JFrame {
+public class MainMenuCliente extends JFrame {
 
     private JSplitPane splitPane;
     private JSplitPane splitPane2;
     public AlmacenDeDatos almacen;
     private JLabel labelEncabezado;
 
-    public MainMenu(Usuario usuario, AlmacenDeDatos almacenDeDatos) {
-        setTitle("org.Proyecto_Salida.Escritorio.Main Menu");
+    public MainMenuCliente(Usuario usuario, AlmacenDeDatos almacenDeDatos) {
+        setTitle("Main Menu");
         setSize(1200, 800);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
@@ -65,7 +66,7 @@ public class MainMenu extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setVisible(false);
-                new MenuPersonal(usuario, MainMenu.this);
+                new MenuPersonal(usuario, MainMenuCliente.this);
             }
         });
 
@@ -279,7 +280,7 @@ public class MainMenu extends JFrame {
         }
 
         SwingUtilities.invokeLater(() -> {
-            new MainMenu(new Cliente(), new AlmacenDeDatos());
+            new MainMenuCliente(new Cliente(), new AlmacenDeDatos());
         });
     }
 

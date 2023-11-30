@@ -1,4 +1,4 @@
-package org.proyectosalida.GUI;
+package org.proyectosalida.Pruebas;
 
 import javax.swing.*;
 import java.awt.*;

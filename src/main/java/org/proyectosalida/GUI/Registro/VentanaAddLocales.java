@@ -1,4 +1,4 @@
-package org.proyectosalida.GUI;
+package org.proyectosalida.GUI.Registro;
 
 import org.proyectosalida.Constructores.*;
 import org.proyectosalida.Datos.Provider;
@@ -10,24 +10,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class VentanaAddLocales extends JFrame {
-
-
+    ArrayList<Horario> horarios = new ArrayList<>();
+    ArrayList<Caracteristica> caracteristicas = new ArrayList<>();
     public VentanaAddLocales(Dueño dueño) {
         setTitle("Añadir locales");
         setSize(500, 500);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // Ejemplo local --> Bar Monty = new Bar("Monty", "Heros Kalea, 16, Bilbo, Bizkaia", "48009", 75, "944 23 63 36", 0, 0, link1, horariosMonty, true,caracteristicasMonty);
-        /* Horarios
-        ArrayList<Horario> horariosMonty = new ArrayList<>();
-        horariosMonty.add(new Horario("Lunes", "07:30", "23:30"));
-        horariosMonty.add(new Horario("Martes", "07:30", "23:30"));
-        horariosMonty.add(new Horario("Miercoles", "07:30", "23:30"));
-        horariosMonty.add(new Horario("Jueves", "07:30", "23:30"));
-        horariosMonty.add(new Horario("Viernes", "07:30", "23:30"));
-        horariosMonty.add(new Horario("Sabado", "07:30", "23:30"));
-        horariosMonty.add(new Horario("Domingo", "07:30", "16:00"));
-         */
+
         JPanel panel = new JPanel(new GridLayout(0, 2, 10, 10)); // Layout para los campos y etiquetas
 
         panel.add(new JLabel("Nombre:", JLabel.CENTER));
@@ -43,7 +34,9 @@ public class VentanaAddLocales extends JFrame {
         panel.add(new JLabel("Enlace:", JLabel.CENTER));
         panel.add(new JTextField(20));
         panel.add(new JLabel("Horarios:", JLabel.CENTER));
-        panel.add(new JButton("Añadir horario"));
+        JButton añadirH = new JButton("Añadir horarios");
+        horarios = new ArrayList<>();
+        panel.add(añadirH);
         panel.add(new JLabel("Terraza:", JLabel.CENTER));
         //Si o no y se guarda boolean
         JPanel panel1 = new JPanel();
@@ -56,7 +49,9 @@ public class VentanaAddLocales extends JFrame {
         panel1.add(checkboxNo);
         panel.add(panel1);
         panel.add(new JLabel("Características:", JLabel.CENTER));
-        panel.add(new JButton("Añadir características"));
+        JButton añadirC = new JButton("Añadir características");
+        caracteristicas = new ArrayList<>();
+        panel.add(añadirC);
         JButton botonGuardar = new JButton("Añadir local");
         panel.add(botonGuardar);
         JButton botonVolver = new JButton("Volver");
@@ -69,16 +64,38 @@ public class VentanaAddLocales extends JFrame {
             int aforo = Integer.parseInt(((JTextField) panel.getComponent(7)).getText());
             String telefono = ((JTextField) panel.getComponent(9)).getText();
             String enlace = ((JTextField) panel.getComponent(11)).getText();
-            ArrayList<Horario> horarios = new ArrayList<>();
             Boolean terraza = true;
-            ArrayList<Caracteristica> caracteristicas = new ArrayList<>();
 
             Bar bar = new Bar(nombre, direccion, CP, aforo, telefono, 0, 0, enlace, horarios, terraza, caracteristicas);
             System.out.println(bar);
             dueño.getLocales().add(bar);
-            guardarDueño(dueño);
+            //guardarDueño(dueño);
+            //Preguntar si quiere añadirmas locales
+            boolean pregunta  = JOptionPane.showConfirmDialog(null, "¿Quieres añadir más locales?", "Añadir locales", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
+            if (pregunta){
+                dispose();
+                VentanaAddLocales ventanaAddLocales = new VentanaAddLocales(dueño);
+                ventanaAddLocales.setVisible(true);
+            }
+            else{
+                dispose();
+            }
         });
 
+        botonVolver.addActionListener(e -> {
+            dispose();
+        });
+
+        añadirH.addActionListener(e -> {
+            VentanaAddHorarios ventanaAddHorarios = new VentanaAddHorarios(horarios, this);
+            ventanaAddHorarios.setVisible(true);
+            this.setVisible(false);
+
+        });
+
+        añadirC.addActionListener(e -> {
+
+        });
 
 
         add(panel);

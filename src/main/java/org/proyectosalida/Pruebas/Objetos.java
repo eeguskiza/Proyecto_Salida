@@ -1,4 +1,4 @@
-package org.proyectosalida.GUI;
+package org.proyectosalida.Pruebas;
 
 import java.util.ArrayList;
 import java.util.Calendar;

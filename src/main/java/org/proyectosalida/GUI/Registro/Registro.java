@@ -1,4 +1,4 @@
-package org.proyectosalida.GUI;
+package org.proyectosalida.GUI.Registro;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,6 +11,7 @@ import com.toedter.calendar.JDateChooser;
 import org.proyectosalida.Constructores.*;
 import org.proyectosalida.Datos.Conexion;
 import org.proyectosalida.Datos.Provider;
+import org.proyectosalida.GUI.InicioSesion;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

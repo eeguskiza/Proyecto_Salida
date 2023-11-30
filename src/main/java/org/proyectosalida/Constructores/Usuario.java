@@ -3,12 +3,15 @@ package org.proyectosalida.Constructores;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 
 public abstract class Usuario {
     // Atributos
     protected String id;
     protected String Nombre;
     protected String Apellido;
+
+    protected Date fechaNacimiento;  // Se usa para calcular la edad
     protected int Edad;  // Representa la edad calculada
     protected String Contraseña;
     protected String Telefono;
@@ -26,11 +29,11 @@ public abstract class Usuario {
     }
 
     // Constructor con parámetros
-    public Usuario(String id, String Nombre, String Apellido, String fechaNacimiento, String Contraseña, String Telefono, String Correo) {
+    public Usuario(String id, String Nombre, String Apellido, Date fechaNacimiento, String Contraseña, String Telefono, String Correo) {
         this.id = id;
         this.Nombre = Nombre;
         this.Apellido = Apellido;
-        this.setEdad(fechaNacimiento);  // Usa el método setEdad para establecer la edad
+        this.fechaNacimiento = fechaNacimiento;  // Usa el método setEdad para establecer la edad
         this.Contraseña = Contraseña;
         this.Telefono = Telefono;
         this.Correo = Correo;
@@ -77,11 +80,10 @@ public abstract class Usuario {
         Apellido = apellido;
     }
 
-    public void setEdad(String fechaNacimiento) {
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-        LocalDate fechaNac = LocalDate.parse(fechaNacimiento, formatter);
+    public int getEdad(Date fechaNacimiento) {
+        LocalDate fechaNac = fechaNacimiento.toInstant().atZone(java.time.ZoneId.systemDefault()).toLocalDate();
         LocalDate ahora = LocalDate.now();
-        this.Edad = Period.between(fechaNac, ahora).getYears();
+        return Period.between(fechaNac, ahora).getYears();
     }
 
     public void setContraseña(String contraseña) {
@@ -95,4 +97,16 @@ public abstract class Usuario {
     public void setCorreo(String correo) {
         Correo = correo;
     }
+
+    public Date getFechaNacimiento() {
+        return fechaNacimiento;
+    }
+
+    public void setFechaNacimiento(Date fechaNacimiento) {
+        this.fechaNacimiento = fechaNacimiento;
+    }
 }
+
+
+
+

@@ -1,6 +1,7 @@
 package org.proyectosalida.Constructores;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Cliente extends Usuario{
     private ArrayList<Visita> visitas;
@@ -12,7 +13,7 @@ public class Cliente extends Usuario{
     }
 
     // Constructor con parametros
-    public Cliente(String id, String nombre, String apellido, String fechaNacimiento, String contraseña, String telefono, String correo, ArrayList<Visita> visitas) {
+    public Cliente(String id, String nombre, String apellido, Date fechaNacimiento, String contraseña, String telefono, String correo, ArrayList<Visita> visitas) {
         super(id, nombre, apellido, fechaNacimiento, contraseña, telefono, correo);
         this.visitas = new ArrayList<>();
     }
@@ -32,7 +33,7 @@ public class Cliente extends Usuario{
                 "\n\tID: '" + id + '\'' +
                 "\n\tNombre: '" + Nombre + '\'' +
                 "\n\tApellido: '" + Apellido + '\'' +
-                "\n\tEdad: " + Edad +
+                "\n\tEdad: " + getEdad(fechaNacimiento) +
                 "\n\tContraseña: '" + Contraseña + '\'' +
                 "\n\tTeléfono: '+34 " + Telefono + '\'' +
                 "\n\tCorreo: '" + Correo + '\'' +

@@ -1,6 +1,9 @@
 package org.proyectosalida.GUI;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.GregorianCalendar;
 
 
 import org.proyectosalida.Constructores.*;
@@ -12,11 +15,11 @@ public class Objetos {
         //LO PRIMERO SERA CREAR 4 USUARIOS, NOSOTROS POR EJEMPLO
         //CREAREMOS 2 DUEÑOS Y 2 USUARIOS
 
-        Dueño Erik = new Dueño("erik_eguskiza", "Erik", "Eguskiza", "2004-08-04", "Contraseña", "687 322 612", "e.eguskiza@opendeusto.es", null);
-        Dueño Eneko = new Dueño("enekoalvareez", "Eneko", "Alvarez", "2004-08-04", "Contraseña", "687 322 612", "ealvarez@opendeusto.es", null);
+        Dueño Erik = new Dueño("erik_eguskiza", "Erik", "Eguskiza", new GregorianCalendar(2004, Calendar.AUGUST, 4).getTime(), "Contraseña", "687 322 612", "e.eguskiza@opendeusto.es", null);
+        Dueño Eneko = new Dueño("enekoalvareez", "Eneko", "Alvarez", new GregorianCalendar(2004, Calendar.JUNE, 23).getTime(), "Contraseña", "687 322 612", "ealvarez@opendeusto.es", null);
 
-        Cliente Maialen = new Cliente("maialenblancoo","Maialen", "Blanco", "2004-05-04", "Contraseña", "687 322 612", "maialen.blanco@opendeusto.es", null);
-        Cliente Alex = new Cliente("alexja_2", "Alex", "Jauregi", "2004-10-27", "Contraseña", "687 322 612", "alex.jauregui@opendeusto.es", null);
+        Cliente Maialen = new Cliente("maialenblancoo","Maialen", "Blanco", new GregorianCalendar(2004, Calendar.MAY, 4).getTime(), "Contraseña", "687 322 612", "maialen.blanco@opendeusto.es", null);
+        Cliente Alex = new Cliente("alexja_2", "Alex", "Jauregi", new GregorianCalendar(2004, Calendar.OCTOBER, 27).getTime(), "Contraseña", "687 322 612", "alex.jauregui@opendeusto.es", null);
 
         //AQUI EMPEZAREMOS A CREAR LOCALES
         //CREAREMOS 2 LOCALES, UNO PARA ERIK Y OTRO PARA ENEKO

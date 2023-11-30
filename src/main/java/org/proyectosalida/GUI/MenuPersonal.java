@@ -41,7 +41,7 @@ public class MenuPersonal extends JFrame {
         // Panel para la imagen del usuario
         JPanel panelIzquierdo = new JPanel();
         panelIzquierdo.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
-        ImageIcon imagen = new ImageIcon("src/main/resources/images/default_profile.png"); // Ruta de tu imagen
+        ImageIcon imagen = new ImageIcon("images/default_profile.png"); // Ruta de tu imagen
         Image imageScaled = imagen.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH);
         ImageIcon imagenEscalada = new ImageIcon(imageScaled);
         JLabel etiquetaImagen = new JLabel(imagenEscalada);
@@ -170,7 +170,7 @@ public class MenuPersonal extends JFrame {
             String telefono = ((JTextField) main.getComponent(11)).getText();
             String correo = ((JTextField) main.getComponent(13)).getText();
             ArrayList<Local> locales = new ArrayList<>();
-            Dueño dueño = new Dueño(id, nombre, apellido, "2004-08-04", contraseña, telefono, correo, locales);
+            Dueño dueño = new Dueño(id, nombre, apellido, null, contraseña, telefono, correo, locales);
             System.out.println(dueño);
             actualizar(dueño);
 

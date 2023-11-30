@@ -13,6 +13,7 @@ import org.proyectosalida.Datos.Conexion;
 import org.proyectosalida.Datos.Provider;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -108,8 +109,7 @@ public class Registro extends JFrame {
             String id = ((JTextField) panel.getComponent(1)).getText();
             String nombre = ((JTextField) panel.getComponent(3)).getText();
             String apellido = ((JTextField) panel.getComponent(5)).getText();
-            String fechaNacimiento = null;
-
+            Date fechaNacimiento = null;
             Boolean tipoUsuarioSeleccionado = false; //false = DUEÑO, true = CLIENTE
 
             if (seleccion == 0) {
@@ -126,7 +126,8 @@ public class Registro extends JFrame {
             // Fecha check
             if (dateChooser.getDate() != null) {
                 SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-                fechaNacimiento = dateFormat.format(dateChooser.getDate());
+                fechaNacimiento = dateChooser.getDate();
+
             } else {
                 JOptionPane.showMessageDialog(this, "Por favor, seleccione una fecha de nacimiento.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;

@@ -1,6 +1,7 @@
 package org.proyectosalida.Constructores;
 
 import java.util.ArrayList;
+import java.util.Date;
 
 public class Dueño extends Usuario{
     private ArrayList <Local> locales;
@@ -10,7 +11,7 @@ public class Dueño extends Usuario{
         this.locales = new ArrayList<>();
     }
 
-    public Dueño(String id, String Nombre, String Apellido, String fechaNacimiento, String Contraseña, String Telefono, String Correo, ArrayList <Local> locales) {
+    public Dueño(String id, String Nombre, String Apellido, Date fechaNacimiento, String Contraseña, String Telefono, String Correo, ArrayList <Local> locales) {
         super(id, Nombre, Apellido, fechaNacimiento, Contraseña, Telefono, Correo);
         this.locales = new ArrayList<>();
     }
@@ -29,7 +30,7 @@ public class Dueño extends Usuario{
                 "\n\tID: '" + id + '\'' +
                 "\n\tNombre: '" + Nombre + '\'' +
                 "\n\tApellido: '" + Apellido + '\'' +
-                "\n\tEdad: " + Edad +
+                "\n\tEdad: " + getEdad(fechaNacimiento) +
                 "\n\tContraseña: '" + Contraseña + '\'' +
                 "\n\tTeléfono: '+34 " + Telefono + '\'' +
                 "\n\tCorreo: '" + Correo + '\'' +

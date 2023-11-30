@@ -1,8 +1,7 @@
 package org.proyectosalida.Constructores;
 
 import javax.swing.*;
-import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.*;
 
 public class AlmacenDeDatos {
     protected HashMap<String, Usuario> usuarios;
@@ -18,10 +17,10 @@ public class AlmacenDeDatos {
         votoDiarioEncuesta = false;
 
         //Esto es para tener algo ya añadido
-        Cliente eneko = new Cliente("eneko", "Eneko", "Alvarez", "2004-06-23", "eneko04", "634556788", "eneko.alvarez@opendeusto.es", new ArrayList<>());
+        Cliente eneko = new Cliente("eneko", "Eneko", "Alvarez", new GregorianCalendar(2004, Calendar.AUGUST, 4).getTime(), "eneko04", "634556788", "eneko.alvarez@opendeusto.es", new ArrayList<>());
         usuarios.put(eneko.getId(), eneko);
 
-        Dueño erik = new Dueño("erik", "Erik", "Eguskiza", "2004-08-04", "erik04", "3456788989", "e.eguskiza@opendeusto.es", new ArrayList<>());
+        Dueño erik = new Dueño("erik", "Erik", "Eguskiza", new GregorianCalendar(2004, Calendar.JUNE, 23).getTime(), "erik04", "3456788989", "e.eguskiza@opendeusto.es", new ArrayList<>());
         usuarios.put(erik.getId(), erik);
 
         //muestra de votaciones de encuesta

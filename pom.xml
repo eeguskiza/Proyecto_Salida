@@ -60,10 +60,17 @@
             <artifactId>firebase-admin</artifactId>
             <version>8.0.0</version>
         </dependency>
+
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpmime</artifactId>
             <version>4.5.13</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.threeten</groupId>
+            <artifactId>threetenbp</artifactId>
+            <version>1.5.1</version> <!-- Reemplaza con la última versión disponible -->
         </dependency>
 
     </dependencies>

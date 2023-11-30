@@ -170,7 +170,7 @@ public class Registro extends JFrame {
 
                         JOptionPane.showMessageDialog(this, "Usuario creado con éxito! (Local)", "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
-                        InicioSesion inicioSesion = new InicioSesion(padre, almacenDeDatos);
+                        InicioSesion inicioSesion = new InicioSesion(padre, almacenDeDatos, null);
                         this.dispose();
                         padre.dispose();
                         inicioSesion.setVisible(true);

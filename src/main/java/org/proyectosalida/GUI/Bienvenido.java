@@ -4,6 +4,7 @@ import org.proyectosalida.Constructores.AlmacenDeDatos;
 import org.proyectosalida.Datos.Conexion;
 import org.proyectosalida.Datos.Provider;
 import org.proyectosalida.GUI.Registro.Registro;
+import org.proyectosalida.Pruebas.Tabla;
 
 import java.awt.*;
 import javax.swing.*;
@@ -16,8 +17,12 @@ public class Bienvenido extends JFrame {
     private static final long serialVersionUID = 1L;
     private AlmacenDeDatos almacenDeDatos;
 
+    protected JTable tabla;
+
 
     public Bienvenido() {
+        tabla = new JTable();
+        Provider.cargarTablaDueño(tabla);
         this.setTitle("Inicio");
         this.setSize(1000, 600);
         this.setLocationRelativeTo(null);
@@ -62,7 +67,7 @@ public class Bienvenido extends JFrame {
         });
 
         inicioSesion.addActionListener(e -> {
-            InicioSesion i = new InicioSesion(this, almacenDeDatos);
+            InicioSesion i = new InicioSesion(this, almacenDeDatos, tabla);
             i.setVisible(true);
             this.setVisible(false);
         });
@@ -107,13 +112,10 @@ public class Bienvenido extends JFrame {
             e.printStackTrace();
             // Manejar la excepción como prefieras
         }
-        JTable tabla = new JTable();
 
         SwingUtilities.invokeLater(() -> {
-            new Bienvenido();
             Conexion.conectar();
-            Provider.cargarTablaDueño(tabla);
-            System.out.println(tabla);
+            new Bienvenido();
         });
     }
 

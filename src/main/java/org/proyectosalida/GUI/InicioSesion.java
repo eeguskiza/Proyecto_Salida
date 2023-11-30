@@ -13,14 +13,13 @@ import java.awt.event.ActionListener;
 public class InicioSesion extends JFrame {
 
     private DefaultTableModel tableModel;
-    private JTable table;
     private AlmacenDeDatos almacenDeDatos;
     Boolean viendoContraseña = false;
     JTextField textFieldContraseña = new JTextField();
 
-    public InicioSesion(JFrame padre, AlmacenDeDatos almacen){
+    public InicioSesion(JFrame padre, AlmacenDeDatos almacen, JTable tabla){
         this.setTitle("Inicia Sesión");
-        this.setSize(400, 200);
+        this.setSize(640, 360);
         this.setLocationRelativeTo(padre);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         almacenDeDatos = almacen;
@@ -83,7 +82,8 @@ public class InicioSesion extends JFrame {
         });
 
         aceptar.addActionListener(e -> {
-            checkCredentials2(idField, passwordField);
+            checkCredentials(tabla, idField, passwordField);
+            //checkCredentials2(idField, passwordField);
         });
 
         cancelar.addActionListener(e -> {
@@ -107,9 +107,35 @@ public class InicioSesion extends JFrame {
         }
 
         SwingUtilities.invokeLater(() -> {
-            new InicioSesion(null, new AlmacenDeDatos()).setVisible(true);
+            new InicioSesion(null, new AlmacenDeDatos(), null).setVisible(true);
         });
     }
+
+    private void checkCredentials(JTable tabla, JTextField ID, JPasswordField password) {
+        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+        char[] passChar = password.getPassword();
+        String passwordString = new String(passChar);
+        String usuarioID = ID.getText();
+
+        boolean credencialesValidas = false;
+
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+            String tablaID = modelo.getValueAt(i, 0).toString();
+            String tablaPassword = modelo.getValueAt(i, 6).toString();
+
+            if (tablaID.equals(usuarioID) && tablaPassword.equals(passwordString)) {
+                credencialesValidas = true;
+                break;
+            }
+        }
+
+        if (credencialesValidas) {
+            System.out.println("Credenciales válidas. Acceso concedido.");
+        } else {
+            JOptionPane.showMessageDialog(this, "Credenciales inválidas. Por favor, inténtelo de nuevo.", "Error de inicio de sesión", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
 
     private void checkCredentials2(JTextField nombre, JPasswordField password){
         char[] passChar = password.getPassword();

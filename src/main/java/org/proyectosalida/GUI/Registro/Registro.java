@@ -134,8 +134,11 @@ public class Registro extends JFrame {
                 return;
             }
 
-            String contraseña = new String(((JPasswordField) panel.getComponent(9)).getPassword());
-            String confirmarContraseña = new String(((JPasswordField) panel.getComponent(11)).getPassword());
+            //String contraseña = new String(((JPasswordField) panel.getComponent(9)).getPassword());
+            //String confirmarContraseña = new String(((JPasswordField) panel.getComponent(11)).getPassword());
+            String contraseña = "0000";
+            String confirmarContraseña = "0000";
+
             String telefono = ((JTextField) panel.getComponent(13)).getText();
             String correo = ((JTextField) panel.getComponent(15)).getText();
 

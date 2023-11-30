@@ -1,12 +1,13 @@
 package org.proyectosalida.Datos;
 
 import com.google.api.core.ApiFuture;
-import com.google.cloud.firestore.CollectionReference;
-import com.google.cloud.firestore.DocumentReference;
-import com.google.cloud.firestore.Firestore;
-import com.google.cloud.firestore.WriteResult;
+import com.google.cloud.firestore.*;
 import com.google.firebase.cloud.FirestoreClient;
+import com.google.protobuf.Api;
 
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.util.Collections;
 import java.util.Map;
 
 public class Provider {
@@ -40,6 +41,60 @@ public class Provider {
             System.out.println("Error al actualizar: " + e.getMessage());
         }
         return false;
+
+    }
+
+    public static boolean eliminarPersona(String collection, String documento) {
+        db = FirestoreClient.getFirestore();
+
+        try{
+            DocumentReference docRef = db.collection(collection).document(documento);
+            ApiFuture<WriteResult> result = docRef.delete();
+            System.out.println("Eliminado con éxito: " + result.get().getUpdateTime());
+            return true;
+        }catch(Exception e){
+            System.out.println("Error al eliminar: " + e.getMessage());
+        }
+        return false;
+
+    }
+
+    public static void cargarTablaDueño(JTable tabla){
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("ID");
+        modelo.addColumn("Nombre");
+        modelo.addColumn("Apellido");
+        modelo.addColumn("Teléfono");
+        modelo.addColumn("Dirección");
+        modelo.addColumn("Correo");
+        modelo.addColumn("Contraseña");
+        modelo.addColumn("Edad");
+        modelo.addColumn("Locales");
+
+
+        try{
+            CollectionReference dueños = Conexion.db.collection("Dueño");
+            ApiFuture<QuerySnapshot> query = dueños.get();
+            for (DocumentSnapshot document : query.get().getDocuments()) {
+                modelo.addRow(new Object[]{
+                        document.getId(),
+                        document.getString("Nombre"),
+                        document.getString("Apellido"),
+                        document.getString("Teléfono"),
+                        document.getString("Dirección"),
+                        document.getString("Correo"),
+                        document.getString("Contraseña"),
+                        document.getDouble("Edad"),
+                        document.get("Locales")
+                });
+            }
+
+        }
+        catch(Exception e){
+            System.err.println("Error al cargar la tabla: " + e.getMessage());
+        }
+
+        tabla.setModel(modelo);
 
     }
 }

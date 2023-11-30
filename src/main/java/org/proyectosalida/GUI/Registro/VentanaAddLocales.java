@@ -78,6 +78,7 @@ public class VentanaAddLocales extends JFrame {
                 ventanaAddLocales.setVisible(true);
             }
             else{
+                guardarDueño(dueño);
                 dispose();
             }
         });

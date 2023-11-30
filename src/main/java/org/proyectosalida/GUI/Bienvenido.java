@@ -2,15 +2,20 @@ package org.proyectosalida.GUI;
 
 import org.proyectosalida.Constructores.AlmacenDeDatos;
 import org.proyectosalida.Datos.Conexion;
+import org.proyectosalida.Datos.Provider;
 import org.proyectosalida.GUI.Registro.Registro;
 
 import java.awt.*;
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+
+import static org.proyectosalida.Datos.Provider.cargarTablaDueño;
 
 public class Bienvenido extends JFrame {
 
     private static final long serialVersionUID = 1L;
     private AlmacenDeDatos almacenDeDatos;
+
 
     public Bienvenido() {
         this.setTitle("Inicio");
@@ -102,10 +107,13 @@ public class Bienvenido extends JFrame {
             e.printStackTrace();
             // Manejar la excepción como prefieras
         }
+        JTable tabla = new JTable();
 
         SwingUtilities.invokeLater(() -> {
             new Bienvenido();
             Conexion.conectar();
+            Provider.cargarTablaDueño(tabla);
+            System.out.println(tabla);
         });
     }
 

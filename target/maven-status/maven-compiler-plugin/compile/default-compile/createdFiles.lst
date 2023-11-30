@@ -24,6 +24,7 @@ org\proyectosalida\Pruebas\VentanaGustos$2.class
 org\proyectosalida\Constructores\Contenedor.class
 org\proyectosalida\Constructores\Local.class
 org\proyectosalida\GUI\InicioSesion.class
+org\proyectosalida\Pruebas\Tabla.class
 org\proyectosalida\GUI\InicioSesion$1.class
 org\proyectosalida\Pruebas\MenuPersonal$1.class
 org\proyectosalida\Pruebas\Objetos.class

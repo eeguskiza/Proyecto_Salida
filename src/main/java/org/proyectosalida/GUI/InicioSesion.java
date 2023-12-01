@@ -154,6 +154,7 @@ public class InicioSesion extends JFrame {
 
             Dueño usuario = new Dueño(tablaID, tablaNombre, tablaApellido, new GregorianCalendar(2004 , Calendar.AUGUST, 8).getTime(), tablaPassword, tablaTelefono, tablaCorreo, new ArrayList<>());
             System.out.println(usuario);
+            System.out.println(tablaLocales);
             new MainMenuDueño(usuario, almacenDeDatos);
             dispose();
         } else {

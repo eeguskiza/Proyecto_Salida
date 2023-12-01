@@ -16,7 +16,7 @@ import java.awt.CardLayout;
 
 public class VentanaAjustes {
 
-    private JFrame frame;
+    public JFrame frame;
 
 
     public static void main(String[] args) {
@@ -77,7 +77,7 @@ public class VentanaAjustes {
         JPanel pNotificaciones = new JPanel();
         pPrincipal.add(pNotificaciones);
 
-        JLabel lblNotificaciones = new JLabel("Gestionar notificaciones                ");
+        JLabel lblNotificaciones = new JLabel("Gestionar notificaciones          ");
         lblNotificaciones.setFont(new Font("Tahoma", Font.BOLD, 14));
         pNotificaciones.add(lblNotificaciones);
 
@@ -89,7 +89,7 @@ public class VentanaAjustes {
         JPanel pAyuda = new JPanel();
         pPrincipal.add(pAyuda);
 
-        JLabel lblAyuda = new JLabel("Preguntas frecuentes            ");
+        JLabel lblAyuda = new JLabel("Preguntas frecuentes             ");
         lblAyuda.setFont(new Font("Tahoma", Font.BOLD, 14));
         pAyuda.add(lblAyuda);
 

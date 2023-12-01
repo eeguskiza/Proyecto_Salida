@@ -232,6 +232,9 @@ public class MenuPersonal extends JFrame {
 
                 }else if(code==8){ //Ver todos los locales en una jtable
                     VerLocales ventanaVerLocales = new VerLocales((Dueño) usuario);
+                }else if (code==2){
+                    VentanaAjustes ventanaAjustes = new VentanaAjustes();
+                    ventanaAjustes.frame.setVisible(true);
                 }
 
             }

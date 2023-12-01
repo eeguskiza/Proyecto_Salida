@@ -98,7 +98,6 @@ public class Registro extends JFrame {
                     textFieldContraseña = new JTextField(contraseña);
                     panelContraseña.add(textFieldContraseña);
                     viendoContraseña = true;
-                    System.out.println(2);
                 }
 
                 panelContraseña.add(botonVerContraseña, BorderLayout.EAST);
@@ -108,6 +107,7 @@ public class Registro extends JFrame {
         });
 
         aceptar.addActionListener(e -> {
+            System.out.println(1);
             String id = ((JTextField) panel.getComponent(1)).getText();
             String nombre = ((JTextField) panel.getComponent(3)).getText();
             String apellido = ((JTextField) panel.getComponent(5)).getText();
@@ -136,9 +136,17 @@ public class Registro extends JFrame {
             }
 
             //String contraseña = new String(((JPasswordField) panel.getComponent(9)).getPassword());
-            //String confirmarContraseña = new String(((JPasswordField) panel.getComponent(11)).getPassword());
-            String contraseña = "0000";
-            String confirmarContraseña = "0000";
+            String confirmarContraseña = new String(((JPasswordField) panel.getComponent(11)).getPassword());
+            String contraseña = null;
+            if(viendoContraseña){
+                contraseña = ((JTextField) panelContraseña.getComponent(0)).getText();
+                System.out.println("Viendo Contraseña");
+            }else{
+                contraseña = String.valueOf(((JPasswordField) panelContraseña.getComponent(0)).getPassword());
+                System.out.println("Contraseña Oculta");
+            }
+            System.out.println(contraseña);
+            System.out.println(confirmarContraseña);
 
             String telefono = ((JTextField) panel.getComponent(13)).getText();
             String correo = ((JTextField) panel.getComponent(15)).getText();
@@ -235,7 +243,7 @@ public class Registro extends JFrame {
         }
 
         SwingUtilities.invokeLater(() -> {
-            Conexion.conectar();
+            //Conexion.conectar();
             new Registro(null, new AlmacenDeDatos());
         });
 

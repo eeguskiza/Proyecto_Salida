@@ -2,6 +2,8 @@ package org.proyectosalida.GUI.VentanasDueño;
 
 import org.proyectosalida.Constructores.*;
 import org.proyectosalida.Datos.AlmacenDeDatos;
+import org.proyectosalida.GUI.VentanasCliente.MainMenuCliente;
+import org.proyectosalida.Pruebas.MenuPersonal;
 
 import javax.swing.*;
 
@@ -13,6 +15,13 @@ public class MainMenuDueño extends JFrame {
         this.setLocationRelativeTo(null);
         this.setVisible(true);
 
-        add(new JLabel("Hola, "+ almacenDeDatos.getDueño().getNombre() + " (DUEÑO)"));
+        JButton menuPersonal = new JButton("Menu Personal");
+        menuPersonal.addActionListener(e -> {
+            setVisible(false);
+            new MenuPersonal(almacenDeDatos, this);
+        });
+        add(menuPersonal);
+
+        //add(new JLabel("Hola, "+ almacenDeDatos.getDueño().getNombre() + " (DUEÑO)"));
     }
 }

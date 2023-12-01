@@ -3,7 +3,6 @@ package org.proyectosalida.Datos;
 import org.proyectosalida.Constructores.*;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.util.*;
 
 public class AlmacenDeDatos {
@@ -15,6 +14,10 @@ public class AlmacenDeDatos {
 
     private Cliente cliente;
     private Dueño dueño;
+     private ArrayList<Usuario> usuarios;
+
+    private boolean esDueño;
+    private boolean esCliente;
 
     public AlmacenDeDatos(){
         //Inicializamos hashmap (con bd no sería necesario creo)
@@ -23,8 +26,11 @@ public class AlmacenDeDatos {
         progressBarsVotaciones = new ArrayList<>();
         valoresVotaciones = new ArrayList<>();
         votoDiarioEncuesta = false;
-        cliente = null;
-        //dueño = null;
+
+        usuarios = new ArrayList<>();
+
+        esDueño = false;
+        esCliente = false;
 
         //Esto es para tener algo ya añadido ------- RELLENO --------------
         String link1 = "https://www.tripadvisor.es/Restaurant_Review-g187454-d5615756-Reviews-Bar_Monty-Bilbao_Province_of_Vizcaya_Basque_Country.html";
@@ -90,5 +96,29 @@ public class AlmacenDeDatos {
     }
     public void setDueño(Dueño dueño) {
         this.dueño = dueño;
+    }
+
+    public boolean getEsDueño() {
+        return esDueño;
+    }
+    public void setEsDueño(boolean esDueño) {
+        this.esDueño = esDueño;
+    }
+
+    public boolean getEsCliente() {
+        return esCliente;
+    }
+
+    public void setEsCliente(boolean esCliente) {
+        this.esCliente = esCliente;
+    }
+
+
+    public ArrayList<Usuario> getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuario(ArrayList<Usuario> clientes) {
+        this.usuarios = clientes;
     }
 }

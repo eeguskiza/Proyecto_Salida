@@ -1,12 +1,14 @@
 package org.proyectosalida.Pruebas;
 
 import org.proyectosalida.Constructores.Dueño;
+import org.proyectosalida.Constructores.Local;
 import org.proyectosalida.Datos.Conexion;
 import org.proyectosalida.Datos.Provider;
 import org.proyectosalida.GUI.Bienvenido;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.util.ArrayList;
 
 public class Tabla extends JFrame {
     private JTable tabla;
@@ -35,7 +37,7 @@ public class Tabla extends JFrame {
         String tablaCorreo = "";
         String tablaPassword = "";
         double tablaEdad = 0.0;
-        String tablaLocales = "";
+        ArrayList<Local> tablaLocales = null;
 
         for (int i = 0; i < modelo.getRowCount(); i++) {
             tablaID = modelo.getValueAt(i, 0).toString();
@@ -45,7 +47,7 @@ public class Tabla extends JFrame {
             tablaCorreo = modelo.getValueAt(i, 4).toString();
             tablaPassword = modelo.getValueAt(i, 5).toString();
             tablaEdad = Double.parseDouble(modelo.getValueAt(i, 6).toString());
-            tablaLocales = modelo.getValueAt(i, 7).toString();
+            tablaLocales = (ArrayList<Local>) modelo.getValueAt(i, 7);
             System.out.println(tablaLocales);
         }
 
@@ -55,6 +57,7 @@ public class Tabla extends JFrame {
         dueño.setTelefono(tablaTelefono);
         dueño.setCorreo(tablaCorreo);
         dueño.setContraseña(tablaPassword);
+        //dueño.setLocales(tablaLocales);
 
         System.out.println(dueño);
 

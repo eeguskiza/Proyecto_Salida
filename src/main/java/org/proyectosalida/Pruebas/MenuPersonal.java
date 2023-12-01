@@ -261,7 +261,7 @@ public class MenuPersonal extends JFrame {
         }
 
         SwingUtilities.invokeLater(() -> {
-            Conexion.conectar();
+            //Conexion.conectar();
             new MenuPersonal(new AlmacenDeDatos(), null).setVisible(true);
         });
     }

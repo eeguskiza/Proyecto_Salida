@@ -47,7 +47,7 @@ public class AlmacenDeDatos {
         }
         return uBuscado;
     }
-    º
+
  */
 
     public ArrayList<JProgressBar> getProgressBarsVotaciones() {
@@ -83,5 +83,12 @@ public class AlmacenDeDatos {
     }
     public void setDueño(Dueño dueño) {
         this.dueño = dueño;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.usuario = cliente;
+    }
+    public Cliente getCliente() {
+        return usuario;
     }
 }

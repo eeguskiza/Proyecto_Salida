@@ -31,7 +31,7 @@ public class Dueño extends Usuario{
                 "\n\tID: '" + id + '\'' +
                 "\n\tNombre: '" + Nombre + '\'' +
                 "\n\tApellido: '" + Apellido + '\'' +
-                "\n\tEdad: " + getEdad(fechaNacimiento) +
+                "\n\tFecha Nacimiento: " + getFechaNacimiento() +
                 "\n\tContraseña: '" + Contraseña + '\'' +
                 "\n\tTeléfono: '+34 " + Telefono + '\'' +
                 "\n\tCorreo: '" + Correo + '\'' +

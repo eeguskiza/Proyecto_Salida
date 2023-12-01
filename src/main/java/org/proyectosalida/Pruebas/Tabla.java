@@ -57,7 +57,7 @@ public class Tabla extends JFrame {
         dueño.setTelefono(tablaTelefono);
         dueño.setCorreo(tablaCorreo);
         dueño.setContraseña(tablaPassword);
-        //dueño.setLocales(tablaLocales);
+        dueño.setLocales(tablaLocales);
 
         System.out.println(dueño);
 

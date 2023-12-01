@@ -5,13 +5,16 @@ import org.proyectosalida.Datos.Provider;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 public class VentanaAddLocales extends JFrame {
     ArrayList<Horario> horarios = new ArrayList<>();
-    ArrayList<Caracteristica> caracteristicas = new ArrayList<>();
+    ArrayList<String> caracteristicas = new ArrayList<>();
+
     public VentanaAddLocales(Dueño dueño) {
         setTitle("Añadir locales");
         setSize(500, 500);
@@ -50,12 +53,17 @@ public class VentanaAddLocales extends JFrame {
         panel.add(panel1);
         panel.add(new JLabel("Características:", JLabel.CENTER));
         JButton añadirC = new JButton("Añadir características");
-        caracteristicas = new ArrayList<>();
+        ArrayList<Caracteristica>caracteristicas = new ArrayList<>();
         panel.add(añadirC);
         JButton botonGuardar = new JButton("Añadir local");
         panel.add(botonGuardar);
         JButton botonVolver = new JButton("Volver");
         panel.add(botonVolver);
+
+        añadirC.addActionListener(e -> {
+
+            new CaracteristicasLocal(this,caracteristicas);
+        });
 
         botonGuardar.addActionListener(e -> {
             String nombre = ((JTextField) panel.getComponent(1)).getText();
@@ -91,7 +99,8 @@ public class VentanaAddLocales extends JFrame {
         });
 
         botonVolver.addActionListener(e -> {
-            dispose();
+            System.out.println(caracteristicas);
+           // dispose();
         });
 
         añadirH.addActionListener(e -> {

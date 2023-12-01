@@ -70,26 +70,26 @@ public class VentanaGustos extends JFrame {
         // Usando GridLayout para organizar los gustos en múltiples columnas
         JPanel gustosPanel = new JPanel(new GridLayout(0, 3, 1, 1)); // 0 filas significa cualquier cantidad de filas, 2 columnas, y espacio entre elementos
        // aqui
-        ArrayList<String> caracteristicas = new ArrayList<>();
+        ArrayList<Caracteristica> caracteristicas = new ArrayList<>();
 
 
         for (Caracteristica caracteristica : Caracteristica.values()) {
             JCheckBox checkBoxCaracteristica = new JCheckBox(caracteristica.name());
             gustosPanel.add(checkBoxCaracteristica);
-            checkBoxCaracteristica.addActionListener(new ActionListener() {// le damos funcion a cada checkbox
+            checkBoxCaracteristica.addActionListener(new ActionListener() {
                 @Override
                 public void actionPerformed(ActionEvent e) {
-                    if (checkBoxCaracteristica.isSelected()){
-                        System.out.println("has seleccionado "+ checkBoxCaracteristica.getText());
-                        caracteristicas.add(checkBoxCaracteristica.getText());
-                    }else{
-                        caracteristicas.remove(checkBoxCaracteristica.getText());
-                        System.out.println(checkBoxCaracteristica.getText()+" deseleccionado");
-                        caracteristicas.add(checkBoxCaracteristica.getText());
+                    if (checkBoxCaracteristica.isSelected()) {
+                        System.out.println("Has seleccionado " + caracteristica);
+                        caracteristicas.add(caracteristica);
+                    } else {
+                        caracteristicas.remove(caracteristica);
+                        System.out.println(caracteristica + " deseleccionado");
                     }
                 }
             });
         }
+
 
 
 
@@ -117,19 +117,8 @@ public class VentanaGustos extends JFrame {
 
 
     public static void main(String[] args) {
-        try {
-            // Establecer el look and feel de Nimbus
-            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
-
-        SwingUtilities.invokeLater(() -> {
             new VentanaGustos();
-        });
-
-
     }
 }
 

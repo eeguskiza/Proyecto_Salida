@@ -3,7 +3,6 @@ package org.proyectosalida.Datos;
 import org.proyectosalida.Constructores.*;
 
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.util.*;
 
 public class AlmacenDeDatos {
@@ -15,6 +14,7 @@ public class AlmacenDeDatos {
 
     private Cliente cliente;
     private Dueño dueño;
+     private ArrayList<Usuario> usuarios;
 
     private boolean esDueño;
     private boolean esCliente;
@@ -26,8 +26,8 @@ public class AlmacenDeDatos {
         progressBarsVotaciones = new ArrayList<>();
         valoresVotaciones = new ArrayList<>();
         votoDiarioEncuesta = false;
-        cliente = null;
-        dueño = null;
+
+        usuarios = new ArrayList<>();
 
         esDueño = false;
         esCliente = false;
@@ -113,4 +113,12 @@ public class AlmacenDeDatos {
         this.esCliente = esCliente;
     }
 
+
+    public ArrayList<Usuario> getUsuarios() {
+        return usuarios;
+    }
+
+    public void setUsuario(ArrayList<Usuario> clientes) {
+        this.usuarios = clientes;
+    }
 }

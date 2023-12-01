@@ -18,22 +18,20 @@ public class MenuPersonal extends JFrame {
 
     private Usuario usuario;
     private Boolean viewPassword = false;
-    private MainMenuCliente ventanaPadre;
     private JTextField contraTextField;
 
-    public MenuPersonal(AlmacenDeDatos almacenDeDatos, MainMenuCliente padre) {
+    public MenuPersonal(AlmacenDeDatos almacenDeDatos, JFrame padre) {
         setTitle("Menú Personal: NOMBRE");
         setSize(350, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
         setLocationRelativeTo(null);
-        ventanaPadre = padre;
 
         //Definimos si el usuario usando la ventana es dueño o cliente
-        if(!almacenDeDatos.getDueño().equals(null)){ //Significa que el usuario es Dueño
-            usuario = almacenDeDatos.getDueño();
-        }else if(!almacenDeDatos.getCliente().equals(null)){
-            usuario = almacenDeDatos.getCliente();
+        if(almacenDeDatos.getEsCliente()){ //Significa que el usuario es Dueño
+            usuario = (Cliente) almacenDeDatos.getUsuarios().get(0);
+        }else if(almacenDeDatos.getEsDueño()){
+            usuario = (Dueño) almacenDeDatos.getUsuarios().get(0);
         }
 
         // Panel principal con bordes y disposición de cuadrícula

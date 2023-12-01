@@ -3,6 +3,8 @@ package org.proyectosalida.GUI;
 import org.proyectosalida.Constructores.Dueño;
 import org.proyectosalida.Datos.AlmacenDeDatos;
 import org.proyectosalida.Constructores.Usuario;
+import org.proyectosalida.Datos.Conexion;
+import org.proyectosalida.Datos.Provider;
 import org.proyectosalida.GUI.VentanasCliente.MainMenuCliente;
 
 import javax.swing.*;
@@ -10,6 +12,9 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class InicioSesion extends JFrame {
 
@@ -17,13 +22,15 @@ public class InicioSesion extends JFrame {
     private AlmacenDeDatos almacenDeDatos;
     Boolean viendoContraseña = false;
     JTextField textFieldContraseña = new JTextField();
+    protected JTable tabla;
 
-    public InicioSesion(JFrame padre, AlmacenDeDatos almacen, JTable tabla){
+    public InicioSesion(JFrame padre){
+        tabla = new JTable();
+        Provider.cargarTablaDueño(tabla);
         this.setTitle("Inicia Sesión");
         this.setSize(640, 360);
         this.setLocationRelativeTo(padre);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        almacenDeDatos = almacen;
 
         JPanel panel = new JPanel(new GridLayout(3, 2, 10, 10)); // Layout para los campos y etiquetas
         panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -108,7 +115,8 @@ public class InicioSesion extends JFrame {
         }
 
         SwingUtilities.invokeLater(() -> {
-            new InicioSesion(null, new AlmacenDeDatos(), null).setVisible(true);
+            Conexion.conectar();
+            new InicioSesion(null).setVisible(true);
         });
     }
 
@@ -119,40 +127,37 @@ public class InicioSesion extends JFrame {
         String usuarioID = ID.getText();
 
         boolean credencialesValidas = false;
+        int indice = 0;
 
-        for (int row = 0; row < modelo.getRowCount(); row++) {
-            String tablaID = modelo.getValueAt(row, 0).toString();
-            String tablaPassword = modelo.getValueAt(row, 6).toString();
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+            String tablaID = modelo.getValueAt(i, 0).toString();
+            String tablaPassword = modelo.getValueAt(i, 5).toString();
 
             if (tablaID.equals(usuarioID) && tablaPassword.equals(passwordString)) {
                 credencialesValidas = true;
+                indice = i;
                 break;
             }
         }
 
         if (credencialesValidas) {
             System.out.println("Credenciales válidas. Acceso concedido.");
+            String tablaID = modelo.getValueAt(indice, 0).toString();
+            String tablaNombre = modelo.getValueAt(indice, 1).toString();
+            String tablaApellido = modelo.getValueAt(indice, 2).toString();
+            String tablaTelefono = modelo.getValueAt(indice, 3).toString();
+            String tablaCorreo = modelo.getValueAt(indice, 4).toString();
+            String tablaPassword = modelo.getValueAt(indice, 5).toString();
+            Double tablaEdad = Double.parseDouble(modelo.getValueAt(indice, 6).toString());
+            String tablaLocales = modelo.getValueAt(indice, 7).toString();
+
+            Dueño usuario = new Dueño(tablaID, tablaNombre, tablaApellido, new GregorianCalendar(2004 , Calendar.AUGUST, 8).getTime(), tablaPassword, tablaTelefono, tablaCorreo, new ArrayList<>());
+            System.out.println(usuario);
         } else {
             JOptionPane.showMessageDialog(this, "Credenciales inválidas. Por favor, inténtelo de nuevo.", "Error de inicio de sesión", JOptionPane.ERROR_MESSAGE);
         }
     }
 
-
-    private void checkCredentials2(JTextField nombre, JPasswordField password){
-        char[] passChar = password.getPassword();
-        String passwordString = new String(passChar);
-        for(Usuario u : almacenDeDatos.getUsuarios().values()){
-            if(u.getId().equals(nombre.getText())){
-                if(u.getContraseña().equals(passwordString)){
-                    new MainMenuCliente(u, almacenDeDatos); //en vez de nombre sería pasar la instancia de usuario
-                    dispose();
-                    break;
-                }else{
-                    JOptionPane.showMessageDialog(null, "Contraseña incorrectas!");
-                }
-            }
-        }
-    }
 
 
 }

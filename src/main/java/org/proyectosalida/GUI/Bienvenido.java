@@ -13,12 +13,10 @@ public class Bienvenido extends JFrame {
     private static final long serialVersionUID = 1L;
     private AlmacenDeDatos almacenDeDatos;
 
-    protected JTable tabla;
+
 
 
     public Bienvenido() {
-        tabla = new JTable();
-        Provider.cargarTablaDueño(tabla);
         this.setTitle("Inicio");
         this.setSize(1000, 600);
         this.setLocationRelativeTo(null);
@@ -63,7 +61,7 @@ public class Bienvenido extends JFrame {
         });
 
         inicioSesion.addActionListener(e -> {
-            InicioSesion i = new InicioSesion(this, almacenDeDatos, tabla);
+            InicioSesion i = new InicioSesion(this);
             i.setVisible(true);
             this.setVisible(false);
         });

@@ -46,6 +46,7 @@ public class Tabla extends JFrame {
             tablaPassword = modelo.getValueAt(i, 5).toString();
             tablaEdad = Double.parseDouble(modelo.getValueAt(i, 6).toString());
             tablaLocales = modelo.getValueAt(i, 7).toString();
+            System.out.println(tablaLocales);
         }
 
         dueño.setId(tablaID);

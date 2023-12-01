@@ -1,5 +1,6 @@
 package org.proyectosalida.GUI;
 
+import org.proyectosalida.Constructores.Dueño;
 import org.proyectosalida.Datos.AlmacenDeDatos;
 import org.proyectosalida.Constructores.Usuario;
 import org.proyectosalida.GUI.VentanasCliente.MainMenuCliente;
@@ -119,9 +120,9 @@ public class InicioSesion extends JFrame {
 
         boolean credencialesValidas = false;
 
-        for (int i = 0; i < modelo.getRowCount(); i++) {
-            String tablaID = modelo.getValueAt(i, 0).toString();
-            String tablaPassword = modelo.getValueAt(i, 6).toString();
+        for (int row = 0; row < modelo.getRowCount(); row++) {
+            String tablaID = modelo.getValueAt(row, 0).toString();
+            String tablaPassword = modelo.getValueAt(row, 6).toString();
 
             if (tablaID.equals(usuarioID) && tablaPassword.equals(passwordString)) {
                 credencialesValidas = true;

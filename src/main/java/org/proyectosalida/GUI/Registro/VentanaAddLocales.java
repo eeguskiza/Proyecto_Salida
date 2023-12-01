@@ -64,7 +64,14 @@ public class VentanaAddLocales extends JFrame {
             int aforo = Integer.parseInt(((JTextField) panel.getComponent(7)).getText());
             String telefono = ((JTextField) panel.getComponent(9)).getText();
             String enlace = ((JTextField) panel.getComponent(11)).getText();
-            Boolean terraza = true;
+            Boolean terraza = null;
+            if(checkboxSi.isSelected()){
+                 terraza = true;
+            }else if(checkboxNo.isSelected()){
+                 terraza = false;
+            }else{
+                JOptionPane.showMessageDialog(null, "Seleccione todos los campos.");
+            }
 
             Bar bar = new Bar(nombre, direccion, CP, aforo, telefono, 0, 0, enlace, horarios, terraza, caracteristicas);
             System.out.println(bar);

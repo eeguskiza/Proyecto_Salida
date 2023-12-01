@@ -16,9 +16,7 @@ public class VentanaGestionNotificaciones {
 
     private JFrame frame;
 
-    /**
-     * Launch the application.
-     */
+
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -32,16 +30,12 @@ public class VentanaGestionNotificaciones {
         });
     }
 
-    /**
-     * Create the application.
-     */
+
     public VentanaGestionNotificaciones() {
         initialize();
     }
 
-    /**
-     * Initialize the contents of the frame.
-     */
+
     private void initialize() {
 
         frame = new JFrame();

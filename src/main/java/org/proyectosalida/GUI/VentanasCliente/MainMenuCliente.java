@@ -10,7 +10,6 @@ import java.util.ArrayList;
 
 import org.proyectosalida.Datos.AlmacenDeDatos;
 import org.proyectosalida.Constructores.Cliente;
-import org.proyectosalida.Constructores.Usuario;
 import com.formdev.flatlaf.*;
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
@@ -18,7 +17,6 @@ import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.engine.RenderingMode;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 import org.proyectosalida.Pruebas.MenuPersonal;
-import org.proyectosalida.Pruebas.VentanaGustos;
 
 public class MainMenuCliente extends JFrame {
 

@@ -1,9 +1,10 @@
 package org.proyectosalida.Pruebas;
 
 import org.proyectosalida.Constructores.*;
-import org.proyectosalida.Datos.Conexion;
+import org.proyectosalida.Datos.AlmacenDeDatos;
 import org.proyectosalida.Datos.Provider;
 import org.proyectosalida.GUI.VentanasCliente.MainMenuCliente;
+import org.proyectosalida.GUI.VentanasDueño.VerLocales;
 
 import javax.swing.*;
 import java.awt.*;
@@ -15,19 +16,25 @@ import java.util.*;
 
 public class MenuPersonal extends JFrame {
 
-    private Usuario u;
+    private Usuario usuario;
     private Boolean viewPassword = false;
     private MainMenuCliente ventanaPadre;
     private JTextField contraTextField;
 
-    public MenuPersonal(Usuario usuario, MainMenuCliente padre) {
-        setTitle("Menú Personal: " + usuario.getNombre());
+    public MenuPersonal(AlmacenDeDatos almacenDeDatos, MainMenuCliente padre) {
+        setTitle("Menú Personal: NOMBRE");
         setSize(350, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
         setLocationRelativeTo(null);
         ventanaPadre = padre;
-        u = usuario;
+
+        //Definimos si el usuario usando la ventana es dueño o cliente
+        if(!almacenDeDatos.getDueño().equals(null)){ //Significa que el usuario es Dueño
+            usuario = almacenDeDatos.getDueño();
+        }else if(!almacenDeDatos.getCliente().equals(null)){
+            usuario = almacenDeDatos.getCliente();
+        }
 
         // Panel principal con bordes y disposición de cuadrícula
         JPanel panel = new JPanel(new GridLayout(6, 1, 10, 10));
@@ -60,9 +67,9 @@ public class MenuPersonal extends JFrame {
         pEncabezado.add(panelDerecho, BorderLayout.CENTER);
 
         // ------------- APARTADOS DEL MENU - ETIQUETAS CLICKEABLES ---------------------
-        panel.add(clickableLabel("Editar Perfil", 1));
+        panel.add(clickableLabel("Ver Perfil", 1));
         panel.add(clickableLabel("Ajustes", 2));
-        if(usuario.getClass().equals(Dueño.class)){
+        if(usuario.getClass().equals(Cliente.class)){
             panel.add(clickableLabel("Lista de Visitados", 3));
             panel.add(clickableLabel("Próximos Eventos", 4));
         }else{
@@ -89,7 +96,8 @@ public class MenuPersonal extends JFrame {
 
 
     //METODOS PARA EDITAR PERFIL (OPCION 1)
-    private void editarPerfil(Usuario usuario){
+    private void editarPerfil(Usuario usuario, Boolean editable){
+        System.out.println(editable);
         JFrame frame = new JFrame();
         frame.setTitle("Menú Personal: " + usuario.getNombre());
         frame.setSize(350, 500);
@@ -106,22 +114,29 @@ public class MenuPersonal extends JFrame {
         }
         JPanel  main = new JPanel(new GridLayout(nRowsMenu,2,10,10));
         frame.add(main);
-        JPanel panelContraseña = new JPanel(new BorderLayout()); JButton verContraseña = new JButton(new ImageIcon(image_hid)); verContraseña.setBackground(Color.WHITE); panelContraseña.add(new JPasswordField(u.getContraseña())); panelContraseña.add(verContraseña, BorderLayout.EAST);
-        main.add(new JLabel("ID (@)", JLabel.CENTER)); main.add(new JTextField(u.getId()));
-        main.add(new JLabel("Nombre", JLabel.CENTER)); main.add(new JTextField(u.getNombre()));
-        main.add(new JLabel("Apellido", JLabel.CENTER)); main.add(new JTextField(u.getApellido()));
-        main.add(new JLabel("Edad", JLabel.CENTER)); main.add(new JTextField(u.getEdad(u.getFechaNacimiento())));
+        JPanel panelContraseña = new JPanel(new BorderLayout()); JButton verContraseña = new JButton(new ImageIcon(image_hid)); verContraseña.setBackground(Color.WHITE); JPasswordField passwordField = new JPasswordField(this.usuario.getContraseña()); panelContraseña.add(passwordField); panelContraseña.add(verContraseña, BorderLayout.EAST); passwordField.setEditable(editable); passwordField.setEnabled(editable);
+        main.add(new JLabel("ID (@)", JLabel.CENTER)); JTextField idfield = new JTextField(this.usuario.getId()); main.add(idfield); idfield.setEditable(editable); idfield.setEnabled(editable);
+        main.add(new JLabel("Nombre", JLabel.CENTER)); JTextField nombrefield = new JTextField(this.usuario.getNombre());main.add(nombrefield); nombrefield.setEditable(editable); nombrefield.setEnabled(editable);
+        main.add(new JLabel("Apellido", JLabel.CENTER));JTextField apellidofield = new JTextField(this.usuario.getApellido()); main.add(apellidofield);apellidofield.setEditable(editable); apellidofield.setEnabled(editable);
+        main.add(new JLabel("Edad", JLabel.CENTER));JTextField edadfield = new JTextField(this.usuario.getEdad(this.usuario.getFechaNacimiento())); main.add(edadfield); edadfield.setEditable(editable); edadfield.setEnabled(editable);
         main.add(new JLabel("Contraseña", JLabel.CENTER)); main.add(panelContraseña);
-        main.add(new JLabel("Tlf.", JLabel.CENTER)); main.add(new JTextField(u.getTelefono()));
-        main.add(new JLabel("Correo", JLabel.CENTER)); main.add(new JTextField(u.getCorreo()));
+        main.add(new JLabel("Tlf.", JLabel.CENTER)); JTextField tlffield = new JTextField(this.usuario.getTelefono()); main.add(tlffield); tlffield.setEditable(editable); tlffield.setEnabled(editable);
+        main.add(new JLabel("Correo", JLabel.CENTER)); JTextField correofield = new JTextField(this.usuario.getCorreo());main.add(correofield); correofield.setEditable(editable); correofield.setEnabled(editable);
         if(usuario.getClass().equals(Dueño.class)){
-            main.add(new JLabel("Locales", JLabel.CENTER)); main.add(clickableLabel("Modificar Locales", 7));
+            if(editable){
+                main.add(new JLabel("Locales", JLabel.CENTER)); main.add(clickableLabel("Modificar Locales", 7)); //MODIFICAR -> UN JTREE CON UN PANEL INDIVIDUAL AL LADO PARA SELECCIONAR UNO Y EDITARLO
+            }else{
+                main.add(new JLabel("Locales", JLabel.CENTER)); main.add(clickableLabel("Ver todos", 8)); //VER LOCALES -> JTABLE CON TODOS ENLISTADOS
+            }
         }
 
         JPanel botonera = new JPanel(new FlowLayout());
         JButton atras = new JButton("Atzerakarga");
         JButton guardarCambios = new JButton("Actualizar");
-        botonera.add(atras); botonera.add(guardarCambios);
+        botonera.add(atras);
+        if(editable==true){
+            botonera.add(guardarCambios);
+        }
         frame.add(botonera, BorderLayout.SOUTH);
         frame.setVisible(true);
 
@@ -133,12 +148,14 @@ public class MenuPersonal extends JFrame {
                 if(viewPassword){
                     verContraseña.setIcon(new ImageIcon(image_sho));
                     panelContraseña.remove(panelContraseña.getComponent(0));
-                    contraTextField = new JTextField(u.getContraseña());
+                    contraTextField = new JTextField(MenuPersonal.this.usuario.getContraseña());
                     panelContraseña.add(contraTextField);
+                    contraTextField.setEditable(editable); contraTextField.setEnabled(editable);
                 }else{
                     verContraseña.setIcon(new ImageIcon(image_hid));
                     panelContraseña.removeAll();
-                    panelContraseña.add(new JPasswordField(u.getContraseña()));
+                    JPasswordField pf = new JPasswordField(MenuPersonal.this.usuario.getContraseña()); pf.setEditable(editable); pf.setEnabled(editable);
+                    panelContraseña.add(pf);
                     panelContraseña.add(verContraseña, BorderLayout.EAST);
                 }
                 frame.revalidate();
@@ -209,10 +226,12 @@ public class MenuPersonal extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if(code==1){ //editar perfil
-                    editarPerfil(u);
+                    editarPerfil(usuario, false);
                     setVisible(false);
                 }else if(code==7){ //modifica locales
 
+                }else if(code==8){ //Ver todos los locales en una jtable
+                    VerLocales ventanaVerLocales = new VerLocales((Dueño) usuario);
                 }
 
             }
@@ -243,28 +262,7 @@ public class MenuPersonal extends JFrame {
 
         SwingUtilities.invokeLater(() -> {
             //Conexion.conectar();
-            String link1 = "https://www.tripadvisor.es/Restaurant_Review-g187454-d5615756-Reviews-Bar_Monty-Bilbao_Province_of_Vizcaya_Basque_Country.html";
-            ArrayList<Horario> horariosMonty = new ArrayList<>();
-            horariosMonty.add(new Horario("Lunes", "07:30", "23:30"));
-            horariosMonty.add(new Horario("Martes", "07:30", "23:30"));
-            horariosMonty.add(new Horario("Miercoles", "07:30", "23:30"));
-            horariosMonty.add(new Horario("Jueves", "07:30", "23:30"));
-            horariosMonty.add(new Horario("Viernes", "07:30", "23:30"));
-            horariosMonty.add(new Horario("Sabado", "07:30", "23:30"));
-            horariosMonty.add(new Horario("Domingo", "07:30", "16:00"));
-            ArrayList<Caracteristica>caracteristicasMonty=new ArrayList<>();
-            caracteristicasMonty.add(Caracteristica.PINTXOS);
-            caracteristicasMonty.add(Caracteristica.TERRAZA);
-            caracteristicasMonty.add(Caracteristica.CERVEZAS);
-            caracteristicasMonty.add(Caracteristica.COMBINADOS);
-            Bar Monty = new Bar("Monty", "Heros Kalea, 16, Bilbo, Bizkaia", "48009", 75, "944 23 63 36", 0, 0, link1, horariosMonty, true,caracteristicasMonty);
-
-            ArrayList<Local> locales = new ArrayList<>();
-            locales.add(Monty);
-
-            Dueño e = new Dueño("enekoalvareez", "Eneko", "Alvarez", new GregorianCalendar(2004, Calendar.JUNE, 23).getTime(), "Contraseña", "687 322 612", "ealvarez@opendeusto.es", locales);
-            Cliente m = new Cliente("maialenblancoo","Maialen", "Blanco", new GregorianCalendar(2004, Calendar.MAY, 4).getTime(), "Contraseña2", "687 322 612", "maialen.blanco@opendeusto.es", null);
-            new MenuPersonal(m, null).setVisible(true);
+            new MenuPersonal(new AlmacenDeDatos(), null).setVisible(true);
         });
     }
 }

@@ -10,7 +10,6 @@ import java.util.ArrayList;
 
 import org.proyectosalida.Datos.AlmacenDeDatos;
 import org.proyectosalida.Constructores.Cliente;
-import org.proyectosalida.Constructores.Usuario;
 import com.formdev.flatlaf.*;
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
@@ -18,7 +17,6 @@ import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.engine.RenderingMode;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
 import org.proyectosalida.Pruebas.MenuPersonal;
-import org.proyectosalida.Pruebas.VentanaGustos;
 
 public class MainMenuCliente extends JFrame {
 
@@ -34,7 +32,7 @@ public class MainMenuCliente extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
         almacen = almacenDeDatos;
-        Cliente usuario = almacen.getUsuario();
+        Cliente usuario = almacen.getCliente();
 
         // Panel para el botón del menú
         JPanel panelMenu = new JPanel(new BorderLayout());
@@ -67,7 +65,7 @@ public class MainMenuCliente extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setVisible(false);
-                new MenuPersonal(usuario, MainMenuCliente.this);
+                new MenuPersonal(almacenDeDatos, MainMenuCliente.this);
             }
         });
 

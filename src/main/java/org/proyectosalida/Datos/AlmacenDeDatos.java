@@ -1,8 +1,6 @@
 package org.proyectosalida.Datos;
 
-import org.proyectosalida.Constructores.Cliente;
-import org.proyectosalida.Constructores.Dueño;
-import org.proyectosalida.Constructores.Usuario;
+import org.proyectosalida.Constructores.*;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -15,7 +13,7 @@ public class AlmacenDeDatos {
     protected ArrayList<Integer> valoresVotaciones;
     private boolean votoDiarioEncuesta; //El boolean va aqui ya que sino siempre que se habra y cierre la main ventana se va a restablecer el valor, aqui no. Solo se puede una vez así.
 
-    private Cliente usuario;
+    private Cliente cliente;
     private Dueño dueño;
 
     public AlmacenDeDatos(){
@@ -25,11 +23,31 @@ public class AlmacenDeDatos {
         progressBarsVotaciones = new ArrayList<>();
         valoresVotaciones = new ArrayList<>();
         votoDiarioEncuesta = false;
-        usuario = null;
+        cliente = null;
+        //dueño = null;
 
-        //Esto es para tener algo ya añadido
-        //Cliente eneko = new Cliente("eneko", "Eneko", "Alvarez", new GregorianCalendar(2004, Calendar.AUGUST, 4).getTime(), "eneko04", "634556788", "eneko.alvarez@opendeusto.es", new ArrayList<>());
-        //Dueño erik = new Dueño("erik", "Erik", "Eguskiza", new GregorianCalendar(2004, Calendar.JUNE, 23).getTime(), "erik04", "3456788989", "e.eguskiza@opendeusto.es", new ArrayList<>());
+        //Esto es para tener algo ya añadido ------- RELLENO --------------
+        String link1 = "https://www.tripadvisor.es/Restaurant_Review-g187454-d5615756-Reviews-Bar_Monty-Bilbao_Province_of_Vizcaya_Basque_Country.html";
+        ArrayList<Horario> horariosMonty = new ArrayList<>();
+        horariosMonty.add(new Horario("Lunes", "07:30", "23:30"));
+        horariosMonty.add(new Horario("Martes", "07:30", "23:30"));
+        horariosMonty.add(new Horario("Miercoles", "07:30", "23:30"));
+        horariosMonty.add(new Horario("Jueves", "07:30", "23:30"));
+        horariosMonty.add(new Horario("Viernes", "07:30", "23:30"));
+        horariosMonty.add(new Horario("Sabado", "07:30", "23:30"));
+        horariosMonty.add(new Horario("Domingo", "07:30", "16:00"));
+        ArrayList<Caracteristica>caracteristicasMonty=new ArrayList<>();
+        caracteristicasMonty.add(Caracteristica.PINTXOS);
+        caracteristicasMonty.add(Caracteristica.TERRAZA);
+        caracteristicasMonty.add(Caracteristica.CERVEZAS);
+        caracteristicasMonty.add(Caracteristica.COMBINADOS);
+        Bar Monty = new Bar("Monty", "Heros Kalea, 16, Bilbo, Bizkaia", "48009", 75, "944 23 63 36", 0, 0, link1, horariosMonty, true,caracteristicasMonty);
+
+        ArrayList<Local> locales = new ArrayList<>();
+        locales.add(Monty);
+
+        dueño = new Dueño("enekoalvareez", "Eneko", "Alvarez", new GregorianCalendar(2004, Calendar.JUNE, 23).getTime(), "Contraseña", "687 322 612", "ealvarez@opendeusto.es", locales);
+        Cliente m = new Cliente("maialenblancoo","Maialen", "Blanco", new GregorianCalendar(2004, Calendar.MAY, 4).getTime(), "Contraseña2", "687 322 612", "maialen.blanco@opendeusto.es", null);
 
 
         //muestra de votaciones de encuesta
@@ -37,18 +55,7 @@ public class AlmacenDeDatos {
 
     }
 
-/*
-    public Usuario getUsuario(String id){
-        Usuario uBuscado = null;
-        for(Usuario u : usuarios.values()){
-            if(u.getId().equals(id)){
-                uBuscado = u;
-            }
-        }
-        return uBuscado;
-    }
 
- */
 
     public ArrayList<JProgressBar> getProgressBarsVotaciones() {
         return progressBarsVotaciones;
@@ -71,11 +78,11 @@ public class AlmacenDeDatos {
         this.valoresVotaciones = valoresVotaciones;
     }
 
-    public Cliente getUsuario() {
-        return usuario;
+    public Cliente getCliente() {
+        return cliente;
     }
-    public void setUsuario(Cliente usuario) {
-        this.usuario = usuario;
+    public void setCliente(Cliente usuario) {
+        this.cliente = cliente;
     }
 
     public Dueño getDueño() {
@@ -83,12 +90,5 @@ public class AlmacenDeDatos {
     }
     public void setDueño(Dueño dueño) {
         this.dueño = dueño;
-    }
-
-    public void setCliente(Cliente cliente) {
-        this.usuario = cliente;
-    }
-    public Cliente getCliente() {
-        return usuario;
     }
 }

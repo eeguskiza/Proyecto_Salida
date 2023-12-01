@@ -172,15 +172,18 @@ public class Registro extends JFrame {
                             ventanaAddLocales.setVisible(true);
                             this.dispose();
                             //REDIRIGE DIRECTAMENTE A INICIA SESION HABIENDO GUARDADO LOS DATOS EN LA NUBE
+                            JOptionPane.showMessageDialog(this, "Usuario creado con éxito!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                             InicioSesion inicioSesion = new InicioSesion(padre);
+                            this.dispose();
+                            padre.dispose();
+                            inicioSesion.setVisible(true);
                         }
                     } else {
                         Cliente nuevoUsuario = new Cliente(id, nombre, apellido, fechaNacimiento, contraseña, telefono, correo, new ArrayList<>());
                         System.out.println(nuevoUsuario.toString());
                         guardarCliente(nuevoUsuario);
 
-                        JOptionPane.showMessageDialog(this, "Usuario creado con éxito! (Local)", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-
+                        JOptionPane.showMessageDialog(this, "Usuario creado con éxito!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                         InicioSesion inicioSesion = new InicioSesion(padre);
                         this.dispose();
                         padre.dispose();

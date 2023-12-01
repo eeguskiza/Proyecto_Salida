@@ -1,8 +1,7 @@
 package org.proyectosalida.GUI;
 
-import org.proyectosalida.Constructores.Dueño;
+import org.proyectosalida.Constructores.*;
 import org.proyectosalida.Datos.AlmacenDeDatos;
-import org.proyectosalida.Constructores.Usuario;
 import org.proyectosalida.Datos.Conexion;
 import org.proyectosalida.Datos.Provider;
 import org.proyectosalida.GUI.VentanasCliente.MainMenuCliente;
@@ -24,12 +23,17 @@ public class InicioSesion extends JFrame {
     Boolean viendoContraseña = false;
     JTextField textFieldContraseña = new JTextField();
     protected JTable tabla;
+    protected JTable tabla2;
+
 
     public InicioSesion(JFrame padre){
+        almacenDeDatos = new AlmacenDeDatos();
         tabla = new JTable();
+        tabla2 = new JTable();
         Provider.cargarTablaDueño(tabla);
+        Provider.cargarTablaCliente(tabla2);
         this.setTitle("Inicia Sesión");
-        this.setSize(640, 360);
+        this.setSize(500, 200);
         this.setLocationRelativeTo(padre);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -91,7 +95,7 @@ public class InicioSesion extends JFrame {
         });
 
         aceptar.addActionListener(e -> {
-            checkCredentials(tabla, idField, passwordField);
+            checkCredentials(tabla,tabla2,idField, passwordField);
             //checkCredentials2(idField, passwordField);
         });
 
@@ -121,18 +125,31 @@ public class InicioSesion extends JFrame {
         });
     }
 
-    private void checkCredentials(JTable tabla, JTextField ID, JPasswordField password) { //SOLO PARA DUEÑOS DE MOMENTO
+    private void checkCredentials(JTable tabla, JTable tabla2, JTextField ID, JPasswordField password) { //SOLO PARA DUEÑOS DE MOMENTO
         DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+        DefaultTableModel modelo2 = (DefaultTableModel) tabla2.getModel();
         char[] passChar = password.getPassword();
         String passwordString = new String(passChar);
         String usuarioID = ID.getText();
 
         boolean credencialesValidas = false;
+        boolean esDueño = false;
         int indice = 0;
 
         for (int i = 0; i < modelo.getRowCount(); i++) {
             String tablaID = modelo.getValueAt(i, 0).toString();
             String tablaPassword = modelo.getValueAt(i, 5).toString();
+
+            if (tablaID.equals(usuarioID) && tablaPassword.equals(passwordString)) {
+                esDueño = true;
+                indice = i;
+                break;
+            }
+        }
+
+        for (int i = 0; i < modelo2.getRowCount(); i++) {
+            String tablaID = modelo2.getValueAt(i, 0).toString();
+            String tablaPassword = modelo2.getValueAt(i, 5).toString();
 
             if (tablaID.equals(usuarioID) && tablaPassword.equals(passwordString)) {
                 credencialesValidas = true;
@@ -141,24 +158,45 @@ public class InicioSesion extends JFrame {
             }
         }
 
-        if (credencialesValidas) {
-            System.out.println("Credenciales válidas. Acceso concedido.");
-            String tablaID = modelo.getValueAt(indice, 0).toString();
-            String tablaNombre = modelo.getValueAt(indice, 1).toString();
-            String tablaApellido = modelo.getValueAt(indice, 2).toString();
-            String tablaTelefono = modelo.getValueAt(indice, 3).toString();
-            String tablaCorreo = modelo.getValueAt(indice, 4).toString();
-            String tablaPassword = modelo.getValueAt(indice, 5).toString();
-            Double tablaEdad = Double.parseDouble(modelo.getValueAt(indice, 6).toString());
-            String tablaLocales = modelo.getValueAt(indice, 7).toString();
+        if(esDueño || credencialesValidas) {
+            if (esDueño) {
+                System.out.println("Credenciales válidas. Acceso concedido.");
+                String tablaID = modelo.getValueAt(indice, 0).toString();
+                String tablaNombre = modelo.getValueAt(indice, 1).toString();
+                String tablaApellido = modelo.getValueAt(indice, 2).toString();
+                String tablaTelefono = modelo.getValueAt(indice, 3).toString();
+                String tablaCorreo = modelo.getValueAt(indice, 4).toString();
+                String tablaPassword = modelo.getValueAt(indice, 5).toString();
+                Double tablaEdad = Double.parseDouble(modelo.getValueAt(indice, 6).toString());
+                ArrayList<Local> tablaLocales = (ArrayList<Local>) modelo.getValueAt(indice, 7);
 
-            Dueño usuario = new Dueño(tablaID, tablaNombre, tablaApellido, new GregorianCalendar(2004 , Calendar.AUGUST, 8).getTime(), tablaPassword, tablaTelefono, tablaCorreo, new ArrayList<>());
-            System.out.println(usuario);
-            System.out.println(tablaLocales);
-            new MainMenuDueño(usuario, almacenDeDatos);
-            dispose();
+                Dueño usuario = new Dueño(tablaID, tablaNombre, tablaApellido, new GregorianCalendar(2004, Calendar.AUGUST, 8).getTime(), tablaPassword, tablaTelefono, tablaCorreo, new ArrayList<Local>());
+                System.out.println(usuario);
+                almacenDeDatos.setDueño(usuario);
+                new MainMenuDueño(almacenDeDatos);
+                dispose();
+            } else {
+            }
+            if (credencialesValidas) {
+                System.out.println("Credenciales válidas. Acceso concedido.");
+                String tablaID = modelo2.getValueAt(indice, 0).toString();
+                String tablaNombre = modelo2.getValueAt(indice, 1).toString();
+                String tablaApellido = modelo2.getValueAt(indice, 2).toString();
+                String tablaTelefono = modelo2.getValueAt(indice, 3).toString();
+                String tablaCorreo = modelo2.getValueAt(indice, 4).toString();
+                String tablaPassword = modelo2.getValueAt(indice, 5).toString();
+                Double tablaEdad = Double.parseDouble(modelo2.getValueAt(indice, 6).toString());
+                ArrayList<Visita> tablaVisitas = (ArrayList<Visita>) modelo2.getValueAt(indice, 7);
+
+                Cliente usuario = new Cliente(tablaID, tablaNombre, tablaApellido, new GregorianCalendar(2004, Calendar.AUGUST, 8).getTime(), tablaPassword, tablaTelefono, tablaCorreo, new ArrayList<Visita>());
+                System.out.println(usuario);
+                almacenDeDatos.setCliente(usuario);
+                new MainMenuCliente(almacenDeDatos);
+                dispose();
+            } else {}
         } else {
-            JOptionPane.showMessageDialog(this, "Credenciales inválidas. Por favor, inténtelo de nuevo.", "Error de inicio de sesión", JOptionPane.ERROR_MESSAGE);
+            System.out.println("Credenciales inválidas. Acceso denegado.");
+            JOptionPane.showMessageDialog(this, "Credenciales inválidas. Acceso denegado.", "Error", JOptionPane.ERROR_MESSAGE);
         }
     }
 

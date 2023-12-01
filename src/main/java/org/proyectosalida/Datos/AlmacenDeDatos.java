@@ -1,4 +1,8 @@
-package org.proyectosalida.Constructores;
+package org.proyectosalida.Datos;
+
+import org.proyectosalida.Constructores.Cliente;
+import org.proyectosalida.Constructores.Dueño;
+import org.proyectosalida.Constructores.Usuario;
 
 import javax.swing.*;
 import java.util.*;

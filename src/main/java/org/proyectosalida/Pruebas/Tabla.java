@@ -1,5 +1,6 @@
 package org.proyectosalida.Pruebas;
 
+import org.proyectosalida.Constructores.Dueño;
 import org.proyectosalida.Datos.Conexion;
 import org.proyectosalida.Datos.Provider;
 import org.proyectosalida.GUI.Bienvenido;
@@ -23,6 +24,39 @@ public class Tabla extends JFrame {
 
         // Carga de datos en la tabla
         Provider.cargarTablaDueño(tabla);
+
+        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+        Dueño dueño = new Dueño();
+        System.out.println(dueño);
+        String tablaID = "";
+        String tablaNombre = "";
+        String tablaApellido = "";
+        String tablaTelefono = "";
+        String tablaCorreo = "";
+        String tablaPassword = "";
+        double tablaEdad = 0.0;
+        String tablaLocales = "";
+
+        for (int i = 0; i < modelo.getRowCount(); i++) {
+            tablaID = modelo.getValueAt(i, 0).toString();
+            tablaNombre = modelo.getValueAt(i, 1).toString();
+            tablaApellido = modelo.getValueAt(i, 2).toString();
+            tablaTelefono = modelo.getValueAt(i, 3).toString();
+            tablaCorreo = modelo.getValueAt(i, 4).toString();
+            tablaPassword = modelo.getValueAt(i, 5).toString();
+            tablaEdad = Double.parseDouble(modelo.getValueAt(i, 6).toString());
+            tablaLocales = modelo.getValueAt(i, 7).toString();
+        }
+
+        dueño.setId(tablaID);
+        dueño.setNombre(tablaNombre);
+        dueño.setApellido(tablaApellido);
+        dueño.setTelefono(tablaTelefono);
+        dueño.setCorreo(tablaCorreo);
+        dueño.setContraseña(tablaPassword);
+
+        System.out.println(dueño);
+
 
         this.setVisible(true);
     }

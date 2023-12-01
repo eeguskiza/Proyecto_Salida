@@ -8,7 +8,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-import org.proyectosalida.Constructores.AlmacenDeDatos;
+import org.proyectosalida.Datos.AlmacenDeDatos;
 import org.proyectosalida.Constructores.Cliente;
 import org.proyectosalida.Constructores.Usuario;
 import com.formdev.flatlaf.*;

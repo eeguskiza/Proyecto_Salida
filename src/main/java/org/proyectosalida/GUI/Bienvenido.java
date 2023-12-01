@@ -1,16 +1,12 @@
 package org.proyectosalida.GUI;
 
-import org.proyectosalida.Constructores.AlmacenDeDatos;
+import org.proyectosalida.Datos.AlmacenDeDatos;
 import org.proyectosalida.Datos.Conexion;
 import org.proyectosalida.Datos.Provider;
 import org.proyectosalida.GUI.Registro.Registro;
-import org.proyectosalida.Pruebas.Tabla;
 
 import java.awt.*;
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
-
-import static org.proyectosalida.Datos.Provider.cargarTablaDueño;
 
 public class Bienvenido extends JFrame {
 

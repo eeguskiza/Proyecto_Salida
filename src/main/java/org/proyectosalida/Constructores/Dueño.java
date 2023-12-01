@@ -24,6 +24,7 @@ public class Dueño extends Usuario{
         this.locales = locales;
     }
 
+
     @Override
     public String toString() {
         String result = "Dueño {" +

@@ -1,6 +1,6 @@
 package org.proyectosalida.GUI;
 
-import org.proyectosalida.Constructores.AlmacenDeDatos;
+import org.proyectosalida.Datos.AlmacenDeDatos;
 import org.proyectosalida.Constructores.Usuario;
 import org.proyectosalida.GUI.VentanasCliente.MainMenuCliente;
 

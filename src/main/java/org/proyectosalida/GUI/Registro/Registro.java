@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import com.toedter.calendar.JDateChooser;
 import org.proyectosalida.Constructores.*;
+import org.proyectosalida.Datos.AlmacenDeDatos;
 import org.proyectosalida.Datos.Conexion;
 import org.proyectosalida.Datos.Provider;
 import org.proyectosalida.GUI.InicioSesion;

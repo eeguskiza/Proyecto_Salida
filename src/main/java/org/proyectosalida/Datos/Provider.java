@@ -65,12 +65,10 @@ public class Provider {
         modelo.addColumn("Nombre");
         modelo.addColumn("Apellido");
         modelo.addColumn("Teléfono");
-        modelo.addColumn("Dirección");
         modelo.addColumn("Correo");
         modelo.addColumn("Contraseña");
         modelo.addColumn("Edad");
         modelo.addColumn("Locales");
-
 
         try{
             CollectionReference dueños = Conexion.db.collection("Dueño");
@@ -81,11 +79,47 @@ public class Provider {
                         document.getString("Nombre"),
                         document.getString("Apellido"),
                         document.getString("Teléfono"),
-                        document.getString("Dirección"),
                         document.getString("Correo"),
                         document.getString("Contraseña"),
                         document.getDouble("Edad"),
                         document.get("Locales")
+                });
+            }
+
+        }
+        catch(Exception e){
+            System.err.println("Error al cargar la tabla: " + e.getMessage());
+        }
+
+        tabla.setModel(modelo);
+
+    }
+
+    public static void cargarTablaCliente(JTable tabla){
+        DefaultTableModel modelo = new DefaultTableModel();
+        modelo.addColumn("ID");
+        modelo.addColumn("Nombre");
+        modelo.addColumn("Apellido");
+        modelo.addColumn("Teléfono");
+        modelo.addColumn("Correo");
+        modelo.addColumn("Contraseña");
+        modelo.addColumn("Edad");
+        modelo.addColumn("Visitas");
+
+
+        try{
+            CollectionReference dueños = Conexion.db.collection("Cliente");
+            ApiFuture<QuerySnapshot> query = dueños.get();
+            for (DocumentSnapshot document : query.get().getDocuments()) {
+                modelo.addRow(new Object[]{
+                        document.getId(),
+                        document.getString("Nombre"),
+                        document.getString("Apellido"),
+                        document.getString("Teléfono"),
+                        document.getString("Correo"),
+                        document.getString("Contraseña"),
+                        document.getDouble("Edad"),
+                        document.get("Visitas")
                 });
             }
 

@@ -3,7 +3,9 @@ package org.proyectosalida.Constructores;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.GregorianCalendar;
 
 public abstract class Usuario {
     // Atributos
@@ -22,7 +24,7 @@ public abstract class Usuario {
         this.id = "";
         this.Nombre = "";
         this.Apellido = "";
-        this.Edad = 0;
+        this.fechaNacimiento = new GregorianCalendar(2004, Calendar.AUGUST, 4).getTime();
         this.Contraseña = "";
         this.Telefono = "";
         this.Correo = "";

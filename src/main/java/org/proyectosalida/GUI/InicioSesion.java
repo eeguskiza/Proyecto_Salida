@@ -173,6 +173,7 @@ public class InicioSesion extends JFrame {
                 Dueño usuario = new Dueño(tablaID, tablaNombre, tablaApellido, new GregorianCalendar(2004, Calendar.AUGUST, 8).getTime(), tablaPassword, tablaTelefono, tablaCorreo, new ArrayList<Local>());
                 System.out.println(usuario);
                 almacenDeDatos.setDueño(usuario);
+                almacenDeDatos.setEsDueño(true);
                 new MainMenuDueño(almacenDeDatos);
                 dispose();
             } else {
@@ -191,6 +192,7 @@ public class InicioSesion extends JFrame {
                 Cliente usuario = new Cliente(tablaID, tablaNombre, tablaApellido, new GregorianCalendar(2004, Calendar.AUGUST, 8).getTime(), tablaPassword, tablaTelefono, tablaCorreo, new ArrayList<Visita>());
                 System.out.println(usuario);
                 almacenDeDatos.setCliente(usuario);
+                almacenDeDatos.setEsCliente(true);
                 new MainMenuCliente(almacenDeDatos);
                 dispose();
             } else {}

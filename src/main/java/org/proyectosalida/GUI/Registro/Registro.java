@@ -13,6 +13,8 @@ import org.proyectosalida.Datos.AlmacenDeDatos;
 import org.proyectosalida.Datos.Conexion;
 import org.proyectosalida.Datos.Provider;
 import org.proyectosalida.GUI.InicioSesion;
+import org.proyectosalida.GUI.VentanasCliente.MainMenuCliente;
+import org.proyectosalida.GUI.VentanasDueño.MainMenuDueño;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -169,6 +171,8 @@ public class Registro extends JFrame {
                             VentanaAddLocales ventanaAddLocales = new VentanaAddLocales(nuevoUsuario);
                             ventanaAddLocales.setVisible(true);
                             this.dispose();
+                            MainMenuDueño menuDueño = new MainMenuDueño(nuevoUsuario, almacenDeDatos);
+                            //MainMenuCliente menuCliente = new MainMenuCliente(nuevoUsuario);
                         }
                     } else {
                         Cliente nuevoUsuario = new Cliente(id, nombre, apellido, fechaNacimiento, contraseña, telefono, correo, new ArrayList<>());

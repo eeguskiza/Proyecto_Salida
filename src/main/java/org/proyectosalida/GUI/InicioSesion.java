@@ -121,7 +121,7 @@ public class InicioSesion extends JFrame {
         });
     }
 
-    private void checkCredentials(JTable tabla, JTextField ID, JPasswordField password) {
+    private void checkCredentials(JTable tabla, JTextField ID, JPasswordField password) { //SOLO PARA DUEÑOS DE MOMENTO
         DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
         char[] passChar = password.getPassword();
         String passwordString = new String(passChar);
@@ -154,7 +154,7 @@ public class InicioSesion extends JFrame {
 
             Dueño usuario = new Dueño(tablaID, tablaNombre, tablaApellido, new GregorianCalendar(2004 , Calendar.AUGUST, 8).getTime(), tablaPassword, tablaTelefono, tablaCorreo, new ArrayList<>());
             System.out.println(usuario);
-            new MainMenuDueño();
+            new MainMenuDueño(usuario, almacenDeDatos);
             dispose();
         } else {
             JOptionPane.showMessageDialog(this, "Credenciales inválidas. Por favor, inténtelo de nuevo.", "Error de inicio de sesión", JOptionPane.ERROR_MESSAGE);

@@ -27,7 +27,7 @@ public class MainMenuCliente extends JFrame {
     public AlmacenDeDatos almacen;
     private JLabel labelEncabezado;
 
-    public MainMenuCliente(Usuario usuario, AlmacenDeDatos almacenDeDatos) {
+    public MainMenuCliente(Cliente usuario, AlmacenDeDatos almacenDeDatos) {
         setTitle("Main Menu");
         setSize(1200, 800);
         setDefaultCloseOperation(EXIT_ON_CLOSE);

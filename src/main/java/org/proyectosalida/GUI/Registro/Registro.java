@@ -162,16 +162,14 @@ public class Registro extends JFrame {
                             ventanaAddLocales.setVisible(true);
                             this.dispose();
                         }
-                        almacenDeDatos.getUsuarios().put(nuevoUsuario.getId(), nuevoUsuario);
                     } else {
                         Cliente nuevoUsuario = new Cliente(id, nombre, apellido, fechaNacimiento, contraseña, telefono, correo, new ArrayList<>());
                         System.out.println(nuevoUsuario.toString());
                         guardarCliente(nuevoUsuario);
-                        almacenDeDatos.getUsuarios().put(nuevoUsuario.getId(), nuevoUsuario);
 
                         JOptionPane.showMessageDialog(this, "Usuario creado con éxito! (Local)", "Éxito", JOptionPane.INFORMATION_MESSAGE);
 
-                        InicioSesion inicioSesion = new InicioSesion(padre, almacenDeDatos, null);
+                        InicioSesion inicioSesion = new InicioSesion(padre);
                         this.dispose();
                         padre.dispose();
                         inicioSesion.setVisible(true);

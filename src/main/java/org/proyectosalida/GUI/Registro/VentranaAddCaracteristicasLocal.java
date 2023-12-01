@@ -1,16 +1,16 @@
 package org.proyectosalida.GUI.Registro;
 
 import javax.swing.*;
-import org.proyectosalida.Constructores.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import org.proyectosalida.Constructores.Caracteristica;
+import org.proyectosalida.Constructores.Dueño;
 
-public class CaracteristicasLocal extends JFrame {
+public class VentranaAddCaracteristicasLocal extends JFrame {
     protected Caracteristica caracteristica;
-    public CaracteristicasLocal(JFrame padre, ArrayList<Caracteristica> caracteristicas) {
+    public VentranaAddCaracteristicasLocal(JFrame padre, ArrayList<Caracteristica> caracteristicas) {
         JButton Aceptar=new JButton("ACEPTAR");
 
         JPanel panelcaracteristicas = new JPanel(new BorderLayout(0,1));
@@ -49,9 +49,18 @@ public class CaracteristicasLocal extends JFrame {
     }
 
     public static void main(String[] args) {
-        // Crear un JFrame vacío para pasar como padre
-        JFrame padre = new JFrame();
-        padre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        new CaracteristicasLocal(padre, new ArrayList<>());
+        try {
+            // Establecer el look and feel de Nimbus
+            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Manejar la excepción como prefieras
+        }
+
+        SwingUtilities.invokeLater(() -> {
+            JFrame padre = new JFrame();
+            padre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+            new VentranaAddCaracteristicasLocal(padre, new ArrayList<>());
+        });
     }
 }

@@ -5,8 +5,6 @@ import org.proyectosalida.Datos.Provider;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -62,7 +60,7 @@ public class VentanaAddLocales extends JFrame {
 
         añadirC.addActionListener(e -> {
             this.setVisible(false);
-            new CaracteristicasLocal(this,caracteristicas);
+            new VentranaAddCaracteristicasLocal(this,caracteristicas);
         });
 
         botonGuardar.addActionListener(e -> {

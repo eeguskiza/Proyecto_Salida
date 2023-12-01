@@ -11,9 +11,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class MenuPersonal extends JFrame {
 
@@ -39,7 +37,7 @@ public class MenuPersonal extends JFrame {
         JPanel pEncabezado = new JPanel(new BorderLayout(10, 0));
         add(pEncabezado, BorderLayout.NORTH);
 
-        // Panel para la imagen del usuario
+        // PANEL IMAGEN DEL USUARIO
         JPanel panelIzquierdo = new JPanel();
         panelIzquierdo.setBorder(BorderFactory.createEmptyBorder(0, 10, 10, 10));
         ImageIcon imagen = new ImageIcon("src/main/resources/images/default_profile.png"); // Ruta de tu imagen
@@ -48,7 +46,7 @@ public class MenuPersonal extends JFrame {
         JLabel etiquetaImagen = new JLabel(imagenEscalada);
         panelIzquierdo.add(etiquetaImagen);
 
-        // Panel para el nombre y apellidos del usuario
+        // PANEL NOMBRE APELLIDOS DEL USUARIO
         JPanel panelDerecho = new JPanel(new GridLayout(2, 1));
         panelDerecho.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         JLabel nombreLabel = new JLabel(usuario.getNombre(), SwingConstants.CENTER);
@@ -61,12 +59,17 @@ public class MenuPersonal extends JFrame {
         pEncabezado.add(panelIzquierdo, BorderLayout.WEST);
         pEncabezado.add(panelDerecho, BorderLayout.CENTER);
 
-        // Creación de etiquetas clickeables
+        // ------------- APARTADOS DEL MENU - ETIQUETAS CLICKEABLES ---------------------
         panel.add(clickableLabel("Editar Perfil", 1));
         panel.add(clickableLabel("Ajustes", 2));
-        panel.add(clickableLabel("Lista de Visitados", 3));
-        panel.add(clickableLabel("Próximos Eventos", 4));
-        panel.add(clickableLabel("Bares Nuevos", 5));
+        if(usuario.getClass().equals(Dueño.class)){
+            panel.add(clickableLabel("Lista de Visitados", 3));
+            panel.add(clickableLabel("Próximos Eventos", 4));
+        }else{
+            panel.add(clickableLabel("Añade Locales", 5));
+            panel.add(clickableLabel("Configura Proximos Eventos", 6));
+        }
+
         //Boton Atras
         JButton atras = new JButton("Atras");
         atras.addMouseListener(new MouseAdapter() {
@@ -83,37 +86,9 @@ public class MenuPersonal extends JFrame {
         setVisible(true);
     }
 
-    private JLabel clickableLabel(String text, int code) {
-        JLabel label = new JLabel(text, SwingConstants.CENTER);
-        label.setOpaque(true);
-        label.setBackground(new Color(245, 245, 245));
-        label.setFont(new Font("Arial", Font.PLAIN, 14));
-        label.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
-        label.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
 
-        label.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if(code==1){ //editar perfil
-                    editarPerfil(u);
-                    setVisible(false);
-                }
-            }
 
-            @Override
-            public void mouseEntered(MouseEvent e) {
-                label.setBackground(new Color(230, 230, 230));
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e) {
-                label.setBackground(new Color(245, 245, 245));
-            }
-        });
-
-        return label;
-    }
-
+    //METODOS PARA EDITAR PERFIL (OPCION 1)
     private void editarPerfil(Usuario usuario){
         JFrame frame = new JFrame();
         frame.setTitle("Menú Personal: " + usuario.getNombre());
@@ -125,19 +100,29 @@ public class MenuPersonal extends JFrame {
         ImageIcon icon_hid = new ImageIcon("src/main/resources/images/password_hidden.jpg"); Image image_hid = icon_hid.getImage().getScaledInstance(30,30, Image.SCALE_SMOOTH);
         ImageIcon icon_sho = new ImageIcon("src/main/resources/images/password_shown.jpg"); Image image_sho = icon_sho.getImage().getScaledInstance(30,30, Image.SCALE_SMOOTH);
 
-
-        JPanel main = new JPanel(new GridLayout(7,2,10,10)); frame.add(main);
+        int nRowsMenu = 7;
+        if(usuario.getClass().equals(Dueño.class)){
+            nRowsMenu = 8;
+        }
+        JPanel  main = new JPanel(new GridLayout(nRowsMenu,2,10,10));
+        frame.add(main);
         JPanel panelContraseña = new JPanel(new BorderLayout()); JButton verContraseña = new JButton(new ImageIcon(image_hid)); verContraseña.setBackground(Color.WHITE); panelContraseña.add(new JPasswordField(u.getContraseña())); panelContraseña.add(verContraseña, BorderLayout.EAST);
         main.add(new JLabel("ID (@)", JLabel.CENTER)); main.add(new JTextField(u.getId()));
         main.add(new JLabel("Nombre", JLabel.CENTER)); main.add(new JTextField(u.getNombre()));
         main.add(new JLabel("Apellido", JLabel.CENTER)); main.add(new JTextField(u.getApellido()));
-        main.add(new JLabel("Edad", JLabel.CENTER)); main.add(new JTextField(u.getEdad()));
+        main.add(new JLabel("Edad", JLabel.CENTER)); main.add(new JTextField(u.getEdad(u.getFechaNacimiento())));
         main.add(new JLabel("Contraseña", JLabel.CENTER)); main.add(panelContraseña);
         main.add(new JLabel("Tlf.", JLabel.CENTER)); main.add(new JTextField(u.getTelefono()));
         main.add(new JLabel("Correo", JLabel.CENTER)); main.add(new JTextField(u.getCorreo()));
+        if(usuario.getClass().equals(Dueño.class)){
+            main.add(new JLabel("Locales", JLabel.CENTER)); main.add(clickableLabel("Modificar Locales", 7));
+        }
 
+        JPanel botonera = new JPanel(new FlowLayout());
+        JButton atras = new JButton("Atzerakarga");
         JButton guardarCambios = new JButton("Actualizar");
-        frame.add(guardarCambios, BorderLayout.SOUTH);
+        botonera.add(atras); botonera.add(guardarCambios);
+        frame.add(botonera, BorderLayout.SOUTH);
         frame.setVisible(true);
 
         //METODOS DEL PANEL EDITAR DATOS
@@ -177,8 +162,14 @@ public class MenuPersonal extends JFrame {
 
         });
 
+        atras.addActionListener(e ->{
+            frame.dispose();
+            this.setVisible(true);
+        });
+
     }
 
+   // private void
 
     private void actualizar(Dueño dueño) {
         String id = dueño.getId();  // ID del documento
@@ -202,6 +193,46 @@ public class MenuPersonal extends JFrame {
             System.out.println("Error" + e.getMessage());
         }
     }
+
+
+
+    private JLabel clickableLabel(String text, int codigo) {
+        JLabel label = new JLabel(text, SwingConstants.CENTER);
+        label.setOpaque(true);
+        label.setBackground(new Color(245, 245, 245));
+        label.setFont(new Font("Arial", Font.PLAIN, 14));
+        label.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY, 1));
+        label.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+
+        final int code = codigo;
+        label.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(code==1){ //editar perfil
+                    editarPerfil(u);
+                    setVisible(false);
+                }else if(code==7){ //modifica locales
+
+                }
+
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+                label.setBackground(new Color(230, 230, 230));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
+                label.setBackground(new Color(245, 245, 245));
+            }
+        });
+
+        return label;
+    }
+
+
+
     public static void main(String[] args) {
         // Configuración del look and feel
         try {
@@ -211,8 +242,29 @@ public class MenuPersonal extends JFrame {
         }
 
         SwingUtilities.invokeLater(() -> {
-            Conexion.conectar();
-            new MenuPersonal(new Cliente(), null).setVisible(true);
+            //Conexion.conectar();
+            String link1 = "https://www.tripadvisor.es/Restaurant_Review-g187454-d5615756-Reviews-Bar_Monty-Bilbao_Province_of_Vizcaya_Basque_Country.html";
+            ArrayList<Horario> horariosMonty = new ArrayList<>();
+            horariosMonty.add(new Horario("Lunes", "07:30", "23:30"));
+            horariosMonty.add(new Horario("Martes", "07:30", "23:30"));
+            horariosMonty.add(new Horario("Miercoles", "07:30", "23:30"));
+            horariosMonty.add(new Horario("Jueves", "07:30", "23:30"));
+            horariosMonty.add(new Horario("Viernes", "07:30", "23:30"));
+            horariosMonty.add(new Horario("Sabado", "07:30", "23:30"));
+            horariosMonty.add(new Horario("Domingo", "07:30", "16:00"));
+            ArrayList<Caracteristica>caracteristicasMonty=new ArrayList<>();
+            caracteristicasMonty.add(Caracteristica.PINTXOS);
+            caracteristicasMonty.add(Caracteristica.TERRAZA);
+            caracteristicasMonty.add(Caracteristica.CERVEZAS);
+            caracteristicasMonty.add(Caracteristica.COMBINADOS);
+            Bar Monty = new Bar("Monty", "Heros Kalea, 16, Bilbo, Bizkaia", "48009", 75, "944 23 63 36", 0, 0, link1, horariosMonty, true,caracteristicasMonty);
+
+            ArrayList<Local> locales = new ArrayList<>();
+            locales.add(Monty);
+
+            Dueño e = new Dueño("enekoalvareez", "Eneko", "Alvarez", new GregorianCalendar(2004, Calendar.JUNE, 23).getTime(), "Contraseña", "687 322 612", "ealvarez@opendeusto.es", locales);
+            Cliente m = new Cliente("maialenblancoo","Maialen", "Blanco", new GregorianCalendar(2004, Calendar.MAY, 4).getTime(), "Contraseña2", "687 322 612", "maialen.blanco@opendeusto.es", null);
+            new MenuPersonal(m, null).setVisible(true);
         });
     }
 }

@@ -11,9 +11,6 @@ import javax.swing.*;
 public class Bienvenido extends JFrame {
 
     private static final long serialVersionUID = 1L;
-    private AlmacenDeDatos almacenDeDatos;
-
-
 
 
     public Bienvenido() {
@@ -21,8 +18,6 @@ public class Bienvenido extends JFrame {
         this.setSize(1000, 600);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        //creamos el almacen de datos
-        almacenDeDatos = new AlmacenDeDatos();
 
         // Panel principal personalizado con imagen de fondo
         JPanel backgroundPanel = new JPanel() {
@@ -56,7 +51,7 @@ public class Bienvenido extends JFrame {
 
         //Logica botones
         registrarse.addActionListener(e -> {
-            new Registro(this, almacenDeDatos);
+            new Registro(this);
             this.setVisible(false);
         });
 

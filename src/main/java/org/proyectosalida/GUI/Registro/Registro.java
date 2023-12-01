@@ -26,7 +26,7 @@ public class Registro extends JFrame {
     JButton botonVerContraseña;
     JTextField textFieldContraseña = null;
 
-    public Registro(JFrame padre, AlmacenDeDatos almacenDeDatos) {
+    public Registro(JFrame padre) {
 
         viendoContraseña=false;
         botonVerContraseña = new JButton();
@@ -171,8 +171,8 @@ public class Registro extends JFrame {
                             VentanaAddLocales ventanaAddLocales = new VentanaAddLocales(nuevoUsuario);
                             ventanaAddLocales.setVisible(true);
                             this.dispose();
-                            MainMenuDueño menuDueño = new MainMenuDueño(nuevoUsuario, almacenDeDatos);
-                            //MainMenuCliente menuCliente = new MainMenuCliente(nuevoUsuario);
+                            //REDIRIGE DIRECTAMENTE A INICIA SESION HABIENDO GUARDADO LOS DATOS EN LA NUBE
+                            InicioSesion inicioSesion = new InicioSesion(padre);
                         }
                     } else {
                         Cliente nuevoUsuario = new Cliente(id, nombre, apellido, fechaNacimiento, contraseña, telefono, correo, new ArrayList<>());
@@ -248,7 +248,7 @@ public class Registro extends JFrame {
 
         SwingUtilities.invokeLater(() -> {
             //Conexion.conectar();
-            new Registro(null, new AlmacenDeDatos());
+            new Registro(null);
         });
 
     }

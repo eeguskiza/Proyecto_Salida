@@ -15,6 +15,9 @@ public class AlmacenDeDatos {
     protected ArrayList<Integer> valoresVotaciones;
     private boolean votoDiarioEncuesta; //El boolean va aqui ya que sino siempre que se habra y cierre la main ventana se va a restablecer el valor, aqui no. Solo se puede una vez así.
 
+    private Cliente usuario;
+    private Dueño dueño;
+
     public AlmacenDeDatos(){
         //Inicializamos hashmap (con bd no sería necesario creo)
 
@@ -22,6 +25,7 @@ public class AlmacenDeDatos {
         progressBarsVotaciones = new ArrayList<>();
         valoresVotaciones = new ArrayList<>();
         votoDiarioEncuesta = false;
+        usuario = null;
 
         //Esto es para tener algo ya añadido
         //Cliente eneko = new Cliente("eneko", "Eneko", "Alvarez", new GregorianCalendar(2004, Calendar.AUGUST, 4).getTime(), "eneko04", "634556788", "eneko.alvarez@opendeusto.es", new ArrayList<>());
@@ -67,4 +71,17 @@ public class AlmacenDeDatos {
         this.valoresVotaciones = valoresVotaciones;
     }
 
+    public Cliente getUsuario() {
+        return usuario;
+    }
+    public void setUsuario(Cliente usuario) {
+        this.usuario = usuario;
+    }
+
+    public Dueño getDueño() {
+        return dueño;
+    }
+    public void setDueño(Dueño dueño) {
+        this.dueño = dueño;
+    }
 }

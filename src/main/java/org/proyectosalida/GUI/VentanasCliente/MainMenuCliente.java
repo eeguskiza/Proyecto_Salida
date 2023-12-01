@@ -27,13 +27,14 @@ public class MainMenuCliente extends JFrame {
     public AlmacenDeDatos almacen;
     private JLabel labelEncabezado;
 
-    public MainMenuCliente(Cliente usuario, AlmacenDeDatos almacenDeDatos) {
+    public MainMenuCliente(AlmacenDeDatos almacenDeDatos) {
         setTitle("Main Menu");
         setSize(1200, 800);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
         almacen = almacenDeDatos;
+        Cliente usuario = almacen.getUsuario();
 
         // Panel para el botón del menú
         JPanel panelMenu = new JPanel(new BorderLayout());
@@ -280,7 +281,7 @@ public class MainMenuCliente extends JFrame {
         }
 
         SwingUtilities.invokeLater(() -> {
-            new MainMenuCliente(new Cliente(), new AlmacenDeDatos());
+            new MainMenuCliente(new AlmacenDeDatos());
         });
     }
 

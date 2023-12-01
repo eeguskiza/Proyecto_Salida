@@ -61,7 +61,7 @@ public class VentanaAddLocales extends JFrame {
         panel.add(botonVolver);
 
         añadirC.addActionListener(e -> {
-
+            this.setVisible(false);
             new CaracteristicasLocal(this,caracteristicas);
         });
 

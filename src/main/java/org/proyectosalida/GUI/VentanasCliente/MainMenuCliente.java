@@ -34,7 +34,7 @@ public class MainMenuCliente extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
         almacen = almacenDeDatos;
-        Cliente usuario = almacen.getUsuario();
+        Cliente usuario = almacen.getCliente();
 
         // Panel para el botón del menú
         JPanel panelMenu = new JPanel(new BorderLayout());
@@ -67,7 +67,7 @@ public class MainMenuCliente extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setVisible(false);
-                new MenuPersonal(usuario, MainMenuCliente.this);
+                new MenuPersonal(almacenDeDatos, MainMenuCliente.this);
             }
         });
 

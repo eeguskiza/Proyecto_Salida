@@ -153,6 +153,8 @@ public class InicioSesion extends JFrame {
 
             Dueño usuario = new Dueño(tablaID, tablaNombre, tablaApellido, new GregorianCalendar(2004 , Calendar.AUGUST, 8).getTime(), tablaPassword, tablaTelefono, tablaCorreo, new ArrayList<>());
             System.out.println(usuario);
+            new MainMenuCliente(usuario, null);
+            dispose();
         } else {
             JOptionPane.showMessageDialog(this, "Credenciales inválidas. Por favor, inténtelo de nuevo.", "Error de inicio de sesión", JOptionPane.ERROR_MESSAGE);
         }

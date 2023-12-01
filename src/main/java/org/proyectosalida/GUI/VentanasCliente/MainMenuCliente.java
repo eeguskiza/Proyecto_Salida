@@ -136,27 +136,27 @@ public class MainMenuCliente extends JFrame {
         // Creación de los paneles de encuesta con barras de progreso
         JPanel panelStage = crearPanelEncuesta("Stage Live", 10);
         JProgressBar pbStage = (JProgressBar) panelStage.getComponent(1);
-        almacen.getProgressBarsVotaciones().add(pbStage);
+        //almacen.getProgressBarsVotaciones().add(pbStage);
 
         JPanel panelBack = crearPanelEncuesta("Back Room", 10);
         JProgressBar pbBack = (JProgressBar) panelBack.getComponent(1);
-        almacen.getProgressBarsVotaciones().add( pbBack);
+        //almacen.getProgressBarsVotaciones().add( pbBack);
 
         JPanel panelMoma = crearPanelEncuesta("Moma", 10);
         JProgressBar pbMoma = (JProgressBar) panelMoma.getComponent(1);
-        almacen.getProgressBarsVotaciones().add(pbMoma);
+        //almacen.getProgressBarsVotaciones().add(pbMoma);
 
         JPanel panelExtra1 = crearPanelEncuesta("Extra 1", 10);
         JProgressBar pbExtra1 = (JProgressBar) panelExtra1.getComponent(1);
-        almacen.getProgressBarsVotaciones().add( pbExtra1);
+        //almacen.getProgressBarsVotaciones().add( pbExtra1);
 
         JPanel panelExtra2 = crearPanelEncuesta("Extra 2", 10);
         JProgressBar pbExtra2 = (JProgressBar) panelExtra2.getComponent(1);
-        almacen.getProgressBarsVotaciones().add(pbExtra2);
+        //almacen.getProgressBarsVotaciones().add(pbExtra2);
 
         JPanel panelExtra3 = crearPanelEncuesta("Extra 3", 10);
         JProgressBar pbExtra3 = (JProgressBar) panelExtra3.getComponent(1);
-        almacen.getProgressBarsVotaciones().add(pbExtra3);
+        //almacen.getProgressBarsVotaciones().add(pbExtra3);
 
         // Añadiendo todos los paneles al panel de encuestas
         pEncuesta.add(panelStage);

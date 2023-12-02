@@ -19,7 +19,11 @@ public class VentanaSeleccionCaracteristicas extends JFrame {
     private List<Caracteristica> datos;
     private JTextArea textArea;
     private JPanel checkboxesPanel;
+    private JPanel panel;
     private ArrayList<Caracteristica> caracteristicasSeleccionadas;
+    private JXSearchField searchField;
+    private JScrollPane sp;
+
 
     public VentanaSeleccionCaracteristicas(AlmacenDeDatos almacenDeDatos) {
         super("Seleccion de Caracteristicas");
@@ -31,15 +35,15 @@ public class VentanaSeleccionCaracteristicas extends JFrame {
         datos = Arrays.asList(Caracteristica.values());
 
         textArea = new JTextArea();
-        JScrollPane scrollPane = new JScrollPane(textArea);
+        sp = new JScrollPane(textArea);
 
         checkboxesPanel = new JPanel();
         caracteristicasSeleccionadas = new ArrayList<Caracteristica>();
 
-        JPanel panel = new JPanel();
+        panel = new JPanel();
         panel.setLayout(new BorderLayout());
 
-        JXSearchField searchField = new JXSearchField("Buscar...");
+        searchField = new JXSearchField("Buscar...");
         searchField.setPreferredSize(new Dimension(200, 30));
 
         searchField.addActionListener(e -> {

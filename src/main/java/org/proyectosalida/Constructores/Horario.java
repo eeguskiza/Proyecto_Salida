@@ -40,6 +40,6 @@ public class Horario {
 
     @Override
     public String toString() {
-        return "[" + dia + " --> " + horaInicio + " - " + horaFin + "]";
+        return dia + " --> " + horaInicio + " - " + horaFin;
     }
 }

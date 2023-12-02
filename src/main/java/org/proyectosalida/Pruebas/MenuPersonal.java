@@ -99,7 +99,7 @@ public class MenuPersonal extends JFrame {
 
 
     //METODOS PARA EDITAR PERFIL (OPCION 1)
-    private void editarPerfil(Usuario usuario, Boolean editable){
+    public void editarPerfil(Usuario usuario, Boolean editable){
         System.out.println(editable);
         frame = new JFrame();
         frame.setTitle("Menú Personal: " + usuario.getNombre());
@@ -241,8 +241,8 @@ public class MenuPersonal extends JFrame {
                     VerLocales ventanaVerLocales = new VerLocales((Dueño) usuario, frame);
                     ventanaVerLocales.setVisible(true);
                 }else if (code==2){
-                    VentanaAjustes ventanaAjustes = new VentanaAjustes();
-                    ventanaAjustes.frame.setVisible(true);
+                    abrirVentanaAjustes(); //Mas facil si lo hago desde afuera del listener
+                    setVisible(false);
                 }
 
             }
@@ -262,6 +262,14 @@ public class MenuPersonal extends JFrame {
     }
 
 
+    protected JFrame getPadre(){
+        return frame;
+    }
+
+    private void abrirVentanaAjustes(){
+        VentanaAjustes ventanaAjustes = new VentanaAjustes(usuario,this);
+        ventanaAjustes.frame.setVisible(true);
+    }
 
     public static void main(String[] args) {
         // Configuración del look and feel
@@ -274,7 +282,7 @@ public class MenuPersonal extends JFrame {
         SwingUtilities.invokeLater(() -> {
             //Conexion.conectar();
             AlmacenDeDatos almacen = new AlmacenDeDatos();
-            new MenuPersonal(almacen.getUsuarios().get(0), almacen, null).setVisible(true);
+            new MenuPersonal(almacen.getUsuariosPrueba().get(0), almacen, null).setVisible(true);
         });
     }
 }

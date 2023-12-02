@@ -1,5 +1,8 @@
 package org.proyectosalida.Pruebas;
 
+import org.proyectosalida.Constructores.Usuario;
+import org.proyectosalida.Datos.AlmacenDeDatos;
+
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -36,6 +39,9 @@ public class VentanaAjustes {
     private JButton btnNotificaciones;
     private JButton btnAyuda;
     private JButton btnBotonVolver;
+    private Usuario usuario;
+    private MenuPersonal menuPersonal;
+    private JFrame padre;
 
 
 
@@ -43,7 +49,8 @@ public class VentanaAjustes {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    VentanaAjustes window = new VentanaAjustes();
+                    AlmacenDeDatos almacenDeDatos = new AlmacenDeDatos();
+                    VentanaAjustes window = new VentanaAjustes(almacenDeDatos.getUsuariosPrueba().get(0), null);
                     window.frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -53,7 +60,12 @@ public class VentanaAjustes {
     }
 
 
-    public VentanaAjustes() {
+    public VentanaAjustes(Usuario u, MenuPersonal mp) {
+        usuario = u;
+        menuPersonal = mp;
+        if(mp != null){
+            padre = menuPersonal.getPadre();
+        }
         initialize();
     }
 
@@ -63,6 +75,7 @@ public class VentanaAjustes {
         frame.setBounds(100, 100, 350, 500);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(new GridLayout(1, 4));
+        frame.setLocationRelativeTo(null);
 
         pPrincipal = new JPanel();
         frame.getContentPane().add(pPrincipal);
@@ -85,7 +98,7 @@ public class VentanaAjustes {
         pPrincipal.add(pAccesoCuenta);
         pAccesoCuenta.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
-        lblAccesoCuenta = new JLabel("Informacion de la cuenta       ");
+        lblAccesoCuenta = new JLabel("Modificar datos de la cuenta ");
         lblAccesoCuenta.setFont(new Font("Tahoma", Font.BOLD, 14));
         pAccesoCuenta.add(lblAccesoCuenta);
 
@@ -128,6 +141,30 @@ public class VentanaAjustes {
         btnBotonVolver = new JButton("Volver");
         btnBotonVolver.setFont(new Font("Tahoma", Font.BOLD, 14));
         pCentro.add(btnBotonVolver);
+
+
+        //ActionListener de los botones
+        btnAccesoCuenta.addActionListener(e -> {
+            menuPersonal.editarPerfil(usuario, true);
+            frame.setVisible(false);
+        });
+
+        btnBotonVolver.addActionListener(e -> {
+            frame.dispose();
+            padre.setVisible(true);
+        });
+
+        btnNotificaciones.addActionListener(e -> {
+            VentanaGestionNotificaciones vNotificaciones = new VentanaGestionNotificaciones(padre);
+            vNotificaciones.frame.setVisible(true);
+            frame.setVisible(false);
+        });
+
+        btnAyuda.addActionListener(e -> {
+            VentanaPreguntasFrecuentes vPreguntas = new VentanaPreguntasFrecuentes(padre);
+            vPreguntas.frame.setVisible(true);
+            frame.setVisible(false);
+        });
     }
 }
 

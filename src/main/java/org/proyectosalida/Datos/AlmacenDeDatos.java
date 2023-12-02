@@ -15,6 +15,7 @@ public class AlmacenDeDatos {
     private Cliente cliente;
     private Dueño dueño;
      private ArrayList<Usuario> usuarios;
+     private ArrayList<Usuario> usuariosPrueba;
 
     private boolean esDueño;
     private boolean esCliente;
@@ -26,6 +27,7 @@ public class AlmacenDeDatos {
         votoDiarioEncuesta = false;
         caracteristicas = new ArrayList<>();
         usuarios = new ArrayList<>();
+        usuariosPrueba = new ArrayList<>();
 
         esDueño = false;
         esCliente = false;
@@ -63,7 +65,7 @@ public class AlmacenDeDatos {
         Cliente cliente = new Cliente("maialenblancoo","Maialen", "Blanco", new GregorianCalendar(2004, Calendar.MAY, 4).getTime(), "Contraseña2", "687 322 612", "maialen.blanco@opendeusto.es", null);
 
 
-        usuarios.add(dueño);
+        usuariosPrueba.add(dueño); //todo Esto hay que quitarlo para que funcione bien la base de datos
 
         //muestra de votaciones de encuesta
         valoresVotaciones.add(3);valoresVotaciones.add(8);valoresVotaciones.add(7);valoresVotaciones.add(4);valoresVotaciones.add(3);valoresVotaciones.add(5);
@@ -140,5 +142,14 @@ public class AlmacenDeDatos {
 
     public void setCaracteristicas(ArrayList<Caracteristica> caracteristicas) {
         this.caracteristicas = caracteristicas;
+    }
+
+    //ESTO SE PUEDE QUITAR UNA VEZ TERMINADO EL PROYECTO Y FUNCIONE CON BD COMPLETAMENTE
+    public ArrayList<Usuario> getUsuariosPrueba() {
+        return usuariosPrueba;
+    }
+
+    public void setUsuariosPrueba(ArrayList<Usuario> usuariosPrueba) {
+        this.usuariosPrueba = usuariosPrueba;
     }
 }

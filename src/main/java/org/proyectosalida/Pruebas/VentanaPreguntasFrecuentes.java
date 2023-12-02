@@ -14,7 +14,7 @@ import javax.swing.JButton;
 
 public class VentanaPreguntasFrecuentes {
 
-    private JFrame frame;
+    JFrame frame;
 
     private JPanel pTitulo;
     private JPanel pPrincipal;
@@ -28,6 +28,7 @@ public class VentanaPreguntasFrecuentes {
     private JButton btnBotonVolver;
 
     private JScrollPane sp;
+    private JFrame padre;
 
 
 
@@ -35,7 +36,7 @@ public class VentanaPreguntasFrecuentes {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    VentanaPreguntasFrecuentes window = new VentanaPreguntasFrecuentes();
+                    VentanaPreguntasFrecuentes window = new VentanaPreguntasFrecuentes(null);
                     window.frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -45,7 +46,8 @@ public class VentanaPreguntasFrecuentes {
     }
 
 
-    public VentanaPreguntasFrecuentes() {
+    public VentanaPreguntasFrecuentes(JFrame p ) {
+        padre = p;
         initialize();
     }
 
@@ -90,6 +92,11 @@ public class VentanaPreguntasFrecuentes {
         btnBotonVolver.setVerticalAlignment(SwingConstants.BOTTOM);
         btnBotonVolver.setFont(new Font("Tahoma", Font.BOLD, 14));
         pBotonVolver.add(btnBotonVolver);
+
+        btnBotonVolver.addActionListener(e -> {
+            frame.dispose();
+            padre.setVisible(true);
+        });
     }
 
 }

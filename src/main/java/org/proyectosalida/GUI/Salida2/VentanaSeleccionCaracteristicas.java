@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.proyectosalida.Constructores.Caracteristica;
+import org.proyectosalida.Datos.AlmacenDeDatos;
 
 public class VentanaSeleccionCaracteristicas extends JFrame {
 
@@ -18,7 +19,7 @@ public class VentanaSeleccionCaracteristicas extends JFrame {
     private JPanel checkboxesPanel;
     private ArrayList<Caracteristica> caracteristicasSeleccionadas;
 
-    public VentanaSeleccionCaracteristicas(ArrayList<Caracteristica> caracteristicas) {
+    public VentanaSeleccionCaracteristicas(AlmacenDeDatos almacenDeDatos) {
         super("Seleccion de Caracteristicas");
         setSize(500, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -31,7 +32,7 @@ public class VentanaSeleccionCaracteristicas extends JFrame {
         JScrollPane scrollPane = new JScrollPane(textArea);
 
         checkboxesPanel = new JPanel();
-        caracteristicasSeleccionadas = new ArrayList<>(caracteristicas);
+        caracteristicasSeleccionadas = new ArrayList<>(almacenDeDatos.getCaracteristicas());
 
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
@@ -102,7 +103,7 @@ public class VentanaSeleccionCaracteristicas extends JFrame {
         }
 
         SwingUtilities.invokeLater(() -> {
-            VentanaSeleccionCaracteristicas ventana = new VentanaSeleccionCaracteristicas(new ArrayList<>());
+            VentanaSeleccionCaracteristicas ventana = new VentanaSeleccionCaracteristicas(new AlmacenDeDatos());
             ventana.setVisible(true);
         });
     }

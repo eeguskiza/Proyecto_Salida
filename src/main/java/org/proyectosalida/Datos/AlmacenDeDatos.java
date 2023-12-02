@@ -11,7 +11,7 @@ public class AlmacenDeDatos {
     protected ArrayList<JProgressBar> progressBarsVotaciones;
     protected ArrayList<Integer> valoresVotaciones;
     private boolean votoDiarioEncuesta; //El boolean va aqui ya que sino siempre que se habra y cierre la main ventana se va a restablecer el valor, aqui no. Solo se puede una vez así.
-
+    private ArrayList<Caracteristica> caracteristicas;
     private Cliente cliente;
     private Dueño dueño;
      private ArrayList<Usuario> usuarios;
@@ -26,7 +26,7 @@ public class AlmacenDeDatos {
         progressBarsVotaciones = new ArrayList<>();
         valoresVotaciones = new ArrayList<>();
         votoDiarioEncuesta = false;
-
+        caracteristicas = new ArrayList<>();
         usuarios = new ArrayList<>();
 
         esDueño = false;
@@ -120,5 +120,16 @@ public class AlmacenDeDatos {
 
     public void setUsuario(ArrayList<Usuario> clientes) {
         this.usuarios = clientes;
+    }
+
+    public ArrayList<Caracteristica> getCaracteristicas() {
+        for (Caracteristica c : Caracteristica.values()) {
+            caracteristicas.add(c);
+        }
+        return caracteristicas;
+    }
+
+    public void setCaracteristicas(ArrayList<Caracteristica> caracteristicas) {
+        this.caracteristicas = caracteristicas;
     }
 }

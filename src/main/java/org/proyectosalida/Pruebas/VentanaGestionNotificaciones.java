@@ -23,6 +23,7 @@ public class VentanaGestionNotificaciones {
     private JPanel pPermitir;
     private JPanel pFiltrar;
     private JPanel pBotonVolver;
+    private JPanel pNorte;
 
     private JLabel lblGestorDe;
     private JLabel lblNombreCuenta;
@@ -110,8 +111,11 @@ public class VentanaGestionNotificaciones {
 
         btnBotonVolver = new JButton("Volver");
         btnBotonVolver.setVerticalAlignment(SwingConstants.BOTTOM);
-        btnBotonVolver.setFont(new Font("Tahoma", Font.BOLD, 16));
+        btnBotonVolver.setFont(new Font("Tahoma", Font.BOLD, 14));
         pCentro.add(btnBotonVolver);
+
+        pNorte = new JPanel();
+        pBotonVolver.add(pNorte, BorderLayout.NORTH);
 
     }
 

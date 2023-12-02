@@ -70,8 +70,15 @@
         <dependency>
             <groupId>org.threeten</groupId>
             <artifactId>threetenbp</artifactId>
-            <version>1.5.1</version> <!-- Reemplaza con la última versión disponible -->
+            <version>1.5.1</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.swinglabs.swingx</groupId>
+            <artifactId>swingx-all</artifactId>
+            <version>1.6.5-1</version>
+        </dependency>
+
 
     </dependencies>
 

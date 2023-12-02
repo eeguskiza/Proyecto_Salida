@@ -43,7 +43,7 @@ public class VentranaAddCaracteristicasLocal extends JFrame {
         panelcaracteristicas.add(gustosPanel, BorderLayout.CENTER);
         panelcaracteristicas.add(Aceptar, BorderLayout.SOUTH);
         this.add(panelcaracteristicas);
-        this.setSize(400, 300); // Puede que necesites ajustar el tamaño para que todo quepa bien
+        this.setSize(800, 800); // Puede que necesites ajustar el tamaño para que todo quepa bien
         this.setVisible(true);
         this.setLocationRelativeTo(padre); // Establecer la ubicación relativa al padre
     }

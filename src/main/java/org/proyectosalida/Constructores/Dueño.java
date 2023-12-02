@@ -20,8 +20,11 @@ public class Dueño extends Usuario{
         return locales;
     }
 
-    public void setLocales(ArrayList<Local> locales) {
-        this.locales = locales;
+    public void agregarLocal(Local local) {
+        if (locales == null) {
+            locales = new ArrayList<>();
+        }
+        locales.add(local);
     }
 
 

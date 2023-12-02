@@ -20,8 +20,6 @@ public class AlmacenDeDatos {
     private boolean esCliente;
 
     public AlmacenDeDatos(){
-        //Inicializamos hashmap (con bd no sería necesario creo)
-
 
         progressBarsVotaciones = new ArrayList<>();
         valoresVotaciones = new ArrayList<>();
@@ -33,6 +31,7 @@ public class AlmacenDeDatos {
         esCliente = false;
 
         //Esto es para tener algo ya añadido ------- RELLENO --------------
+        //Bar
         String link1 = "https://www.tripadvisor.es/Restaurant_Review-g187454-d5615756-Reviews-Bar_Monty-Bilbao_Province_of_Vizcaya_Basque_Country.html";
         ArrayList<Horario> horariosMonty = new ArrayList<>();
         horariosMonty.add(new Horario("Lunes", "07:30", "23:30"));
@@ -49,11 +48,19 @@ public class AlmacenDeDatos {
         caracteristicasMonty.add(Caracteristica.COMBINADOS);
         Bar Monty = new Bar("Monty", "Heros Kalea, 16, Bilbo, Bizkaia", "48009", 75, "944 23 63 36", 0, 0, link1, horariosMonty, true,caracteristicasMonty);
 
-        ArrayList<Local> locales = new ArrayList<>();
-        locales.add(Monty);
+        dueño = new Dueño("enekoalvareez", "Eneko", "Alvarez", new GregorianCalendar(2004, Calendar.JUNE, 23).getTime(), "Contraseña", "687 322 612", "ealvarez@opendeusto.es", null);
+        dueño.agregarLocal(Monty);
 
-        dueño = new Dueño("enekoalvareez", "Eneko", "Alvarez", new GregorianCalendar(2004, Calendar.JUNE, 23).getTime(), "Contraseña", "687 322 612", "ealvarez@opendeusto.es", locales);
-        Cliente m = new Cliente("maialenblancoo","Maialen", "Blanco", new GregorianCalendar(2004, Calendar.MAY, 4).getTime(), "Contraseña2", "687 322 612", "maialen.blanco@opendeusto.es", null);
+        //Discoteca añadir a dueño 1
+        //    public Discoteca(String nombre, String direccion, String CP, int Aforo, String telefono, int MediaEdad, int PrecioMedio, String web, ArrayList<Horario> horarios, DJ djResidente, DJ djInvitado,ArrayList<Caracteristica>caracteristicas) {
+        Discoteca Stage = new Discoteca("StageLive", "C/ Algo en Bilbo", "48005", 300, "784 348 357", 18, 15, "https://backroomstagelive.com", horariosMonty, new DJ("DJ Theo", "", "", "", 0, "", "", ""), new DJ("DJ 2", "", "", "", 0, "", "", ""), caracteristicasMonty);
+        dueño.agregarLocal(Stage);
+        //Repito pa rellenar mas
+        dueño.agregarLocal(Monty);
+        dueño.agregarLocal(Stage);
+
+
+        Cliente cliente = new Cliente("maialenblancoo","Maialen", "Blanco", new GregorianCalendar(2004, Calendar.MAY, 4).getTime(), "Contraseña2", "687 322 612", "maialen.blanco@opendeusto.es", null);
 
 
         usuarios.add(dueño);

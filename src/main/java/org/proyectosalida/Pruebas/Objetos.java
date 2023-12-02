@@ -67,11 +67,6 @@ public class Objetos {
 
         Discoteca Back = new Discoteca("Back&Stage", "Calle de la Ronda, 35, Bilbo, Bizkaia","48005",  200, "747 48 96 30", 0, 0, link2, horariosBack, dj1, dj2,CaracteristicasBack);
 
-        ArrayList<Local> localesErik = new ArrayList<>();
-        localesErik.add(Monty);
-
-        ArrayList<Local> localesEneko = new ArrayList<>();
-        localesEneko.add(Back);
 
         ArrayList<Visita> visitadosMaialen = new ArrayList<>();
         //visitadosMaialen.add(Monty); //TODO HE CAMBIADO ARRAYLIST<LOCAL> POR VISITA QUE ADENTRO DE VISITA ESTA EL LOCAL Y LLEVA MAS INFO
@@ -81,8 +76,8 @@ public class Objetos {
         //visitadosAlex.add(Monty);
         //visitadosAlex.add(Back);
 
-        Erik.setLocales(localesErik);
-        Eneko.setLocales(localesEneko);
+        Erik.agregarLocal(Monty);
+        Eneko.agregarLocal(Back);
         Maialen.setVisitas(visitadosMaialen);
         Alex.setVisitas(visitadosAlex);
         ArrayList<Local>locales=new ArrayList<>();

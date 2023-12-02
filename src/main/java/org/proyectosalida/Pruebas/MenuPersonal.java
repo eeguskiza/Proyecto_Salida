@@ -19,6 +19,7 @@ public class MenuPersonal extends JFrame {
     private Usuario usuario;
     private Boolean viewPassword = false;
     private JTextField contraTextField;
+    private JFrame frame; //Es para volver de la tabla a ver perfil
 
     public MenuPersonal(Usuario u, AlmacenDeDatos almacenDeDatos, JFrame padre) {
         setTitle("Menú Personal: NOMBRE");
@@ -100,7 +101,7 @@ public class MenuPersonal extends JFrame {
     //METODOS PARA EDITAR PERFIL (OPCION 1)
     private void editarPerfil(Usuario usuario, Boolean editable){
         System.out.println(editable);
-        JFrame frame = new JFrame();
+        frame = new JFrame();
         frame.setTitle("Menú Personal: " + usuario.getNombre());
         frame.setSize(350, 500);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -114,6 +115,7 @@ public class MenuPersonal extends JFrame {
         if(usuario.getClass().equals(Dueño.class)){
             nRowsMenu = 8;
         }
+
         JPanel  main = new JPanel(new GridLayout(nRowsMenu,2,10,10));
         frame.add(main);
         JPanel panelContraseña = new JPanel(new BorderLayout()); JButton verContraseña = new JButton(new ImageIcon(image_hid)); verContraseña.setBackground(Color.WHITE); JPasswordField passwordField = new JPasswordField(this.usuario.getContraseña()); panelContraseña.add(passwordField); panelContraseña.add(verContraseña, BorderLayout.EAST); passwordField.setEditable(editable); passwordField.setEnabled(editable);
@@ -124,11 +126,12 @@ public class MenuPersonal extends JFrame {
         main.add(new JLabel("Contraseña", JLabel.CENTER)); main.add(panelContraseña);
         main.add(new JLabel("Tlf.", JLabel.CENTER)); JTextField tlffield = new JTextField(this.usuario.getTelefono()); main.add(tlffield); tlffield.setEditable(editable); tlffield.setEnabled(editable);
         main.add(new JLabel("Correo", JLabel.CENTER)); JTextField correofield = new JTextField(this.usuario.getCorreo());main.add(correofield); correofield.setEditable(editable); correofield.setEnabled(editable);
+        main.add(new JLabel("Locales", JLabel.CENTER));
         if(usuario.getClass().equals(Dueño.class)){
             if(editable){
-                main.add(new JLabel("Locales", JLabel.CENTER)); main.add(clickableLabel("Modificar Locales", 7)); //MODIFICAR -> UN JTREE CON UN PANEL INDIVIDUAL AL LADO PARA SELECCIONAR UNO Y EDITARLO
+                main.add(clickableLabel("Modificar Locales", 7)); //MODIFICAR -> UN JTREE CON UN PANEL INDIVIDUAL AL LADO PARA SELECCIONAR UNO Y EDITARLO
             }else{
-                main.add(new JLabel("Locales", JLabel.CENTER)); main.add(clickableLabel("Ver todos", 8)); //VER LOCALES -> JTABLE CON TODOS ENLISTADOS
+                main.add(clickableLabel("Ver todos", 8)); //VER LOCALES -> JTABLE CON TODOS ENLISTADOS
             }
         }
 
@@ -231,9 +234,12 @@ public class MenuPersonal extends JFrame {
                     editarPerfil(usuario, false);
                     setVisible(false);
                 }else if(code==7){ //modifica locales
+                    System.out.println("Code:7");
 
                 }else if(code==8){ //Ver todos los locales en una jtable
-                    VerLocales ventanaVerLocales = new VerLocales((Dueño) usuario);
+                    System.out.println("Code:8");
+                    VerLocales ventanaVerLocales = new VerLocales((Dueño) usuario, frame);
+                    ventanaVerLocales.setVisible(true);
                 }else if (code==2){
                     VentanaAjustes ventanaAjustes = new VentanaAjustes();
                     ventanaAjustes.frame.setVisible(true);

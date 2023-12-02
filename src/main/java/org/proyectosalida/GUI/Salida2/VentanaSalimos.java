@@ -3,25 +3,44 @@ package org.proyectosalida.GUI.Salida2;
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
-import java.awt.Choice;
 import java.awt.BorderLayout;
 import javax.swing.JRadioButtonMenuItem;
 import javax.swing.SwingConstants;
-
-import org.ietf.jgss.ChannelBinding;
 
 import java.awt.Font;
 import javax.swing.JMenuBar;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JComboBox;
+import javax.swing.ButtonGroup;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JTable;
+import javax.swing.JMenu;
+import javax.swing.JButton;
 
 public class VentanaSalimos {
 
     private JFrame frame;
     private JTable tBaresRecomendados;
+    private JMenuBar menuBarFiltro;
+    private JMenu mnFiltro;
+    private JRadioButtonMenuItem rdbtnmntmTodos;
+    private JRadioButtonMenuItem rdbtnmntmAlMenosUno;
+
+    private JScrollPane scrollPane;
+
+    private JPanel pPrincipal;
+    private JPanel pCarSeleccionadas;
+    private JPanel pCentro;
+    private JPanel pCOeste;
+    private JPanel pCEste;
+    private JPanel pTabla;
+    private JPanel pNorte;
+    private JButton btnVolver;
+
+    private JComboBox<Object> cbCarSeleccionadas;
+
+
 
     /**
      * Launch the application.
@@ -54,50 +73,66 @@ public class VentanaSalimos {
         frame.setBounds(100, 100, 600, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        JMenuBar menuBarFiltro = new JMenuBar();
+        menuBarFiltro = new JMenuBar();
         frame.getContentPane().add(menuBarFiltro, BorderLayout.NORTH);
 
-        JRadioButtonMenuItem rdbtnmntmFiltro = new JRadioButtonMenuItem("Filtrar");
-        rdbtnmntmFiltro.setFont(new Font("Segoe UI", Font.BOLD, 13));
-        rdbtnmntmFiltro.setHorizontalAlignment(SwingConstants.RIGHT);
-        menuBarFiltro.add(rdbtnmntmFiltro);
+        ButtonGroup bg = new ButtonGroup();
 
-        JPanel pPrincipal = new JPanel();
+        mnFiltro = new JMenu("Filtrar");
+        mnFiltro.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        menuBarFiltro.add(mnFiltro);
+
+        rdbtnmntmTodos = new JRadioButtonMenuItem("Todos");
+        rdbtnmntmTodos.setHorizontalAlignment(SwingConstants.RIGHT);
+        rdbtnmntmTodos.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        mnFiltro.add(rdbtnmntmTodos);
+        bg.add(rdbtnmntmTodos);
+
+        rdbtnmntmAlMenosUno = new JRadioButtonMenuItem("Al menos uno");
+        rdbtnmntmAlMenosUno.setFont(new Font("Segoe UI", Font.BOLD, 13));
+        mnFiltro.add(rdbtnmntmAlMenosUno);
+        bg.add(rdbtnmntmAlMenosUno);
+
+        pPrincipal = new JPanel();
         frame.getContentPane().add(pPrincipal, BorderLayout.CENTER);
         pPrincipal.setLayout(new BorderLayout(0, 0));
 
-        JScrollPane scrollPane = new JScrollPane();
+        scrollPane = new JScrollPane();
         pPrincipal.add(scrollPane, BorderLayout.EAST);
 
-        JPanel pCarSeleccionadas = new JPanel();
+        pCarSeleccionadas = new JPanel();
         pPrincipal.add(pCarSeleccionadas, BorderLayout.NORTH);
 
-        JComboBox cbCarSeleccionadas = new JComboBox();
-        cbCarSeleccionadas.setModel(new DefaultComboBoxModel(new String[] {"CARACTERÍSTICAS SELECCIONADAS"}));
+        cbCarSeleccionadas = new JComboBox<Object>();
+        cbCarSeleccionadas.setModel(new DefaultComboBoxModel<Object>(new String[] {" CARACTERÍSTICAS SELECCIONADAS "}));
         cbCarSeleccionadas.setFont(new Font("Calibri", Font.BOLD, 12));
         cbCarSeleccionadas.setMaximumRowCount(5);
         cbCarSeleccionadas.setToolTipText("");
         pCarSeleccionadas.add(cbCarSeleccionadas);
 
-        cbCarSeleccionadas.addItem("CARACTERÍSTICAS SELECCIONADAS");
-        cbCarSeleccionadas.setSelectedItem(0);
 
-        JPanel pCentro = new JPanel();
+        pCentro = new JPanel();
         pPrincipal.add(pCentro, BorderLayout.CENTER);
         pCentro.setLayout(new BorderLayout(0, 0));
 
-        JPanel pCOeste = new JPanel();
+        pCOeste = new JPanel();
         pCentro.add(pCOeste, BorderLayout.WEST);
 
-        JPanel pCEste = new JPanel();
+        pCEste = new JPanel();
         pCentro.add(pCEste, BorderLayout.EAST);
 
-        JPanel pTabla = new JPanel();
+        pTabla = new JPanel();
         pCentro.add(pTabla, BorderLayout.CENTER);
 
         tBaresRecomendados = new JTable();
         pTabla.add(tBaresRecomendados);
+
+        pNorte = new JPanel();
+        pPrincipal.add(pNorte, BorderLayout.SOUTH);
+
+        btnVolver = new JButton("Volver a la selección");
+        btnVolver.setFont(new Font("Tahoma", Font.BOLD, 12));
+        pNorte.add(btnVolver);
     }
 
 }
-

@@ -1,6 +1,8 @@
 package org.proyectosalida.GUI.VentanasDueño;
 
 import org.proyectosalida.Constructores.*;
+import org.proyectosalida.Datos.AlmacenDeDatos;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -12,14 +14,16 @@ import java.util.ArrayList;
 public class VerLocales extends JFrame {
 
     private ArrayList<Class> clasesDeLocales; //Se guardan las clases de los localen en el orden de la tabla para luego clasificar
+    private AlmacenDeDatos almacen;
 
-    public VerLocales(Dueño dueño, Frame padre){
+    public VerLocales(Dueño dueño, Frame padre, AlmacenDeDatos almcn){
         setTitle("Menú Personal: "+dueño.getNombre());
         setSize(1400, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
         setLocationRelativeTo(null);
         padre.setVisible(false);
+        almacen = almcn;
 
         /*
           Local(String nombre, String direccion,String CP, int Aforo, String telefono, int MediaEdad, int PrecioMedio, String web, ArrayList<Horario> horarios, BOOLEAN TERRAZA, *DJ DJRESIDENTE*, *DJ DJINVITADO*, ArrayList<Caracteristica>caracteristicas)
@@ -46,6 +50,14 @@ public class VerLocales extends JFrame {
         atras.addActionListener(e -> {
             dispose();
             padre.setVisible(true);
+        });
+
+        JButton registrarNuevo = new JButton("Registrar Nuevo");
+        botonera.add(registrarNuevo);
+        registrarNuevo.addActionListener(e -> {
+            ModificarLocales vr = new ModificarLocales(almacen);
+            vr.setVisible(true);
+            dispose();
         });
 
         clasesDeLocales = new ArrayList<>();

@@ -3,7 +3,7 @@ package org.proyectosalida.Pruebas;
 import org.proyectosalida.Constructores.*;
 import org.proyectosalida.Datos.AlmacenDeDatos;
 import org.proyectosalida.Datos.Provider;
-import org.proyectosalida.GUI.VentanasCliente.MainMenuCliente;
+import org.proyectosalida.GUI.VentanasDueño.ModificarLocales;
 import org.proyectosalida.GUI.VentanasDueño.VerLocales;
 
 import javax.swing.*;
@@ -20,6 +20,7 @@ public class MenuPersonal extends JFrame {
     private Boolean viewPassword = false;
     private JTextField contraTextField;
     private JFrame frame; //Es para volver de la tabla a ver perfil
+    private AlmacenDeDatos almacen;
 
     public MenuPersonal(Usuario u, AlmacenDeDatos almacenDeDatos, JFrame padre) {
         setTitle("Menú Personal: NOMBRE");
@@ -27,6 +28,7 @@ public class MenuPersonal extends JFrame {
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
         setLocationRelativeTo(null);
+        almacen = almacenDeDatos;
 
         /* NO ME FUNCIONABA CORRECTAMENTE LO HE TENIDO QUE QUITAR
         //Definimos si el usuario usando la ventana es dueño o cliente
@@ -217,7 +219,6 @@ public class MenuPersonal extends JFrame {
     }
 
 
-
     private JLabel clickableLabel(String text, int codigo) {
         JLabel label = new JLabel(text, SwingConstants.CENTER);
         label.setOpaque(true);
@@ -235,10 +236,12 @@ public class MenuPersonal extends JFrame {
                     setVisible(false);
                 }else if(code==7){ //modifica locales
                     System.out.println("Code:7");
+                    ModificarLocales modificarLocales = new ModificarLocales(almacen);
+                    modificarLocales.setVisible(true);
 
                 }else if(code==8){ //Ver todos los locales en una jtable
                     System.out.println("Code:8");
-                    VerLocales ventanaVerLocales = new VerLocales((Dueño) usuario, frame);
+                    VerLocales ventanaVerLocales = new VerLocales((Dueño) usuario, frame, almacen);
                     ventanaVerLocales.setVisible(true);
                 }else if (code==2){
                     abrirVentanaAjustes(); //Mas facil si lo hago desde afuera del listener

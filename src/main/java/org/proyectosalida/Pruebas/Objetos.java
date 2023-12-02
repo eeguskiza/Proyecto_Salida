@@ -54,6 +54,13 @@ public class Objetos {
         caracteristicasMonty.add(Caracteristica.TERRAZA);
         caracteristicasMonty.add(Caracteristica.CERVEZAS);
         caracteristicasMonty.add(Caracteristica.COMBINADOS);
+        caracteristicasMonty.add(Caracteristica.COCINA_LOCAL);
+        caracteristicasMonty.add(Caracteristica.COPAS);
+        caracteristicasMonty.add(Caracteristica.TARTAS_CASERAS);
+        caracteristicasMonty.add(Caracteristica.RACIONES);
+        caracteristicasMonty.add(Caracteristica.CARTA_VARIADA);
+
+
         ArrayList<Caracteristica>CaracteristicasBack=new ArrayList<>();
         CaracteristicasBack.add(Caracteristica.CERVEZAS);
         CaracteristicasBack.add(Caracteristica.MUSICA);

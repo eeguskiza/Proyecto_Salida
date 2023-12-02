@@ -34,7 +34,7 @@ public class VentanaSeleccionCaracteristicas extends JFrame {
         JScrollPane scrollPane = new JScrollPane(textArea);
 
         checkboxesPanel = new JPanel();
-        caracteristicasSeleccionadas = new ArrayList<>(almacenDeDatos.getCaracteristicas());
+        caracteristicasSeleccionadas = new ArrayList<Caracteristica>();
 
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
@@ -47,6 +47,21 @@ public class VentanaSeleccionCaracteristicas extends JFrame {
             buscarTexto(searchText);
             crearCheckboxes(searchText);
         });
+
+        // Crear un hilo para imprimir las características seleccionadas
+        Thread thread = new Thread(() -> {
+            while (true) {
+                System.out.println("Características seleccionadas: " + caracteristicasSeleccionadas);
+                try {
+                    Thread.sleep(2000); // Puedes ajustar el tiempo de espera en milisegundos según lo necesites
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        // Iniciar el hilo
+        thread.start();
 
         panel.add(searchField, BorderLayout.NORTH);
         panel.add(new JScrollPane(textArea), BorderLayout.CENTER);
@@ -107,6 +122,7 @@ public class VentanaSeleccionCaracteristicas extends JFrame {
         SwingUtilities.invokeLater(() -> {
             VentanaSeleccionCaracteristicas ventana = new VentanaSeleccionCaracteristicas(new AlmacenDeDatos());
             ventana.setVisible(true);
+
         });
     }
 }

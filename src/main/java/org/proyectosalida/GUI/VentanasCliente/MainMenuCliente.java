@@ -59,6 +59,10 @@ public class MainMenuCliente extends JFrame {
         salimos.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         salimos.setPreferredSize(new Dimension(150, 40)); // Tamaño personalizado
 
+        salimos.addActionListener(e -> {
+
+        });
+
 
 
         menuButton.addActionListener(new ActionListener() {

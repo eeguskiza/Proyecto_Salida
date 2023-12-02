@@ -1,4 +1,4 @@
-package org.proyectosalida.Pruebas;
+package org.proyectosalida.GUI.Salida2;
 
 import org.jdesktop.swingx.JXSearchField;
 
@@ -54,14 +54,20 @@ public class VentanaSeleccionCaracteristicas extends JFrame {
     }
 
     private void buscarTexto(String texto) {
+        textArea.setText("");
+
         List<Caracteristica> resultados = datos.stream()
                 .filter(item -> item.name().toLowerCase().startsWith(texto.toLowerCase()))
                 .collect(Collectors.toList());
 
         // Mostrar los resultados en el JTextArea
-        textArea.append("Resultados de la búsqueda: " + resultados + "\n");
-        textArea.setCaretPosition(textArea.getDocument().getLength());
+        textArea.append("Resultados de la búsqueda:\n");
+        for (Caracteristica resultado : resultados) {
+            textArea.append(resultado + "\n");
+        }
     }
+
+
 
     private void crearCheckboxes(String searchText) {
         checkboxesPanel.removeAll();

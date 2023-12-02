@@ -5,6 +5,8 @@ import org.jdesktop.swingx.JXSearchField;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -32,7 +34,7 @@ public class VentanaSeleccionCaracteristicas extends JFrame {
         JScrollPane scrollPane = new JScrollPane(textArea);
 
         checkboxesPanel = new JPanel();
-        caracteristicasSeleccionadas = new ArrayList<>(almacenDeDatos.getCaracteristicas());
+        caracteristicasSeleccionadas = new ArrayList<Caracteristica>();
 
         JPanel panel = new JPanel();
         panel.setLayout(new BorderLayout());
@@ -45,6 +47,21 @@ public class VentanaSeleccionCaracteristicas extends JFrame {
             buscarTexto(searchText);
             crearCheckboxes(searchText);
         });
+
+        // Crear un hilo para imprimir las características seleccionadas
+        Thread thread = new Thread(() -> {
+            while (true) {
+                System.out.println("Características seleccionadas: " + caracteristicasSeleccionadas);
+                try {
+                    Thread.sleep(2000); // Puedes ajustar el tiempo de espera en milisegundos según lo necesites
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        // Iniciar el hilo
+        thread.start();
 
         panel.add(searchField, BorderLayout.NORTH);
         panel.add(new JScrollPane(textArea), BorderLayout.CENTER);
@@ -75,7 +92,6 @@ public class VentanaSeleccionCaracteristicas extends JFrame {
         for (Caracteristica resultado : datos) {
             if (resultado.name().toLowerCase().startsWith(searchText.toLowerCase())) {
                 JCheckBox checkBox = new JCheckBox(resultado.name());
-                checkBox.setSelected(caracteristicasSeleccionadas.contains(resultado));
 
                 checkBox.addActionListener((ActionEvent e) -> {
                     if (checkBox.isSelected()) {
@@ -93,6 +109,7 @@ public class VentanaSeleccionCaracteristicas extends JFrame {
         checkboxesPanel.repaint();
     }
 
+
     public static void main(String[] args) {
         try {
             // Establecer el look and feel de Nimbus
@@ -105,6 +122,7 @@ public class VentanaSeleccionCaracteristicas extends JFrame {
         SwingUtilities.invokeLater(() -> {
             VentanaSeleccionCaracteristicas ventana = new VentanaSeleccionCaracteristicas(new AlmacenDeDatos());
             ventana.setVisible(true);
+
         });
     }
 }

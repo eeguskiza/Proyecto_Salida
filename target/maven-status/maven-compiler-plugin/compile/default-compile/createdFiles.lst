@@ -11,11 +11,13 @@ org/proyectosalida/Constructores/Horario.class
 org/proyectosalida/Constructores/Dueño.class
 org/proyectosalida/Constructores/Cliente.class
 org/proyectosalida/Pruebas/MenuPersonal$1.class
+org/proyectosalida/GUI/Salida2/VentanaSalimos.class
 org/proyectosalida/Constructores/Bar.class
 org/proyectosalida/Pruebas/VentanaAjustes$1.class
 org/proyectosalida/GUI/Registro/VentranaAddCaracteristicasLocal$1.class
 org/proyectosalida/GUI/Registro/Registro$1.class
 org/proyectosalida/Constructores/DJ.class
+org/proyectosalida/GUI/Salida2/VentanaSalimos$1.class
 org/proyectosalida/Constructores/Salida.class
 org/proyectosalida/Pruebas/MenuPersonal$2.class
 org/proyectosalida/GUI/Registro/Registro.class

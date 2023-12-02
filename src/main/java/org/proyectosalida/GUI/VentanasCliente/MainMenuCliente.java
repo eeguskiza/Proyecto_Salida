@@ -16,7 +16,9 @@ import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.engine.RenderingMode;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
+import org.proyectosalida.GUI.Salida2.VentanaSeleccionCaracteristicas;
 import org.proyectosalida.Pruebas.MenuPersonal;
+
 
 public class MainMenuCliente extends JFrame {
 
@@ -59,7 +61,10 @@ public class MainMenuCliente extends JFrame {
         salimos.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         salimos.setPreferredSize(new Dimension(150, 40)); // Tamaño personalizado
 
+        //Este listene comun para todos, Alex escribe tu metodo y yo el mio de chill
         salimos.addActionListener(e -> {
+            dispose();
+            //VentanaSeleccionCaracteristicas v = new VentanaSeleccionCaracteristicas();
 
         });
 

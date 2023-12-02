@@ -115,7 +115,7 @@ public class MainMenuCliente extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setVisible(false);
-                new MenuPersonal(almacenDeDatos, MainMenuCliente.this);
+                new MenuPersonal(almacenDeDatos.getUsuarios().get(0), almacenDeDatos, MainMenuCliente.this);
             }
         });
 

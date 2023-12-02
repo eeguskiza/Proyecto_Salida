@@ -20,19 +20,23 @@ public class MenuPersonal extends JFrame {
     private Boolean viewPassword = false;
     private JTextField contraTextField;
 
-    public MenuPersonal(AlmacenDeDatos almacenDeDatos, JFrame padre) {
+    public MenuPersonal(Usuario u, AlmacenDeDatos almacenDeDatos, JFrame padre) {
         setTitle("Menú Personal: NOMBRE");
         setSize(350, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
         setLocationRelativeTo(null);
 
+        /* NO ME FUNCIONABA CORRECTAMENTE LO HE TENIDO QUE QUITAR
         //Definimos si el usuario usando la ventana es dueño o cliente
         if(almacenDeDatos.getEsCliente()){ //Significa que el usuario es Dueño
             usuario = (Cliente) almacenDeDatos.getUsuarios().get(0);
         }else if(almacenDeDatos.getEsDueño()){
             usuario = (Dueño) almacenDeDatos.getUsuarios().get(0);
         }
+
+         */
+        usuario = u;
 
         // Panel principal con bordes y disposición de cuadrícula
         JPanel panel = new JPanel(new GridLayout(6, 1, 10, 10));
@@ -263,7 +267,8 @@ public class MenuPersonal extends JFrame {
 
         SwingUtilities.invokeLater(() -> {
             //Conexion.conectar();
-            new MenuPersonal(new AlmacenDeDatos(), null).setVisible(true);
+            AlmacenDeDatos almacen = new AlmacenDeDatos();
+            new MenuPersonal(almacen.getUsuarios().get(0), almacen, null).setVisible(true);
         });
     }
 }

@@ -8,5 +8,8 @@ public class VerLocales extends JFrame {
 
     public VerLocales(Dueño dueño){
 
+        for (Local local : dueño.getLocales()){
+            System.out.println(local.getNombre());
+        }
     }
 }

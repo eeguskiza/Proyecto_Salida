@@ -18,7 +18,7 @@ public class MainMenuDueño extends JFrame {
         JButton menuPersonal = new JButton("Menu Personal");
         menuPersonal.addActionListener(e -> {
             setVisible(false);
-            new MenuPersonal(almacenDeDatos, this);
+            new MenuPersonal(almacenDeDatos.getUsuarios().get(0),almacenDeDatos, this);
         });
         add(menuPersonal);
 

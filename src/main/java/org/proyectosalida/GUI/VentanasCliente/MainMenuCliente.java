@@ -89,18 +89,8 @@ public class MainMenuCliente extends JFrame {
                 Salida salida = new Salida(almacen.getCliente(), almacen.getCaracteristicas(), fechaHoy, null);
                 VentanaSeleccionCaracteristicas v = new VentanaSeleccionCaracteristicas(almacen);
             } else if (opcion == JOptionPane.NO_OPTION) {
-                JDialog dialog = new JDialog();
-                JPanel calendarPanel = new JPanel(new BorderLayout());
                 JCalendar calendar = new JCalendar();
-
-                calendarPanel.add(calendar);
-                calendarPanel.setPreferredSize(new Dimension(500, 500));
-
-                dialog.add(calendarPanel);
-                dialog.pack();
-                dialog.setVisible(true);
-
-                int result = JOptionPane.showConfirmDialog(null, dialog, "Seleccionar fecha", JOptionPane.OK_CANCEL_OPTION);
+                int result = JOptionPane.showConfirmDialog(null, calendar, "Seleccionar fecha", JOptionPane.OK_CANCEL_OPTION);
 
                 if (result == JOptionPane.OK_OPTION) {
                     Date fechaElegida = calendar.getDate();
@@ -113,6 +103,7 @@ public class MainMenuCliente extends JFrame {
                 }
             }
         });
+
 
 
 

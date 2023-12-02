@@ -5,6 +5,8 @@ import org.jdesktop.swingx.JXSearchField;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -75,7 +77,6 @@ public class VentanaSeleccionCaracteristicas extends JFrame {
         for (Caracteristica resultado : datos) {
             if (resultado.name().toLowerCase().startsWith(searchText.toLowerCase())) {
                 JCheckBox checkBox = new JCheckBox(resultado.name());
-                checkBox.setSelected(caracteristicasSeleccionadas.contains(resultado));
 
                 checkBox.addActionListener((ActionEvent e) -> {
                     if (checkBox.isSelected()) {
@@ -92,6 +93,7 @@ public class VentanaSeleccionCaracteristicas extends JFrame {
         checkboxesPanel.revalidate();
         checkboxesPanel.repaint();
     }
+
 
     public static void main(String[] args) {
         try {

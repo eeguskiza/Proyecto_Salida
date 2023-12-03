@@ -119,6 +119,7 @@ public class ClasePrueba extends JFrame {
             }
         });
     }
+    // metdod para ver cunatas carcateristicas hay en comun
     private static int contarCaracteristicasEnComun(ArrayList<Caracteristica> caracteristicasSeleccionadas, ArrayList<Caracteristica> caracteristicasLocal) {
         int count = 0;
 

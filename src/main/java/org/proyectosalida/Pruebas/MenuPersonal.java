@@ -236,7 +236,7 @@ public class MenuPersonal extends JFrame {
                     setVisible(false);
                 }else if(code==7){ //modifica locales
                     System.out.println("Code:7");
-                    ModificarLocales modificarLocales = new ModificarLocales(almacen);
+                    ModificarLocales modificarLocales = new ModificarLocales(almacen, getPadre());
                     modificarLocales.setVisible(true);
 
                 }else if(code==8){ //Ver todos los locales en una jtable

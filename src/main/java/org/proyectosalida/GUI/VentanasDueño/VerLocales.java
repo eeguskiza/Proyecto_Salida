@@ -55,7 +55,7 @@ public class VerLocales extends JFrame {
         JButton registrarNuevo = new JButton("Registrar Nuevo");
         botonera.add(registrarNuevo);
         registrarNuevo.addActionListener(e -> {
-            ModificarLocales vr = new ModificarLocales(almacen);
+            ModificarLocales vr = new ModificarLocales(almacen, this);
             vr.setVisible(true);
             dispose();
         });

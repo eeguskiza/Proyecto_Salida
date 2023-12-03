@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import com.toedter.calendar.JCalendar;
+import org.proyectosalida.Constructores.Caracteristica;
 import org.proyectosalida.Constructores.Salida;
 import org.proyectosalida.Datos.AlmacenDeDatos;
 import org.proyectosalida.Constructores.Cliente;
@@ -29,6 +30,7 @@ public class MainMenuCliente extends JFrame {
     private JSplitPane splitPane2;
     public AlmacenDeDatos almacen;
     private JLabel labelEncabezado;
+    private ArrayList<Caracteristica> caracteristicasSeleccionadas;
 
     public MainMenuCliente(AlmacenDeDatos almacenDeDatos) {
         setTitle("Main Menu");
@@ -36,6 +38,7 @@ public class MainMenuCliente extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
+        caracteristicasSeleccionadas = new ArrayList<>();
         almacen = almacenDeDatos;
         Cliente usuario = almacen.getCliente();
 
@@ -84,7 +87,7 @@ public class MainMenuCliente extends JFrame {
                 System.out.println("El usuario quiere salir hoy: " + fechaHoy);
 
                 Salida salida = new Salida(almacen.getCliente(), almacen.getCaracteristicas(), fechaHoy, null);
-                VentSelectCarac v = new VentSelectCarac(almacen);
+                VentSelectCarac v = new VentSelectCarac(caracteristicasSeleccionadas);
             } else if (opcion == JOptionPane.NO_OPTION) {
                 JCalendar calendar = new JCalendar();
                 int result = JOptionPane.showConfirmDialog(null, calendar, "Seleccionar fecha", JOptionPane.OK_CANCEL_OPTION);
@@ -94,7 +97,7 @@ public class MainMenuCliente extends JFrame {
                     System.out.println("El usuario quiere salir otro día: " + fechaElegida);
 
                     Salida salida = new Salida(almacen.getCliente(), almacen.getCaracteristicas(), fechaElegida, null);
-                    VentSelectCarac v = new VentSelectCarac(almacen);
+                    VentSelectCarac v = new VentSelectCarac(caracteristicasSeleccionadas);
                 } else {
                     System.out.println("No se ha seleccionado una opción");
                 }

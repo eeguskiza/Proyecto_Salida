@@ -5,6 +5,7 @@ import org.proyectosalida.Datos.AlmacenDeDatos;
 import org.proyectosalida.GUI.Registro.VentAddCarcLocal;
 import org.proyectosalida.GUI.Registro.VentanaAddHorarios;
 import org.proyectosalida.GUI.Registro.VentanaRegistrarDJ;
+import org.proyectosalida.GUI.Salida2.VentSelectCarac;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -30,9 +31,9 @@ public class ModificarLocales extends JFrame{
     private DJ djResidente;
     private DJ djInvitado;
 
-    public ModificarLocales(AlmacenDeDatos almacn){
+    public ModificarLocales(AlmacenDeDatos almacn, JFrame padre){
         localSeleccionadoEnTree = false;
-        setTitle("Modifica o añade un nuevo local, "+almacn.getUsuariosPrueba().get(0).getNombre());
+        //setTitle("Modifica o añade un nuevo local, "+almacn.getUsuarios().get(0).getNombre());
         setSize(700, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
@@ -41,7 +42,8 @@ public class ModificarLocales extends JFrame{
         //localesPorClase = new HashMap<>();
         localSelec = null;
         almacen = almacn;
-        dueño = (Dueño) almacn.getUsuariosPrueba().get(0); //TODO CAMBIAR EL METODO AL GETUSUARIOS PARA CONECTAR CON BD
+        //dueño = (Dueño) almacn.getUsuarios().get(0);
+        dueño = (Dueño) almacn.getUsuariosPrueba().get(0);
         horariosSelec = new ArrayList<>();
         caracteristicasSelec = new ArrayList<>();
         djResidente = null;
@@ -175,8 +177,7 @@ public class ModificarLocales extends JFrame{
         });
 
         bCaracteristicas.addActionListener(e -> {
-            VentAddCarcLocal ventanaCaracteristicas = new VentAddCarcLocal(this, caracteristicasSelec);
-            setVisible(false);
+            VentSelectCarac ventanaCaracterist = new VentSelectCarac(caracteristicasSelec);
         });
 
         bResidente.addActionListener(e -> {
@@ -220,6 +221,12 @@ public class ModificarLocales extends JFrame{
             }
         });
 
+
+        atras.addActionListener(e -> {
+            dispose();
+            padre.setVisible(true);
+        });
+
     }
 
 
@@ -256,7 +263,7 @@ public class ModificarLocales extends JFrame{
         SwingUtilities.invokeLater(() -> {
             //Conexion.conectar();
             AlmacenDeDatos almacen = new AlmacenDeDatos();
-            ModificarLocales ventana = new ModificarLocales(almacen);
+            ModificarLocales ventana = new ModificarLocales(almacen, null);
             ventana.setVisible(true);
         });
     }

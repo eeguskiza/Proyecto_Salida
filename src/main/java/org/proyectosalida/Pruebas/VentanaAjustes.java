@@ -1,5 +1,8 @@
 package org.proyectosalida.Pruebas;
 
+import org.proyectosalida.Constructores.Usuario;
+import org.proyectosalida.Datos.AlmacenDeDatos;
+
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -18,12 +21,36 @@ public class VentanaAjustes {
 
     public JFrame frame;
 
+    private JPanel pPrincipal;
+    private JPanel pTitulo;
+    private JPanel pAccesoCuenta;
+    private JPanel pNotificaciones;
+    private JPanel pAyuda;
+    private JPanel pBotonVolver;
+    private JPanel pCentro;
+
+    private JLabel lblTuCuenta;
+    private JLabel lblNombreCuenta;
+    private JLabel lblAccesoCuenta;
+    private JLabel lblNotificaciones;
+    private JLabel lblAyuda;
+
+    private JButton btnAccesoCuenta;
+    private JButton btnNotificaciones;
+    private JButton btnAyuda;
+    private JButton btnBotonVolver;
+    private Usuario usuario;
+    private MenuPersonal menuPersonal;
+    private JFrame padre;
+
+
 
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    VentanaAjustes window = new VentanaAjustes();
+                    AlmacenDeDatos almacenDeDatos = new AlmacenDeDatos();
+                    VentanaAjustes window = new VentanaAjustes(almacenDeDatos.getUsuariosPrueba().get(0), null);
                     window.frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -33,7 +60,12 @@ public class VentanaAjustes {
     }
 
 
-    public VentanaAjustes() {
+    public VentanaAjustes(Usuario u, MenuPersonal mp) {
+        usuario = u;
+        menuPersonal = mp;
+        if(mp != null){
+            padre = menuPersonal.getPadre();
+        }
         initialize();
     }
 
@@ -43,71 +75,96 @@ public class VentanaAjustes {
         frame.setBounds(100, 100, 350, 500);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(new GridLayout(1, 4));
+        frame.setLocationRelativeTo(null);
 
-        JPanel pPrincipal = new JPanel();
+        pPrincipal = new JPanel();
         frame.getContentPane().add(pPrincipal);
         pPrincipal.setLayout(new GridLayout(5, 1));
 
-        JPanel pTitulo = new JPanel();
+        pTitulo = new JPanel();
         pPrincipal.add(pTitulo);
         pTitulo.setLayout(new GridLayout(2, 1));
 
-        JLabel lblTuCuenta = new JLabel("      Tu cuenta:");
+        lblTuCuenta = new JLabel("      Tu cuenta:");
         lblTuCuenta.setVerticalAlignment(SwingConstants.BOTTOM);
         pTitulo.add(lblTuCuenta);
 
-        JLabel lblNombreCuenta = new JLabel("   nombreCuenta");
+        lblNombreCuenta = new JLabel("   nombreCuenta");
         lblNombreCuenta.setVerticalAlignment(SwingConstants.TOP);
         lblNombreCuenta.setFont(new Font("Tahoma", Font.BOLD, 20));
         pTitulo.add(lblNombreCuenta);
 
-        JPanel pAccesoCuenta = new JPanel();
+        pAccesoCuenta = new JPanel();
         pPrincipal.add(pAccesoCuenta);
         pAccesoCuenta.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
-        JLabel lblAccesoCuenta = new JLabel("Informacion de la cuenta       ");
+        lblAccesoCuenta = new JLabel("Modificar datos de la cuenta ");
         lblAccesoCuenta.setFont(new Font("Tahoma", Font.BOLD, 14));
         pAccesoCuenta.add(lblAccesoCuenta);
 
-        JButton btnAccesoCuenta = new JButton(">");
+        btnAccesoCuenta = new JButton(">");
         btnAccesoCuenta.setToolTipText("");
         btnAccesoCuenta.setFont(new Font("Calibri", Font.BOLD, 18));
         pAccesoCuenta.add(btnAccesoCuenta);
 
-        JPanel pNotificaciones = new JPanel();
+        pNotificaciones = new JPanel();
         pPrincipal.add(pNotificaciones);
 
-        JLabel lblNotificaciones = new JLabel("Gestionar notificaciones          ");
+        lblNotificaciones = new JLabel("Gestionar notificaciones          ");
         lblNotificaciones.setFont(new Font("Tahoma", Font.BOLD, 14));
         pNotificaciones.add(lblNotificaciones);
 
-        JButton btnNotificaciones = new JButton(">");
+        btnNotificaciones = new JButton(">");
         btnNotificaciones.setToolTipText("");
         btnNotificaciones.setFont(new Font("Calibri", Font.BOLD, 18));
         pNotificaciones.add(btnNotificaciones);
 
-        JPanel pAyuda = new JPanel();
+        pAyuda = new JPanel();
         pPrincipal.add(pAyuda);
 
-        JLabel lblAyuda = new JLabel("Preguntas frecuentes             ");
+        lblAyuda = new JLabel("Preguntas frecuentes             ");
         lblAyuda.setFont(new Font("Tahoma", Font.BOLD, 14));
         pAyuda.add(lblAyuda);
 
-        JButton btnAyuda = new JButton(">");
+        btnAyuda = new JButton(">");
         btnAyuda.setToolTipText("");
         btnAyuda.setFont(new Font("Calibri", Font.BOLD, 18));
         pAyuda.add(btnAyuda);
 
-        JPanel pBotonVolver = new JPanel();
+        pBotonVolver = new JPanel();
         pPrincipal.add(pBotonVolver);
         pBotonVolver.setLayout(new BorderLayout(0, 0));
 
-        JPanel pCentro = new JPanel();
+        pCentro = new JPanel();
         pBotonVolver.add(pCentro, BorderLayout.CENTER);
 
-        JButton btnBotonVolver = new JButton("Volver");
+        btnBotonVolver = new JButton("Volver");
         btnBotonVolver.setFont(new Font("Tahoma", Font.BOLD, 14));
         pCentro.add(btnBotonVolver);
+
+
+        //ActionListener de los botones
+        btnAccesoCuenta.addActionListener(e -> {
+            menuPersonal.editarPerfil(usuario, true);
+            frame.setVisible(false);
+        });
+
+        btnBotonVolver.addActionListener(e -> {
+            frame.dispose();
+            padre.setVisible(true);
+        });
+
+        btnNotificaciones.addActionListener(e -> {
+            VentanaGestionNotificaciones vNotificaciones = new VentanaGestionNotificaciones(padre);
+            vNotificaciones.frame.setVisible(true);
+            frame.setVisible(false);
+        });
+
+        btnAyuda.addActionListener(e -> {
+            VentanaPreguntasFrecuentes vPreguntas = new VentanaPreguntasFrecuentes(padre);
+            vPreguntas.frame.setVisible(true);
+            frame.setVisible(false);
+        });
     }
 }
 

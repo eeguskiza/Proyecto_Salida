@@ -48,7 +48,7 @@ public class Tabla extends JFrame {
             tablaPassword = modelo.getValueAt(i, 5).toString();
             tablaEdad = Double.parseDouble(modelo.getValueAt(i, 6).toString());
             tablaLocales = (ArrayList<Local>) modelo.getValueAt(i, 7);
-            System.out.println(tablaLocales);
+            //System.out.println(tablaLocales);
         }
 
         dueño.setId(tablaID);
@@ -57,9 +57,9 @@ public class Tabla extends JFrame {
         dueño.setTelefono(tablaTelefono);
         dueño.setCorreo(tablaCorreo);
         dueño.setContraseña(tablaPassword);
-        dueño.setLocales(tablaLocales);
-
-        System.out.println(dueño);
+        for(Local local : tablaLocales){
+            dueño.agregarLocal(local);
+        }
 
 
         this.setVisible(true);

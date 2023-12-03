@@ -3,7 +3,7 @@ package org.proyectosalida.Pruebas;
 import org.proyectosalida.Constructores.*;
 import org.proyectosalida.Datos.AlmacenDeDatos;
 import org.proyectosalida.Datos.Provider;
-import org.proyectosalida.GUI.VentanasCliente.MainMenuCliente;
+import org.proyectosalida.GUI.VentanasDueño.ModificarLocales;
 import org.proyectosalida.GUI.VentanasDueño.VerLocales;
 
 import javax.swing.*;
@@ -19,20 +19,27 @@ public class MenuPersonal extends JFrame {
     private Usuario usuario;
     private Boolean viewPassword = false;
     private JTextField contraTextField;
+    private JFrame frame; //Es para volver de la tabla a ver perfil
+    private AlmacenDeDatos almacen;
 
-    public MenuPersonal(AlmacenDeDatos almacenDeDatos, JFrame padre) {
+    public MenuPersonal(Usuario u, AlmacenDeDatos almacenDeDatos, JFrame padre) {
         setTitle("Menú Personal: NOMBRE");
         setSize(350, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
         setLocationRelativeTo(null);
+        almacen = almacenDeDatos;
 
+        /* NO ME FUNCIONABA CORRECTAMENTE LO HE TENIDO QUE QUITAR
         //Definimos si el usuario usando la ventana es dueño o cliente
         if(almacenDeDatos.getEsCliente()){ //Significa que el usuario es Dueño
             usuario = (Cliente) almacenDeDatos.getUsuarios().get(0);
         }else if(almacenDeDatos.getEsDueño()){
             usuario = (Dueño) almacenDeDatos.getUsuarios().get(0);
         }
+
+         */
+        usuario = u;
 
         // Panel principal con bordes y disposición de cuadrícula
         JPanel panel = new JPanel(new GridLayout(6, 1, 10, 10));
@@ -94,9 +101,9 @@ public class MenuPersonal extends JFrame {
 
 
     //METODOS PARA EDITAR PERFIL (OPCION 1)
-    private void editarPerfil(Usuario usuario, Boolean editable){
+    public void editarPerfil(Usuario usuario, Boolean editable){
         System.out.println(editable);
-        JFrame frame = new JFrame();
+        frame = new JFrame();
         frame.setTitle("Menú Personal: " + usuario.getNombre());
         frame.setSize(350, 500);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -110,6 +117,7 @@ public class MenuPersonal extends JFrame {
         if(usuario.getClass().equals(Dueño.class)){
             nRowsMenu = 8;
         }
+
         JPanel  main = new JPanel(new GridLayout(nRowsMenu,2,10,10));
         frame.add(main);
         JPanel panelContraseña = new JPanel(new BorderLayout()); JButton verContraseña = new JButton(new ImageIcon(image_hid)); verContraseña.setBackground(Color.WHITE); JPasswordField passwordField = new JPasswordField(this.usuario.getContraseña()); panelContraseña.add(passwordField); panelContraseña.add(verContraseña, BorderLayout.EAST); passwordField.setEditable(editable); passwordField.setEnabled(editable);
@@ -120,11 +128,12 @@ public class MenuPersonal extends JFrame {
         main.add(new JLabel("Contraseña", JLabel.CENTER)); main.add(panelContraseña);
         main.add(new JLabel("Tlf.", JLabel.CENTER)); JTextField tlffield = new JTextField(this.usuario.getTelefono()); main.add(tlffield); tlffield.setEditable(editable); tlffield.setEnabled(editable);
         main.add(new JLabel("Correo", JLabel.CENTER)); JTextField correofield = new JTextField(this.usuario.getCorreo());main.add(correofield); correofield.setEditable(editable); correofield.setEnabled(editable);
+        main.add(new JLabel("Locales", JLabel.CENTER));
         if(usuario.getClass().equals(Dueño.class)){
             if(editable){
-                main.add(new JLabel("Locales", JLabel.CENTER)); main.add(clickableLabel("Modificar Locales", 7)); //MODIFICAR -> UN JTREE CON UN PANEL INDIVIDUAL AL LADO PARA SELECCIONAR UNO Y EDITARLO
+                main.add(clickableLabel("Modificar Locales", 7)); //MODIFICAR -> UN JTREE CON UN PANEL INDIVIDUAL AL LADO PARA SELECCIONAR UNO Y EDITARLO
             }else{
-                main.add(new JLabel("Locales", JLabel.CENTER)); main.add(clickableLabel("Ver todos", 8)); //VER LOCALES -> JTABLE CON TODOS ENLISTADOS
+                main.add(clickableLabel("Ver todos", 8)); //VER LOCALES -> JTABLE CON TODOS ENLISTADOS
             }
         }
 
@@ -210,7 +219,6 @@ public class MenuPersonal extends JFrame {
     }
 
 
-
     private JLabel clickableLabel(String text, int codigo) {
         JLabel label = new JLabel(text, SwingConstants.CENTER);
         label.setOpaque(true);
@@ -227,12 +235,17 @@ public class MenuPersonal extends JFrame {
                     editarPerfil(usuario, false);
                     setVisible(false);
                 }else if(code==7){ //modifica locales
+                    System.out.println("Code:7");
+                    ModificarLocales modificarLocales = new ModificarLocales(almacen);
+                    modificarLocales.setVisible(true);
 
                 }else if(code==8){ //Ver todos los locales en una jtable
-                    VerLocales ventanaVerLocales = new VerLocales((Dueño) usuario);
+                    System.out.println("Code:8");
+                    VerLocales ventanaVerLocales = new VerLocales((Dueño) usuario, frame, almacen);
+                    ventanaVerLocales.setVisible(true);
                 }else if (code==2){
-                    VentanaAjustes ventanaAjustes = new VentanaAjustes();
-                    ventanaAjustes.frame.setVisible(true);
+                    abrirVentanaAjustes(); //Mas facil si lo hago desde afuera del listener
+                    setVisible(false);
                 }
 
             }
@@ -252,6 +265,14 @@ public class MenuPersonal extends JFrame {
     }
 
 
+    protected JFrame getPadre(){
+        return frame;
+    }
+
+    private void abrirVentanaAjustes(){
+        VentanaAjustes ventanaAjustes = new VentanaAjustes(usuario,this);
+        ventanaAjustes.frame.setVisible(true);
+    }
 
     public static void main(String[] args) {
         // Configuración del look and feel
@@ -263,7 +284,8 @@ public class MenuPersonal extends JFrame {
 
         SwingUtilities.invokeLater(() -> {
             //Conexion.conectar();
-            new MenuPersonal(new AlmacenDeDatos(), null).setVisible(true);
+            AlmacenDeDatos almacen = new AlmacenDeDatos();
+            new MenuPersonal(almacen.getUsuariosPrueba().get(0), almacen, null).setVisible(true);
         });
     }
 }

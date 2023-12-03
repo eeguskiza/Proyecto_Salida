@@ -11,28 +11,29 @@ public class AlmacenDeDatos {
     protected ArrayList<JProgressBar> progressBarsVotaciones;
     protected ArrayList<Integer> valoresVotaciones;
     private boolean votoDiarioEncuesta; //El boolean va aqui ya que sino siempre que se habra y cierre la main ventana se va a restablecer el valor, aqui no. Solo se puede una vez así.
-
+    private ArrayList<Caracteristica> caracteristicas;
     private Cliente cliente;
     private Dueño dueño;
      private ArrayList<Usuario> usuarios;
+     private ArrayList<Usuario> usuariosPrueba;
 
     private boolean esDueño;
     private boolean esCliente;
 
     public AlmacenDeDatos(){
-        //Inicializamos hashmap (con bd no sería necesario creo)
-
 
         progressBarsVotaciones = new ArrayList<>();
         valoresVotaciones = new ArrayList<>();
         votoDiarioEncuesta = false;
-
+        caracteristicas = new ArrayList<>();
         usuarios = new ArrayList<>();
+        usuariosPrueba = new ArrayList<>();
 
         esDueño = false;
         esCliente = false;
 
         //Esto es para tener algo ya añadido ------- RELLENO --------------
+        //Bar
         String link1 = "https://www.tripadvisor.es/Restaurant_Review-g187454-d5615756-Reviews-Bar_Monty-Bilbao_Province_of_Vizcaya_Basque_Country.html";
         ArrayList<Horario> horariosMonty = new ArrayList<>();
         horariosMonty.add(new Horario("Lunes", "07:30", "23:30"));
@@ -49,12 +50,22 @@ public class AlmacenDeDatos {
         caracteristicasMonty.add(Caracteristica.COMBINADOS);
         Bar Monty = new Bar("Monty", "Heros Kalea, 16, Bilbo, Bizkaia", "48009", 75, "944 23 63 36", 0, 0, link1, horariosMonty, true,caracteristicasMonty);
 
-        ArrayList<Local> locales = new ArrayList<>();
-        locales.add(Monty);
+        dueño = new Dueño("enekoalvareez", "Eneko", "Alvarez", new GregorianCalendar(2004, Calendar.JUNE, 23).getTime(), "Contraseña", "687 322 612", "ealvarez@opendeusto.es", null);
+        dueño.agregarLocal(Monty);
 
-        dueño = new Dueño("enekoalvareez", "Eneko", "Alvarez", new GregorianCalendar(2004, Calendar.JUNE, 23).getTime(), "Contraseña", "687 322 612", "ealvarez@opendeusto.es", locales);
-        Cliente m = new Cliente("maialenblancoo","Maialen", "Blanco", new GregorianCalendar(2004, Calendar.MAY, 4).getTime(), "Contraseña2", "687 322 612", "maialen.blanco@opendeusto.es", null);
+        //Discoteca añadir a dueño 1
+        //    public Discoteca(String nombre, String direccion, String CP, int Aforo, String telefono, int MediaEdad, int PrecioMedio, String web, ArrayList<Horario> horarios, DJ djResidente, DJ djInvitado,ArrayList<Caracteristica>caracteristicas) {
+        Discoteca Stage = new Discoteca("StageLive", "C/ Algo en Bilbo", "48005", 300, "784 348 357", 18, 15, "https://backroomstagelive.com", horariosMonty, new DJ("DJ Theo", "", "", "", 0, "", "", ""), new DJ("DJ 2", "", "", "", 0, "", "", ""), caracteristicasMonty);
+        dueño.agregarLocal(Stage);
+        //Repito pa rellenar mas
+        dueño.agregarLocal(Monty);
+        dueño.agregarLocal(Stage);
 
+
+        Cliente cliente = new Cliente("maialenblancoo","Maialen", "Blanco", new GregorianCalendar(2004, Calendar.MAY, 4).getTime(), "Contraseña2", "687 322 612", "maialen.blanco@opendeusto.es", null);
+
+
+        usuariosPrueba.add(dueño); //todo Esto hay que quitarlo para que funcione bien la base de datos
 
         //muestra de votaciones de encuesta
         valoresVotaciones.add(3);valoresVotaciones.add(8);valoresVotaciones.add(7);valoresVotaciones.add(4);valoresVotaciones.add(3);valoresVotaciones.add(5);
@@ -120,5 +131,25 @@ public class AlmacenDeDatos {
 
     public void setUsuario(ArrayList<Usuario> clientes) {
         this.usuarios = clientes;
+    }
+
+    public ArrayList<Caracteristica> getCaracteristicas() {
+        for (Caracteristica c : Caracteristica.values()) {
+            caracteristicas.add(c);
+        }
+        return caracteristicas;
+    }
+
+    public void setCaracteristicas(ArrayList<Caracteristica> caracteristicas) {
+        this.caracteristicas = caracteristicas;
+    }
+
+    //ESTO SE PUEDE QUITAR UNA VEZ TERMINADO EL PROYECTO Y FUNCIONE CON BD COMPLETAMENTE
+    public ArrayList<Usuario> getUsuariosPrueba() {
+        return usuariosPrueba;
+    }
+
+    public void setUsuariosPrueba(ArrayList<Usuario> usuariosPrueba) {
+        this.usuariosPrueba = usuariosPrueba;
     }
 }

@@ -6,8 +6,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Date;
 
+import com.toedter.calendar.JCalendar;
+import org.proyectosalida.Constructores.Salida;
 import org.proyectosalida.Datos.AlmacenDeDatos;
 import org.proyectosalida.Constructores.Cliente;
 import com.formdev.flatlaf.*;
@@ -16,7 +20,11 @@ import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.engine.RenderingMode;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
+import org.proyectosalida.GUI.Salida2.VentanaSeleccionCaracteristicas;
 import org.proyectosalida.Pruebas.MenuPersonal;
+import org.threeten.bp.ZoneId;
+
+
 
 public class MainMenuCliente extends JFrame {
 
@@ -59,23 +67,55 @@ public class MainMenuCliente extends JFrame {
         salimos.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         salimos.setPreferredSize(new Dimension(150, 40)); // Tamaño personalizado
 
+        //Este listene comun para todos, Alex escribe tu metodo y yo el mio de chill
+        salimos.addActionListener(e -> {
+            dispose();
+
+            int opcion = JOptionPane.showOptionDialog(
+                    new JFrame(),
+                    "¿Quieres salir hoy o en otro día?",
+                    "Salir",
+                    JOptionPane.YES_NO_OPTION,
+                    JOptionPane.QUESTION_MESSAGE,
+                    null,
+                    new String[]{"Hoy", "Otro día"},
+                    "Hoy"
+            );
+
+            if (opcion == JOptionPane.YES_OPTION) {
+                Date fechaHoy = new Date();
+                System.out.println("El usuario quiere salir hoy: " + fechaHoy);
+
+                Salida salida = new Salida(almacen.getCliente(), almacen.getCaracteristicas(), fechaHoy, null);
+                VentanaSeleccionCaracteristicas v = new VentanaSeleccionCaracteristicas(almacen);
+            } else if (opcion == JOptionPane.NO_OPTION) {
+                JCalendar calendar = new JCalendar();
+                int result = JOptionPane.showConfirmDialog(null, calendar, "Seleccionar fecha", JOptionPane.OK_CANCEL_OPTION);
+
+                if (result == JOptionPane.OK_OPTION) {
+                    Date fechaElegida = calendar.getDate();
+                    System.out.println("El usuario quiere salir otro día: " + fechaElegida);
+
+                    Salida salida = new Salida(almacen.getCliente(), almacen.getCaracteristicas(), fechaElegida, null);
+                    VentanaSeleccionCaracteristicas v = new VentanaSeleccionCaracteristicas(almacen);
+                } else {
+                    System.out.println("No se ha seleccionado una opción");
+                }
+            }
+        });
+
+
+
+
+
+
 
 
         menuButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setVisible(false);
-                new MenuPersonal(almacenDeDatos, MainMenuCliente.this);
-            }
-        });
-
-        salimos.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setVisible(false);
-                //VentanaGustos
-                new VentanaGustos();
-
+                new MenuPersonal(almacenDeDatos.getUsuarios().get(0), almacenDeDatos, MainMenuCliente.this);
             }
         });
 

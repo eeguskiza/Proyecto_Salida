@@ -94,7 +94,7 @@ public class VentanaAddHorarios extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 dispose(); // Cierra la ventana actual
-                // Lógica para volver a la ventana anterior
+                ventanaAnterior.setVisible(true);
             }
         });
 

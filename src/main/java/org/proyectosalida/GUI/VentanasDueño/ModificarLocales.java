@@ -21,6 +21,7 @@ public class ModificarLocales extends JFrame{
 
     private AlmacenDeDatos almacen;
     private Dueño dueño;
+    private DefaultMutableTreeNode root;
     private Local localSelec;
     private HashMap<String, Local> locales;
     //private HashMap<String, Class> localesPorClase;
@@ -42,15 +43,15 @@ public class ModificarLocales extends JFrame{
         //localesPorClase = new HashMap<>();
         localSelec = null;
         almacen = almacn;
-        //dueño = (Dueño) almacn.getUsuarios().get(0);
-        dueño = (Dueño) almacn.getUsuariosPrueba().get(0);
+        dueño = (Dueño) almacn.getUsuarios().get(0);
+        //dueño = (Dueño) almacn.getUsuariosPrueba().get(0);
         horariosSelec = new ArrayList<>();
         caracteristicasSelec = new ArrayList<>();
         djResidente = null;
         djInvitado = null;
 
         //TREE --- IZQ
-        DefaultMutableTreeNode root = new DefaultMutableTreeNode("Tus Locales");
+        root = new DefaultMutableTreeNode("Tus Locales");
         DefaultTreeModel modelo = new DefaultTreeModel(root);
         JTree tree = new JTree(modelo);
         JScrollPane scroll = new JScrollPane(tree);
@@ -241,15 +242,21 @@ public class ModificarLocales extends JFrame{
     private void actualizarLocalUsuario(Local nuevo){
         for(int i=0; i<dueño.getLocales().size(); i++){
             Local local = dueño.getLocales().get(i);
-            if(local.getId().equals(localSelec.getId())){ //Es el mismo local al que estamos editando
-                dueño.getLocales().remove(i);
-                System.out.println("Eliminado el anterior");
-                break;
+            if(localSelec != null){
+                if(local.getId().equals(localSelec.getId())){ //Es el mismo local al que estamos editando
+                    dueño.getLocales().remove(i);
+                    System.out.println("Eliminado el anterior");
+                    break;
+                }
             }
         }
         System.out.println("Añadiendo el nuevo...");
         dueño.getLocales().add(nuevo);
         System.out.println(nuevo);
+
+        //Actualizar JTree
+        root.removeAllChildren();
+        cargarLocalesAlTree(dueño, root);
     }
 
     public static void main(String[] args) {

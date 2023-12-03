@@ -5,8 +5,6 @@ import org.jdesktop.swingx.JXSearchField;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -14,7 +12,7 @@ import java.util.stream.Collectors;
 import org.proyectosalida.Constructores.Caracteristica;
 import org.proyectosalida.Datos.AlmacenDeDatos;
 
-public class VentanaSeleccionCaracteristicas extends JFrame {
+public class VentSelectCarac extends JFrame {
 
     private List<Caracteristica> datos;
     private JTextArea textArea;
@@ -25,7 +23,7 @@ public class VentanaSeleccionCaracteristicas extends JFrame {
     private JScrollPane sp;
 
 
-    public VentanaSeleccionCaracteristicas(AlmacenDeDatos almacenDeDatos) {
+    public VentSelectCarac(AlmacenDeDatos almacenDeDatos) {
         super("Seleccion de Caracteristicas");
         setSize(500, 300);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -124,7 +122,7 @@ public class VentanaSeleccionCaracteristicas extends JFrame {
         }
 
         SwingUtilities.invokeLater(() -> {
-            VentanaSeleccionCaracteristicas ventana = new VentanaSeleccionCaracteristicas(new AlmacenDeDatos());
+            VentSelectCarac ventana = new VentSelectCarac(new AlmacenDeDatos());
             ventana.setVisible(true);
 
         });

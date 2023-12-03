@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -20,10 +19,8 @@ import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.engine.RenderingMode;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
-import org.proyectosalida.GUI.Salida2.VentanaSeleccionCaracteristicas;
+import org.proyectosalida.GUI.Salida2.VentSelectCarac;
 import org.proyectosalida.Pruebas.MenuPersonal;
-import org.threeten.bp.ZoneId;
-
 
 
 public class MainMenuCliente extends JFrame {
@@ -87,7 +84,7 @@ public class MainMenuCliente extends JFrame {
                 System.out.println("El usuario quiere salir hoy: " + fechaHoy);
 
                 Salida salida = new Salida(almacen.getCliente(), almacen.getCaracteristicas(), fechaHoy, null);
-                VentanaSeleccionCaracteristicas v = new VentanaSeleccionCaracteristicas(almacen);
+                VentSelectCarac v = new VentSelectCarac(almacen);
             } else if (opcion == JOptionPane.NO_OPTION) {
                 JCalendar calendar = new JCalendar();
                 int result = JOptionPane.showConfirmDialog(null, calendar, "Seleccionar fecha", JOptionPane.OK_CANCEL_OPTION);
@@ -97,7 +94,7 @@ public class MainMenuCliente extends JFrame {
                     System.out.println("El usuario quiere salir otro día: " + fechaElegida);
 
                     Salida salida = new Salida(almacen.getCliente(), almacen.getCaracteristicas(), fechaElegida, null);
-                    VentanaSeleccionCaracteristicas v = new VentanaSeleccionCaracteristicas(almacen);
+                    VentSelectCarac v = new VentSelectCarac(almacen);
                 } else {
                     System.out.println("No se ha seleccionado una opción");
                 }

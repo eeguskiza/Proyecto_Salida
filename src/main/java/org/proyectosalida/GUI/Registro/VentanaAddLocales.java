@@ -2,6 +2,7 @@ package org.proyectosalida.GUI.Registro;
 
 import org.proyectosalida.Constructores.*;
 import org.proyectosalida.Datos.Provider;
+import org.proyectosalida.GUI.InicioSesion;
 
 import javax.swing.*;
 import java.awt.*;
@@ -60,7 +61,7 @@ public class VentanaAddLocales extends JFrame {
 
         añadirC.addActionListener(e -> {
             this.setVisible(false);
-            new VentranaAddCaracteristicasLocal(this,caracteristicas);
+            new VentAddCarcLocal(this,caracteristicas);
         });
 
         botonGuardar.addActionListener(e -> {
@@ -93,6 +94,10 @@ public class VentanaAddLocales extends JFrame {
             else{
                 guardarDueño(dueño);
                 dispose();
+                //REDIRIGE DIRECTAMENTE A INICIA SESION HABIENDO GUARDADO LOS DATOS EN LA NUBE
+                JOptionPane.showMessageDialog(this, "Usuario creado con éxito!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                InicioSesion inicioSesion = new InicioSesion(this);
+                inicioSesion.setVisible(true);
             }
         });
 

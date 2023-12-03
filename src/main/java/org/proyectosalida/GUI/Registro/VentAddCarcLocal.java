@@ -6,11 +6,10 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import org.proyectosalida.Constructores.Caracteristica;
-import org.proyectosalida.Constructores.Dueño;
 
-public class VentranaAddCaracteristicasLocal extends JFrame {
+public class VentAddCarcLocal extends JFrame {
     protected Caracteristica caracteristica;
-    public VentranaAddCaracteristicasLocal(JFrame padre, ArrayList<Caracteristica> caracteristicas) {
+    public VentAddCarcLocal(JFrame padre, ArrayList<Caracteristica> caracteristicas) {
         JButton Aceptar=new JButton("ACEPTAR");
 
         JPanel panelcaracteristicas = new JPanel(new BorderLayout(0,1));
@@ -60,7 +59,7 @@ public class VentranaAddCaracteristicasLocal extends JFrame {
         SwingUtilities.invokeLater(() -> {
             JFrame padre = new JFrame();
             padre.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            new VentranaAddCaracteristicasLocal(padre, new ArrayList<>());
+            new VentAddCarcLocal(padre, new ArrayList<>());
         });
     }
 }

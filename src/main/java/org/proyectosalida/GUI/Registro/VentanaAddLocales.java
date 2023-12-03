@@ -3,6 +3,7 @@ package org.proyectosalida.GUI.Registro;
 import org.proyectosalida.Constructores.*;
 import org.proyectosalida.Datos.Provider;
 import org.proyectosalida.GUI.InicioSesion;
+import org.proyectosalida.GUI.Salida2.VentSelectCarac;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,17 +12,27 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class VentanaAddLocales extends JFrame {
-    ArrayList<Horario> horarios = new ArrayList<>();
-    ArrayList<String> caracteristicas = new ArrayList<>();
+    private ArrayList<Horario> horarios = new ArrayList<>();
+    private ArrayList<Caracteristica> caracteristicasSelecionadas;
+    private DJ djResidente;
+    private DJ djInvitado;
 
     public VentanaAddLocales(Dueño dueño) {
         setTitle("Añadir locales");
-        setSize(500, 500);
+        setSize(500, 750);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // Ejemplo local --> Bar Monty = new Bar("Monty", "Heros Kalea, 16, Bilbo, Bizkaia", "48009", 75, "944 23 63 36", 0, 0, link1, horariosMonty, true,caracteristicasMonty);
+        caracteristicasSelecionadas = new ArrayList<>();
+        horarios = new ArrayList<>();
+        djResidente = new DJ();
+        djInvitado = new DJ();
 
         JPanel panel = new JPanel(new GridLayout(0, 2, 10, 10)); // Layout para los campos y etiquetas
+
+        JPanel pTipoLocal = new JPanel(new FlowLayout()); panel.add(new JLabel("Tipo:", JLabel.CENTER)); panel.add(pTipoLocal);
+        JRadioButton bbar = new JRadioButton("BAR"); JRadioButton bdisco = new JRadioButton("DISCOTECA"); pTipoLocal.add(bbar); pTipoLocal.add(bdisco);
+        ButtonGroup bg = new ButtonGroup(); bg.add(bbar); bg.add(bdisco);
 
         panel.add(new JLabel("Nombre:", JLabel.CENTER));
         panel.add(new JTextField(20));
@@ -33,11 +44,14 @@ public class VentanaAddLocales extends JFrame {
         panel.add(new JTextField(20));
         panel.add(new JLabel("Teléfono:", JLabel.CENTER));
         panel.add(new JTextField(20));
-        panel.add(new JLabel("Enlace:", JLabel.CENTER));
+        panel.add(new JLabel("Media de Edad:", JLabel.CENTER));
+        panel.add(new JTextField(20));
+        panel.add(new JLabel("Media de Precio:", JLabel.CENTER));
+        panel.add(new JTextField(20));
+        panel.add(new JLabel("Página Web:", JLabel.CENTER));
         panel.add(new JTextField(20));
         panel.add(new JLabel("Horarios:", JLabel.CENTER));
         JButton añadirH = new JButton("Añadir horarios");
-        horarios = new ArrayList<>();
         panel.add(añadirH);
         panel.add(new JLabel("Terraza:", JLabel.CENTER));
         //Si o no y se guarda boolean
@@ -50,40 +64,67 @@ public class VentanaAddLocales extends JFrame {
         panel1.add(checkboxSi);
         panel1.add(checkboxNo);
         panel.add(panel1);
+        panel.add(new JLabel("DJ Residente:", JLabel.CENTER));
+        JButton añadirDjResidente = new JButton("Registrar DJ"); panel.add(añadirDjResidente);
+        panel.add(new JLabel("DJ Invitado:", JLabel.CENTER));
+        JButton añadirDjInvitado = new JButton("Registrar DJ"); panel.add(añadirDjInvitado);
         panel.add(new JLabel("Características:", JLabel.CENTER));
         JButton añadirC = new JButton("Añadir características");
-        ArrayList<Caracteristica>caracteristicas = new ArrayList<>();
         panel.add(añadirC);
         JButton botonGuardar = new JButton("Añadir local");
         panel.add(botonGuardar);
         JButton botonVolver = new JButton("Volver");
         panel.add(botonVolver);
 
-        añadirC.addActionListener(e -> {
-            this.setVisible(false);
-            new VentAddCarcLocal(this,caracteristicas);
+        //LOGICA ENTRE BAR Y DISCOTECA
+        bbar.addActionListener(e -> {
+            añadirDjResidente.setEnabled(false);
+            añadirDjInvitado.setEnabled(false);
+            checkboxSi.setEnabled(true);
+            checkboxNo.setEnabled(true);
+        });
+        bdisco.addActionListener(e -> {
+            añadirDjResidente.setEnabled(true);
+            añadirDjInvitado.setEnabled(true);
+            checkboxSi.setEnabled(false);
+            checkboxNo.setEnabled(false);
+            grupo.clearSelection();
         });
 
+
         botonGuardar.addActionListener(e -> {
-            String nombre = ((JTextField) panel.getComponent(1)).getText();
-            String direccion = ((JTextField) panel.getComponent(3)).getText();
-            String CP = ((JTextField) panel.getComponent(5)).getText();
-            int aforo = Integer.parseInt(((JTextField) panel.getComponent(7)).getText());
-            String telefono = ((JTextField) panel.getComponent(9)).getText();
-            String enlace = ((JTextField) panel.getComponent(11)).getText();
+
+            String nombre = ((JTextField) panel.getComponent(3)).getText();
+            String direccion = ((JTextField) panel.getComponent(5)).getText();
+            String CP = ((JTextField) panel.getComponent(7)).getText();
+            int aforo = Integer.parseInt(((JTextField) panel.getComponent(9)).getText());
+            String telefono = ((JTextField) panel.getComponent(11)).getText();
+            int mediaEdad = Integer.parseInt(((JTextField) panel.getComponent(13)).getText());
+            int mediaPrecio = Integer.parseInt(((JTextField) panel.getComponent(15)).getText());
+            String enlace = ((JTextField) panel.getComponent(17)).getText();
             Boolean terraza = null;
-            if(checkboxSi.isSelected()){
-                 terraza = true;
-            }else if(checkboxNo.isSelected()){
-                 terraza = false;
+
+            if(bbar.isSelected()){
+                if(checkboxSi.isSelected()){
+                    terraza = true;
+                }else if(checkboxNo.isSelected()){
+                    terraza = false;
+                }else{
+                    JOptionPane.showMessageDialog(null, "Seleccione todos los campos.");
+                }
+                Bar bar = new Bar(nombre, direccion, CP, aforo, telefono, mediaEdad, mediaPrecio, enlace, horarios, terraza, caracteristicasSelecionadas);
+                System.out.println(bar);
+                dueño.getLocales().add(bar);
+            }else if(bdisco.isSelected()){
+                Discoteca disco = new Discoteca(nombre, direccion, CP, aforo, telefono, mediaEdad, mediaPrecio, enlace, horarios, djResidente, djInvitado, caracteristicasSelecionadas);
+                dueño.getLocales().add(disco);
+                System.out.println(disco);
             }else{
-                JOptionPane.showMessageDialog(null, "Seleccione todos los campos.");
+                JOptionPane.showMessageDialog(null, "Seleccione un tipo de local!");
             }
 
-            Bar bar = new Bar(nombre, direccion, CP, aforo, telefono, 0, 0, enlace, horarios, terraza, caracteristicas);
-            System.out.println(bar);
-            dueño.getLocales().add(bar);
-            //guardarDueño(dueño);
+
+
             //Preguntar si quiere añadirmas locales
             boolean pregunta  = JOptionPane.showConfirmDialog(null, "¿Quieres añadir más locales?", "Añadir locales", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
             if (pregunta){
@@ -102,8 +143,8 @@ public class VentanaAddLocales extends JFrame {
         });
 
         botonVolver.addActionListener(e -> {
-            System.out.println(caracteristicas);
-           // dispose();
+            //System.out.println(caracteristicas);
+            dispose();
         });
 
         añadirH.addActionListener(e -> {
@@ -114,7 +155,19 @@ public class VentanaAddLocales extends JFrame {
         });
 
         añadirC.addActionListener(e -> {
+            VentSelectCarac vCaract = new VentSelectCarac(caracteristicasSelecionadas);
+        });
 
+        añadirDjResidente.addActionListener(e -> {
+           VentanaRegistrarDJ d1 = new VentanaRegistrarDJ(djResidente, this, true);
+           d1.setVisible(true);
+           setVisible(false);
+        });
+
+        añadirDjInvitado.addActionListener(e -> {
+            VentanaRegistrarDJ d2 = new VentanaRegistrarDJ(djInvitado, this, true);
+            d2.setVisible(true);
+            setVisible(false);
         });
 
 

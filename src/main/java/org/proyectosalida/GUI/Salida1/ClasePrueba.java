@@ -60,7 +60,7 @@ public class ClasePrueba extends JFrame {
         CaracteristicasBack.add(Caracteristica.MUSICA);
         CaracteristicasBack.add(Caracteristica.COMBINADOS);
         CaracteristicasBack.add(Caracteristica.ZONA_PRIVADA);
-
+//ff
 
         Objetos objetos = new Objetos();
         ArrayList<Local> locales = new ArrayList<>();

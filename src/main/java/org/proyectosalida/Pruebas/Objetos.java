@@ -4,6 +4,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import org.proyectosalida.GUI.Salida2.VentanaSeleccionCaracteristicas;
+import org.proyectosalida.GUI.VentanasCliente.VentanaGustos.*;
+
+import org.proyectosalida.Constructores.Caracteristica;
 
 
 import org.proyectosalida.Constructores.*;
@@ -90,6 +94,11 @@ public class Objetos {
         ArrayList<Local>locales=new ArrayList<>();
         locales.add(Monty);
         locales.add(Back);
+
+
+
+
+
 
 
 

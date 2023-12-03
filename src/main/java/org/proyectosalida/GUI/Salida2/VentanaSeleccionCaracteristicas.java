@@ -129,4 +129,7 @@ public class VentanaSeleccionCaracteristicas extends JFrame {
 
         });
     }
+
+
+
 }

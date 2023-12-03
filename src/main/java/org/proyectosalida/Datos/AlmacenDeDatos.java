@@ -9,6 +9,7 @@ public class AlmacenDeDatos {
 
 
     protected ArrayList<JProgressBar> progressBarsVotaciones;
+    protected ArrayList<Local>locales;
     protected ArrayList<Integer> valoresVotaciones;
     private boolean votoDiarioEncuesta; //El boolean va aqui ya que sino siempre que se habra y cierre la main ventana se va a restablecer el valor, aqui no. Solo se puede una vez así.
     private ArrayList<Caracteristica> caracteristicas;

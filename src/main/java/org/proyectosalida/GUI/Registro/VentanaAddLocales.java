@@ -107,7 +107,7 @@ public class VentanaAddLocales extends JFrame {
         });
 
         añadirH.addActionListener(e -> {
-            VentanaAddHorarios ventanaAddHorarios = new VentanaAddHorarios(horarios, this);
+            VentanaAddHorarios ventanaAddHorarios = new VentanaAddHorarios(horarios, this,true);
             ventanaAddHorarios.setVisible(true);
             this.setVisible(false);
 

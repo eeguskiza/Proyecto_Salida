@@ -2,7 +2,9 @@ package org.proyectosalida.GUI.VentanasDueño;
 
 import org.proyectosalida.Constructores.*;
 import org.proyectosalida.Datos.AlmacenDeDatos;
+import org.proyectosalida.GUI.Registro.VentAddCarcLocal;
 import org.proyectosalida.GUI.Registro.VentanaAddHorarios;
+import org.proyectosalida.GUI.Registro.VentanaRegistrarDJ;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -22,8 +24,11 @@ public class ModificarLocales extends JFrame{
     private HashMap<String, Local> locales;
     //private HashMap<String, Class> localesPorClase;
     private ArrayList<Horario> horariosSelec;
-    private ArrayList<Horario> horariosNuevos;
+    private ArrayList<Caracteristica> caracteristicasSelec;
     private Boolean localSeleccionadoEnTree;
+
+    private DJ djResidente;
+    private DJ djInvitado;
 
     public ModificarLocales(AlmacenDeDatos almacn){
         localSeleccionadoEnTree = false;
@@ -38,7 +43,9 @@ public class ModificarLocales extends JFrame{
         almacen = almacn;
         dueño = (Dueño) almacn.getUsuariosPrueba().get(0); //TODO CAMBIAR EL METODO AL GETUSUARIOS PARA CONECTAR CON BD
         horariosSelec = new ArrayList<>();
-        horariosNuevos = new ArrayList<>();
+        caracteristicasSelec = new ArrayList<>();
+        djResidente = null;
+        djInvitado = null;
 
         //TREE --- IZQ
         DefaultMutableTreeNode root = new DefaultMutableTreeNode("Tus Locales");
@@ -55,7 +62,7 @@ public class ModificarLocales extends JFrame{
         //          ** = Discoteca
         //         */
 
-        JPanel panelFormulario = new JPanel(new GridLayout(13,2)); add(panelFormulario, BorderLayout.CENTER); panelFormulario.setBorder(new EmptyBorder(10, 150, 10, 30));
+        JPanel panelFormulario = new JPanel(new GridLayout(14,2)); add(panelFormulario, BorderLayout.CENTER); panelFormulario.setBorder(new EmptyBorder(10, 150, 10, 30));
         panelFormulario.add(new JLabel("Tipo de Establecimiento"));
         JRadioButton bbar = new JRadioButton("Bar"); JRadioButton bdiscoteca = new JRadioButton("Discoteca"); ButtonGroup tipoLocal = new ButtonGroup(); tipoLocal.add(bbar); tipoLocal.add(bdiscoteca);
         JPanel panelTipoLocal = new JPanel(new FlowLayout()); panelTipoLocal.add(bbar); panelTipoLocal.add(bdiscoteca); panelFormulario.add(panelTipoLocal);
@@ -66,6 +73,7 @@ public class ModificarLocales extends JFrame{
         panelFormulario.add(new JLabel("Tlf."));  JTextField tTelefono = new JTextField(); panelFormulario.add(tTelefono);
         panelFormulario.add(new JLabel("Media de Edad"));  JTextField tEdad = new JTextField(); panelFormulario.add(tEdad);
         panelFormulario.add(new JLabel("Media de Precio"));  JTextField tPrecio = new JTextField(); panelFormulario.add(tPrecio);
+        panelFormulario.add(new JLabel("Pagina Web")); JTextField tWeb = new JTextField(); panelFormulario.add(tWeb);
         panelFormulario.add(new JLabel("Horarios"));  JButton bHorarios = new JButton("Agregar Horarios"); panelFormulario.add(bHorarios);
         panelFormulario.add(new JLabel("¿Terraza?"));
         JRadioButton bTerrazaSi = new JRadioButton("Si"); JRadioButton bTerrazaNo = new JRadioButton("No"); JPanel panelBotonesTerraza = new JPanel(new FlowLayout()); panelBotonesTerraza.add(bTerrazaSi); panelBotonesTerraza.add(bTerrazaNo); panelFormulario.add(panelBotonesTerraza);
@@ -73,6 +81,13 @@ public class ModificarLocales extends JFrame{
         panelFormulario.add(new JLabel("DJ (Residente)"));  JButton bResidente = new JButton("Agregar Datos"); panelFormulario.add(bResidente);
         panelFormulario.add(new JLabel("DJ (Invitado)"));  JButton bInvitado = new JButton("Agregar Datos"); panelFormulario.add(bInvitado);
         panelFormulario.add(new JLabel("Caracteristicas"));  JButton bCaracteristicas = new JButton("Agregar Características"); panelFormulario.add(bCaracteristicas);
+
+        //---------BOTONERA ----------------
+        JPanel botonera = new JPanel(new FlowLayout()); add(botonera, BorderLayout.SOUTH);
+        JButton atras = new JButton("Atrás"); botonera.add(atras);
+        JButton guardar = new JButton("Registrar Nuevo"); botonera.add(guardar);
+
+
 
         bbar.addActionListener(e -> {
             bResidente.setEnabled(false);
@@ -117,6 +132,8 @@ public class ModificarLocales extends JFrame{
                         bResidente.setEnabled(true);
                         bInvitado.setEnabled(true);
                         Discoteca disco = (Discoteca) localSelec;
+                        djResidente = disco.getDjResidente();
+                        djInvitado = disco.getDjInvitado();
 
                         bdiscoteca.setSelected(true);
 
@@ -131,13 +148,16 @@ public class ModificarLocales extends JFrame{
                     tTelefono.setText(localSelec.getTelefono());
                     tEdad.setText(String.valueOf(localSelec.getMediaEdad()));
                     tPrecio.setText(String.valueOf(localSelec.getPrecioMedio()));
+                    tWeb.setText(String.valueOf(localSelec.getWeb()));
                     horariosSelec = localSelec.getHorarios();
+                    caracteristicasSelec = localSelec.getCaracteristicas();
 
 
                     bHorarios.setText("Ver Horarios");
                     bInvitado.setText("Ver Invitado");
                     bResidente.setText("Ver Residente");
                     bCaracteristicas.setText("Ver Características");
+                    guardar.setText("Guardar Cambios");
 
 
                 }
@@ -147,11 +167,57 @@ public class ModificarLocales extends JFrame{
 
         bHorarios.addActionListener(e -> {
             if(localSeleccionadoEnTree){
-                VentanaAddHorarios ventanaAddHorarios = new VentanaAddHorarios(horariosSelec, this);
+                VentanaAddHorarios ventanaAddHorarios = new VentanaAddHorarios(horariosSelec, this, false);
             }else{
-                VentanaAddHorarios ventanaAddHorarios = new VentanaAddHorarios(horariosNuevos, this);
+                VentanaAddHorarios ventanaAddHorarios = new VentanaAddHorarios(horariosSelec, this, true);
             }
             setVisible(false);
+        });
+
+        bCaracteristicas.addActionListener(e -> {
+            VentAddCarcLocal ventanaCaracteristicas = new VentAddCarcLocal(this, caracteristicasSelec);
+            setVisible(false);
+        });
+
+        bResidente.addActionListener(e -> {
+            if(localSeleccionadoEnTree){
+                VentanaRegistrarDJ v1 = new VentanaRegistrarDJ(djResidente, this, false);
+                v1.setVisible(true);
+            }else{
+                VentanaRegistrarDJ v1 = new VentanaRegistrarDJ(djResidente, this, true);
+                v1.setVisible(true);
+            }
+            setVisible(false);
+        });
+
+        bInvitado.addActionListener(e -> {
+            if(localSeleccionadoEnTree){
+                VentanaRegistrarDJ v2 = new VentanaRegistrarDJ(djInvitado, this, false);
+                v2.setVisible(true);
+            }else{
+                VentanaRegistrarDJ v2 = new VentanaRegistrarDJ(djInvitado, this, true);
+                v2.setVisible(true);
+            }
+            setVisible(false);
+        });
+
+        //GUARDAR CAMBIOS - REGISTRAR NUEVO
+        guardar.addActionListener(e -> {
+            if(bbar.isSelected()){
+                Boolean terraza = false;
+                if(bTerrazaSi.isSelected()){
+                    terraza = true;
+                }
+                Bar nuevo = new Bar(tNombre.getText(), tDireccion.getText(), tCp.getText(), Integer.parseInt(tAforo.getText()), tTelefono.getText(), Integer.parseInt(tEdad.getText()), Integer.parseInt(tPrecio.getText()), tWeb.getText(), horariosSelec, terraza, caracteristicasSelec);
+                actualizarLocalUsuario(nuevo);
+                //TODO FALTA GUARDARLO CORRRECTAMENTE EN BD?
+            }else if(bdiscoteca.isSelected()){
+                Discoteca nueva = new Discoteca(tNombre.getText(), tDireccion.getText(), tCp.getText(), Integer.parseInt(tAforo.getText()), tTelefono.getText(), Integer.parseInt(tEdad.getText()), Integer.parseInt(tPrecio.getText()), tWeb.getText(), horariosSelec, djResidente, djInvitado, caracteristicasSelec);
+                actualizarLocalUsuario(nueva);
+                //TODO LO MISMO VAYA
+            }else{
+                JOptionPane.showMessageDialog(null, "Seleccione un tipo de establecimiento!");
+            }
         });
 
     }
@@ -163,6 +229,20 @@ public class ModificarLocales extends JFrame{
             //localesPorClase.put(local.getNombre(), local.getClass());
             root.add(new DefaultMutableTreeNode(local.getNombre()));
         }
+    }
+
+    private void actualizarLocalUsuario(Local nuevo){
+        for(int i=0; i<dueño.getLocales().size(); i++){
+            Local local = dueño.getLocales().get(i);
+            if(local.getId().equals(localSelec.getId())){ //Es el mismo local al que estamos editando
+                dueño.getLocales().remove(i);
+                System.out.println("Eliminado el anterior");
+                break;
+            }
+        }
+        System.out.println("Añadiendo el nuevo...");
+        dueño.getLocales().add(nuevo);
+        System.out.println(nuevo);
     }
 
     public static void main(String[] args) {

@@ -28,6 +28,7 @@ public class ModificarLocales extends JFrame{
     private ArrayList<Horario> horariosSelec;
     private ArrayList<Caracteristica> caracteristicasSelec;
     private Boolean localSeleccionadoEnTree;
+    private DefaultTreeModel modelo;
 
     private DJ djResidente;
     private DJ djInvitado;
@@ -43,8 +44,14 @@ public class ModificarLocales extends JFrame{
         //localesPorClase = new HashMap<>();
         localSelec = null;
         almacen = almacn;
-        dueño = (Dueño) almacn.getUsuarios().get(0);
-        //dueño = (Dueño) almacn.getUsuariosPrueba().get(0);
+
+        //Esto para hacer pruebas sin BD
+        if(almacn.getUsuarios().size()!= 0){
+            dueño = (Dueño) almacn.getUsuarios().get(0);
+        }else{
+            dueño = (Dueño) almacn.getUsuariosPrueba().get(0);
+        }
+
         horariosSelec = new ArrayList<>();
         caracteristicasSelec = new ArrayList<>();
         djResidente = null;
@@ -52,7 +59,7 @@ public class ModificarLocales extends JFrame{
 
         //TREE --- IZQ
         root = new DefaultMutableTreeNode("Tus Locales");
-        DefaultTreeModel modelo = new DefaultTreeModel(root);
+        modelo = new DefaultTreeModel(root);
         JTree tree = new JTree(modelo);
         JScrollPane scroll = new JScrollPane(tree);
         scroll.setPreferredSize(new Dimension(180, 300));
@@ -256,6 +263,7 @@ public class ModificarLocales extends JFrame{
 
         //Actualizar JTree
         root.removeAllChildren();
+        modelo.reload();
         cargarLocalesAlTree(dueño, root);
     }
 

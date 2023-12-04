@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import org.proyectosalida.Constructores.Caracteristica;
 import com.toedter.calendar.JCalendar;
 import org.proyectosalida.Constructores.Local;
+import org.proyectosalida.GUI.Salida1.ClasePrueba;
 
 public class VentanaGustos extends JFrame {
     private ArrayList<Caracteristica> caracteristicasSeleccionadas = new ArrayList<>();
@@ -50,6 +51,11 @@ public class VentanaGustos extends JFrame {
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setVisible(true);
+
+        Aceptar.addActionListener(e -> {
+                    new ClasePrueba(caracteristicasSeleccionadas);
+                }
+        );
     }
 
     private void inicializarVentana() {
@@ -78,7 +84,10 @@ public class VentanaGustos extends JFrame {
         }
         gustosPanel.setAlignmentX(Component.LEFT_ALIGNMENT);
         panelPrincipal.add(gustosPanel);
+
+
     }
+
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(VentanaGustos::new);

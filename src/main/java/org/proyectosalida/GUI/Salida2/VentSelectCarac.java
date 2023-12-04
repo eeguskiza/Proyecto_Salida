@@ -70,7 +70,7 @@ public class VentSelectCarac extends JFrame {
         });
 
         // Iniciar el hilo
-        //thread.start();
+        thread.start();
 
         panel.add(searchField, BorderLayout.NORTH);
         panel.add(new JScrollPane(textArea), BorderLayout.CENTER);

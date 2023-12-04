@@ -128,8 +128,8 @@ public class MenuPersonal extends JFrame {
         main.add(new JLabel("Contraseña", JLabel.CENTER)); main.add(panelContraseña);
         main.add(new JLabel("Tlf.", JLabel.CENTER)); JTextField tlffield = new JTextField(this.usuario.getTelefono()); main.add(tlffield); tlffield.setEditable(editable); tlffield.setEnabled(editable);
         main.add(new JLabel("Correo", JLabel.CENTER)); JTextField correofield = new JTextField(this.usuario.getCorreo());main.add(correofield); correofield.setEditable(editable); correofield.setEnabled(editable);
-        main.add(new JLabel("Locales", JLabel.CENTER));
         if(usuario.getClass().equals(Dueño.class)){
+            main.add(new JLabel("Locales", JLabel.CENTER));
             if(editable){
                 main.add(clickableLabel("Modificar Locales", 7)); //MODIFICAR -> UN JTREE CON UN PANEL INDIVIDUAL AL LADO PARA SELECCIONAR UNO Y EDITARLO
             }else{

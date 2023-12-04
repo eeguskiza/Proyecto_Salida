@@ -78,11 +78,11 @@ public class ModificarLocales extends JFrame{
         JPanel panelTipoLocal = new JPanel(new FlowLayout()); panelTipoLocal.add(bbar); panelTipoLocal.add(bdiscoteca); panelFormulario.add(panelTipoLocal);
         panelFormulario.add(new JLabel("Nombre")); JTextField tNombre = new JTextField(); panelFormulario.add(tNombre);
         panelFormulario.add(new JLabel("Direccion"));  JTextField tDireccion = new JTextField(); panelFormulario.add(tDireccion);
-        panelFormulario.add(new JLabel("CP"));  JTextField tCp = new JTextField(); panelFormulario.add(tCp);
-        panelFormulario.add(new JLabel("Aforo"));  JTextField tAforo = new JTextField(); panelFormulario.add(tAforo);
+        panelFormulario.add(new JLabel("CP"));  JSpinner sCp = new JSpinner(); sCp.getModel().setValue(48000); panelFormulario.add(sCp);
+        panelFormulario.add(new JLabel("Aforo"));  JSpinner sAforo = new JSpinner(); sAforo.getModel().setValue(0); panelFormulario.add(sAforo);
         panelFormulario.add(new JLabel("Tlf."));  JTextField tTelefono = new JTextField(); panelFormulario.add(tTelefono);
-        panelFormulario.add(new JLabel("Media de Edad"));  JTextField tEdad = new JTextField(); panelFormulario.add(tEdad);
-        panelFormulario.add(new JLabel("Media de Precio"));  JTextField tPrecio = new JTextField(); panelFormulario.add(tPrecio);
+        panelFormulario.add(new JLabel("Media de Edad"));  JSpinner sEdad = new JSpinner(); sEdad.getModel().setValue(0); panelFormulario.add(sEdad);
+        panelFormulario.add(new JLabel("Media de Precio"));  JSpinner sPrecio = new JSpinner(); sPrecio.getModel().setValue(0); panelFormulario.add(sPrecio);
         panelFormulario.add(new JLabel("Pagina Web")); JTextField tWeb = new JTextField(); panelFormulario.add(tWeb);
         panelFormulario.add(new JLabel("Horarios"));  JButton bHorarios = new JButton("Agregar Horarios"); panelFormulario.add(bHorarios);
         panelFormulario.add(new JLabel("¿Terraza?"));
@@ -153,11 +153,11 @@ public class ModificarLocales extends JFrame{
 
                     tNombre.setText(localSelec.getNombre());
                     tDireccion.setText(localSelec.getDireccion());
-                    tCp.setText(localSelec.getCP());
-                    tAforo.setText(String.valueOf(localSelec.getAforo()));
+                    ((SpinnerNumberModel) sCp.getModel()).setValue(Integer.parseInt(localSelec.getCP()));
+                    ((SpinnerNumberModel) sAforo.getModel()).setValue(localSelec.getAforo());
                     tTelefono.setText(localSelec.getTelefono());
-                    tEdad.setText(String.valueOf(localSelec.getMediaEdad()));
-                    tPrecio.setText(String.valueOf(localSelec.getPrecioMedio()));
+                    ((SpinnerNumberModel) sEdad.getModel()).setValue(localSelec.getMediaEdad());
+                    ((SpinnerNumberModel) sPrecio.getModel()).setValue(localSelec.getPrecioMedio());
                     tWeb.setText(String.valueOf(localSelec.getWeb()));
                     horariosSelec = localSelec.getHorarios();
                     caracteristicasSelec = localSelec.getCaracteristicas();
@@ -217,11 +217,11 @@ public class ModificarLocales extends JFrame{
                 if(bTerrazaSi.isSelected()){
                     terraza = true;
                 }
-                Bar nuevo = new Bar(tNombre.getText(), tDireccion.getText(), tCp.getText(), Integer.parseInt(tAforo.getText()), tTelefono.getText(), Integer.parseInt(tEdad.getText()), Integer.parseInt(tPrecio.getText()), tWeb.getText(), horariosSelec, terraza, caracteristicasSelec);
+                Bar nuevo = new Bar(tNombre.getText(), tDireccion.getText(), ((SpinnerNumberModel) sCp.getModel()).getNumber().toString(), ((SpinnerNumberModel) sAforo.getModel()).getNumber().intValue(), tTelefono.getText(), ((SpinnerNumberModel) sEdad.getModel()).getNumber().intValue(), ((SpinnerNumberModel) sPrecio.getModel()).getNumber().intValue(), tWeb.getText(), horariosSelec, terraza, caracteristicasSelec);
                 actualizarLocalUsuario(nuevo);
                 //TODO FALTA GUARDARLO CORRRECTAMENTE EN BD?
             }else if(bdiscoteca.isSelected()){
-                Discoteca nueva = new Discoteca(tNombre.getText(), tDireccion.getText(), tCp.getText(), Integer.parseInt(tAforo.getText()), tTelefono.getText(), Integer.parseInt(tEdad.getText()), Integer.parseInt(tPrecio.getText()), tWeb.getText(), horariosSelec, djResidente, djInvitado, caracteristicasSelec);
+                Discoteca nueva = new Discoteca(tNombre.getText(), tDireccion.getText(), ((SpinnerNumberModel) sCp.getModel()).getNumber().toString(), ((SpinnerNumberModel) sAforo.getModel()).getNumber().intValue(), tTelefono.getText(), ((SpinnerNumberModel) sEdad.getModel()).getNumber().intValue(), ((SpinnerNumberModel) sPrecio.getModel()).getNumber().intValue(), tWeb.getText(), horariosSelec, djResidente, djInvitado, caracteristicasSelec);
                 actualizarLocalUsuario(nueva);
                 //TODO LO MISMO VAYA
             }else{

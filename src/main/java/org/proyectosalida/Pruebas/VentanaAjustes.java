@@ -64,7 +64,7 @@ public class VentanaAjustes {
 
 
         btnNotificaciones.addActionListener(e -> {
-            VentanaGestionNotificaciones v = new VentanaGestionNotificaciones();
+            //VentanaGestionNotificaciones v = new VentanaGestionNotificaciones();
             //v.frame.setVisible(true);
 
         });

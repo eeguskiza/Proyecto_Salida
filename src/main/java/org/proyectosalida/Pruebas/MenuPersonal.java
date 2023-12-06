@@ -243,6 +243,7 @@ public class MenuPersonal extends JFrame {
                 }else if (code==2){
                     VentanaAjustes ventanaAjustes = new VentanaAjustes();
                     ventanaAjustes.frame.setVisible(true);
+                    setVisible(false);
                 }
 
             }

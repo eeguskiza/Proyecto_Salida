@@ -1,5 +1,7 @@
 package org.proyectosalida.Pruebas;
 
+import org.proyectosalida.Datos.AlmacenDeDatos;
+
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -55,12 +57,30 @@ public class VentanaAjustes {
 
     public VentanaAjustes() {
         initialize();
+
+        btnAccesoCuenta.addActionListener(e ->{
+
+        });
+
+
+        btnNotificaciones.addActionListener(e -> {
+            VentanaGestionNotificaciones v = new VentanaGestionNotificaciones();
+            //v.frame.setVisible(true);
+
+        });
+
+        btnBotonVolver.addActionListener(e -> {
+           // MenuPersonal mp = new MenuPersonal();
+            //mp.setVisible(true);
+            frame.setVisible(false);
+        });
     }
 
 
     private void initialize() {
         frame = new JFrame();
-        frame.setBounds(100, 100, 350, 500);
+        frame.setSize(350, 500);
+        frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(new GridLayout(1, 4));
 

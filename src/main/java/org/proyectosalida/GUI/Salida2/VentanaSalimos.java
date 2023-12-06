@@ -63,6 +63,12 @@ public class VentanaSalimos {
      */
     public VentanaSalimos() {
         initialize();
+
+        btnVolver.addActionListener(e -> {
+            // Añadir logica para volver a la ventana de seleccion
+            frame.setVisible(false);
+
+        });
     }
 
     /**

@@ -70,8 +70,9 @@ public class VentanaPreguntasFrecuentes {
         pPrincipalRelleno = new JPanel();
         pPrincipal.add(pPrincipalRelleno);
 
-        sp = new JScrollPane();
-        frame.getContentPane().add(sp, BorderLayout.EAST);
+        sp = new JScrollPane(pPrincipal);
+        frame.getContentPane().add(sp, BorderLayout.CENTER);
+
 
         pBotonVolver = new JPanel();
         frame.getContentPane().add(pBotonVolver, BorderLayout.SOUTH);

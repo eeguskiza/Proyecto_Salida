@@ -1,6 +1,8 @@
 package org.proyectosalida.GUI.VentanasDueño;
 
 import org.proyectosalida.Constructores.*;
+import org.proyectosalida.Datos.AlmacenDeDatos;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -12,14 +14,16 @@ import java.util.ArrayList;
 public class VerLocales extends JFrame {
 
     private ArrayList<Class> clasesDeLocales; //Se guardan las clases de los localen en el orden de la tabla para luego clasificar
+    private AlmacenDeDatos almacen;
 
-    public VerLocales(Dueño dueño, Frame padre){
+    public VerLocales(Dueño dueño, Frame padre, AlmacenDeDatos almcn){
         setTitle("Menú Personal: "+dueño.getNombre());
         setSize(1400, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
         setLocationRelativeTo(null);
         padre.setVisible(false);
+        almacen = almcn;
 
         /*
           Local(String nombre, String direccion,String CP, int Aforo, String telefono, int MediaEdad, int PrecioMedio, String web, ArrayList<Horario> horarios, BOOLEAN TERRAZA, *DJ DJRESIDENTE*, *DJ DJINVITADO*, ArrayList<Caracteristica>caracteristicas)
@@ -48,65 +52,22 @@ public class VerLocales extends JFrame {
             padre.setVisible(true);
         });
 
+        JButton registrarNuevo = new JButton("Registrar Nuevo");
+        botonera.add(registrarNuevo);
+        registrarNuevo.addActionListener(e -> {
+            ModificarLocales vr = new ModificarLocales(almacen, this);
+            vr.setVisible(true);
+            dispose();
+        });
+
+        JButton refresh = new JButton("Refresh"); botonera.add(refresh);
+        refresh.addActionListener(e -> {
+            modelo.setRowCount(0);
+            cargarLocalesATabla(dueño, modelo);
+        });
+
         clasesDeLocales = new ArrayList<>();
-        for(Local local : dueño.getLocales()){
-            String horario = "";
-            for(Horario dia : local.getHorarios()){
-                horario += dia + "\n";
-            }
-
-            String caracteristicas = "";
-            for(Caracteristica c : local.getCaracteristicas()){
-                caracteristicas += c + ", \n";
-            }
-
-            String terraza = "";
-
-            if(local.getClass().equals(Bar.class)){
-                if(((Bar) local).getTerraza()){
-                    terraza = "SI";
-                }else{
-                    terraza = "NO";
-                }
-                Object[] nuevo = {
-                        local.getNombre(),
-                        local.getDireccion(),
-                        local.getCP(),
-                        local.getAforo(),
-                        local.getTelefono(),
-                        local.getMediaEdad(),
-                        local.getPrecioMedio(),
-                        local.getWeb(),
-                        horario,
-                        terraza,
-                        "", //Los bares no tienen DJ's
-                        "",
-                        caracteristicas
-                };
-                modelo.addRow(nuevo);
-                clasesDeLocales.add(Bar.class);
-            }else if(local.getClass().equals(Discoteca.class)){
-                Object[] nuevo = {
-                        local.getNombre(),
-                        local.getDireccion(),
-                        local.getCP(),
-                        local.getAforo(),
-                        local.getTelefono(),
-                        local.getMediaEdad(),
-                        local.getPrecioMedio(),
-                        local.getWeb(),
-                        horario,
-                        "", //Discotecas no tienen terraza
-                        ((Discoteca) local).getDjResidente().getNombre(),
-                        ((Discoteca) local).getDjInvitado().getNombre(),
-                        caracteristicas
-                };
-                modelo.addRow(nuevo);
-                clasesDeLocales.add(Discoteca.class);
-            }else{
-                System.out.println("No son ninguna class (??)");
-            }
-        }
+        cargarLocalesATabla(dueño, modelo);
 
         //RENDERER DE LA CABECERA DE LA TABLA
         TableCellRenderer headerRendererPredeterminado = tabla.getTableHeader().getDefaultRenderer();
@@ -182,5 +143,66 @@ public class VerLocales extends JFrame {
             }
         });
 
+    }
+
+    private void cargarLocalesATabla(Dueño dueño, DefaultTableModel modelo){
+        for(Local local : dueño.getLocales()){
+            String horario = "";
+            for(Horario dia : local.getHorarios()){
+                horario += dia + "\n";
+            }
+
+            String caracteristicas = "";
+            for(Caracteristica c : local.getCaracteristicas()){
+                caracteristicas += c + ", \n";
+            }
+
+            String terraza = "";
+
+            if(local.getClass().equals(Bar.class)){
+                if(((Bar) local).getTerraza()){
+                    terraza = "SI";
+                }else{
+                    terraza = "NO";
+                }
+                Object[] nuevo = {
+                        local.getNombre(),
+                        local.getDireccion(),
+                        local.getCP(),
+                        local.getAforo(),
+                        local.getTelefono(),
+                        local.getMediaEdad(),
+                        local.getPrecioMedio(),
+                        local.getWeb(),
+                        horario,
+                        terraza,
+                        "", //Los bares no tienen DJ's
+                        "",
+                        caracteristicas
+                };
+                modelo.addRow(nuevo);
+                clasesDeLocales.add(Bar.class);
+            }else if(local.getClass().equals(Discoteca.class)){
+                Object[] nuevo = {
+                        local.getNombre(),
+                        local.getDireccion(),
+                        local.getCP(),
+                        local.getAforo(),
+                        local.getTelefono(),
+                        local.getMediaEdad(),
+                        local.getPrecioMedio(),
+                        local.getWeb(),
+                        horario,
+                        "", //Discotecas no tienen terraza
+                        ((Discoteca) local).getDjResidente().getNombre(),
+                        ((Discoteca) local).getDjInvitado().getNombre(),
+                        caracteristicas
+                };
+                modelo.addRow(nuevo);
+                clasesDeLocales.add(Discoteca.class);
+            }else{
+                System.out.println("No son ninguna class (??)");
+            }
+        }
     }
 }

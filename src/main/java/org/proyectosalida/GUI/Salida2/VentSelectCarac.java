@@ -5,43 +5,55 @@ import org.jdesktop.swingx.JXSearchField;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.WindowAdapter;
-import java.awt.event.WindowListener;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.proyectosalida.Constructores.Caracteristica;
 import org.proyectosalida.Datos.AlmacenDeDatos;
+import org.proyectosalida.GUI.Salida1.ClasePrueba;
 
-public class VentanaSeleccionCaracteristicas extends JFrame {
+public class VentSelectCarac extends JFrame {
 
     private List<Caracteristica> datos;
     private JTextArea textArea;
     private JPanel checkboxesPanel;
     private JPanel panel;
-    private ArrayList<Caracteristica> caracteristicasSeleccionadas;
+//private ArrayList<Caracteristica> caracteristicasSeleccionadas;
     private JXSearchField searchField;
     private JScrollPane sp;
 
 
-    public VentanaSeleccionCaracteristicas(AlmacenDeDatos almacenDeDatos) {
+
+    public VentSelectCarac(ArrayList<Caracteristica> caracteristicasSeleccionadas) {
         super("Seleccion de Caracteristicas");
         setSize(500, 300);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLocationRelativeTo(null);
 
         // Inicializar la lista de datos con las características proporcionadas
         datos = Arrays.asList(Caracteristica.values());
 
-        textArea = new JTextArea();
+        textArea = new JTextArea(){
+            @Override
+            public boolean isEditable() {
+                return false;
+            }
+        };
         sp = new JScrollPane(textArea);
 
         checkboxesPanel = new JPanel();
-        caracteristicasSeleccionadas = new ArrayList<Caracteristica>();
+        //caracteristicasSeleccionadas = caracSelec;
+        checkboxesPanel.setPreferredSize(new Dimension(200, 50));
+
+
+        JButton Aceptar=new JButton("Aceptar");
+        JPanel panelabajo=new JPanel(new GridLayout(0,1));
 
         panel = new JPanel();
         panel.setLayout(new BorderLayout());
+
+
 
         searchField = new JXSearchField("Buscar...");
         searchField.setPreferredSize(new Dimension(200, 30));
@@ -49,7 +61,7 @@ public class VentanaSeleccionCaracteristicas extends JFrame {
         searchField.addActionListener(e -> {
             String searchText = searchField.getText();
             buscarTexto(searchText);
-            crearCheckboxes(searchText);
+            crearCheckboxes(searchText, caracteristicasSeleccionadas);
         });
 
         // Crear un hilo para imprimir las características seleccionadas
@@ -67,9 +79,17 @@ public class VentanaSeleccionCaracteristicas extends JFrame {
         // Iniciar el hilo
         thread.start();
 
+        Aceptar.addActionListener(e->{
+            dispose();
+            new ClasePrueba(caracteristicasSeleccionadas);
+        });
         panel.add(searchField, BorderLayout.NORTH);
         panel.add(new JScrollPane(textArea), BorderLayout.CENTER);
-        panel.add(checkboxesPanel, BorderLayout.SOUTH);
+        panelabajo.add(checkboxesPanel);
+        panelabajo.add(Aceptar);
+        panel.add(panelabajo, BorderLayout.SOUTH);
+
+
         add(panel);
 
         setVisible(true);
@@ -91,11 +111,17 @@ public class VentanaSeleccionCaracteristicas extends JFrame {
 
 
 
-    private void crearCheckboxes(String searchText) {
+    private void crearCheckboxes(String searchText, ArrayList<Caracteristica> caracteristicasSeleccionadas) {
         checkboxesPanel.removeAll();
         for (Caracteristica resultado : datos) {
             if (resultado.name().toLowerCase().startsWith(searchText.toLowerCase())) {
                 JCheckBox checkBox = new JCheckBox(resultado.name());
+
+                for(Caracteristica caract : caracteristicasSeleccionadas){
+                    if(caract.name().equals(resultado.name())){ //Si ya la has seleccionado antes
+                        checkBox.setSelected(true);
+                    }
+                }
 
                 checkBox.addActionListener((ActionEvent e) -> {
                     if (checkBox.isSelected()) {
@@ -105,6 +131,7 @@ public class VentanaSeleccionCaracteristicas extends JFrame {
                         caracteristicasSeleccionadas.remove(resultado);
                         System.out.println("Has deseleccionado: " + checkBox.getText());
                     }
+                    System.out.println("Seleccionadas: "+caracteristicasSeleccionadas);
                 });
                 checkboxesPanel.add(checkBox);
             }
@@ -124,9 +151,12 @@ public class VentanaSeleccionCaracteristicas extends JFrame {
         }
 
         SwingUtilities.invokeLater(() -> {
-            VentanaSeleccionCaracteristicas ventana = new VentanaSeleccionCaracteristicas(new AlmacenDeDatos());
+            VentSelectCarac ventana = new VentSelectCarac(new ArrayList<>());
             ventana.setVisible(true);
 
         });
     }
+
+
+
 }

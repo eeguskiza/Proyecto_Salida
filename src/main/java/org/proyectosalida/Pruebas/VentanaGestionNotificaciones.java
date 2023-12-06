@@ -16,7 +16,7 @@ import java.awt.FlowLayout;
 
 public class VentanaGestionNotificaciones {
 
-    private JFrame frame;
+    JFrame frame;
 
     private JPanel pPreferencias;
     private JPanel pPrincipal;
@@ -34,13 +34,14 @@ public class VentanaGestionNotificaciones {
     private JLabel lblPreferencias;
 
     private JButton btnBotonVolver;
+    private JFrame padre;
 
 
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    VentanaGestionNotificaciones window = new VentanaGestionNotificaciones();
+                    VentanaGestionNotificaciones window = new VentanaGestionNotificaciones(null);
                     window.frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -50,7 +51,8 @@ public class VentanaGestionNotificaciones {
     }
 
 
-    public VentanaGestionNotificaciones() {
+    public VentanaGestionNotificaciones(JFrame p) {
+        padre = p;
         initialize();
 
 
@@ -64,6 +66,7 @@ public class VentanaGestionNotificaciones {
         frame.setBounds(100, 100, 350, 500);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(new GridLayout(1, 4));
+        frame.setLocationRelativeTo(null);
 
         pPrincipal = new JPanel();
         frame.getContentPane().add(pPrincipal);
@@ -121,6 +124,11 @@ public class VentanaGestionNotificaciones {
 
         pNorte = new JPanel();
         pBotonVolver.add(pNorte, BorderLayout.NORTH);
+
+        btnBotonVolver.addActionListener(e -> {
+            padre.setVisible(true);
+            frame.dispose();
+        });
 
     }
 

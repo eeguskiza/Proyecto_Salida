@@ -4,30 +4,38 @@ import org.proyectosalida.Constructores.Dueño;
 import org.proyectosalida.Constructores.Local;
 import org.proyectosalida.Datos.Conexion;
 import org.proyectosalida.Datos.Provider;
-import org.proyectosalida.GUI.Bienvenido;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.util.ArrayList;
 
 public class Tabla extends JFrame {
-    private JTable tabla;
+    private JTable tablaDueño, tablaCliente;
 
     public Tabla() {
         this.setTitle("Tabla");
         this.setSize(1000, 600);
         this.setLocationRelativeTo(null);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLayout(new GridLayout(2, 1));
 
         // Inicialización de la tabla
-        tabla = new JTable();
-        JScrollPane scrollPane = new JScrollPane(tabla);
+        tablaDueño = new JTable();
+        JScrollPane scrollPane = new JScrollPane(tablaDueño);
         this.add(scrollPane);
 
-        // Carga de datos en la tabla
-        Provider.cargarTablaDueño(tabla);
+        tablaCliente = new JTable();
+        JScrollPane scrollPane2 = new JScrollPane(tablaCliente);
+        this.add(scrollPane2);
 
-        DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
+        // Carga de datos en la tabla
+        Provider.cargarTablaDueño(tablaDueño);
+        Provider.cargarTablaCliente(tablaCliente);
+
+        /*
+
+        DefaultTableModel modelo = (DefaultTableModel) tablaDueño.getModel();
         Dueño dueño = new Dueño();
         System.out.println(dueño);
         String tablaID = "";
@@ -57,9 +65,12 @@ public class Tabla extends JFrame {
         dueño.setTelefono(tablaTelefono);
         dueño.setCorreo(tablaCorreo);
         dueño.setContraseña(tablaPassword);
+        /*
         for(Local local : tablaLocales){
             dueño.agregarLocal(local);
         }
+
+         */
 
 
         this.setVisible(true);

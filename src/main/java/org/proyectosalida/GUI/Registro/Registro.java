@@ -171,11 +171,12 @@ public class Registro extends JFrame {
                             VentanaAddLocales ventanaAddLocales = new VentanaAddLocales(nuevoUsuario);
                             ventanaAddLocales.setVisible(true);
                             this.dispose();
+                        }else {
+                            guardarDueño(nuevoUsuario);
+                            dispose();
                             //REDIRIGE DIRECTAMENTE A INICIA SESION HABIENDO GUARDADO LOS DATOS EN LA NUBE
                             JOptionPane.showMessageDialog(this, "Usuario creado con éxito!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                            InicioSesion inicioSesion = new InicioSesion(padre);
-                            this.dispose();
-                            padre.dispose();
+                            InicioSesion inicioSesion = new InicioSesion(this);
                             inicioSesion.setVisible(true);
                         }
                     } else {
@@ -232,6 +233,28 @@ public class Registro extends JFrame {
 
             Provider.guardarPersona("Cliente", id, datos);
 
+
+        }
+        catch(Exception e){
+            JOptionPane.showMessageDialog(null, "Error al registrar usuario");
+            System.out.println("Error" + e.getMessage());
+        }
+    }
+
+    private void guardarDueño(Dueño dueño) {
+        String id = dueño.getId();  // ID del documento
+
+        try{
+            Map<String, Object> datos = new HashMap<>();
+            datos.put("Nombre", dueño.getNombre());
+            datos.put("Apellido", dueño.getApellido());
+            datos.put("Edad", dueño.getEdad());
+            datos.put("Contraseña", dueño.getContraseña());
+            datos.put("Teléfono", dueño.getTelefono());
+            datos.put("Correo", dueño.getCorreo());
+            datos.put("Locales", dueño.getLocales());
+
+            Provider.guardarPersona("Dueño", id, datos);
 
         }
         catch(Exception e){

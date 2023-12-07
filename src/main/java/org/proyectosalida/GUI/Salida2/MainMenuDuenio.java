@@ -2,19 +2,11 @@ package org.proyectosalida.GUI.Salida2;
 
 import java.awt.EventQueue;
 
-import javax.swing.JFrame;
-import javax.swing.JPanel;
+import javax.swing.*;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.FlowLayout;
-import javax.swing.JLabel;
 import java.awt.Font;
-import javax.swing.SwingConstants;
-import javax.swing.JTable;
-import javax.swing.JTextField;
-import javax.swing.JSpinner;
-import javax.swing.JTextPane;
-import javax.swing.JProgressBar;
 
 public class MainMenuDuenio {
 
@@ -25,6 +17,7 @@ public class MainMenuDuenio {
     private JTextField txtDireccion;
     private JTextField txtCP;
     private JTextField txtNomPropietario;
+    private JButton btnEditar;
 
 
 
@@ -188,7 +181,18 @@ public class MainMenuDuenio {
         pInformacion.add(lblCaracteristicas);
 
         JPanel p9 = new JPanel();
-        pInformacion.add(p9);;
+        pInformacion.add(p9);
+
+        JPanel pNorte = new JPanel();
+        frame.getContentPane().add(pNorte, BorderLayout.SOUTH);
+
+        JButton btnEditar = new JButton("Editar características");
+        btnEditar.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        pNorte.add(btnEditar);
+
+        JButton btnVolver = new JButton("Volver");
+        btnVolver.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        pNorte.add(btnVolver);
 
 
     }

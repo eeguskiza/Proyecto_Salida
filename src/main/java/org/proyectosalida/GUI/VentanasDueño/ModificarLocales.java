@@ -54,8 +54,8 @@ public class ModificarLocales extends JFrame{
 
         horariosSelec = new ArrayList<>();
         caracteristicasSelec = new ArrayList<>();
-        djResidente = null;
-        djInvitado = null;
+        djResidente = new DJ();
+        djInvitado = new DJ();
 
         //TREE --- IZQ
         root = new DefaultMutableTreeNode("Tus Locales");
@@ -185,7 +185,7 @@ public class ModificarLocales extends JFrame{
         });
 
         bCaracteristicas.addActionListener(e -> {
-            VentSelectCarac ventanaCaracterist = new VentSelectCarac(caracteristicasSelec);
+            VentSelectCarac ventanaCaracterist = new VentSelectCarac(caracteristicasSelec, true);
         });
 
         bResidente.addActionListener(e -> {

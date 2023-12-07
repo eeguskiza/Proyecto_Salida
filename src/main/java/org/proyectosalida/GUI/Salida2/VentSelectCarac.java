@@ -24,7 +24,7 @@ public class VentSelectCarac extends JFrame {
 
 
 
-    public VentSelectCarac(ArrayList<Caracteristica> caracteristicasSeleccionadas) {
+    public VentSelectCarac(ArrayList<Caracteristica> caracteristicasSeleccionadas, Boolean editandoLocal) {
         super("Seleccion de Caracteristicas");
         setSize(500, 300);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -77,11 +77,13 @@ public class VentSelectCarac extends JFrame {
         });
 
         // Iniciar el hilo
-        thread.start();
+        //thread.start();
 
         Aceptar.addActionListener(e->{
             dispose();
-            new ClasePrueba(caracteristicasSeleccionadas);
+            if(!editandoLocal){ //Significa que no estas modificando un local, asik se pasa a la busqueda relacionada con las caracteristicas
+                new ClasePrueba(caracteristicasSeleccionadas);
+            }
         });
         panel.add(searchField, BorderLayout.NORTH);
         panel.add(new JScrollPane(textArea), BorderLayout.CENTER);
@@ -154,7 +156,7 @@ public class VentSelectCarac extends JFrame {
         }
 
         SwingUtilities.invokeLater(() -> {
-            VentSelectCarac ventana = new VentSelectCarac(new ArrayList<>());
+            VentSelectCarac ventana = new VentSelectCarac(new ArrayList<>(), false);
             ventana.setVisible(true);
 
         });

@@ -1,5 +1,8 @@
 package org.proyectosalida.GUI.Salida2;
 
+import org.proyectosalida.Constructores.Dueño;
+import org.proyectosalida.Datos.AlmacenDeDatos;
+
 import java.awt.EventQueue;
 
 import javax.swing.*;
@@ -25,7 +28,7 @@ public class MainMenuDuenio {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
-                    MainMenuDuenio window = new MainMenuDuenio();
+                    MainMenuDuenio window = new MainMenuDuenio(new AlmacenDeDatos());
                     window.frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -35,8 +38,8 @@ public class MainMenuDuenio {
     }
 
 
-    public MainMenuDuenio() {
-        initialize();
+    public MainMenuDuenio(AlmacenDeDatos almacen) {
+        initialize(almacen);
         //Hacer actionlistener de btnEditar y cuando se este editando inhabilitar btnVolver y añadir un boton btnGuardar
         //Y que los campos solo sean editables al pulsar en btnEditar
         //btnGuardar esta hecho solo falta ver como añadirlo o habilitarlo
@@ -57,11 +60,14 @@ public class MainMenuDuenio {
     }
 
 
-    private void initialize() {
+    private void initialize(AlmacenDeDatos almacen) {
         frame = new JFrame();
-        frame.setSize(800, 550);
+        frame.setSize(800, 800);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+        //Generamos un usuario de prueba para poder probar el programa
+        Dueño nuevo = almacen.getDueño();
 
         JPanel pTitulo = new JPanel();
         frame.getContentPane().add(pTitulo, BorderLayout.NORTH);
@@ -97,8 +103,8 @@ public class MainMenuDuenio {
         frame.getContentPane().add(pInformacion, BorderLayout.CENTER);
         pInformacion.setLayout(new GridLayout(9,2));
 
-        JLabel lblNombre = new JLabel("       Nombre del local");
-        lblNombre.setFont(new Font("Arial Nova Light", Font.BOLD, 13));
+        JLabel lblNombre = new JLabel("      Nombre del local");
+        lblNombre.setFont(new Font("Arial Nova Light", Font.BOLD, 14));
         pInformacion.add(lblNombre);
 
         JPanel p1 = new JPanel();

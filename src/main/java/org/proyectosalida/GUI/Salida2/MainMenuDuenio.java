@@ -207,13 +207,14 @@ public class MainMenuDuenio {
         btnEditar.setFont(new Font("Tahoma", Font.PLAIN, 12));
         pNorte.add(btnEditar);
 
+        btnGuardar = new JButton("Guardar Cambios");
+        btnGuardar.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        //pNorte.add(btnGuardar);
+
         btnVolver = new JButton("Volver");
         btnVolver.setFont(new Font("Tahoma", Font.PLAIN, 12));
         pNorte.add(btnVolver);
 
-        btnGuardar = new JButton("Guardar Cambios");
-        btnGuardar.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        //pNorte.add(btnGuardar);
 
 
     }

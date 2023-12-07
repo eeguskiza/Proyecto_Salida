@@ -22,7 +22,7 @@ public class VentanaRegistrarDJ extends JFrame {
         main.add(new JLabel("Apellido")); JTextField tApellido = new JTextField(); main.add(tApellido);
         main.add(new JLabel("Nombre Artistico")); JTextField tNombreArtistico = new JTextField(); main.add(tNombreArtistico);
         main.add(new JLabel("Nacionalidad")); JTextField tNacionalidad = new JTextField(); main.add(tNacionalidad);
-        main.add(new JLabel("Edad")); JTextField tEdad = new JTextField(); main.add(tEdad);
+        main.add(new JLabel("Edad")); JSpinner sEdad = new JSpinner(); main.add(sEdad); sEdad.getModel().setValue(18);
         main.add(new JLabel("Género Musical")); JTextField tGeneroMusical = new JTextField(); main.add(tGeneroMusical);
         main.add(new JLabel("Estilo Musical")); JTextField tEstiloMusical = new JTextField(); main.add(tEstiloMusical);
         main.add(new JLabel("Instagram (@)")); JTextField tInstagram = new JTextField(); main.add(tInstagram);
@@ -38,7 +38,7 @@ public class VentanaRegistrarDJ extends JFrame {
             tApellido.setText(dj.getApellido());
             tNombreArtistico.setText(dj.getNombreMusical());
             tNacionalidad.setText(dj.getNacionalidad());
-            tEdad.setText(String.valueOf(dj.getEdad()));
+            sEdad.getModel().setValue(dj.getEdad());
             tGeneroMusical.setText(dj.getGeneroMusical());
             tEstiloMusical.setText(dj.getEstiloMusical());
             tInstagram.setText(dj.getInstagram());
@@ -50,7 +50,7 @@ public class VentanaRegistrarDJ extends JFrame {
             dj.setApellido(tApellido.getText());
             dj.setNombreMusical(tNombreArtistico.getText());
             dj.setNacionalidad(tNacionalidad.getText());
-            dj.setEdad(Integer.parseInt(tEdad.getText()));
+            dj.setEdad((Integer) sEdad.getModel().getValue());
             dj.setGeneroMusical(tGeneroMusical.getText());
             dj.setEstiloMusical(tEstiloMusical.getText());
             dj.setInstagram(tInstagram.getText());

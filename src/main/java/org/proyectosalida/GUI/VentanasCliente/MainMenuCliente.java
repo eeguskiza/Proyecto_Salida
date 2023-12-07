@@ -87,7 +87,7 @@ public class MainMenuCliente extends JFrame {
                 System.out.println("El usuario quiere salir hoy: " + fechaHoy);
 
                 Salida salida = new Salida(almacen.getCliente(), almacen.getCaracteristicas(), fechaHoy, null);
-                VentSelectCarac v = new VentSelectCarac(caracteristicasSeleccionadas);
+                VentSelectCarac v = new VentSelectCarac(caracteristicasSeleccionadas, false);
             } else if (opcion == JOptionPane.NO_OPTION) {
                 JCalendar calendar = new JCalendar();
                 int result = JOptionPane.showConfirmDialog(null, calendar, "Seleccionar fecha", JOptionPane.OK_CANCEL_OPTION);
@@ -97,7 +97,7 @@ public class MainMenuCliente extends JFrame {
                     System.out.println("El usuario quiere salir otro día: " + fechaElegida);
 
                     Salida salida = new Salida(almacen.getCliente(), almacen.getCaracteristicas(), fechaElegida, null);
-                    VentSelectCarac v = new VentSelectCarac(caracteristicasSeleccionadas);
+                    VentSelectCarac v = new VentSelectCarac(caracteristicasSeleccionadas, false);
                 } else {
                     System.out.println("No se ha seleccionado una opción");
                 }

@@ -2,12 +2,9 @@ package org.proyectosalida.GUI.VentanasCliente;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import org.proyectosalida.Constructores.Caracteristica;
 import com.toedter.calendar.JCalendar;
-import org.proyectosalida.Constructores.Local;
 import org.proyectosalida.GUI.Salida1.ClasePrueba;
 
 public class VentanaGustos extends JFrame {

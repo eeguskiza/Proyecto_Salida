@@ -302,7 +302,6 @@ public class MainMenuCliente extends JFrame {
         // Crear la vista del navegador para Swing
         BrowserView view = BrowserView.newInstance(browser);
 
-        // URL del mapa estático OpenStreetMap centrado en una ubicación específica
         String url = "https://www.google.es/maps/preview";
         // Cargando la URL en el navegador
         browser.navigation().loadUrl(url);

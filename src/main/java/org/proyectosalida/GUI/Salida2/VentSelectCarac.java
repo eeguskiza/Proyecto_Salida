@@ -10,7 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.proyectosalida.Constructores.Caracteristica;
-import org.proyectosalida.Datos.AlmacenDeDatos;
+import org.proyectosalida.GUI.Salida1.ClasePrueba;
 
 public class VentSelectCarac extends JFrame {
 
@@ -21,6 +21,7 @@ public class VentSelectCarac extends JFrame {
 //private ArrayList<Caracteristica> caracteristicasSeleccionadas;
     private JXSearchField searchField;
     private JScrollPane sp;
+
 
 
     public VentSelectCarac(ArrayList<Caracteristica> caracteristicasSeleccionadas) {
@@ -45,8 +46,14 @@ public class VentSelectCarac extends JFrame {
         checkboxesPanel.setPreferredSize(new Dimension(200, 50));
 
 
+        JButton Aceptar=new JButton("Aceptar");
+
+        JPanel panelabajo=new JPanel(new GridLayout(0,1));
+
         panel = new JPanel();
         panel.setLayout(new BorderLayout());
+
+
 
         searchField = new JXSearchField("Buscar...");
         searchField.setPreferredSize(new Dimension(200, 30));
@@ -72,9 +79,17 @@ public class VentSelectCarac extends JFrame {
         // Iniciar el hilo
         thread.start();
 
+        Aceptar.addActionListener(e->{
+            dispose();
+            new ClasePrueba(caracteristicasSeleccionadas);
+        });
         panel.add(searchField, BorderLayout.NORTH);
         panel.add(new JScrollPane(textArea), BorderLayout.CENTER);
-        panel.add(checkboxesPanel, BorderLayout.SOUTH);
+        panelabajo.add(checkboxesPanel);
+        panelabajo.add(Aceptar);
+        panel.add(panelabajo, BorderLayout.SOUTH);
+
+
         add(panel);
 
         setVisible(true);
@@ -92,6 +107,7 @@ public class VentSelectCarac extends JFrame {
         for (Caracteristica resultado : resultados) {
             textArea.append(resultado + "\n");
         }
+
     }
 
 
@@ -123,7 +139,9 @@ public class VentSelectCarac extends JFrame {
         }
         checkboxesPanel.revalidate();
         checkboxesPanel.repaint();
+
     }
+
 
 
     public static void main(String[] args) {

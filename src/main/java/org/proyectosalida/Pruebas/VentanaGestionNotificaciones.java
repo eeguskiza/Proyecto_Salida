@@ -1,5 +1,7 @@
 package org.proyectosalida.Pruebas;
 
+import org.proyectosalida.GUI.VentanasCliente.MainMenuCliente;
+
 import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Font;
@@ -52,6 +54,9 @@ public class VentanaGestionNotificaciones {
     public VentanaGestionNotificaciones(JFrame p) {
         padre = p;
         initialize();
+
+
+
     }
 
 

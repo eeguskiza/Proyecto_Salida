@@ -1,20 +1,11 @@
-package org.proyectosalida.Pruebas;
-
-import java.awt.EventQueue;
-import java.awt.Font;
-
-import javax.swing.JFrame;
-import javax.swing.JPanel;
-import java.awt.BorderLayout;
-import javax.swing.JLabel;
-import javax.swing.SwingConstants;
-import java.awt.GridLayout;
-import javax.swing.JScrollPane;
-import javax.swing.JButton;
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class VentanaPreguntasFrecuentes {
 
-    JFrame frame;
+    private JFrame frame;
 
     private JPanel pTitulo;
     private JPanel pPrincipal;
@@ -28,29 +19,26 @@ public class VentanaPreguntasFrecuentes {
     private JButton btnBotonVolver;
 
     private JScrollPane sp;
-    private JFrame padre;
 
-
+    private JLabel[] preguntas;
+    private JPanel[] respuestaPanels;
+    private JLabel[] respuestas;
 
     public static void main(String[] args) {
-        EventQueue.invokeLater(new Runnable() {
-            public void run() {
-                try {
-                    VentanaPreguntasFrecuentes window = new VentanaPreguntasFrecuentes(null);
-                    window.frame.setVisible(true);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        EventQueue.invokeLater(() -> {
+            try {
+                VentanaPreguntasFrecuentes window = new VentanaPreguntasFrecuentes();
+                window.frame.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }
 
-
-    public VentanaPreguntasFrecuentes(JFrame p ) {
-        padre = p;
+    public VentanaPreguntasFrecuentes() {
         initialize();
+        initializePreguntas();
     }
-
 
     private void initialize() {
         frame = new JFrame();
@@ -71,19 +59,20 @@ public class VentanaPreguntasFrecuentes {
         lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 20));
         pTitulo.add(lblTitulo);
 
-        lblTituloDescripcion = new JLabel("     Aquí encontrarás algunas de las preguntas mas frecuentes de los usuarios que podrían serte de utilidad.");
+        lblTituloDescripcion = new JLabel("     Aquí encontrarás algunas de las preguntas más frecuentes de los usuarios que podrían serte de utilidad.");
         lblTituloDescripcion.setFont(new Font("Arial Unicode MS", Font.PLAIN, 13));
         pTitulo.add(lblTituloDescripcion);
 
         pPrincipal = new JPanel();
         frame.getContentPane().add(pPrincipal, BorderLayout.CENTER);
-        pPrincipal.setLayout(new GridLayout(6, 1));
+        pPrincipal.setLayout(new GridLayout(14, 1));
 
         pPrincipalRelleno = new JPanel();
         pPrincipal.add(pPrincipalRelleno);
 
-        sp = new JScrollPane();
-        frame.getContentPane().add(sp, BorderLayout.EAST);
+        sp = new JScrollPane(pPrincipal);
+        frame.getContentPane().add(sp, BorderLayout.CENTER);
+
 
         pBotonVolver = new JPanel();
         frame.getContentPane().add(pBotonVolver, BorderLayout.SOUTH);
@@ -92,61 +81,71 @@ public class VentanaPreguntasFrecuentes {
         btnBotonVolver.setVerticalAlignment(SwingConstants.BOTTOM);
         btnBotonVolver.setFont(new Font("Tahoma", Font.BOLD, 14));
         pBotonVolver.add(btnBotonVolver);
-
-        btnBotonVolver.addActionListener(e -> {
-            frame.dispose();
-            padre.setVisible(true);
-        });
     }
 
-}
+    private void initializePreguntas() {
+        preguntas = new JLabel[6];
+        respuestaPanels = new JPanel[6];
+        respuestas = new JLabel[6];
 
-/*
- * 	POTENCIALES PREGUNTAS PARA EL APARTADO DE PREGUNTAS FRECUENTES (habría que añadir respuestas)
- * 	(las respuestas con un tabulado de mas son buenas opciones)
- *
- *	¿Cómo creo mi perfil personalizado en la aplicación?
- *
- *	¿Cómo puedo añadir mis preferencias y gustos para obtener recomendaciones más precisas?
- *
- *		¿Puedo cambiar mis preferencias en cualquier momento?
- *		(aquí explicamos el funcionamiento de las ventanas
- *
- *		¿La aplicación tiene en cuenta las restricciones dietéticas o alergias alimentarias en las recomendaciones de restaurantes?
- *
- *	¿Cómo se generan las recomendaciones de lugares para salir?
- *
- *	¿La aplicación también sugiere eventos o actividades específicas en Bilbao, además de lugares para salir?
- *
- *	¿Puedo ver reseñas de otros usuarios sobre los lugares recomendados?
- *
- *	¿La aplicación ofrece descuentos o promociones especiales en los lugares recomendados?
- *
- *		¿Puedo guardar mis lugares favoritos o lugares que quiero visitar más adelante?
- *
- *		¿La aplicación está disponible en varios idiomas? (SOLO SI AL FINAL SE DECIDE HACER ESTO)
- *
- *	¿Cómo puedo compartir mis experiencias o reseñas sobre los lugares que visité a través de la aplicación?
- *
- *	¿Hay alguna función para buscar lugares cercanos en tiempo real, en caso de que cambie de ubicación en la ciudad?
- *
- *	¿Cómo puedo reportar problemas o errores en la aplicación?
- *
- *		¿La aplicación tiene alguna función de navegación integrada para llegar a los lugares recomendados?
- *
- *		¿Puedo personalizar la frecuencia de las recomendaciones, como recibir sugerencias diarias o semanales?
- *
- *	¿Cómo se protege la privacidad de mi información en la aplicación?
- *
- *		¿La aplicación incluye opciones para grupos o eventos especiales, como reservas para cumpleaños o reuniones?
- *		(aqui explicamos que la aplicación no es para hacer reservas pero que facilitamos los datos de contecto del establecimiento para poder hacerlo)
- *
- *		¿Cómo puedo filtrar las recomendaciones por precio, tipo de cocina o ambiente del lugar?
- *		(aqui se explica el funcionamiento del menú de filtrado en ventanaSalimos)
- *
- *		¿Hay algún costo asociado con el uso de la aplicación o es gratuita?
- *		(de esta no estoy segura pero para hacernos los chulos de que es gratuita???)
- *
- *	¿La aplicación está conectada a redes sociales para compartir planes con amigos o ver las recomendaciones de amigos?
- *
- */
+        // Crea preguntas y respuestas
+        preguntas[0] = new JLabel(" + ¿Puedo cambiar mis preferencias en cualquier momento?");
+        preguntas[1] = new JLabel(" + ¿La aplicación tiene en cuenta las restricciones dietéticas o alergias alimentarias en las recomendaciones de restaurantes?");
+        preguntas[2] = new JLabel(" + ¿Puedo personalizar la frecuencia de las recomendaciones, como recibir sugerencias diarias o semanales?");
+        preguntas[3] = new JLabel(" + ¿La aplicación incluye opciones para grupos o eventos especiales, como reservas para cumpleaños o reuniones?");
+        preguntas[4] = new JLabel(" + ¿Cómo puedo filtrar las recomendaciones por precio, tipo de cocina o ambiente del lugar?");
+        preguntas[5] = new JLabel(" + ¿Hay algún costo asociado con el uso de la aplicación o es gratuita?");
+
+        for (JLabel pregunta : preguntas) {
+            pregunta.setFont(new Font("Arial Nova 13", Font.BOLD, 14));
+        }
+
+        respuestas[0] = new JLabel("       Añadir respuesta explicando el funcionamiento de la ventana y del editar perfil");
+        respuestas[1] = new JLabel("       Añadir respuesta sobre que los locales tienen características como comida vegetariana, celíaca, vegana, etc. para poder buscarlos teniendo en cuenta esa necesidad del usuario");
+        respuestas[2] = new JLabel("       Añadir respuesta explicando el funcionamiento de la ventanaGestionNotificaciones y sus utilidades de cara a personalizar las preferencias de cada usuario sobre las notificaciones.");
+        respuestas[3] = new JLabel("       Aquí explicamos que la aplicación no es para hacer reservas, pero facilitamos los datos de contacto del establecimiento para poder hacerlo");
+        respuestas[4] = new JLabel("       Aquí volvemos a explicar la ventana de características (como en la pregunta de las restricciones alimentarias)");
+        respuestas[5] = new JLabel("       Aquí explicamos que la aplicación no tiene ningún tipo de costo y es gratuita (para hacernos los chulos)");
+
+        for (JLabel respuesta : respuestas) {
+            respuesta.setFont(new Font("Arial Unicode MS", Font.PLAIN, 13));
+        }
+
+        for (int i = 0; i < preguntas.length; i++) {
+            int finalI = i;
+            preguntas[i].addMouseListener(new MouseAdapter() {
+                @Override
+                public void mouseClicked(MouseEvent e) {
+                    toggleRespuesta(finalI);
+                }
+            });
+
+            respuestaPanels[i] = new JPanel();
+            respuestaPanels[i].setLayout(new BorderLayout());
+            respuestaPanels[i].add(respuestas[i], BorderLayout.CENTER);
+
+            pPrincipal.add(preguntas[i]);
+            pPrincipal.add(respuestaPanels[i]);
+            respuestaPanels[i].setVisible(false);  // Oculta el contenido adicional inicialmente
+        }
+    }
+
+    private void toggleRespuesta(int index) {
+        // Obtiene el estado actual de visibilidad del contenido adicional
+        boolean isVisible = respuestaPanels[index].isVisible();
+
+        // Cambia la visibilidad del contenido adicional
+        respuestaPanels[index].setVisible(!isVisible);
+
+        // Cambia el texto del JLabel según la visibilidad actual
+        if (isVisible) {
+            preguntas[index].setText(preguntas[index].getText().replaceFirst("-", "+"));
+        } else {
+            preguntas[index].setText(preguntas[index].getText().replaceFirst("\\+", "-"));
+        }
+
+        // Vuelve a validar y repintar la interfaz gráfica
+        frame.revalidate();
+        frame.repaint();
+    }
+}

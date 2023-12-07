@@ -219,12 +219,12 @@ public class ModificarLocales extends JFrame{
                 }
                 Bar nuevo = new Bar(tNombre.getText(), tDireccion.getText(), ((SpinnerNumberModel) sCp.getModel()).getNumber().toString(), ((SpinnerNumberModel) sAforo.getModel()).getNumber().intValue(), tTelefono.getText(), ((SpinnerNumberModel) sEdad.getModel()).getNumber().intValue(), ((SpinnerNumberModel) sPrecio.getModel()).getNumber().intValue(), tWeb.getText(), horariosSelec, terraza, caracteristicasSelec);
                 actualizarLocalUsuario(nuevo);
-                clearForm(tNombre, tDireccion, tTelefono, tWeb);
+                clearForm(tNombre, tDireccion, tTelefono, tWeb, sCp,  sAforo,  sPrecio,  sEdad);
                 //TODO FALTA GUARDARLO CORRRECTAMENTE EN BD?
             }else if(bdiscoteca.isSelected()){
                 Discoteca nueva = new Discoteca(tNombre.getText(), tDireccion.getText(), ((SpinnerNumberModel) sCp.getModel()).getNumber().toString(), ((SpinnerNumberModel) sAforo.getModel()).getNumber().intValue(), tTelefono.getText(), ((SpinnerNumberModel) sEdad.getModel()).getNumber().intValue(), ((SpinnerNumberModel) sPrecio.getModel()).getNumber().intValue(), tWeb.getText(), horariosSelec, djResidente, djInvitado, caracteristicasSelec);
                 actualizarLocalUsuario(nueva);
-                clearForm(tNombre, tDireccion, tTelefono, tWeb);
+                clearForm(tNombre, tDireccion, tTelefono, tWeb,  sCp,  sAforo,  sPrecio,  sEdad);
                 //TODO LO MISMO VAYA
             }else{
                 JOptionPane.showMessageDialog(null, "Seleccione un tipo de establecimiento!");
@@ -269,12 +269,17 @@ public class ModificarLocales extends JFrame{
         cargarLocalesAlTree(dueño, root);
     }
 
-    private void clearForm(JTextField tNombre, JTextField tDireccion, JTextField tTelefono, JTextField tWeb){
+    private void clearForm(JTextField tNombre, JTextField tDireccion, JTextField tTelefono, JTextField tWeb, JSpinner sCp, JSpinner sAforo, JSpinner sPrecio, JSpinner sEdad){
 
         tNombre.setText("");
         tDireccion.setText("");
         tTelefono.setText("");
         tWeb.setText("");
+        sCp.getModel().setValue(0);
+        sAforo.getModel().setValue(0);
+        sEdad.getModel().setValue(0);
+        sPrecio.getModel().setValue(0);
+
 
     }
 

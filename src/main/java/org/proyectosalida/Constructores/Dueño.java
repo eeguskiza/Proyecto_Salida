@@ -2,6 +2,7 @@ package org.proyectosalida.Constructores;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
 
 public class Dueño extends Usuario{
     private ArrayList <Local> locales;
@@ -26,6 +27,7 @@ public class Dueño extends Usuario{
         }
         locales.add(local);
     }
+
 
 
     @Override

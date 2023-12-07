@@ -3,7 +3,7 @@ package org.proyectosalida.Pruebas;
 import javax.swing.*;
 import java.awt.*;
 
-public class PruebasInternalF extends JFrame {
+public class  PruebasInternalF extends JFrame {
 
     public PruebasInternalF() {
         super("PruebasInternalF");

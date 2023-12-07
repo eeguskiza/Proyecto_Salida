@@ -67,7 +67,7 @@ public class AlmacenDeDatos {
 
 
         usuariosPrueba.add(dueño); //todo Esto hay que quitarlo para que funcione bien la base de datos
-
+        usuarios.add(cliente);
         //muestra de votaciones de encuesta
         valoresVotaciones.add(3);valoresVotaciones.add(8);valoresVotaciones.add(7);valoresVotaciones.add(4);valoresVotaciones.add(3);valoresVotaciones.add(5);
 

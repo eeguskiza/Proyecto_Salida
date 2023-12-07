@@ -27,6 +27,9 @@ public class MainMenuDuenio {
     private JTextField txtCP;
     private JTextField txtDuenio;
     private JButton btnEditar, btnVolver, btnGuardar;
+    private JTextField txtTlf;
+    private JTextField txtPrecioMedio;
+    private JTextField txtWeb;
 
 
 
@@ -161,7 +164,7 @@ public class MainMenuDuenio {
 
         JPanel pInformacion = new JPanel();
         frame.getContentPane().add(pInformacion, BorderLayout.CENTER);
-        pInformacion.setLayout(new GridLayout(9,2));
+        pInformacion.setLayout(new GridLayout(14,2));
 
         JLabel lblCodigo = new JLabel("      Código del local");
         lblCodigo.setFont(new Font("Arial Nova Light", Font.BOLD, 14));
@@ -172,6 +175,7 @@ public class MainMenuDuenio {
         p1.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
         txtCodigo = new JTextField();
+        txtCodigo.setEditable(false);
         txtCodigo.setFont(new Font("Tahoma", Font.PLAIN, 12));
         txtCodigo.setHorizontalAlignment(SwingConstants.CENTER);
         p1.add(txtCodigo);
@@ -186,6 +190,7 @@ public class MainMenuDuenio {
         pInformacion.add(p2);
 
         txtNombre = new JTextField();
+        txtNombre.setEditable(false);
         txtNombre.setFont(new Font("Tahoma", Font.PLAIN, 12));
         p2.add(txtNombre);
         txtNombre.setColumns(20);
@@ -198,6 +203,7 @@ public class MainMenuDuenio {
         pInformacion.add(p3);
 
         txtDuenio = new JTextField();
+        txtDuenio.setEditable(false);
         txtDuenio.setFont(new Font("Tahoma", Font.PLAIN, 12));
         p3.add(txtDuenio);
         txtDuenio.setColumns(20);
@@ -210,6 +216,7 @@ public class MainMenuDuenio {
         pInformacion.add(p4);
 
         txtDireccion = new JTextField();
+        txtDireccion.setEditable(false);
         txtDireccion.setFont(new Font("Tahoma", Font.PLAIN, 12));
         p4.add(txtDireccion);
         txtDireccion.setColumns(20);
@@ -222,6 +229,7 @@ public class MainMenuDuenio {
         pInformacion.add(p5);
 
         txtCP = new JTextField();
+        txtCP.setEditable(false);
         txtCP.setFont(new Font("Tahoma", Font.PLAIN, 12));
         p5.add(txtCP);
         txtCP.setColumns(20);
@@ -234,45 +242,100 @@ public class MainMenuDuenio {
         pInformacion.add(p6);
 
         JSpinner spAforo = new JSpinner();
-        spAforo.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        spAforo.setEnabled(false);
+        spAforo.setFont(new Font("Tahoma", Font.PLAIN, 13));
         p6.add(spAforo);
 
-        JLabel lblValoracion = new JLabel("      Valoracion media");
-        lblValoracion.setFont(new Font("Arial Nova Light", Font.BOLD, 14));
-        pInformacion.add(lblValoracion);
+        JLabel lblTlf = new JLabel("      Teléfono del local");
+        lblTlf.setFont(new Font("Arial Nova Light", Font.BOLD, 14));
+        pInformacion.add(lblTlf);
 
         JPanel p7 = new JPanel();
         pInformacion.add(p7);
 
-        JProgressBar pbValoracion = new JProgressBar();
-        pbValoracion.setValue(44);
-        pbValoracion.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        p7.add(pbValoracion);
+        txtTlf = new JTextField();
+        txtTlf.setEditable(false);
+        txtTlf.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        p7.add(txtTlf);
+        txtTlf.setColumns(20);
 
-        JLabel lblDescripcion = new JLabel("      Descripción del local");
-        lblDescripcion.setFont(new Font("Arial Nova Light", Font.BOLD, 14));
-        pInformacion.add(lblDescripcion);
+        JLabel lblMediaEdad = new JLabel("      Media de edad");
+        lblMediaEdad.setFont(new Font("Arial Nova Light", Font.BOLD, 14));
+        pInformacion.add(lblMediaEdad);
 
         JPanel p8 = new JPanel();
         pInformacion.add(p8);
 
-        JTextPane textPane = new JTextPane();
-        textPane.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        p8.add(textPane);
+        JSpinner spMediaEdad = new JSpinner();
+        spMediaEdad.setEnabled(false);
+        spMediaEdad.setFont(new Font("Tahoma", Font.PLAIN, 13));
+        p8.add(spMediaEdad);
+
+        JLabel lblPrecioMedio = new JLabel("      Precio medio del local");
+        lblPrecioMedio.setFont(new Font("Arial Nova Light", Font.BOLD, 14));
+        pInformacion.add(lblPrecioMedio);
+
+        JPanel p9 = new JPanel();
+        pInformacion.add(p9);
+
+        txtPrecioMedio = new JTextField();
+        txtPrecioMedio.setEditable(false);
+        txtPrecioMedio.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        p9.add(txtPrecioMedio);
+        txtPrecioMedio.setColumns(8);
+
+        JLabel lblWeb = new JLabel("      Página web");
+        lblWeb.setFont(new Font("Arial Nova Light", Font.BOLD, 14));
+        pInformacion.add(lblWeb);
+
+        JPanel p10 = new JPanel();
+        pInformacion.add(p10);
+
+        txtWeb = new JTextField();
+        txtWeb.setEditable(false);
+        txtWeb.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        p10.add(txtWeb);
+        txtWeb.setColumns(20);
+
+        JLabel lblHorarios = new JLabel("      Horarios");
+        lblHorarios.setFont(new Font("Arial Nova Light", Font.BOLD, 14));
+        pInformacion.add(lblHorarios);
+
+        JPanel p11 = new JPanel();
+        pInformacion.add(p11);
+
+        //  !!!! No consigo que el textArea se vea entero, mirar como arreglar
+        JTextArea txtrLunes = new JTextArea();
+        txtrLunes.setEditable(false);
+        txtrLunes.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        txtrLunes.setText("Lunes:               \r\nMartes: \r\nMiércoles: \r\nJueves: \r\nViernes: \r\nSábado: \r\nDomingo: ");
+        p11.add(txtrLunes);
 
         JLabel lblCaracteristicas = new JLabel("      Características del local");
         lblCaracteristicas.setFont(new Font("Arial Nova Light", Font.BOLD, 14));
         pInformacion.add(lblCaracteristicas);
 
-        JPanel p9 = new JPanel();
-        pInformacion.add(p9);
+        JPanel svsv = new JPanel();
+        pInformacion.add(svsv);
 
-        JPanel pNorte = new JPanel();
-        frame.getContentPane().add(pNorte, BorderLayout.SOUTH);
+        JLabel lblValoracion = new JLabel("      Valoracion media");
+        lblValoracion.setFont(new Font("Arial Nova Light", Font.BOLD, 14));
+        pInformacion.add(lblValoracion);
+
+        JPanel fergf = new JPanel();
+        pInformacion.add(fergf);
+
+        JProgressBar pbValoracion = new JProgressBar();
+        pbValoracion.setValue(44);
+        pbValoracion.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        fergf.add(pbValoracion);
+
+        JPanel pBotones = new JPanel();
+        frame.getContentPane().add(pBotones, BorderLayout.SOUTH);
 
         btnEditar = new JButton("Editar características");
         btnEditar.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        pNorte.add(btnEditar);
+        pBotones.add(btnEditar);
 
         btnGuardar = new JButton("Guardar Cambios");
         btnGuardar.setFont(new Font("Tahoma", Font.PLAIN, 12));
@@ -280,7 +343,7 @@ public class MainMenuDuenio {
 
         btnVolver = new JButton("Volver");
         btnVolver.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        pNorte.add(btnVolver);
+        pBotones.add(btnVolver);
 
 
         //Setear valores de prueba

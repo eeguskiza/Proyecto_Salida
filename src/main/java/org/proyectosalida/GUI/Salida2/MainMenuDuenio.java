@@ -315,20 +315,20 @@ public class MainMenuDuenio {
         lblCaracteristicas.setFont(new Font("Arial Nova Light", Font.BOLD, 14));
         pInformacion.add(lblCaracteristicas);
 
-        JPanel svsv = new JPanel();
-        pInformacion.add(svsv);
+        JPanel p12 = new JPanel();
+        pInformacion.add(p12);
 
         JLabel lblValoracion = new JLabel("      Valoracion media");
         lblValoracion.setFont(new Font("Arial Nova Light", Font.BOLD, 14));
         pInformacion.add(lblValoracion);
 
-        JPanel fergf = new JPanel();
-        pInformacion.add(fergf);
+        JPanel p13 = new JPanel();
+        pInformacion.add(p13);
 
         JProgressBar pbValoracion = new JProgressBar();
         pbValoracion.setValue(44);
         pbValoracion.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        fergf.add(pbValoracion);
+        p13.add(pbValoracion);
 
         JPanel pBotones = new JPanel();
         frame.getContentPane().add(pBotones, BorderLayout.SOUTH);

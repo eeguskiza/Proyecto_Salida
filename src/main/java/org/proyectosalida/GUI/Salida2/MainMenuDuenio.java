@@ -17,7 +17,7 @@ public class MainMenuDuenio {
     private JTextField txtDireccion;
     private JTextField txtCP;
     private JTextField txtNomPropietario;
-    private JButton btnEditar;
+    private JButton btnEditar, btnVolver, btnGuardar;
 
 
 
@@ -37,6 +37,23 @@ public class MainMenuDuenio {
 
     public MainMenuDuenio() {
         initialize();
+        //Hacer actionlistener de btnEditar y cuando se este editando inhabilitar btnVolver y añadir un boton btnGuardar
+        //Y que los campos solo sean editables al pulsar en btnEditar
+        //btnGuardar esta hecho solo falta ver como añadirlo o habilitarlo
+
+        btnEditar.addActionListener(e ->{
+
+        });
+
+        btnVolver.addActionListener(e ->{
+            frame.dispose();
+
+        });
+
+        btnGuardar.addActionListener(e ->{
+
+        });
+
     }
 
 
@@ -186,13 +203,17 @@ public class MainMenuDuenio {
         JPanel pNorte = new JPanel();
         frame.getContentPane().add(pNorte, BorderLayout.SOUTH);
 
-        JButton btnEditar = new JButton("Editar características");
+        btnEditar = new JButton("Editar características");
         btnEditar.setFont(new Font("Tahoma", Font.PLAIN, 12));
         pNorte.add(btnEditar);
 
-        JButton btnVolver = new JButton("Volver");
+        btnVolver = new JButton("Volver");
         btnVolver.setFont(new Font("Tahoma", Font.PLAIN, 12));
         pNorte.add(btnVolver);
+
+        btnGuardar = new JButton("Guardar Cambios");
+        btnGuardar.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        //pNorte.add(btnGuardar);
 
 
     }

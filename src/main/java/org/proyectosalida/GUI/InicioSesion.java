@@ -15,6 +15,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Map;
 
 public class InicioSesion extends JFrame {
 
@@ -168,9 +169,25 @@ public class InicioSesion extends JFrame {
                 String tablaCorreo = modelo.getValueAt(indice, 4).toString();
                 String tablaPassword = modelo.getValueAt(indice, 5).toString();
                 Double tablaEdad = Double.parseDouble(modelo.getValueAt(indice, 6).toString());
-                ArrayList<Local> tablaLocales = (ArrayList<Local>) modelo.getValueAt(indice, 7);
+                //ArrayList<Local> tablaLocales = (ArrayList<Local>) modelo.getValueAt(indice, 7);
+                Map<String, Object> tablaDataLocales = (Map<String, Object>) modelo.getValueAt(indice, 7);
 
-                Dueño usuario = new Dueño(tablaID, tablaNombre, tablaApellido, new GregorianCalendar(2004, Calendar.AUGUST, 8).getTime(), tablaPassword, tablaTelefono, tablaCorreo, new ArrayList<Local>());
+                //Convertimos datos:
+                ArrayList<Local> tablaLocales = new ArrayList<>();
+                ArrayList<Map<String, Object>> localesData = (ArrayList<Map<String, Object>>) tablaDataLocales.get("Locales");
+
+                if (localesData != null) {
+                    for (Map<String, Object> localData : localesData) {
+                        /*
+                        //NO SE COMO CLASIFICAR ENTRE BAR O DISCO XK EL METODO NO SE PUEDE PONER EN LOCAL, PERO CON ESTO YA ESTARIA
+                        Local local = Local.fromMap(localData); // Utilizando el método fromMap para convertir el mapa a objeto Local
+                        tablaLocales.add(local);
+                         */
+                    }
+                }
+
+
+                Dueño usuario = new Dueño(tablaID, tablaNombre, tablaApellido, new GregorianCalendar(2004, Calendar.AUGUST, 8).getTime(), tablaPassword, tablaTelefono, tablaCorreo, tablaLocales);
                 System.out.println(usuario);
                 almacenDeDatos.getUsuarios().add(usuario);
                 almacenDeDatos.setEsDueño(true);

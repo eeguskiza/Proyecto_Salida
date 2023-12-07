@@ -82,7 +82,8 @@ public class Provider {
                         document.getString("Correo"),
                         document.getString("Contraseña"),
                         document.getDouble("Edad"),
-                        document.get("Locales")
+                        //document.get("Locales")
+                        document.getData() //Guardamos los datos en raw y luego si es el que inicia sesion se convierten
                 });
             }
 

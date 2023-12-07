@@ -1,7 +1,9 @@
 package org.proyectosalida.GUI.Salida1;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableCellRenderer;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -90,11 +92,35 @@ public class ClasePrueba extends JFrame {
 
             JProgressBar progressBar = new JProgressBar(0, carcateristicasseleccionadas.size());
             progressBar.setValue(contarCaracteristicasEnComun(carcateristicasseleccionadas, local.getCaracteristicas()));
+            /*
+            tabla.setDefaultRenderer(String.class, new DefaultTableCellRenderer() {
+                @Override
+
+                public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                    Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                    c.setBackground(Color.WHITE);
+                    if (isSelected) {
+                        c.setBackground(Color.LIGHT_GRAY);
+                    }
+                    if (column == 3) {
+                        JPanel progreso=new JPanel();
+                        progreso.add(progressBar);
+                        progreso.add(c);
+                    }
 
 
+                    return c;
+                }
 
-            Object[] rowData = {local.getNombre(), local.getDireccion(),contarCaracteristicasEnComun(carcateristicasseleccionadas,local.getCaracteristicas()), local.getTelefono(), ""}; // Puedes completar el Match y la Foto según tu lógica
+
+            });
+
+                 */
+
+
+            Object[] rowData = {local.getNombre(), local.getDireccion(),contarCaracteristicasEnComun(carcateristicasseleccionadas,local.getCaracteristicas()), local.getTelefono(), ""};
             modeloTabla.addRow(rowData);
+
         }
 
 

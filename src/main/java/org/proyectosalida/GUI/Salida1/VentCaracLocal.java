@@ -5,6 +5,7 @@ import com.teamdev.jxbrowser.engine.Engine;
 import com.teamdev.jxbrowser.engine.EngineOptions;
 import com.teamdev.jxbrowser.engine.RenderingMode;
 import com.teamdev.jxbrowser.view.swing.BrowserView;
+import org.proyectosalida.Constructores.Bar;
 import org.proyectosalida.Constructores.Local;
 
 import javax.swing.*;
@@ -45,7 +46,7 @@ public class VentCaracLocal extends JFrame {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new VentCaracLocal(null);
+                new VentCaracLocal(new Bar("Monty", "Heros Kalea, 16, Bilbo, Bizkaia", "48009", 75, "944 23 63 36", 0, 0, "https://www.tripadvisor.es/Restaurant_Review-g187454-d5615756-Reviews-Bar_Monty-Bilbao_Province_of_Vizcaya_Basque_Country.html", null, true,null));
             }
         });
     }

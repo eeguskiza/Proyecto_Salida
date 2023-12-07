@@ -1,15 +1,21 @@
 package org.proyectosalida.GUI.Salida2;
 
 import org.proyectosalida.Constructores.Dueño;
+import org.proyectosalida.Constructores.Local;
 import org.proyectosalida.Datos.AlmacenDeDatos;
+import org.proyectosalida.GUI.VentanasDueño.ModificarLocales;
 
 import java.awt.EventQueue;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.tree.DefaultMutableTreeNode;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import java.awt.FlowLayout;
 import java.awt.Font;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 
 public class MainMenuDuenio {
 
@@ -27,6 +33,11 @@ public class MainMenuDuenio {
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
+                try {
+                    UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 try {
                     MainMenuDuenio window = new MainMenuDuenio(new AlmacenDeDatos());
                     window.frame.setVisible(true);
@@ -94,8 +105,57 @@ public class MainMenuDuenio {
         pLocales.add(lblListaLocales, BorderLayout.NORTH);
         lblListaLocales.setFont(new Font("Arial Unicode MS", Font.PLAIN, 14));
 
-        table = new JTable();
+        /*
+        DefaultTableModel modelo = new DefaultTableModel();
+        JTable table = new JTable(modelo);
+        modelo.addColumn("Nombre");
+
+        // Obtener los nombres de los locales del dueño y agregarlos a la tabla
+        for (int i = 0; i < nuevo.getLocales().size(); i++) {
+            String nombreLocal = nuevo.getLocales().get(i).getNombre();
+            modelo.addRow(new Object[]{nombreLocal});
+        }
+
+        table.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                // Obtener la fila y la columna en la que se hizo clic
+                int fila = table.getSelectedRow();
+                int columna = table.getSelectedColumn();
+
+                // Obtener el valor de la celda en la que se hizo clic
+                Object valorCelda = table.getValueAt(fila, columna);
+
+
+                txtNombre.setText(nuevo.getLocales().get(0).getId());
+                txtCodigo.setText(nuevo.getLocales().get(0).getNombre());
+                txtNomPropietario.setText(nuevo.getNombre());
+                txtDireccion.setText(nuevo.getLocales().get(0).getDireccion());
+                txtCP.setText(nuevo.getLocales().get(0).getCP());
+
+
+                // Ejecutar la acción deseada (en este caso, imprimir el valor de la celda)
+                System.out.println("Valor de la celda seleccionada: " + valorCelda);
+            }
+        });
+
+
+
         pLocales.add(table, BorderLayout.CENTER);
+
+         */
+
+        JTree tree = new JTree();
+        DefaultMutableTreeNode rootNode = new DefaultMutableTreeNode("Locales");
+        for (Local local : nuevo.getLocales()) {
+            DefaultMutableTreeNode localNode = new DefaultMutableTreeNode(local.getNombre());
+            rootNode.add(localNode);
+        }
+
+        // Establecer el modelo del JTree con el nodo raíz
+        tree.setModel(new javax.swing.tree.DefaultTreeModel(rootNode));
+
+        pLocales.add(new JScrollPane(tree), BorderLayout.CENTER);
 
         //-------------------------------PANEL DE INFORMACIÓN DE LOS LOCALES------------------------------------
 
@@ -103,9 +163,9 @@ public class MainMenuDuenio {
         frame.getContentPane().add(pInformacion, BorderLayout.CENTER);
         pInformacion.setLayout(new GridLayout(9,2));
 
-        JLabel lblNombre = new JLabel("      Nombre del local");
-        lblNombre.setFont(new Font("Arial Nova Light", Font.BOLD, 14));
-        pInformacion.add(lblNombre);
+        JLabel lblCodigo = new JLabel("      Código del local");
+        lblCodigo.setFont(new Font("Arial Nova Light", Font.BOLD, 14));
+        pInformacion.add(lblCodigo);
 
         JPanel p1 = new JPanel();
         pInformacion.add(p1);
@@ -117,9 +177,10 @@ public class MainMenuDuenio {
         p1.add(txtNombre);
         txtNombre.setColumns(20);
 
-        JLabel lblCodigo = new JLabel("      Código del local");
-        lblCodigo.setFont(new Font("Arial Nova Light", Font.BOLD, 14));
-        pInformacion.add(lblCodigo);
+
+        JLabel lblNombre = new JLabel("      Nombre del local");
+        lblNombre.setFont(new Font("Arial Nova Light", Font.BOLD, 14));
+        pInformacion.add(lblNombre);
 
         JPanel p2 = new JPanel();
         pInformacion.add(p2);
@@ -129,7 +190,7 @@ public class MainMenuDuenio {
         p2.add(txtCodigo);
         txtCodigo.setColumns(20);
 
-        JLabel lblNewLabel_2 = new JLabel("      Código del local");
+        JLabel lblNewLabel_2 = new JLabel("      Dueño");
         lblNewLabel_2.setFont(new Font("Arial Nova Light", Font.BOLD, 14));
         pInformacion.add(lblNewLabel_2);
 
@@ -220,6 +281,17 @@ public class MainMenuDuenio {
         btnVolver = new JButton("Volver");
         btnVolver.setFont(new Font("Tahoma", Font.PLAIN, 12));
         pNorte.add(btnVolver);
+
+
+        //Setear valores de prueba
+        txtNombre.setText(nuevo.getLocales().get(0).getId());
+        txtCodigo.setText(nuevo.getLocales().get(0).getNombre());
+        txtNomPropietario.setText(nuevo.getNombre());
+        txtDireccion.setText(nuevo.getLocales().get(0).getDireccion());
+        txtCP.setText(nuevo.getLocales().get(0).getCP());
+        spinner.setValue(nuevo.getLocales().get(0).getAforo());
+        pbValoracion.setValue(almacen.getValoresVotaciones().get(3)*10);
+
 
 
 

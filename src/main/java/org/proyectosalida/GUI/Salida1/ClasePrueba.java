@@ -2,6 +2,7 @@ package org.proyectosalida.GUI.Salida1;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -74,7 +75,12 @@ public class ClasePrueba extends JFrame {
         locales.add(new Discoteca("Back&Stage", "Calle de la Ronda, 35, Bilbo, Bizkaia","48005",  200, "747 48 96 30", 0, 0, "link2", null, null, null,CaracteristicasBack));
 
 
+        JTable tabla = new JTable(modeloTabla);
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(modeloTabla);
+        tabla.setRowSorter(sorter);
 
+
+        panelPrincipal.add(new JScrollPane(tabla), BorderLayout.CENTER);
 
 
 
@@ -93,11 +99,6 @@ public class ClasePrueba extends JFrame {
 
 
 
-
-
-
-        JTable tabla = new JTable(modeloTabla);
-        panelPrincipal.add(new JScrollPane(tabla), BorderLayout.CENTER);
 
         // Crear el botón "ESTE" en la esquina inferior derecha
         JButton esteBoton = new JButton("ESTE");

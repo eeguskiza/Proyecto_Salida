@@ -25,7 +25,7 @@ public class MainMenuDuenio {
     private JTextField txtCodigo;
     private JTextField txtDireccion;
     private JTextField txtCP;
-    private JTextField txtNomPropietario;
+    private JTextField txtDuenio;
     private JButton btnEditar, btnVolver, btnGuardar;
 
 
@@ -171,11 +171,11 @@ public class MainMenuDuenio {
         pInformacion.add(p1);
         p1.setLayout(new FlowLayout(FlowLayout.CENTER, 5, 5));
 
-        txtNombre = new JTextField();
-        txtNombre.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        txtNombre.setHorizontalAlignment(SwingConstants.CENTER);
-        p1.add(txtNombre);
-        txtNombre.setColumns(20);
+        txtCodigo = new JTextField();
+        txtCodigo.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        txtCodigo.setHorizontalAlignment(SwingConstants.CENTER);
+        p1.add(txtCodigo);
+        txtCodigo.setColumns(20);
 
 
         JLabel lblNombre = new JLabel("      Nombre del local");
@@ -185,22 +185,22 @@ public class MainMenuDuenio {
         JPanel p2 = new JPanel();
         pInformacion.add(p2);
 
-        txtCodigo = new JTextField();
-        txtCodigo.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        p2.add(txtCodigo);
-        txtCodigo.setColumns(20);
+        txtNombre = new JTextField();
+        txtNombre.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        p2.add(txtNombre);
+        txtNombre.setColumns(20);
 
-        JLabel lblNewLabel_2 = new JLabel("      Dueño");
-        lblNewLabel_2.setFont(new Font("Arial Nova Light", Font.BOLD, 14));
-        pInformacion.add(lblNewLabel_2);
+        JLabel lblDuenio = new JLabel("      Dueño");
+        lblDuenio.setFont(new Font("Arial Nova Light", Font.BOLD, 14));
+        pInformacion.add(lblDuenio);
 
         JPanel p3 = new JPanel();
         pInformacion.add(p3);
 
-        txtNomPropietario = new JTextField();
-        txtNomPropietario.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        p3.add(txtNomPropietario);
-        txtNomPropietario.setColumns(20);
+        txtDuenio = new JTextField();
+        txtDuenio.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        p3.add(txtDuenio);
+        txtDuenio.setColumns(20);
 
         JLabel lblDireccion = new JLabel("      Direccion");
         lblDireccion.setFont(new Font("Arial Nova Light", Font.BOLD, 14));
@@ -233,9 +233,9 @@ public class MainMenuDuenio {
         JPanel p6 = new JPanel();
         pInformacion.add(p6);
 
-        JSpinner spinner = new JSpinner();
-        spinner.setFont(new Font("Tahoma", Font.PLAIN, 12));
-        p6.add(spinner);
+        JSpinner spAforo = new JSpinner();
+        spAforo.setFont(new Font("Tahoma", Font.PLAIN, 12));
+        p6.add(spAforo);
 
         JLabel lblValoracion = new JLabel("      Valoracion media");
         lblValoracion.setFont(new Font("Arial Nova Light", Font.BOLD, 14));
@@ -284,12 +284,12 @@ public class MainMenuDuenio {
 
 
         //Setear valores de prueba
-        txtNombre.setText(nuevo.getLocales().get(0).getId());
-        txtCodigo.setText(nuevo.getLocales().get(0).getNombre());
-        txtNomPropietario.setText(nuevo.getNombre());
+        txtCodigo.setText(nuevo.getLocales().get(0).getId());
+        txtNombre.setText(nuevo.getLocales().get(0).getNombre());
+        txtDuenio.setText(nuevo.getNombre());
         txtDireccion.setText(nuevo.getLocales().get(0).getDireccion());
         txtCP.setText(nuevo.getLocales().get(0).getCP());
-        spinner.setValue(nuevo.getLocales().get(0).getAforo());
+        spAforo.setValue(nuevo.getLocales().get(0).getAforo());
         pbValoracion.setValue(almacen.getValoresVotaciones().get(3)*10);
 
 

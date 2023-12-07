@@ -79,6 +79,7 @@ public class MainMenuDuenio {
         frame.setSize(800, 800);
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setTitle("Menú dueño");
 
         //Generamos un usuario de prueba para poder probar el programa
         Dueño nuevo = almacen.getDueño();

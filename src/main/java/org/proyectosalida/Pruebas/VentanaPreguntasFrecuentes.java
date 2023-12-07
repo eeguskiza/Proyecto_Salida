@@ -27,6 +27,11 @@ public class VentanaPreguntasFrecuentes {
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
             try {
+                UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            try {
                 VentanaPreguntasFrecuentes window = new VentanaPreguntasFrecuentes();
                 window.frame.setVisible(true);
             } catch (Exception e) {

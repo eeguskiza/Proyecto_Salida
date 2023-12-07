@@ -4,15 +4,11 @@ import org.proyectosalida.Datos.AlmacenDeDatos;
 
 import java.awt.EventQueue;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 import java.awt.GridLayout;
-import javax.swing.JPanel;
 import java.awt.GridBagLayout;
-import javax.swing.JLabel;
 import java.awt.Font;
-import javax.swing.SwingConstants;
 import java.awt.BorderLayout;
-import javax.swing.JButton;
 import java.awt.FlowLayout;
 import java.awt.CardLayout;
 
@@ -44,6 +40,11 @@ public class VentanaAjustes {
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
+                try {
+                    UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
                 try {
                     VentanaAjustes window = new VentanaAjustes();
                     window.frame.setVisible(true);
@@ -83,6 +84,7 @@ public class VentanaAjustes {
         frame.setLocationRelativeTo(null);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(new GridLayout(1, 4));
+        frame.setTitle("Ajustes");
 
         pPrincipal = new JPanel();
         frame.getContentPane().add(pPrincipal);

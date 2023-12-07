@@ -2,21 +2,10 @@ package org.proyectosalida.GUI.Salida2;
 
 import java.awt.EventQueue;
 
-import javax.swing.JFrame;
+import javax.swing.*;
 import java.awt.BorderLayout;
-import javax.swing.JRadioButtonMenuItem;
-import javax.swing.SwingConstants;
 
 import java.awt.Font;
-import javax.swing.JMenuBar;
-import javax.swing.JPanel;
-import javax.swing.JScrollPane;
-import javax.swing.JComboBox;
-import javax.swing.ButtonGroup;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.JTable;
-import javax.swing.JMenu;
-import javax.swing.JButton;
 
 public class VentanaSalimos {
 
@@ -49,6 +38,11 @@ public class VentanaSalimos {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 try {
+                    UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+                try {
                     VentanaSalimos window = new VentanaSalimos();
                     window.frame.setVisible(true);
                 } catch (Exception e) {
@@ -78,6 +72,7 @@ public class VentanaSalimos {
         frame = new JFrame();
         frame.setBounds(100, 100, 600, 600);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setTitle("Locales recomendados");
 
         menuBarFiltro = new JMenuBar();
         frame.getContentPane().add(menuBarFiltro, BorderLayout.NORTH);

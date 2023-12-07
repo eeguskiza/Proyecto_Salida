@@ -10,7 +10,6 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.proyectosalida.Constructores.Caracteristica;
-import org.proyectosalida.Datos.AlmacenDeDatos;
 import org.proyectosalida.GUI.Salida1.ClasePrueba;
 
 public class VentSelectCarac extends JFrame {
@@ -48,6 +47,7 @@ public class VentSelectCarac extends JFrame {
 
 
         JButton Aceptar=new JButton("Aceptar");
+
         JPanel panelabajo=new JPanel(new GridLayout(0,1));
 
         panel = new JPanel();
@@ -107,6 +107,7 @@ public class VentSelectCarac extends JFrame {
         for (Caracteristica resultado : resultados) {
             textArea.append(resultado + "\n");
         }
+
     }
 
 
@@ -138,7 +139,9 @@ public class VentSelectCarac extends JFrame {
         }
         checkboxesPanel.revalidate();
         checkboxesPanel.repaint();
+
     }
+
 
 
     public static void main(String[] args) {

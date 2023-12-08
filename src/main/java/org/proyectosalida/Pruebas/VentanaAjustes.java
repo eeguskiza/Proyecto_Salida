@@ -1,16 +1,17 @@
 package org.proyectosalida.Pruebas;
 
+import org.proyectosalida.Constructores.Cliente;
+import org.proyectosalida.Constructores.Dueño;
+import org.proyectosalida.Constructores.Local;
+import org.proyectosalida.Constructores.Usuario;
 import org.proyectosalida.Datos.AlmacenDeDatos;
 
-import java.awt.EventQueue;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.*;
-import java.awt.GridLayout;
-import java.awt.GridBagLayout;
-import java.awt.Font;
-import java.awt.BorderLayout;
-import java.awt.FlowLayout;
-import java.awt.CardLayout;
 
 public class VentanaAjustes {
 
@@ -34,7 +35,7 @@ public class VentanaAjustes {
     private JButton btnNotificaciones;
     private JButton btnAyuda;
     private JButton btnBotonVolver;
-
+    private Usuario usuario;
 
 
     public static void main(String[] args) {
@@ -46,7 +47,10 @@ public class VentanaAjustes {
                     e.printStackTrace();
                 }
                 try {
-                    VentanaAjustes window = new VentanaAjustes();
+                    Cliente cliente = new Cliente();
+                    cliente.setNombre("Maialen");
+                    cliente.setId("Maialenblancoo");
+                    VentanaAjustes window = new VentanaAjustes(cliente);
                     window.frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -56,8 +60,8 @@ public class VentanaAjustes {
     }
 
 
-    public VentanaAjustes() {
-        initialize();
+    public VentanaAjustes(Usuario usuario) {
+        initialize(usuario);
 
         btnAccesoCuenta.addActionListener(e ->{
 
@@ -78,7 +82,7 @@ public class VentanaAjustes {
     }
 
 
-    private void initialize() {
+    private void initialize(Usuario usuario) {
         frame = new JFrame();
         frame.setSize(350, 500);
         frame.setLocationRelativeTo(null);
@@ -99,6 +103,7 @@ public class VentanaAjustes {
         pTitulo.add(lblTuCuenta);
 
         lblNombreCuenta = new JLabel("   nombreCuenta");
+        lblNombreCuenta.setText("   " + usuario.getId());
         lblNombreCuenta.setVerticalAlignment(SwingConstants.TOP);
         lblNombreCuenta.setFont(new Font("Tahoma", Font.BOLD, 20));
         pTitulo.add(lblNombreCuenta);
@@ -151,5 +156,6 @@ public class VentanaAjustes {
         btnBotonVolver.setFont(new Font("Tahoma", Font.BOLD, 14));
         pCentro.add(btnBotonVolver);
     }
+
 }
 

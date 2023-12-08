@@ -72,8 +72,7 @@ public class MenuPersonal extends JFrame {
         pEncabezado.add(panelDerecho, BorderLayout.CENTER);
 
         // ------------- APARTADOS DEL MENU - ETIQUETAS CLICKEABLES ---------------------
-        panel.add(clickableLabel("Ver Perfil", 1));
-        panel.add(clickableLabel("Ajustes", 2));
+        panel.add(new JPanel());
         if(usuario.getClass().equals(Cliente.class)){
             panel.add(clickableLabel("Lista de Visitados", 3));
             panel.add(clickableLabel("Próximos Eventos", 4));
@@ -81,6 +80,9 @@ public class MenuPersonal extends JFrame {
             panel.add(clickableLabel("Añade Locales", 5));
             panel.add(clickableLabel("Configura Proximos Eventos", 6));
         }
+        panel.add(clickableLabel("Ajustes", 2));
+        panel.add(new JPanel());
+
 
         //Boton Atras
         JButton atras = new JButton("Atras");
@@ -244,7 +246,7 @@ public class MenuPersonal extends JFrame {
                     VerLocales ventanaVerLocales = new VerLocales((Dueño) usuario, frame, almacen);
                     ventanaVerLocales.setVisible(true);
                 }else if (code==2){
-                    abrirVentanaAjustes(); //Mas facil si lo hago desde afuera del listener
+                    abrirVentanaAjustes(usuario); //Mas facil si lo hago desde afuera del listener
                     setVisible(false);
                 }
 
@@ -269,8 +271,8 @@ public class MenuPersonal extends JFrame {
         return frame;
     }
 
-    private void abrirVentanaAjustes(){
-        VentanaAjustes ventanaAjustes = new VentanaAjustes();
+    private void abrirVentanaAjustes(Usuario usuario){
+        VentanaAjustes ventanaAjustes = new VentanaAjustes(usuario);
         ventanaAjustes.frame.setVisible(true);
     }
 

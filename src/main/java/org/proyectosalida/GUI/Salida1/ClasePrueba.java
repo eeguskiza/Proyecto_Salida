@@ -1,12 +1,12 @@
 package org.proyectosalida.GUI.Salida1;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.util.ArrayList;
+
 
 import org.proyectosalida.Constructores.*;
 import org.proyectosalida.Pruebas.Objetos;
@@ -84,55 +84,43 @@ public class ClasePrueba extends JFrame {
 
 
 
-        
-        
+
+
         JTable tabla = new JTable(modeloTabla);
         TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(modeloTabla);
         tabla.setRowSorter(sorter);
 
+        tabla.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+            @Override
 
-        panelPrincipal.add(new JScrollPane(tabla), BorderLayout.CENTER);
-
-
-
-        // Llenar la tabla con los locales
-
-        for (Local local : locales) {
-
-            JProgressBar progressBar = new JProgressBar(0, carcateristicasseleccionadas.size());
-            progressBar.setValue(contarCaracteristicasEnComun(carcateristicasseleccionadas, local.getCaracteristicas()));
-            /*
-            tabla.setDefaultRenderer(String.class, new DefaultTableCellRenderer() {
-                @Override
-
-                public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
-                    Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                    c.setBackground(Color.WHITE);
-                    if (isSelected) {
-                        c.setBackground(Color.LIGHT_GRAY);
-                    }
-                    if (column == 3) {
-                        JPanel progreso=new JPanel();
-                        progreso.add(progressBar);
-                        progreso.add(c);
-                    }
-
-
-                    return c;
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                System.out.println(1);
+                c.setBackground(Color.WHITE);
+                if (isSelected) {
+                    c.setBackground(Color.LIGHT_GRAY);
                 }
 
+                if(column==2){
+                    JProgressBar pb = new JProgressBar(0, carcateristicasseleccionadas.size());
+                    pb.setValue((Integer) tabla.getValueAt(row, column));
+                    return pb;
 
-            });
+                }
+               /* if (column==4){
+                    ImageIcon icon = new ImageIcon(((tabla.getName()+"jpeg") value));
+                }*/
+                return c;
+            }
+        });
+        panelPrincipal.add(new JScrollPane(tabla), BorderLayout.CENTER);
 
-                 */
-
-
+        // Llenar la tabla con los locales
+        for (Local local : locales) {
             Object[] rowData = {local.getNombre(), local.getDireccion(),contarCaracteristicasEnComun(carcateristicasseleccionadas,local.getCaracteristicas()), local.getTelefono(), ""};
             modeloTabla.addRow(rowData);
 
         }
-
-
 
 
         // Crear el botón "ESTE" en la esquina inferior derecha
@@ -143,9 +131,15 @@ public class ClasePrueba extends JFrame {
         if (fila != -1) {
             String nombre = (String) modeloTabla.getValueAt(fila, 0);
             Local objeto = conseguirobjeto(nombre, locales);
+            if (objeto instanceof Bar) {
 
-                System.out.println("abrir ventana"+objeto);
-                new VentCaracLocal(objeto);
+                System.out.println("abrir ventana" + objeto);
+                dispose();
+                new VentCaracBar(objeto);
+            }else {
+                new VentCaracDisco(objeto);
+                dispose();
+            }
 
 
         } else {

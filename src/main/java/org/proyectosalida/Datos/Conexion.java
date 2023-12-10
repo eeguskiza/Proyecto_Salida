@@ -33,4 +33,8 @@ public class Conexion {
         }
 
     }
+
+    public static void desconectar(){
+        //Pues eso, que falta
+    }
 }

@@ -17,7 +17,7 @@ public class VerLocales extends JFrame {
     private AlmacenDeDatos almacen;
 
     public VerLocales(Dueño dueño, AlmacenDeDatos almcn){
-        setTitle("Menú Personal: "+dueño.getNombre());
+        setTitle("Menú Principal: "+dueño.getNombre());
         setSize(1400, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
@@ -47,6 +47,7 @@ public class VerLocales extends JFrame {
         });
 
 
+
         JPanel mainPanel = new JPanel(new BorderLayout()); add(mainPanel);
         mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 10, 10, 10));
         Object[] cabeceras = {"Nombre", "Direccion", "CP", "Aforo", "Tlf.", "Media de Edad", "Media de Precio", "WebSite", "Horario", "Terraza", "DJ (Residente)", "DJ (Invitado)", "Caracteristicas"};
@@ -61,11 +62,17 @@ public class VerLocales extends JFrame {
         JScrollPane scroll = new JScrollPane(tabla);
         mainPanel.add(scroll, BorderLayout.CENTER);
 
+
+        JPanel indicacionesColores = new JPanel(new FlowLayout()); mainPanel.add(indicacionesColores, BorderLayout.NORTH); indicacionesColores.setBackground(new Color(204, 204, 204));
+        JLabel l1 = new JLabel("Bares"); l1.setForeground(new Color(4, 117, 13)); l1.setFont(new Font(l1.getFont().getName(), Font.BOLD, 13));
+        JLabel l2 = new JLabel("Discotecas"); l2.setForeground(new Color(5, 22, 176)); l2.setFont(new Font(l2.getFont().getName(), Font.BOLD, 13));
+        indicacionesColores.add(l1); indicacionesColores.add(new JLabel("&")); indicacionesColores.add(l2);
+
         JPanel botonera = new JPanel(new FlowLayout()); mainPanel.add(botonera, BorderLayout.SOUTH);
         JButton atras = new JButton("Volver Atras");
         //botonera.add(atras);
         atras.addActionListener(e -> {
-            dispose();
+            //dispose();
             //TODO - QUE SE ABRA INICIO DE SESION?
         });
 

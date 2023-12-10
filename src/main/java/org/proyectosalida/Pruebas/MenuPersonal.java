@@ -2,7 +2,9 @@ package org.proyectosalida.Pruebas;
 
 import org.proyectosalida.Constructores.*;
 import org.proyectosalida.Datos.AlmacenDeDatos;
+import org.proyectosalida.Datos.Conexion;
 import org.proyectosalida.Datos.Provider;
+import org.proyectosalida.GUI.Bienvenido;
 import org.proyectosalida.GUI.VentanasDueño.ModificarLocales;
 import org.proyectosalida.GUI.VentanasDueño.VerLocales;
 
@@ -69,7 +71,6 @@ public class MenuPersonal extends JFrame {
         pEncabezado.add(panelDerecho, BorderLayout.CENTER);
 
         // ------------- APARTADOS DEL MENU - ETIQUETAS CLICKEABLES ---------------------
-        panel.add(new JPanel());
         if(usuario.getClass().equals(Cliente.class)){
             panel.add(clickableLabel("Lista de Visitados", 3));
             panel.add(clickableLabel("Próximos Eventos", 4));
@@ -78,6 +79,7 @@ public class MenuPersonal extends JFrame {
             panel.add(clickableLabel("Configura Proximos Eventos", 6));
         }
         panel.add(clickableLabel("Ajustes", 2));
+        panel.add(clickableLabel("Cerrar Sesión", 1));
         panel.add(new JPanel());
 
 
@@ -117,9 +119,10 @@ public class MenuPersonal extends JFrame {
         label.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(code==1){ //editar perfil
-                    editarPerfil(usuario, false);
-                    setVisible(false);
+                if(code==1){ //Cerrar Sesion
+                    dispose();
+                    Conexion.desconectar();
+                    Bienvenido vBienvenido = new Bienvenido();
                 }else if (code==6){ //Conf. Proximos eventos (Probando editar perfiil)
                     EditarPerfil ep = new EditarPerfil( almacen,false, getPadre());
                     setVisible(false);

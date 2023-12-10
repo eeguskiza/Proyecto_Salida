@@ -5,7 +5,6 @@ import org.proyectosalida.Datos.AlmacenDeDatos;
 import org.proyectosalida.Datos.Conexion;
 import org.proyectosalida.Datos.Provider;
 import org.proyectosalida.GUI.VentanasCliente.MainMenuCliente;
-import org.proyectosalida.GUI.VentanasDueño.MainMenuDueño;
 import org.proyectosalida.GUI.VentanasDueño.VerLocales;
 
 import javax.swing.*;

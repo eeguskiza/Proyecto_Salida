@@ -64,7 +64,8 @@ public class VentanaAjustes {
         initialize(usuario);
 
         btnAccesoCuenta.addActionListener(e ->{
-
+            EditarPerfil vep = new EditarPerfil(usuario, false);
+            vep.setVisible(true);
         });
 
 

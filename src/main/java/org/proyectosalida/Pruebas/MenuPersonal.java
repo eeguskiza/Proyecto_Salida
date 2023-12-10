@@ -101,7 +101,7 @@ public class MenuPersonal extends JFrame {
 
 
     public void editarPerfil(Usuario usuario, Boolean editable){
-        EditarPerfil ventanaEditar = new EditarPerfil(usuario, editable);
+        EditarPerfil ventanaEditar = new EditarPerfil(almacen, editable, this);
     }
 
 
@@ -121,7 +121,7 @@ public class MenuPersonal extends JFrame {
                     editarPerfil(usuario, false);
                     setVisible(false);
                 }else if (code==6){ //Conf. Proximos eventos (Probando editar perfiil)
-                    EditarPerfil ep = new EditarPerfil(usuario, false);
+                    EditarPerfil ep = new EditarPerfil( almacen,false, getPadre());
                     setVisible(false);
                 }else if(code==5){ //modifica locales
                     ModificarLocales modificarLocales = new ModificarLocales(almacen, getPadre());
@@ -160,7 +160,7 @@ public class MenuPersonal extends JFrame {
     }
 
     private void abrirVentanaAjustes(Usuario usuario){
-        VentanaAjustes ventanaAjustes = new VentanaAjustes(usuario);
+        VentanaAjustes ventanaAjustes = new VentanaAjustes(usuario, almacen);
         ventanaAjustes.frame.setVisible(true);
     }
 

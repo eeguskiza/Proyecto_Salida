@@ -50,7 +50,7 @@ public class VentanaAjustes {
                     Cliente cliente = new Cliente();
                     cliente.setNombre("Maialen");
                     cliente.setId("Maialenblancoo");
-                    VentanaAjustes window = new VentanaAjustes(cliente);
+                    VentanaAjustes window = new VentanaAjustes(cliente, new AlmacenDeDatos());
                     window.frame.setVisible(true);
                 } catch (Exception e) {
                     e.printStackTrace();
@@ -60,11 +60,11 @@ public class VentanaAjustes {
     }
 
 
-    public VentanaAjustes(Usuario usuario) {
+    public VentanaAjustes(Usuario usuario, AlmacenDeDatos almacen) {
         initialize(usuario);
 
         btnAccesoCuenta.addActionListener(e ->{
-            EditarPerfil vep = new EditarPerfil(usuario, false);
+            EditarPerfil vep = new EditarPerfil(almacen, false, getPadre());
             vep.setVisible(true);
         });
 
@@ -156,6 +156,11 @@ public class VentanaAjustes {
         btnBotonVolver = new JButton("Volver");
         btnBotonVolver.setFont(new Font("Tahoma", Font.BOLD, 14));
         pCentro.add(btnBotonVolver);
+    }
+
+
+    protected JFrame getPadre(){
+        return frame;
     }
 
 }

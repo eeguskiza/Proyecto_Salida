@@ -258,6 +258,7 @@ public class ModificarLocales extends JFrame{
             if(localSelec != null){
                 if(local.getId().equals(localSelec.getId())){ //Es el mismo local al que estamos editando
                     dueño.getLocales().remove(i);
+                    almacen.getClasesDeLocales().remove(i);
                     System.out.println("Eliminado el anterior");
                     break;
                 }

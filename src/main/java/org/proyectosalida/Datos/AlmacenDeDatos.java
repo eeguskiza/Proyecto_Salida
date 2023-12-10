@@ -66,8 +66,8 @@ public class AlmacenDeDatos {
         Cliente cliente = new Cliente("maialenblancoo","Maialen", "Blanco", new GregorianCalendar(2004, Calendar.MAY, 4).getTime(), "Contraseña2", "687 322 612", "maialen.blanco@opendeusto.es", null);
 
 
-        usuariosPrueba.add(dueño); //todo Esto hay que quitarlo para que funcione bien la base de datos
-        usuarios.add(cliente);
+        usuariosPrueba.add(dueño); //todo Esto hay que quitarlo aunk no interfiere con bd ya que es otro array
+        //usuarios.add(cliente);
         //muestra de votaciones de encuesta
         valoresVotaciones.add(3);valoresVotaciones.add(8);valoresVotaciones.add(7);valoresVotaciones.add(4);valoresVotaciones.add(3);valoresVotaciones.add(5);
 

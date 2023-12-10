@@ -6,6 +6,7 @@ import org.proyectosalida.Datos.Conexion;
 import org.proyectosalida.Datos.Provider;
 import org.proyectosalida.GUI.VentanasCliente.MainMenuCliente;
 import org.proyectosalida.GUI.VentanasDueño.MainMenuDueño;
+import org.proyectosalida.GUI.VentanasDueño.VerLocales;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -191,7 +192,8 @@ public class InicioSesion extends JFrame {
                 System.out.println(usuario);
                 almacenDeDatos.getUsuarios().add(usuario);
                 almacenDeDatos.setEsDueño(true);
-                new MainMenuDueño(almacenDeDatos);
+                VerLocales mainMenuDueñoNuevo = new VerLocales(usuario, almacenDeDatos);
+                mainMenuDueñoNuevo.setVisible(true);
                 dispose();
             } else {
             }

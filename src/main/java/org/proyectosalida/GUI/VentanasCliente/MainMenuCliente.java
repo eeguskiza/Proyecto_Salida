@@ -104,13 +104,6 @@ public class MainMenuCliente extends JFrame {
             }
         });
 
-
-
-
-
-
-
-
         menuButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {

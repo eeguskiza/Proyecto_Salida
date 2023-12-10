@@ -243,7 +243,7 @@ public class MenuPersonal extends JFrame {
 
                 }else if(code==8){ //Ver todos los locales en una jtable
                     System.out.println("Code:8");
-                    VerLocales ventanaVerLocales = new VerLocales((Dueño) usuario, frame, almacen);
+                    VerLocales ventanaVerLocales = new VerLocales((Dueño) usuario, almacen);
                     ventanaVerLocales.setVisible(true);
                 }else if (code==2){
                     abrirVentanaAjustes(usuario); //Mas facil si lo hago desde afuera del listener

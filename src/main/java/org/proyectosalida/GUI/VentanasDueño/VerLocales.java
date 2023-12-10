@@ -2,6 +2,7 @@ package org.proyectosalida.GUI.VentanasDueño;
 
 import org.proyectosalida.Constructores.*;
 import org.proyectosalida.Datos.AlmacenDeDatos;
+import org.proyectosalida.Pruebas.MenuPersonal;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -16,13 +17,12 @@ public class VerLocales extends JFrame {
     private ArrayList<Class> clasesDeLocales; //Se guardan las clases de los localen en el orden de la tabla para luego clasificar
     private AlmacenDeDatos almacen;
 
-    public VerLocales(Dueño dueño, Frame padre, AlmacenDeDatos almcn){
+    public VerLocales(Dueño dueño, AlmacenDeDatos almcn){
         setTitle("Menú Personal: "+dueño.getNombre());
         setSize(1400, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());
         setLocationRelativeTo(null);
-        padre.setVisible(false);
         almacen = almcn;
 
         /*
@@ -31,7 +31,24 @@ public class VerLocales extends JFrame {
           ** = Discoteca
          */
 
+        JPanel panelEnunciado = new JPanel(new BorderLayout()); add(panelEnunciado, BorderLayout.NORTH);
+        panelEnunciado.setBorder(BorderFactory.createEmptyBorder(10, 10, 0, 30));
+        JLabel textoBienvenida = new JLabel("Bienvenid@ de vuelta, "+dueño.getNombre()+"!"); textoBienvenida.setFont(new Font(textoBienvenida.getFont().getName(), Font.BOLD, 13));
+        panelEnunciado.add(textoBienvenida, BorderLayout.EAST);
+
+        ImageIcon menu_icon = new ImageIcon("src/main/resources/images/menu_bar.png"); Image menu_image = menu_icon.getImage().getScaledInstance(30,30, Image.SCALE_SMOOTH);
+        JButton bMenuPersonal = new JButton(new ImageIcon(menu_image)); panelEnunciado.add(bMenuPersonal, BorderLayout.WEST);
+        bMenuPersonal.setBorderPainted(true);
+
+        bMenuPersonal.addActionListener(e -> {
+            MenuPersonal vMenuPersonal =  new MenuPersonal(dueño, almacen, this);
+            vMenuPersonal.setVisible(true);
+            setVisible(false);
+        });
+
+
         JPanel mainPanel = new JPanel(new BorderLayout()); add(mainPanel);
+        mainPanel.setBorder(BorderFactory.createEmptyBorder(20, 10, 10, 10));
         Object[] cabeceras = {"Nombre", "Direccion", "CP", "Aforo", "Tlf.", "Media de Edad", "Media de Precio", "WebSite", "Horario", "Terraza", "DJ (Residente)", "DJ (Invitado)", "Caracteristicas"};
         DefaultTableModel modelo = new DefaultTableModel(){
             @Override
@@ -49,7 +66,7 @@ public class VerLocales extends JFrame {
         botonera.add(atras);
         atras.addActionListener(e -> {
             dispose();
-            padre.setVisible(true);
+            //TODO - QUE SE ABRA INICIO DE SESION?
         });
 
         JButton registrarNuevo = new JButton("Registrar Nuevo");
@@ -204,5 +221,21 @@ public class VerLocales extends JFrame {
                 System.out.println("No son ninguna class (??)");
             }
         }
+    }
+
+    public static void main(String[] args) {
+        // Configuración del look and feel
+        try {
+            UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        SwingUtilities.invokeLater(() -> {
+            //Conexion.conectar();
+            AlmacenDeDatos almacen = new AlmacenDeDatos();
+            VerLocales v = new VerLocales((Dueño) almacen.getUsuariosPrueba().get(0), almacen);
+            v.setVisible(true);
+        });
     }
 }

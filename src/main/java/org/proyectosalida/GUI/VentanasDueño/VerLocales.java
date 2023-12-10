@@ -14,7 +14,6 @@ import java.util.ArrayList;
 
 public class VerLocales extends JFrame {
 
-    private ArrayList<Class> clasesDeLocales; //Se guardan las clases de los localen en el orden de la tabla para luego clasificar
     private AlmacenDeDatos almacen;
 
     public VerLocales(Dueño dueño, AlmacenDeDatos almcn){
@@ -24,6 +23,7 @@ public class VerLocales extends JFrame {
         setLayout(new BorderLayout());
         setLocationRelativeTo(null);
         almacen = almcn;
+        almcn.getClasesDeLocales(); //Se guardan las clases de los localen en el orden de la tabla para luego clasificar
 
         /*
           Local(String nombre, String direccion,String CP, int Aforo, String telefono, int MediaEdad, int PrecioMedio, String web, ArrayList<Horario> horarios, BOOLEAN TERRAZA, *DJ DJRESIDENTE*, *DJ DJINVITADO*, ArrayList<Caracteristica>caracteristicas)
@@ -63,7 +63,7 @@ public class VerLocales extends JFrame {
 
         JPanel botonera = new JPanel(new FlowLayout()); mainPanel.add(botonera, BorderLayout.SOUTH);
         JButton atras = new JButton("Volver Atras");
-        botonera.add(atras);
+        //botonera.add(atras);
         atras.addActionListener(e -> {
             dispose();
             //TODO - QUE SE ABRA INICIO DE SESION?
@@ -83,7 +83,6 @@ public class VerLocales extends JFrame {
             cargarLocalesATabla(dueño, modelo);
         });
 
-        clasesDeLocales = new ArrayList<>();
         cargarLocalesATabla(dueño, modelo);
 
         //RENDERER DE LA CABECERA DE LA TABLA
@@ -115,7 +114,7 @@ public class VerLocales extends JFrame {
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
-                Class tipo = clasesDeLocales.get(row);
+                Class tipo = almcn.getClasesDeLocales().get(row);
                 if(tipo.equals(Bar.class)){
                     if(column==10 || column == 11){
                         c.setBackground(new Color(147, 147, 147));
@@ -198,7 +197,7 @@ public class VerLocales extends JFrame {
                         caracteristicas
                 };
                 modelo.addRow(nuevo);
-                clasesDeLocales.add(Bar.class);
+                almacen.getClasesDeLocales().add(Bar.class);
             }else if(local.getClass().equals(Discoteca.class)){
                 Object[] nuevo = {
                         local.getNombre(),
@@ -216,7 +215,7 @@ public class VerLocales extends JFrame {
                         caracteristicas
                 };
                 modelo.addRow(nuevo);
-                clasesDeLocales.add(Discoteca.class);
+                almacen.getClasesDeLocales().add(Discoteca.class);
             }else{
                 System.out.println("No son ninguna class (??)");
             }

@@ -219,11 +219,13 @@ public class ModificarLocales extends JFrame{
                 }
                 Bar nuevo = new Bar(tNombre.getText(), tDireccion.getText(), ((SpinnerNumberModel) sCp.getModel()).getNumber().toString(), ((SpinnerNumberModel) sAforo.getModel()).getNumber().intValue(), tTelefono.getText(), ((SpinnerNumberModel) sEdad.getModel()).getNumber().intValue(), ((SpinnerNumberModel) sPrecio.getModel()).getNumber().intValue(), tWeb.getText(), horariosSelec, terraza, caracteristicasSelec);
                 actualizarLocalUsuario(nuevo);
+                almacen.getClasesDeLocales().add(nuevo.getClass());
                 clearForm(tNombre, tDireccion, tTelefono, tWeb, sCp,  sAforo,  sPrecio,  sEdad);
                 //TODO FALTA GUARDARLO CORRRECTAMENTE EN BD?
             }else if(bdiscoteca.isSelected()){
                 Discoteca nueva = new Discoteca(tNombre.getText(), tDireccion.getText(), ((SpinnerNumberModel) sCp.getModel()).getNumber().toString(), ((SpinnerNumberModel) sAforo.getModel()).getNumber().intValue(), tTelefono.getText(), ((SpinnerNumberModel) sEdad.getModel()).getNumber().intValue(), ((SpinnerNumberModel) sPrecio.getModel()).getNumber().intValue(), tWeb.getText(), horariosSelec, djResidente, djInvitado, caracteristicasSelec);
                 actualizarLocalUsuario(nueva);
+                almacen.getClasesDeLocales().add(nueva.getClass());
                 clearForm(tNombre, tDireccion, tTelefono, tWeb,  sCp,  sAforo,  sPrecio,  sEdad);
                 //TODO LO MISMO VAYA
             }else{
@@ -234,7 +236,9 @@ public class ModificarLocales extends JFrame{
 
         atras.addActionListener(e -> {
             dispose();
-            padre.setVisible(true);
+            //padre.setVisible(true);
+            VerLocales newVerLocales = new VerLocales(dueño, almacn); //Asi se recarga automaticamente la tabla
+            newVerLocales.setVisible(true);
         });
 
     }

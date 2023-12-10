@@ -21,6 +21,8 @@ public class AlmacenDeDatos {
     private boolean esDueño;
     private boolean esCliente;
 
+    private ArrayList<Class> clasesDeLocales; //PARA LA TABLA DE DUEÑO EN MAINMENUDUEÑO
+
     public AlmacenDeDatos(){
 
         progressBarsVotaciones = new ArrayList<>();
@@ -29,6 +31,7 @@ public class AlmacenDeDatos {
         caracteristicas = new ArrayList<>();
         usuarios = new ArrayList<>();
         usuariosPrueba = new ArrayList<>();
+        clasesDeLocales = new ArrayList<>();
 
         esDueño = false;
         esCliente = false;
@@ -94,6 +97,14 @@ public class AlmacenDeDatos {
     }
     public void setValoresVotaciones(ArrayList<Integer> valoresVotaciones) {
         this.valoresVotaciones = valoresVotaciones;
+    }
+
+    public ArrayList<Class> getClasesDeLocales() {
+        return clasesDeLocales;
+    }
+
+    public void setClasesDeLocales(ArrayList<Class> clasesDeLocales) {
+        this.clasesDeLocales = clasesDeLocales;
     }
 
     public Cliente getCliente() {

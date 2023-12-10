@@ -160,7 +160,7 @@ public class MenuPersonal extends JFrame {
     }
 
     private void abrirVentanaAjustes(Usuario usuario){
-        VentanaAjustes ventanaAjustes = new VentanaAjustes(usuario, almacen);
+        VentanaAjustes ventanaAjustes = new VentanaAjustes(usuario, almacen, this);
         ventanaAjustes.frame.setVisible(true);
     }
 

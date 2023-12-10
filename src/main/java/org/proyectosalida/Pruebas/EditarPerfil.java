@@ -25,7 +25,7 @@ public class EditarPerfil extends JFrame {
 
     public EditarPerfil(AlmacenDeDatos almacen, Boolean editabl, JFrame padre){
         System.out.println(editabl);
-        usuario = almacen.getUsuariosPrueba().get(0);
+        usuario = almacen.getUsuarios().get(0);
         setTitle("Menú Personal: " + usuario.getNombre());
         setSize(350, 500);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -135,7 +135,7 @@ public class EditarPerfil extends JFrame {
                 usuario.setCorreo(correo);
 
                 System.out.println(usuario.toString());
-                //actualizar(dueño);
+                //actualizar(dueño); TODO ERIK TE TOCA CORREGIR ESTO XK YA SI QUE NO SE COMO HACERLO
 
                 new EditarPerfil(almacen, false, padre);
                 dispose();
@@ -147,7 +147,7 @@ public class EditarPerfil extends JFrame {
 
         atras.addActionListener(e ->{
             dispose();
-
+            padre.setVisible(true);
         });
     }
 

@@ -10,7 +10,11 @@ import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableRowSorter;
 import java.awt.*;
+import java.util.Arrays;
+import java.util.Comparator;
+import java.util.Date;
 
 public class VentanaVisitas extends JFrame {
 
@@ -29,13 +33,28 @@ public class VentanaVisitas extends JFrame {
         JPanel pTitulo = new JPanel(new FlowLayout()); pTitulo.add(titulo); main.add(pTitulo, BorderLayout.NORTH);
         pTitulo.setBorder(new EmptyBorder(0, 0, 15, 0));
 
-        DefaultTableModel modelo = new DefaultTableModel();
+        DefaultTableModel modelo = new DefaultTableModel(){
+            @Override
+            public Class<?> getColumnClass(int columnIndex) {
+                if (columnIndex == 2) {
+                    return Date.class;
+                }
+                return super.getColumnClass(columnIndex);
+            }
+        };
         JTable table = new JTable(modelo);
         JScrollPane scroll = new JScrollPane(table);
         main.add(scroll);
 
         Object[] titulos = {"Tipo", "Nombre del Local", "Fecha",  "Hora", "Valoracion"};
         modelo.setColumnIdentifiers(titulos);
+
+        //COMPARADOR DE FECHAS PARA ORDENAR LA TABLA
+        TableRowSorter<DefaultTableModel> sorter = new TableRowSorter<>(modelo);
+        table.setRowSorter(sorter);
+        sorter.setComparator(2, Comparator.nullsLast(Comparator.naturalOrder()));
+        sorter.setSortKeys(Arrays.asList(new RowSorter.SortKey(2, SortOrder.ASCENDING))); // Aparece el icono automaticamente
+
         /*
         table.getColumnModel().getColumn(2).setPreferredWidth(10);
         table.getColumnModel().getColumn(3).setPreferredWidth(10);
@@ -61,6 +80,10 @@ public class VentanaVisitas extends JFrame {
                     c.setBackground(new Color(186, 245, 188));
                 }else{
                     c.setBackground(new Color(186, 191, 245));
+                }
+
+                if(column==2){
+                    setText(almacen.transformarDateAString((Date) table.getValueAt(row, 2)));
                 }
 
                 if(isSelected){

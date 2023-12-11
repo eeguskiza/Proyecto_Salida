@@ -3,6 +3,8 @@ package org.proyectosalida.Datos;
 import org.proyectosalida.Constructores.*;
 
 import javax.swing.*;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class AlmacenDeDatos {
@@ -67,9 +69,12 @@ public class AlmacenDeDatos {
 
         //--------- CLIENTE DE EJEMPLO ----------------
 
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
         Cliente cliente = new Cliente("maialenblancoo","Maialen", "Blanco", new GregorianCalendar(2004, Calendar.MAY, 4).getTime(), "Contraseña2", "687 322 612", "maialen.blanco@opendeusto.es", null);
-        Visita v1 = new Visita(cliente, Stage, "12/02/2024", "01:21", "El establecimiento muy bien pero precios muy altos!");
-        Visita v2 = new Visita(cliente, Monty, "17/02/2024", "01:03", "Buen copeo por la tarde-noche");
+        Visita v1 = new Visita(cliente, Stage,null , "01:21", "El establecimiento muy bien pero precios muy altos!");
+        v1.setFecha("23/06/2024");
+        Visita v2 = new Visita(cliente, Monty, null, "01:03", "Buen copeo por la tarde-noche");
+        v2.setFecha("16/04/2024");
         ArrayList<Visita> visitas = new ArrayList<>();
         visitas.add(v1); visitas.add(v2);
         cliente.setVisitas(visitas);
@@ -169,5 +174,22 @@ public class AlmacenDeDatos {
 
     public void setUsuariosPrueba(ArrayList<Usuario> usuariosPrueba) {
         this.usuariosPrueba = usuariosPrueba;
+    }
+
+    public Date transformarStringADate(String fecha){
+        Date date = new Date();
+        try {
+            SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+            date = formatoFecha.parse(fecha);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return date;
+    }
+
+    public String transformarDateAString(Date fecha) {
+        SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+        String fechaString = formatoFecha.format(fecha);
+        return fechaString;
     }
 }

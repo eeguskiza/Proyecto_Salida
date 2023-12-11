@@ -1,21 +1,25 @@
 package org.proyectosalida.Constructores;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class Visita {
     private Cliente cliente;
     private Local local;
-    private String fecha;
+    private Date fecha;
     private String hora;
     private String valoracion; //A futuros esto un objeto nuevo
 
     public Visita() {
         this.cliente = new Cliente();
         this.local = null;
-        this.fecha = "";
+        this.fecha = new Date();
         this.hora = "";
         this.valoracion = "";
     }
 
-    public Visita(Cliente cliente, Local local, String fecha, String hora, String valoracion) {
+    public Visita(Cliente cliente, Local local, Date fecha, String hora, String valoracion) {
         this.cliente = cliente;
         this.local = local;
         this.fecha = fecha;
@@ -39,12 +43,29 @@ public class Visita {
         this.local = local;
     }
 
-    public String getFecha() {
+    public Date getFecha() {
         return fecha;
     }
+    public String getFechaFormatoString() {
+        if (fecha != null) {
+            SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+            return formatoFecha.format(fecha);
+        } else {
+            return null;
+        }
+    }
 
-    public void setFecha(String fecha) {
+    public void setFecha(Date fecha) {
         this.fecha = fecha;
+    }
+    public void setFecha(String fecha) { // Transforma de string dd/mm/yyy a fecha
+        try{
+            SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
+            this.fecha = formatoFecha.parse(fecha);
+        }catch (ParseException e) {
+            e.printStackTrace();
+        }
+
     }
 
     public String getHora() {
@@ -67,4 +88,6 @@ public class Visita {
     public String toString() {
         return "Visita{" + "cliente=" + cliente + ", local=" + local + ", fecha=" + fecha + ", hora=" + hora + ", valoracion=" + valoracion + '}';
     }
+
+
 }

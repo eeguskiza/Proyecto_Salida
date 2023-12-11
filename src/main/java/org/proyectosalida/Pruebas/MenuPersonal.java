@@ -5,6 +5,7 @@ import org.proyectosalida.Datos.AlmacenDeDatos;
 import org.proyectosalida.Datos.Conexion;
 import org.proyectosalida.Datos.Provider;
 import org.proyectosalida.GUI.Bienvenido;
+import org.proyectosalida.GUI.VentanasCliente.VentanaVisitas;
 import org.proyectosalida.GUI.VentanasDueño.ModificarLocales;
 import org.proyectosalida.GUI.VentanasDueño.VerLocales;
 
@@ -123,6 +124,9 @@ public class MenuPersonal extends JFrame {
                     dispose();
                     Conexion.desconectar();
                     Bienvenido vBienvenido = new Bienvenido();
+                }else if (code==3){ //Lista de visitados
+                    new VentanaVisitas(almacen, getPadre()).setVisible(true);
+                    setVisible(false);
                 }else if (code==6){ //Conf. Proximos eventos (Probando editar perfiil)
                     EditarPerfil ep = new EditarPerfil( almacen,false, getPadre());
                     setVisible(false);
@@ -178,7 +182,7 @@ public class MenuPersonal extends JFrame {
         SwingUtilities.invokeLater(() -> {
             //Conexion.conectar();
             AlmacenDeDatos almacen = new AlmacenDeDatos();
-            new MenuPersonal(almacen.getUsuariosPrueba().get(0), almacen, null).setVisible(true);
+            new MenuPersonal(almacen.getUsuariosPrueba().get(1), almacen, null).setVisible(true);
         });
     }
 }

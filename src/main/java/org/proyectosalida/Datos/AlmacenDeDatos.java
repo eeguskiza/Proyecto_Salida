@@ -65,11 +65,17 @@ public class AlmacenDeDatos {
         dueño.agregarLocal(Monty);
         dueño.agregarLocal(Stage);
 
+        //--------- CLIENTE DE EJEMPLO ----------------
 
         Cliente cliente = new Cliente("maialenblancoo","Maialen", "Blanco", new GregorianCalendar(2004, Calendar.MAY, 4).getTime(), "Contraseña2", "687 322 612", "maialen.blanco@opendeusto.es", null);
-
+        Visita v1 = new Visita(cliente, Stage, "12/02/2024", "01:21", "El establecimiento muy bien pero precios muy altos!");
+        Visita v2 = new Visita(cliente, Monty, "17/02/2024", "01:03", "Buen copeo por la tarde-noche");
+        ArrayList<Visita> visitas = new ArrayList<>();
+        visitas.add(v1); visitas.add(v2);
+        cliente.setVisitas(visitas);
 
         usuariosPrueba.add(dueño); //todo Esto hay que quitarlo aunk no interfiere con bd ya que es otro array
+        usuariosPrueba.add(cliente); //lo mismo
         //usuarios.add(cliente);
         //muestra de votaciones de encuesta
         valoresVotaciones.add(3);valoresVotaciones.add(8);valoresVotaciones.add(7);valoresVotaciones.add(4);valoresVotaciones.add(3);valoresVotaciones.add(5);

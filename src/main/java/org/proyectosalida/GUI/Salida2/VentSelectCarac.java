@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import org.proyectosalida.Constructores.Caracteristica;
 import org.proyectosalida.Datos.AlmacenDeDatos;
-import org.proyectosalida.GUI.Salida1.ClasePrueba;
+import org.proyectosalida.GUI.Salida1.VentLocalesRecomendados;
 
 public class VentSelectCarac extends JFrame {
 
@@ -83,7 +83,7 @@ public class VentSelectCarac extends JFrame {
         Aceptar.addActionListener(e->{
             dispose();
             if(!editandoLocal){ //Significa que no estas modificando un local, asik se pasa a la busqueda relacionada con las caracteristicas
-                new ClasePrueba(caracteristicasSeleccionadas, almacen);
+                new VentLocalesRecomendados(caracteristicasSeleccionadas, almacen);
             }
         });
         panel.add(searchField, BorderLayout.NORTH);

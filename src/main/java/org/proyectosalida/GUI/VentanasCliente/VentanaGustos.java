@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import org.proyectosalida.Constructores.Caracteristica;
 import com.toedter.calendar.JCalendar;
 import org.proyectosalida.Datos.AlmacenDeDatos;
-import org.proyectosalida.GUI.Salida1.ClasePrueba;
+import org.proyectosalida.GUI.Salida1.VentLocalesRecomendados;
 
 public class VentanaGustos extends JFrame {
     private ArrayList<Caracteristica> caracteristicasSeleccionadas = new ArrayList<>();
@@ -51,7 +51,7 @@ public class VentanaGustos extends JFrame {
         setVisible(true);
 
         Aceptar.addActionListener(e -> {
-                    new ClasePrueba(caracteristicasSeleccionadas, almacen);
+                    new VentLocalesRecomendados(caracteristicasSeleccionadas, almacen);
                 }
         );
     }

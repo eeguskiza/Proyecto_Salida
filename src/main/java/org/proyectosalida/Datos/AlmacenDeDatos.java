@@ -169,6 +169,12 @@ public class AlmacenDeDatos {
         caracteristicasMonty.add(Caracteristica.TERRAZA);
         caracteristicasMonty.add(Caracteristica.CERVEZAS);
         caracteristicasMonty.add(Caracteristica.COMBINADOS);
+
+        ArrayList<Caracteristica> c2 = new ArrayList<>();
+        c2.add(Caracteristica.BAILE);
+        c2.add(Caracteristica.PINTXOS);
+        c2.add(Caracteristica.MUSICA);
+
         Bar Monty = new Bar("Monty", "Heros Kalea, 16, Bilbo, Bizkaia", "48009", 75, "944 23 63 36", 0, 0, link1, horariosMonty, true,caracteristicasMonty);
 
         dueño = new Dueño("enekoalvareez", "Eneko", "Alvarez", new GregorianCalendar(2004, Calendar.JUNE, 23).getTime(), "Contraseña", "687 322 612", "ealvarez@opendeusto.es", null);
@@ -176,7 +182,7 @@ public class AlmacenDeDatos {
 
         //Discoteca añadir a dueño 1
         //    public Discoteca(String nombre, String direccion, String CP, int Aforo, String telefono, int MediaEdad, int PrecioMedio, String web, ArrayList<Horario> horarios, DJ djResidente, DJ djInvitado,ArrayList<Caracteristica>caracteristicas) {
-        Discoteca Stage = new Discoteca("StageLive", "C/ Algo en Bilbo", "48005", 300, "784 348 357", 18, 15, "https://backroomstagelive.com", horariosMonty, new DJ("DJ Theo", "", "", "", 0, "", "", ""), new DJ("DJ 2", "", "", "", 0, "", "", ""), caracteristicasMonty);
+        Discoteca Stage = new Discoteca("StageLive", "C/ Algo en Bilbo", "48005", 300, "784 348 357", 18, 15, "https://backroomstagelive.com", horariosMonty, new DJ("DJ Theo", "", "", "", 0, "", "", ""), new DJ("DJ 2", "", "", "", 0, "", "", ""), c2);
         Discoteca Back = new Discoteca("BackRoom", "C/ Abando", "48005", 250, "678 439 389", 19, 15, "https://backroomstagelive.com", horariosMonty, new DJ("Almaba Ice", "Ice", "a", "España", 19, "Reggaeton", "Reggeaton", "@almava_ice"), new DJ("DJ 2", "", "", "", 0, "", "", ""), caracteristicasMonty);
 
         dueño.agregarLocal(Stage);

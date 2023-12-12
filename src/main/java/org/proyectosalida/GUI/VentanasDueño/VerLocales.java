@@ -84,7 +84,7 @@ public class VerLocales extends JFrame {
             dispose();
         });
 
-        JButton refresh = new JButton("Refresh"); botonera.add(refresh);
+        JButton refresh = new JButton("Refresh"); //botonera.add(refresh);
         refresh.addActionListener(e -> {
             modelo.setRowCount(0);
             cargarLocalesATabla(dueño, modelo);

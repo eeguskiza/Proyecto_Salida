@@ -9,6 +9,7 @@ import java.util.ArrayList;
 
 import com.toedter.calendar.JDateChooser;
 import org.proyectosalida.Constructores.*;
+import org.proyectosalida.Datos.AlmacenDeDatos;
 import org.proyectosalida.Datos.Provider;
 import org.proyectosalida.GUI.InicioSesion;
 
@@ -22,7 +23,7 @@ public class Registro extends JFrame {
     JButton botonVerContraseña;
     JTextField textFieldContraseña = null;
 
-    public Registro(JFrame padre) {
+    public Registro(JFrame padre, AlmacenDeDatos almacenDeDatos) {
 
         viendoContraseña=false;
         botonVerContraseña = new JButton();
@@ -164,24 +165,24 @@ public class Registro extends JFrame {
                         //Option pane para decidir si quiere añadir locales o no (gurada un boll para llamar a la ventana)
                         boolean loc = JOptionPane.showConfirmDialog(null, "¿Desea añadir locales?", "Añadir locales", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
                         if (loc == true) {
-                            VentanaAddLocales ventanaAddLocales = new VentanaAddLocales(nuevoUsuario);
+                            VentanaAddLocales ventanaAddLocales = new VentanaAddLocales(nuevoUsuario, almacenDeDatos);
                             ventanaAddLocales.setVisible(true);
                             this.dispose();
                         }else {
-                            guardarDueño(nuevoUsuario);
+                            almacenDeDatos.registrarUsuario(nuevoUsuario);
                             dispose();
                             //REDIRIGE DIRECTAMENTE A INICIA SESION HABIENDO GUARDADO LOS DATOS EN LA NUBE
                             JOptionPane.showMessageDialog(this, "Usuario creado con éxito!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                            InicioSesion inicioSesion = new InicioSesion(this);
+                            InicioSesion inicioSesion = new InicioSesion(this, almacenDeDatos);
                             inicioSesion.setVisible(true);
                         }
                     } else {
                         Cliente nuevoUsuario = new Cliente(id, nombre, apellido, fechaNacimiento, contraseña, telefono, correo, new ArrayList<>());
                         System.out.println(nuevoUsuario.toString());
-                        guardarCliente(nuevoUsuario);
+                        almacenDeDatos.registrarUsuario(nuevoUsuario);
 
                         JOptionPane.showMessageDialog(this, "Usuario creado con éxito!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                        InicioSesion inicioSesion = new InicioSesion(padre);
+                        InicioSesion inicioSesion = new InicioSesion(padre, almacenDeDatos);
                         this.dispose();
                         padre.dispose();
                         inicioSesion.setVisible(true);
@@ -214,50 +215,7 @@ public class Registro extends JFrame {
         this.setVisible(true);
     }
 
-    private void guardarCliente(Cliente cliente) {
-        String id = cliente.getId();  // ID del documento
 
-        try{
-            Map<String, Object> datos = new HashMap<>();
-            datos.put("Nombre", cliente.getNombre());
-            datos.put("Apellido", cliente.getApellido());
-            datos.put("Edad", cliente.getEdad());
-            datos.put("Contraseña", cliente.getContraseña());
-            datos.put("Teléfono", cliente.getTelefono());
-            datos.put("Correo", cliente.getCorreo());
-            datos.put("Visitas", cliente.getVisitas());
-
-            Provider.guardarPersona("Cliente", id, datos);
-
-
-        }
-        catch(Exception e){
-            JOptionPane.showMessageDialog(null, "Error al registrar usuario");
-            System.out.println("Error" + e.getMessage());
-        }
-    }
-
-    private void guardarDueño(Dueño dueño) {
-        String id = dueño.getId();  // ID del documento
-
-        try{
-            Map<String, Object> datos = new HashMap<>();
-            datos.put("Nombre", dueño.getNombre());
-            datos.put("Apellido", dueño.getApellido());
-            datos.put("Edad", dueño.getEdad());
-            datos.put("Contraseña", dueño.getContraseña());
-            datos.put("Teléfono", dueño.getTelefono());
-            datos.put("Correo", dueño.getCorreo());
-            datos.put("Locales", dueño.getLocales());
-
-            Provider.guardarPersona("Dueño", id, datos);
-
-        }
-        catch(Exception e){
-            JOptionPane.showMessageDialog(null, "Error al registrar usuario");
-            System.out.println("Error" + e.getMessage());
-        }
-    }
 
     public static void main(String[] args) {
         try {
@@ -270,7 +228,7 @@ public class Registro extends JFrame {
 
         SwingUtilities.invokeLater(() -> {
             //Conexion.conectar();
-            new Registro(null);
+            new Registro(null, new AlmacenDeDatos());
         });
 
     }

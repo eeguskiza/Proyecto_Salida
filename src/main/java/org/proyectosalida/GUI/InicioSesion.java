@@ -27,8 +27,8 @@ public class InicioSesion extends JFrame {
     protected JTable tabla2;
 
 
-    public InicioSesion(JFrame padre){
-        almacenDeDatos = new AlmacenDeDatos();
+    public InicioSesion(JFrame padre, AlmacenDeDatos almacen){
+        almacenDeDatos = almacen;
         tabla = new JTable();
         tabla2 = new JTable();
         Provider.cargarTablaDueño(tabla);
@@ -122,11 +122,11 @@ public class InicioSesion extends JFrame {
 
         SwingUtilities.invokeLater(() -> {
             Conexion.conectar();
-            new InicioSesion(null).setVisible(true);
+            new InicioSesion(null, new AlmacenDeDatos()).setVisible(true);
         });
     }
 
-    private void checkCredentials(JTable tabla, JTable tabla2, JTextField ID, JPasswordField password) { //SOLO PARA DUEÑOS DE MOMENTO
+    private void checkCredentials(JTable tabla, JTable tabla2, JTextField ID, JPasswordField password) {
         DefaultTableModel modelo = (DefaultTableModel) tabla.getModel();
         DefaultTableModel modelo2 = (DefaultTableModel) tabla2.getModel();
         char[] passChar = password.getPassword();

@@ -2,6 +2,7 @@ package org.proyectosalida.GUI.VentanasCliente;
 
 import org.proyectosalida.Constructores.Bar;
 import org.proyectosalida.Constructores.Cliente;
+import org.proyectosalida.Constructores.Dueño;
 import org.proyectosalida.Constructores.Visita;
 import org.proyectosalida.Datos.AlmacenDeDatos;
 import org.proyectosalida.Pruebas.MenuPersonal;

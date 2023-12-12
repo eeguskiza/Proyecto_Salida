@@ -1,6 +1,7 @@
 package org.proyectosalida.GUI.Registro;
 
 import org.proyectosalida.Constructores.*;
+import org.proyectosalida.Datos.AlmacenDeDatos;
 import org.proyectosalida.Datos.Provider;
 import org.proyectosalida.GUI.InicioSesion;
 import org.proyectosalida.GUI.Salida2.VentSelectCarac;
@@ -17,7 +18,7 @@ public class VentanaAddLocales extends JFrame {
     private DJ djResidente;
     private DJ djInvitado;
 
-    public VentanaAddLocales(Dueño dueño) {
+    public VentanaAddLocales(Dueño dueño, AlmacenDeDatos almacenDeDatos) {
         setTitle("Añadir locales");
         setSize(500, 750);
         setLocationRelativeTo(null);
@@ -129,7 +130,7 @@ public class VentanaAddLocales extends JFrame {
             boolean pregunta  = JOptionPane.showConfirmDialog(null, "¿Quieres añadir más locales?", "Añadir locales", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
             if (pregunta){
                 dispose();
-                VentanaAddLocales ventanaAddLocales = new VentanaAddLocales(dueño);
+                VentanaAddLocales ventanaAddLocales = new VentanaAddLocales(dueño, almacenDeDatos);
                 ventanaAddLocales.setVisible(true);
             }
             else{
@@ -137,7 +138,7 @@ public class VentanaAddLocales extends JFrame {
                 dispose();
                 //REDIRIGE DIRECTAMENTE A INICIA SESION HABIENDO GUARDADO LOS DATOS EN LA NUBE
                 JOptionPane.showMessageDialog(this, "Usuario creado con éxito!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                InicioSesion inicioSesion = new InicioSesion(this);
+                InicioSesion inicioSesion = new InicioSesion(this, almacenDeDatos);
                 inicioSesion.setVisible(true);
             }
         });
@@ -155,7 +156,7 @@ public class VentanaAddLocales extends JFrame {
         });
 
         añadirC.addActionListener(e -> {
-            VentSelectCarac vCaract = new VentSelectCarac(caracteristicasSelecionadas, true);
+            VentSelectCarac vCaract = new VentSelectCarac(caracteristicasSelecionadas, true, almacenDeDatos);
         });
 
         añadirDjResidente.addActionListener(e -> {
@@ -211,7 +212,7 @@ public class VentanaAddLocales extends JFrame {
         }
 
         SwingUtilities.invokeLater(() -> {
-            VentanaAddLocales ventanaAddLocales = new VentanaAddLocales(new Dueño());
+            VentanaAddLocales ventanaAddLocales = new VentanaAddLocales(new Dueño(), new AlmacenDeDatos());
             ventanaAddLocales.setVisible(true);
         });
 

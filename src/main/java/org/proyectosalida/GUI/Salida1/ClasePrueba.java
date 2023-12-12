@@ -9,22 +9,22 @@ import java.util.ArrayList;
 
 
 import org.proyectosalida.Constructores.*;
+import org.proyectosalida.Datos.AlmacenDeDatos;
 import org.proyectosalida.Pruebas.Objetos;
 
 public class ClasePrueba extends JFrame {
 
     private DefaultTableModel modeloTabla;
-    protected ArrayList<Caracteristica>carcateristicasseleccionadas;
+
+    protected ArrayList<Local> locales;
 
 
-    public ClasePrueba(ArrayList<Caracteristica>carcateristicasseleccionadas) {
+    public ClasePrueba(ArrayList<Caracteristica>carcateristicasseleccionadas, AlmacenDeDatos almacen) {
+        locales = almacen.getLocales();
+
         // Crear el panel principal
         JPanel panelPrincipal = new JPanel(new BorderLayout());
         JButton aceptar=new JButton("Aceptar");
-       
-
-
-
 
         // Crear el título "RECOMENDADOS" en la parte superior
         JLabel tituloLabel = new JLabel("RECOMENDADOS");
@@ -42,7 +42,7 @@ public class ClasePrueba extends JFrame {
 
         // ejemplos que se quitan cuaando aprenda a puto importar cosas
 
-
+/*
         //Monty
         ArrayList<Caracteristica>caracteristicasMonty=new ArrayList<>();
 
@@ -81,7 +81,7 @@ public class ClasePrueba extends JFrame {
         ArrayList<Local> locales = new ArrayList<>();
         locales.add(new Bar("Monty", "Heros Kalea, 16, Bilbo, Bizkaia", "48009", 75, "944 23 63 36", 0, 0, "aa", horariosMonty, true,caracteristicasMonty));
         locales.add(new Discoteca("Back&Stage", "Calle de la Ronda, 35, Bilbo, Bizkaia","48005",  200, "747 48 96 30", 0, 0, "link2", null, null, null,CaracteristicasBack));
-
+*/
 
 
 
@@ -162,7 +162,9 @@ public class ClasePrueba extends JFrame {
         SwingUtilities.invokeLater(new Runnable() {
             @Override
             public void run() {
-                new ClasePrueba(null);
+                ArrayList<Caracteristica> caracts = new ArrayList<>();
+                caracts.add(Caracteristica.PINTXOS); caracts.add(Caracteristica.ACCESIBILIDAD); caracts.add(Caracteristica.AFTERWORK);
+                new ClasePrueba(caracts, new AlmacenDeDatos());
             }
         });
     }

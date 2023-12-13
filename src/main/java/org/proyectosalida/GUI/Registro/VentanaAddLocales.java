@@ -156,7 +156,7 @@ public class VentanaAddLocales extends JFrame {
         });
 
         añadirC.addActionListener(e -> {
-            VentSelectCarac vCaract = new VentSelectCarac(caracteristicasSelecionadas, true, almacenDeDatos);
+            VentSelectCarac vCaract = new VentSelectCarac(caracteristicasSelecionadas, true, almacenDeDatos, null);
         });
 
         añadirDjResidente.addActionListener(e -> {

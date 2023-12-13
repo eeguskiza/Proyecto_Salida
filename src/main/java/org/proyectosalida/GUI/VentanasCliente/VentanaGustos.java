@@ -51,7 +51,7 @@ public class VentanaGustos extends JFrame {
         setVisible(true);
 
         Aceptar.addActionListener(e -> {
-                    new VentLocalesRecomendados(caracteristicasSeleccionadas, almacen);
+                    new VentLocalesRecomendados(caracteristicasSeleccionadas, almacen, null);
                 }
         );
     }

@@ -185,7 +185,7 @@ public class ModificarLocales extends JFrame{
         });
 
         bCaracteristicas.addActionListener(e -> {
-            VentSelectCarac ventanaCaracterist = new VentSelectCarac(caracteristicasSelec, true, almacn);
+            VentSelectCarac ventanaCaracterist = new VentSelectCarac(caracteristicasSelec, true, almacn, null);
         });
 
         bResidente.addActionListener(e -> {

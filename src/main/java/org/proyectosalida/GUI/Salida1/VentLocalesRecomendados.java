@@ -8,6 +8,8 @@ import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 
 
@@ -21,20 +23,22 @@ public class VentLocalesRecomendados extends JFrame {
     protected ArrayList<Local> locales;
     private ArrayList<Caracteristica> caracteristicasABuscar;
     private static HashMap<Local, ArrayList<Caracteristica>> resultadoBusqueda; //Se mapea el local con las caracteristicas que tienen en comun
+    private Calendar calendario;
 
 
-    public VentLocalesRecomendados(ArrayList<Caracteristica>carcateristicasseleccionadas, AlmacenDeDatos almacen) {
+    public VentLocalesRecomendados(ArrayList<Caracteristica>carcateristicasseleccionadas, AlmacenDeDatos almacen, Salida salida) {
         locales = almacen.getLocales();
         resultadoBusqueda = new HashMap<>();
         caracteristicasABuscar = carcateristicasseleccionadas;
         selectedRow = -1;
+        calendario = Calendar.getInstance();
 
         // Crear el panel principal
         JPanel panelPrincipal = new JPanel(new BorderLayout());
         JButton aceptar=new JButton("Aceptar");
 
         // Crear el título "RECOMENDADOS" en la parte superior
-        JLabel tituloLabel = new JLabel("RECOMENDADOS");
+        JLabel tituloLabel = new JLabel("LOCALES RECOMENDADOS  (" + salida.getFecha()+")");
         tituloLabel.setHorizontalAlignment(JLabel.CENTER);
         panelPrincipal.add(tituloLabel, BorderLayout.NORTH);
         panelPrincipal.add(aceptar,BorderLayout.SOUTH);
@@ -51,7 +55,7 @@ public class VentLocalesRecomendados extends JFrame {
         modeloTabla.addColumn("Match");
         modeloTabla.addColumn("Telefono");
         //modeloTabla.addColumn("Foto");
-        modeloTabla.addColumn("Ver Horario");
+        modeloTabla.addColumn("Horario");
 
 
         JTable tabla = new JTable(modeloTabla);
@@ -66,10 +70,13 @@ public class VentLocalesRecomendados extends JFrame {
             @Override
             public void mouseReleased(MouseEvent e) {
                 int row = tabla.rowAtPoint(e.getPoint());
-                if(row==selectedRow){
+                int collumn = tabla.columnAtPoint(e.getPoint());
+                if(row==selectedRow && collumn==2){
                     selectedRow = -1; //Se desactiva
                 }else{
-                    selectedRow = row;
+                    if(collumn ==2){
+                        selectedRow = row;
+                    }
                 }
             }
         });
@@ -79,6 +86,8 @@ public class VentLocalesRecomendados extends JFrame {
 
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
+                Local localRow = conseguirobjeto((String) table.getValueAt(row, 0));
+
                 c.setBackground(Color.WHITE);
                 if (isSelected) {
                     c.setBackground(Color.LIGHT_GRAY);
@@ -88,7 +97,6 @@ public class VentLocalesRecomendados extends JFrame {
                 if(column==2){
                     if(row != selectedRow || selectedRow==-1){
                         JProgressBar pb = new JProgressBar(0, carcateristicasseleccionadas.size());
-                        Local localRow = conseguirobjeto((String) table.getValueAt(row, 0));
                         pb.setValue(resultadoBusqueda.get(localRow).size());
 
                         return pb;
@@ -96,14 +104,38 @@ public class VentLocalesRecomendados extends JFrame {
                 }
 
                 if(column == 4){
-                    JPanel p = new JPanel(new BorderLayout());
-                    p.add(new JLabel("Click para ver") {{ setHorizontalAlignment(SwingConstants.CENTER); }});
+                    JLabel texto = new JLabel("") {{ setHorizontalAlignment(SwingConstants.CENTER); }};
 
-                    return p;
+                    calendario.setTime(salida.getFecha()); //Por si decide salir otro dia
+                    int diaSemanaSelec = calendario.get(Calendar.DAY_OF_WEEK)-2; //0:Lunes 1:Martes ...
+
+                    Horario horario = localRow.getHorarios().get(diaSemanaSelec);
+                    int horaActual = calendario.get(Calendar.HOUR_OF_DAY); //Solo la hora en 24h
+                    int minutoActual = calendario.get(Calendar.MINUTE);
+                    String[] partesHoraInicio = horario.getHoraInicio().split(":");
+                    int horaApertura = Integer.parseInt(partesHoraInicio[0]);
+                    int minApertura = Integer.parseInt(partesHoraInicio[1]);
+                    String[] partesHoraFin = horario.getHoraFin().split(":");
+                    int horaCierre = Integer.parseInt(partesHoraFin[0]);
+                    int minCierre = Integer.parseInt(partesHoraFin[1]);
+
+                    boolean estaAbierto = false;
+                    if ((horaApertura < horaActual && horaActual < horaCierre) || (horaActual > horaCierre && horaCierre < horaApertura)) {
+                        estaAbierto = true;
+                    }
+
+                    if(estaAbierto){
+                        texto.setText("<html><font color='green'>ABIERTO</font> (hasta " + horario.getHoraFin() + ")</html>");
+                    }else{
+                        texto.setText("<html><font color='red'>CERRADO</font> (" + horario.getHoraInicio() + ")</html>");
+                    }
+
+                    return texto;
                 }
 
                 if(isSelected){
                     c.setBackground(new Color(229, 229, 229));
+                    c.setForeground(Color.BLACK);
                 }
 
                 tabla.repaint();
@@ -133,6 +165,7 @@ public class VentLocalesRecomendados extends JFrame {
         if (fila != -1) {
             String nombre = (String) modeloTabla.getValueAt(fila, 0);
             Local objeto = conseguirobjeto(nombre);
+            salida.setLocal(objeto); //Se registra el local seleccionado a la Salida
             if (objeto instanceof Bar) {
 
                 System.out.println("abrir ventana" + objeto);
@@ -164,7 +197,8 @@ public class VentLocalesRecomendados extends JFrame {
             public void run() {
                 ArrayList<Caracteristica> caracts = new ArrayList<>();
                 caracts.add(Caracteristica.PINTXOS); caracts.add(Caracteristica.BAILE); caracts.add(Caracteristica.AFTERWORK);
-                new VentLocalesRecomendados(caracts, new AlmacenDeDatos());
+                Salida salida = new Salida(null, null, new Date(), null);
+                new VentLocalesRecomendados(caracts, new AlmacenDeDatos(), salida);
             }
         });
     }

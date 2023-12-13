@@ -164,6 +164,16 @@ public class AlmacenDeDatos {
         horariosMonty.add(new Horario("Viernes", "07:30", "23:30"));
         horariosMonty.add(new Horario("Sabado", "07:30", "23:30"));
         horariosMonty.add(new Horario("Domingo", "07:30", "16:00"));
+
+        ArrayList<Horario> horariosDisco = new ArrayList<>();
+        horariosDisco.add(new Horario("Lunes", "00:30", "05:30"));
+        horariosDisco.add(new Horario("Martes", "00:30", "05:30"));
+        horariosDisco.add(new Horario("Miercoles", "00:30", "05:30"));
+        horariosDisco.add(new Horario("Jueves", "06:30", "16:30"));
+        horariosDisco.add(new Horario("Viernes", "00:30", "05:30"));
+        horariosDisco.add(new Horario("Sabado", "00:30", "05:30"));
+        horariosDisco.add(new Horario("Domingo", "00:30", "05:00"));
+
         ArrayList<Caracteristica>caracteristicasMonty=new ArrayList<>();
         caracteristicasMonty.add(Caracteristica.PINTXOS);
         caracteristicasMonty.add(Caracteristica.TERRAZA);
@@ -182,7 +192,7 @@ public class AlmacenDeDatos {
 
         //Discoteca añadir a dueño 1
         //    public Discoteca(String nombre, String direccion, String CP, int Aforo, String telefono, int MediaEdad, int PrecioMedio, String web, ArrayList<Horario> horarios, DJ djResidente, DJ djInvitado,ArrayList<Caracteristica>caracteristicas) {
-        Discoteca Stage = new Discoteca("StageLive", "C/ Algo en Bilbo", "48005", 300, "784 348 357", 18, 15, "https://backroomstagelive.com", horariosMonty, new DJ("DJ Theo", "", "", "", 0, "", "", ""), new DJ("DJ 2", "", "", "", 0, "", "", ""), c2);
+        Discoteca Stage = new Discoteca("StageLive", "C/ Algo en Bilbo", "48005", 300, "784 348 357", 18, 15, "https://backroomstagelive.com", horariosDisco, new DJ("DJ Theo", "", "", "", 0, "", "", ""), new DJ("DJ 2", "", "", "", 0, "", "", ""), c2);
         Discoteca Back = new Discoteca("BackRoom", "C/ Abando", "48005", 250, "678 439 389", 19, 15, "https://backroomstagelive.com", horariosMonty, new DJ("Almaba Ice", "Ice", "a", "España", 19, "Reggaeton", "Reggeaton", "@almava_ice"), new DJ("DJ 2", "", "", "", 0, "", "", ""), caracteristicasMonty);
 
         dueño.agregarLocal(Stage);

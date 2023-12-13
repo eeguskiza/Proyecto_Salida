@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.proyectosalida.Constructores.Caracteristica;
+import org.proyectosalida.Constructores.Salida;
 import org.proyectosalida.Datos.AlmacenDeDatos;
 import org.proyectosalida.GUI.Salida1.VentLocalesRecomendados;
 
@@ -25,7 +26,7 @@ public class VentSelectCarac extends JFrame {
 
 
 
-    public VentSelectCarac(ArrayList<Caracteristica> caracteristicasSeleccionadas, Boolean editandoLocal, AlmacenDeDatos almacen) {
+    public VentSelectCarac(ArrayList<Caracteristica> caracteristicasSeleccionadas, Boolean editandoLocal, AlmacenDeDatos almacen, Salida salida) {
         super("Seleccion de Caracteristicas");
         setSize(500, 300);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -83,7 +84,7 @@ public class VentSelectCarac extends JFrame {
         Aceptar.addActionListener(e->{
             dispose();
             if(!editandoLocal){ //Significa que no estas modificando un local, asik se pasa a la busqueda relacionada con las caracteristicas
-                new VentLocalesRecomendados(caracteristicasSeleccionadas, almacen);
+                new VentLocalesRecomendados(caracteristicasSeleccionadas, almacen, salida);
             }
         });
         panel.add(searchField, BorderLayout.NORTH);
@@ -157,7 +158,7 @@ public class VentSelectCarac extends JFrame {
         }
 
         SwingUtilities.invokeLater(() -> {
-            VentSelectCarac ventana = new VentSelectCarac(new ArrayList<>(), false, new AlmacenDeDatos());
+            VentSelectCarac ventana = new VentSelectCarac(new ArrayList<>(), false, new AlmacenDeDatos(), null);
             ventana.setVisible(true);
 
         });

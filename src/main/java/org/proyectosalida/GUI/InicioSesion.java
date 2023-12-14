@@ -211,7 +211,7 @@ public class InicioSesion extends JFrame {
                 System.out.println(usuario);
                 almacenDeDatos.getUsuarios().add(usuario);
                 almacenDeDatos.setEsCliente(true);
-                new MainMenuCliente(almacenDeDatos);
+                new MainMenuCliente(almacenDeDatos, null);
                 dispose();
             } else {}
         } else {

@@ -17,6 +17,7 @@ public class VentanaAddLocales extends JFrame {
     private ArrayList<Caracteristica> caracteristicasSelecionadas;
     private DJ djResidente;
     private DJ djInvitado;
+    private String enlace;
 
     public VentanaAddLocales(Dueño dueño, AlmacenDeDatos almacenDeDatos) {
         setTitle("Añadir locales");
@@ -28,6 +29,7 @@ public class VentanaAddLocales extends JFrame {
         horarios = new ArrayList<>();
         djResidente = new DJ();
         djInvitado = new DJ();
+        enlace = "";
 
         JPanel panel = new JPanel(new GridLayout(0, 2, 10, 10)); // Layout para los campos y etiquetas
 
@@ -49,8 +51,8 @@ public class VentanaAddLocales extends JFrame {
         panel.add(new JTextField(20));
         panel.add(new JLabel("Media de Precio:", JLabel.CENTER));
         panel.add(new JTextField(20));
-        panel.add(new JLabel("Página Web:", JLabel.CENTER));
-        panel.add(new JTextField(20));
+        //panel.add(new JLabel("Página Web:", JLabel.CENTER));
+        //panel.add(new JTextField(20));
         panel.add(new JLabel("Horarios:", JLabel.CENTER));
         JButton añadirH = new JButton("Añadir horarios");
         panel.add(añadirH);
@@ -102,8 +104,11 @@ public class VentanaAddLocales extends JFrame {
             String telefono = ((JTextField) panel.getComponent(11)).getText();
             int mediaEdad = Integer.parseInt(((JTextField) panel.getComponent(13)).getText());
             int mediaPrecio = Integer.parseInt(((JTextField) panel.getComponent(15)).getText());
-            String enlace = ((JTextField) panel.getComponent(17)).getText();
+            //String enlace = ((JTextField) panel.getComponent(17)).getText();
             Boolean terraza = null;
+
+            setVisible(false);
+            enlace = JOptionPane.showInputDialog(null, "Introduce la URL que los clientes verán una vez seleccionen\n tu local para salir (P.E. GoogleMaps)", "Una ultima cosa...", JOptionPane.QUESTION_MESSAGE);
 
             if(bbar.isSelected()){
                 if(checkboxSi.isSelected()){
@@ -112,7 +117,9 @@ public class VentanaAddLocales extends JFrame {
                     terraza = false;
                 }else{
                     JOptionPane.showMessageDialog(null, "Seleccione todos los campos.");
+
                 }
+
                 Bar bar = new Bar(nombre, direccion, CP, aforo, telefono, mediaEdad, mediaPrecio, enlace, horarios, terraza, caracteristicasSelecionadas);
                 System.out.println(bar);
                 dueño.getLocales().add(bar);
@@ -123,8 +130,6 @@ public class VentanaAddLocales extends JFrame {
             }else{
                 JOptionPane.showMessageDialog(null, "Seleccione un tipo de local!");
             }
-
-
 
             //Preguntar si quiere añadirmas locales
             boolean pregunta  = JOptionPane.showConfirmDialog(null, "¿Quieres añadir más locales?", "Añadir locales", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
@@ -201,6 +206,31 @@ public class VentanaAddLocales extends JFrame {
 
 
     }
+
+    private void pedirURL(Dueño dueño, AlmacenDeDatos almacenDeDatos){
+        JFrame frame = new JFrame();
+        setLayout(new BorderLayout());
+        setSize(700, 200);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setTitle("Una ultima cosa...");
+
+        JPanel main = new JPanel(new BorderLayout()); add(main);
+        main.add(new JLabel("Introduce la URL que los clientes verán una vez seleccionen\n tu local para salir (Por Ejemplo, GoogleMaps)"), BorderLayout.NORTH);
+        JTextField textField = new JTextField(); main.add(textField, BorderLayout.CENTER);
+        JButton guardarEnlace = new JButton("Registrar URL!"); main.add(guardarEnlace, BorderLayout.SOUTH);
+        setVisible(true);
+
+        guardarEnlace.addActionListener(e -> {
+            enlace = textField.getText();
+            frame.dispose();
+
+
+        });
+
+    } //Y guardar locales/Dueño añadidos tambien
+
+
     //Main de prueba
     public static void main(String[] args) {
         try {

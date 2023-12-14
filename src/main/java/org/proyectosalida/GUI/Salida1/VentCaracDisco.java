@@ -65,7 +65,10 @@ public class VentCaracDisco extends JFrame {
         setTitle("Vista Previa de Discoteca");
         setSize(400, 400);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(null);
+        //setLocationRelativeTo(null);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        setLocation(screenSize.width - getSize().width - 20, (screenSize.height - getSize().height) /2 -150); //para poder abrir el mapa junto a esta ventana lo pongo en una esquina
+        setAlwaysOnTop(true);
     }
 
     private String obtenerCaracteristicas(ArrayList<Caracteristica> caracteristicas) {
@@ -74,13 +77,17 @@ public class VentCaracDisco extends JFrame {
             builder.append(caracteristica.toString()).append(", ");
         }
         // Eliminar la coma y el espacio al final
-        return builder.substring(0, builder.length() - 2);
+        if(!builder.isEmpty()){
+            return builder.substring(0, builder.length() - 2);
+        }else{
+            return null;
+        }
     }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
             // Crear una instancia de Discoteca para probar la ventana
-            new VentCaracDisco(null);
+            new VentCaracDisco(new Discoteca());
         });
     }
 }

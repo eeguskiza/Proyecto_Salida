@@ -15,6 +15,7 @@ import java.util.HashMap;
 
 import org.proyectosalida.Constructores.*;
 import org.proyectosalida.Datos.AlmacenDeDatos;
+import org.proyectosalida.GUI.VentanasCliente.MainMenuCliente;
 
 public class VentLocalesRecomendados extends JFrame {
 
@@ -107,8 +108,11 @@ public class VentLocalesRecomendados extends JFrame {
                     JLabel texto = new JLabel("") {{ setHorizontalAlignment(SwingConstants.CENTER); }};
 
                     calendario.setTime(salida.getFecha()); //Por si decide salir otro dia
-                    int diaSemanaSelec = calendario.get(Calendar.DAY_OF_WEEK)-2; //0:Lunes 1:Martes ...
+                    int diaSemanaSelec = calendario.get(Calendar.DAY_OF_WEEK)-2; //-1:Domingo 0:Lunes 1:Martes ...
 
+                    if(diaSemanaSelec == -1){
+                        diaSemanaSelec=6;
+                    }
                     Horario horario = localRow.getHorarios().get(diaSemanaSelec);
                     int horaActual = calendario.get(Calendar.HOUR_OF_DAY); //Solo la hora en 24h
                     int minutoActual = calendario.get(Calendar.MINUTE);
@@ -170,8 +174,11 @@ public class VentLocalesRecomendados extends JFrame {
 
                 System.out.println("abrir ventana" + objeto);
                 dispose();
+                //TODO FALTA AÑADIR EL VOTO A LOS POLLS DEL MAINMENU PRIMERO
+                new MainMenuCliente(almacen, objeto.getWeb());
                 new VentCaracBar(objeto);
             }else {
+                new MainMenuCliente(almacen, objeto.getWeb());
                 new VentCaracDisco(objeto);
                 dispose();
             }

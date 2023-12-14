@@ -1,5 +1,6 @@
 package org.proyectosalida.GUI.Salida1;
 
+import org.proyectosalida.Constructores.Bar;
 import org.proyectosalida.Constructores.Caracteristica;
 import org.proyectosalida.Constructores.Local;
 
@@ -63,7 +64,10 @@ public class VentCaracBar extends JFrame {
         setSize(400,600);
         setTitle("Características del Local");
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        setLocationRelativeTo(null);
+        //setLocationRelativeTo(null);
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        setLocation(screenSize.width - getSize().width - 20, (screenSize.height - getSize().height) /2 -70); //para poder abrir el mapa junto a esta ventana lo pongo en una esquina
+        setAlwaysOnTop(true);
     }
 
     private String obtenerCaracteristicas(ArrayList<Caracteristica> caracteristicas) {
@@ -72,13 +76,17 @@ public class VentCaracBar extends JFrame {
             builder.append(caracteristica.toString()).append(", ");
         }
         // Eliminar la coma y el espacio al final
-        return builder.substring(0, builder.length() - 2);
+        if(!builder.isEmpty()){
+            return builder.substring(0, builder.length() - 2);
+        }else{
+            return null;
+        }
     }
 
     public static void main(String[] args) {
         SwingUtilities.invokeLater(() -> {
 
-            new VentCaracBar(null);
+            new VentCaracBar(new Bar());
         });
     }
 }

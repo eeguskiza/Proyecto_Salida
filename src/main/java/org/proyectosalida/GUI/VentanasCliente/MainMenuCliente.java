@@ -32,7 +32,7 @@ public class MainMenuCliente extends JFrame {
     private JLabel labelEncabezado;
     private ArrayList<Caracteristica> caracteristicasSeleccionadas;
 
-    public MainMenuCliente(AlmacenDeDatos almacenDeDatos) {
+    public MainMenuCliente(AlmacenDeDatos almacenDeDatos, String url) {
         setTitle("Main Menu");
         setSize(1200, 800);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -128,7 +128,7 @@ public class MainMenuCliente extends JFrame {
         // --------------- MAPA ------------------
         JPanel panelMapa = new JPanel(new BorderLayout());
         panelMapa.setBackground(Color.BLUE);
-        BrowserView view = cargarMapa();
+        BrowserView view = cargarMapa(url);
         panelMapa.add(view, BorderLayout.CENTER);
 
 
@@ -281,7 +281,7 @@ public class MainMenuCliente extends JFrame {
         labelEncabezado.setText("¡Mira lo que hacen el resto!");
     }
 
-    private BrowserView cargarMapa(){
+    private BrowserView cargarMapa(String url){
         // Configuración de JxBrowser
         String LICENSE_KEY = "6P830J66YCEA9SQDHRL8EDTZK57189867HR8YUD4L7QAI5ZHGIZK21JI39COT5XFHX0V";
         EngineOptions options = EngineOptions.newBuilder(RenderingMode.HARDWARE_ACCELERATED)
@@ -297,7 +297,9 @@ public class MainMenuCliente extends JFrame {
         // Crear la vista del navegador para Swing
         BrowserView view = BrowserView.newInstance(browser);
 
-        String url = "https://www.google.es/maps/preview";
+        if(url == null){
+            url = "https://www.google.es/maps/preview";
+        }
         // Cargando la URL en el navegador
         browser.navigation().loadUrl(url);
         return view;
@@ -313,7 +315,7 @@ public class MainMenuCliente extends JFrame {
         }
 
         SwingUtilities.invokeLater(() -> {
-            new MainMenuCliente(new AlmacenDeDatos());
+            new MainMenuCliente(new AlmacenDeDatos(), null);
         });
     }
 

@@ -33,6 +33,8 @@ public class InicioSesion extends JFrame {
 
     public InicioSesion(JFrame padre, AlmacenDeDatos almacen){
         almacenDeDatos = almacen;
+        Dueño dueño = new Dueño();
+        Cliente cliente = new Cliente();
 
 
         this.setTitle("Inicia Sesión");
@@ -128,9 +130,9 @@ public class InicioSesion extends JFrame {
                 @Override
                 protected Boolean doInBackground() throws Exception {
                     if (esDueño) {
-                        return inicioSesionDueño(idField.getText(), String.valueOf(passwordField.getPassword()));
+                        return inicioSesionDueño(idField.getText(), String.valueOf(passwordField.getPassword()), dueño);
                     } else {
-                        return inicioSesionCliente(idField.getText(), String.valueOf(passwordField.getPassword()));
+                        return inicioSesionCliente(idField.getText(), String.valueOf(passwordField.getPassword()), cliente);
                     }
                 }
 
@@ -143,9 +145,6 @@ public class InicioSesion extends JFrame {
                             String mensaje = esDueño ? "Inicio de sesión exitoso como Dueño." : "Inicio de sesión exitoso como Cliente.";
                             JOptionPane.showMessageDialog(InicioSesion.this, mensaje);
                             if (esDueño) {
-                                Dueño dueño = new Dueño();
-                                dueño.setId(idField.getText());
-                                dueño.setNombre("Erik");
                                 new VerLocales(dueño, almacenDeDatos).setVisible(true);
                             } else {
                                 new MainMenuCliente(null, "").setVisible(true);
@@ -176,7 +175,7 @@ public class InicioSesion extends JFrame {
 
     }
 
-    public static boolean inicioSesionDueño(String usuario, String contraseña) {
+    public static boolean inicioSesionDueño(String usuario, String contraseña, Dueño dueño) {
         String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=/Users/erikeguskiza/Documents/BaseDeDatos/Wallet_proyectoSalida";
 
         try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
@@ -190,8 +189,22 @@ public class InicioSesion extends JFrame {
                 if (rs.next()) {
                     String id = rs.getString("ID");
                     String nombre = rs.getString("NOMBRE");
+                    String apellido = rs.getString("APELLIDO");
+                    Date fechaNacimiento = rs.getDate("FECHANACIMIENTO");
+                    String contraseña2 = rs.getString("CONTRASEÑA");
+                    String telefono = rs.getString("TELEFONO");
+                    String email = rs.getString("EMAIL");
+
+                    dueño.setId(id);
+                    dueño.setNombre(nombre);
+                    dueño.setApellido(apellido);
+                    dueño.setFechaNacimiento(fechaNacimiento);
+                    dueño.setContraseña(contraseña2);
+                    dueño.setTelefono(telefono);
+                    dueño.setCorreo(email);
                     // Imprimir los valores de cada fila si se encuentra un dueño
                     System.out.println("Dueño encontrado: ID: " + id + ", Nombre: " + nombre);
+                    System.out.println(dueño);
                     return true;
                 } else {
                     System.out.println("No se encontró el dueño con el ID y contraseña proporcionados.");
@@ -204,7 +217,7 @@ public class InicioSesion extends JFrame {
         return false;
     }
 
-    public static boolean inicioSesionCliente(String usuario, String contraseña) {
+    public static boolean inicioSesionCliente(String usuario, String contraseña, Cliente cliente) {
         String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=/Users/erikeguskiza/Documents/BaseDeDatos/Wallet_proyectoSalida";
 
         try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
@@ -218,8 +231,23 @@ public class InicioSesion extends JFrame {
                 if (rs.next()) {
                     String id = rs.getString("ID");
                     String nombre = rs.getString("NOMBRE");
+                    String apellido = rs.getString("APELLIDO");
+                    Date fechaNacimiento = rs.getDate("FECHANACIMIENTO");
+                    String contraseña2 = rs.getString("CONTRASEÑA");
+                    String telefono = rs.getString("TELEFONO");
+                    String email = rs.getString("EMAIL");
+
+                    cliente.setId(id);
+                    cliente.setNombre(nombre);
+                    cliente.setApellido(apellido);
+                    cliente.setFechaNacimiento(fechaNacimiento);
+                    cliente.setContraseña(contraseña2);
+                    cliente.setTelefono(telefono);
+                    cliente.setCorreo(email);
+
                     // Imprimir los valores de cada fila si se encuentra un dueño
                     System.out.println("Cliente encontrado: ID: " + id + ", Nombre: " + nombre);
+                    System.out.println(cliente);
                     return true;
                 } else {
                     System.out.println("No se encontró el Cliente con el ID y contraseña proporcionados.");

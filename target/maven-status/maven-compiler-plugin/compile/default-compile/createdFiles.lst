@@ -9,6 +9,7 @@ org/proyectosalida/GUI/Salida1/VentLocalesRecomendados$3.class
 org/proyectosalida/Constructores/Pruebas.class
 org/proyectosalida/Constructores/Discoteca.class
 org/proyectosalida/GUI/VentanasCliente/MainMenuCliente$2.class
+org/proyectosalida/Datos/Credenciales.class
 org/proyectosalida/GUI/Salida2/VentSelectCarac$1.class
 org/proyectosalida/Pruebas/VentanaAjustes.class
 org/proyectosalida/GUI/VentanasCliente/VentanaVisitas.class
@@ -63,6 +64,7 @@ org/proyectosalida/Constructores/Contenedor.class
 org/proyectosalida/GUI/VentanasCliente/VentanaVisitas$1.class
 org/proyectosalida/Constructores/Visita.class
 org/proyectosalida/GUI/VentanasDueño/VerLocales$2.class
+org/proyectosalida/GUI/InicioSesion$2.class
 org/proyectosalida/GUI/Salida1/VentLocalesRecomendados$3$1.class
 org/proyectosalida/GUI/InicioSesion.class
 org/proyectosalida/GUI/VentanasCliente/VentanaGustos.class

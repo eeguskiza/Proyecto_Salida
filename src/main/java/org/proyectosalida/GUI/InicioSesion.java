@@ -2,18 +2,24 @@ package org.proyectosalida.GUI;
 
 import org.proyectosalida.Constructores.*;
 import org.proyectosalida.Datos.AlmacenDeDatos;
+import org.proyectosalida.GUI.Salida2.MainMenuDuenio;
 import org.proyectosalida.GUI.VentanasCliente.MainMenuCliente;
 import org.proyectosalida.GUI.VentanasDueño.VerLocales;
+import org.proyectosalida.Datos.Credenciales;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Map;
+import java.util.concurrent.ExecutionException;
+import javax.swing.SwingWorker;
+
 
 public class InicioSesion extends JFrame {
 
@@ -30,7 +36,7 @@ public class InicioSesion extends JFrame {
 
 
         this.setTitle("Inicia Sesión");
-        this.setSize(500, 200);
+        this.setSize(500, 300);
         this.setLocationRelativeTo(padre);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -57,12 +63,31 @@ public class InicioSesion extends JFrame {
         panel.add(passLabel);
         panel.add(passPanel);
 
+        // Crear radio buttons
+        JRadioButton rbtnCliente = new JRadioButton("Cliente", true); // Seleccionado por defecto
+        JRadioButton rbtnDueño = new JRadioButton("Dueño");
+
+        // Agrupar los radio buttons
+        ButtonGroup grupo = new ButtonGroup();
+        grupo.add(rbtnCliente);
+        grupo.add(rbtnDueño);
+
+        // Panel para los radio buttons
+        JPanel panelRadioButtons = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
+        panelRadioButtons.add(rbtnCliente);
+        panelRadioButtons.add(rbtnDueño);
+
+        // Panel para los botones de aceptar y cancelar
         JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         JButton aceptar = new JButton("Aceptar");
         JButton cancelar = new JButton("Cancelar");
-
         panelBotones.add(aceptar);
         panelBotones.add(cancelar);
+
+        this.add(panelRadioButtons, BorderLayout.NORTH);
+        this.add(panel, BorderLayout.CENTER);
+        this.add(panelBotones, BorderLayout.SOUTH);
+
 
         verContraseña.addActionListener(new ActionListener() {
             @Override
@@ -92,7 +117,54 @@ public class InicioSesion extends JFrame {
         });
 
         aceptar.addActionListener(e -> {
+            boolean esDueño = rbtnDueño.isSelected();
+
+            // Muestra un mensaje de carga
+            JOptionPane mensajeCarga = new JOptionPane("Verificando credenciales...", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{}, null);
+            JDialog dialog = mensajeCarga.createDialog("Cargando");
+
+            // SwingWorker para manejar la operación en segundo plano
+            SwingWorker<Boolean, Void> worker = new SwingWorker<>() {
+                @Override
+                protected Boolean doInBackground() throws Exception {
+                    if (esDueño) {
+                        return inicioSesionDueño(idField.getText(), String.valueOf(passwordField.getPassword()));
+                    } else {
+                        return inicioSesionCliente(idField.getText(), String.valueOf(passwordField.getPassword()));
+                    }
+                }
+
+                @Override
+                protected void done() {
+                    try {
+                        boolean exito = get();
+                        dialog.dispose();
+                        if (exito) {
+                            String mensaje = esDueño ? "Inicio de sesión exitoso como Dueño." : "Inicio de sesión exitoso como Cliente.";
+                            JOptionPane.showMessageDialog(InicioSesion.this, mensaje);
+                            if (esDueño) {
+                                Dueño dueño = new Dueño();
+                                dueño.setId(idField.getText());
+                                dueño.setNombre("Erik");
+                                new VerLocales(dueño, almacenDeDatos).setVisible(true);
+                            } else {
+                                new MainMenuCliente(null, "").setVisible(true);
+                            }
+                            dispose();
+                        } else {
+                            JOptionPane.showMessageDialog(InicioSesion.this, "Inicio de sesión fallido. Verifique sus credenciales.");
+                        }
+                    } catch (InterruptedException | ExecutionException ex) {
+                        ex.printStackTrace();
+                    }
+                }
+            };
+
+            worker.execute();
+            dialog.setVisible(true);
         });
+
+
 
         cancelar.addActionListener(e -> {
             this.setVisible(false);
@@ -102,6 +174,63 @@ public class InicioSesion extends JFrame {
         this.add(panel, BorderLayout.CENTER);
         this.add(panelBotones, BorderLayout.SOUTH);
 
+    }
+
+    public static boolean inicioSesionDueño(String usuario, String contraseña) {
+        String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=/Users/erikeguskiza/Documents/BaseDeDatos/Wallet_proyectoSalida";
+
+        try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
+            String sql = "SELECT * FROM DUEÑO WHERE ID = ? AND Contraseña = ?";
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, usuario);
+                pstmt.setString(2, contraseña);
+
+                ResultSet rs = pstmt.executeQuery();
+
+                if (rs.next()) {
+                    String id = rs.getString("ID");
+                    String nombre = rs.getString("NOMBRE");
+                    // Imprimir los valores de cada fila si se encuentra un dueño
+                    System.out.println("Dueño encontrado: ID: " + id + ", Nombre: " + nombre);
+                    return true;
+                } else {
+                    System.out.println("No se encontró el dueño con el ID y contraseña proporcionados.");
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean inicioSesionCliente(String usuario, String contraseña) {
+        String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=/Users/erikeguskiza/Documents/BaseDeDatos/Wallet_proyectoSalida";
+
+        try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
+            String sql = "SELECT * FROM CLIENTE WHERE ID = ? AND Contraseña = ?";
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, usuario);
+                pstmt.setString(2, contraseña);
+
+                ResultSet rs = pstmt.executeQuery();
+
+                if (rs.next()) {
+                    String id = rs.getString("ID");
+                    String nombre = rs.getString("NOMBRE");
+                    // Imprimir los valores de cada fila si se encuentra un dueño
+                    System.out.println("Cliente encontrado: ID: " + id + ", Nombre: " + nombre);
+                    return true;
+                } else {
+                    System.out.println("No se encontró el Cliente con el ID y contraseña proporcionados.");
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 
     //org.Proyecto_Salida.Escritorio.Main de prueba

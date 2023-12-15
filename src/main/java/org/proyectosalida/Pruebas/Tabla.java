@@ -1,14 +1,7 @@
 package org.proyectosalida.Pruebas;
 
-import org.proyectosalida.Constructores.Dueño;
-import org.proyectosalida.Constructores.Local;
-import org.proyectosalida.Datos.Conexion;
-import org.proyectosalida.Datos.Provider;
-
 import javax.swing.*;
-import javax.swing.table.DefaultTableModel;
 import java.awt.*;
-import java.util.ArrayList;
 
 public class Tabla extends JFrame {
     private JTable tablaDueño, tablaCliente;
@@ -30,8 +23,7 @@ public class Tabla extends JFrame {
         this.add(scrollPane2);
 
         // Carga de datos en la tabla
-        Provider.cargarTablaDueño(tablaDueño);
-        Provider.cargarTablaCliente(tablaCliente);
+
 
         /*
 
@@ -86,7 +78,6 @@ public class Tabla extends JFrame {
         }
 
         SwingUtilities.invokeLater(() -> {
-            Conexion.conectar();
             new Tabla();
         });
     }

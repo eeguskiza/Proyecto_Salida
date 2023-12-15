@@ -1,7 +1,5 @@
 package org.proyectosalida.GUI;
 
-import org.proyectosalida.Datos.Conexion;
-
 import javax.swing.*;
 import javax.swing.plaf.basic.BasicProgressBarUI;
 import java.awt.*;
@@ -80,7 +78,6 @@ public class VentanaCarga extends JFrame {
         }
 
         SwingUtilities.invokeLater(() -> {
-            Conexion.conectar();
             new VentanaCarga();
         });
     }

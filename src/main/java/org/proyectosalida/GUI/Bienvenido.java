@@ -1,8 +1,6 @@
 package org.proyectosalida.GUI;
 
 import org.proyectosalida.Datos.AlmacenDeDatos;
-import org.proyectosalida.Datos.Conexion;
-import org.proyectosalida.Datos.Provider;
 import org.proyectosalida.GUI.Registro.Registro;
 
 import java.awt.*;
@@ -105,7 +103,6 @@ public class Bienvenido extends JFrame {
         }
 
         SwingUtilities.invokeLater(() -> {
-            Conexion.conectar();
             new Bienvenido();
         });
     }

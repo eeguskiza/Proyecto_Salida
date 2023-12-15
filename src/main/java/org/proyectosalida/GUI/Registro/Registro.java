@@ -10,13 +10,10 @@ import java.util.ArrayList;
 import com.toedter.calendar.JDateChooser;
 import org.proyectosalida.Constructores.*;
 import org.proyectosalida.Datos.AlmacenDeDatos;
-import org.proyectosalida.Datos.Provider;
 import org.proyectosalida.GUI.InicioSesion;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public class Registro extends JFrame {
     boolean viendoContraseña;
@@ -169,7 +166,6 @@ public class Registro extends JFrame {
                             ventanaAddLocales.setVisible(true);
                             this.dispose();
                         }else {
-                            almacenDeDatos.registrarUsuario(nuevoUsuario);
                             dispose();
                             //REDIRIGE DIRECTAMENTE A INICIA SESION HABIENDO GUARDADO LOS DATOS EN LA NUBE
                             JOptionPane.showMessageDialog(this, "Usuario creado con éxito!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
@@ -179,7 +175,6 @@ public class Registro extends JFrame {
                     } else {
                         Cliente nuevoUsuario = new Cliente(id, nombre, apellido, fechaNacimiento, contraseña, telefono, correo, new ArrayList<>());
                         System.out.println(nuevoUsuario.toString());
-                        almacenDeDatos.registrarUsuario(nuevoUsuario);
 
                         JOptionPane.showMessageDialog(this, "Usuario creado con éxito!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                         InicioSesion inicioSesion = new InicioSesion(padre, almacenDeDatos);

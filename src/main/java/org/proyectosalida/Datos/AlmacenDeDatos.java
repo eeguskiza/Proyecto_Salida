@@ -237,63 +237,6 @@ public class AlmacenDeDatos {
         return fechaString;
     }
 
-    public void guardarCliente(Cliente cliente) {
-        String id = cliente.getId();  // ID del documento
-
-        try{
-            Map<String, Object> datos = new HashMap<>();
-            datos.put("Nombre", cliente.getNombre());
-            datos.put("Apellido", cliente.getApellido());
-            datos.put("Edad", cliente.getEdad());
-            datos.put("Contraseña", cliente.getContraseña());
-            datos.put("Teléfono", cliente.getTelefono());
-            datos.put("Correo", cliente.getCorreo());
-            datos.put("Visitas", cliente.getVisitas());
-
-            Provider.guardarPersona("Cliente", id, datos);
-
-
-        }
-        catch(Exception e){
-            JOptionPane.showMessageDialog(null, "Error al registrar usuario");
-            System.out.println("Error" + e.getMessage());
-        }
-    }
-
-    public void guardarDueño(Dueño dueño) {
-        String id = dueño.getId();  // ID del documento
-
-        try{
-            Map<String, Object> datos = new HashMap<>();
-            datos.put("Nombre", dueño.getNombre());
-            datos.put("Apellido", dueño.getApellido());
-            datos.put("Edad", dueño.getEdad());
-            datos.put("Contraseña", dueño.getContraseña());
-            datos.put("Teléfono", dueño.getTelefono());
-            datos.put("Correo", dueño.getCorreo());
-            datos.put("Locales", dueño.getLocales());
-
-            Provider.guardarPersona("Dueño", id, datos);
-
-        }
-        catch(Exception e){
-            JOptionPane.showMessageDialog(null, "Error al registrar usuario");
-            System.out.println("Error" + e.getMessage());
-        }
-    }
-
-    public void registrarUsuario(Usuario usuario){
-        if(usuario.getClass().equals(Dueño.class)){ //Registramos un DUEÑO
-            guardarDueño((Dueño) usuario); //Guardar en BD
-
-        }else if(usuario.getClass().equals(Cliente.class)){ //Registramos CLIENTE
-            guardarCliente((Cliente) usuario); //Guarda en BD
-
-        }else{
-            System.out.println("No es ni ostias");
-        }
-    }
-
     //TODO HAY COSAS AQUI SIN TERMINAR ESENCIALES
     public void iniciarUsuario(Usuario usuario){
         if(usuarios != null){

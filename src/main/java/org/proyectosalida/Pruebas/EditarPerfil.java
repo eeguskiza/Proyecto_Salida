@@ -1,10 +1,8 @@
 package org.proyectosalida.Pruebas;
 
 import org.proyectosalida.Constructores.Dueño;
-import org.proyectosalida.Constructores.Local;
 import org.proyectosalida.Constructores.Usuario;
 import org.proyectosalida.Datos.AlmacenDeDatos;
-import org.proyectosalida.Datos.Provider;
 
 import javax.swing.*;
 import java.awt.*;
@@ -12,7 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -151,28 +148,6 @@ public class EditarPerfil extends JFrame {
         });
     }
 
-    private void actualizar(Dueño dueño) {
-        String id = dueño.getId();  // ID del documento
-
-        try{
-            Map<String, Object> datos = new HashMap<>();
-            datos.put("Nombre", dueño.getNombre());
-            datos.put("Apellido", dueño.getApellido());
-            datos.put("Edad", dueño.getEdad());
-            datos.put("Contraseña", dueño.getContraseña());
-            datos.put("Teléfono", dueño.getTelefono());
-            datos.put("Correo", dueño.getCorreo());
-            datos.put("Locales", dueño.getLocales());
-
-            Provider.actualizarPersona("Dueño", id, datos);
-            System.out.println("Usuario actualizado correctamente");
-
-        }
-        catch(Exception e){
-            JOptionPane.showMessageDialog(null, "Error al registrar usuario");
-            System.out.println("Error" + e.getMessage());
-        }
-    }
 
     public static void main(String[] args) {
         // Configuración del look and feel

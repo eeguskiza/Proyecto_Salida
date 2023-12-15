@@ -2,20 +2,14 @@ package org.proyectosalida.Pruebas;
 
 import org.proyectosalida.Constructores.*;
 import org.proyectosalida.Datos.AlmacenDeDatos;
-import org.proyectosalida.Datos.Conexion;
-import org.proyectosalida.Datos.Provider;
 import org.proyectosalida.GUI.Bienvenido;
 import org.proyectosalida.GUI.VentanasCliente.VentanaVisitas;
 import org.proyectosalida.GUI.VentanasDueño.ModificarLocales;
-import org.proyectosalida.GUI.VentanasDueño.VerLocales;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.util.*;
 
 public class MenuPersonal extends JFrame {
 
@@ -122,7 +116,6 @@ public class MenuPersonal extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 if(code==1){ //Cerrar Sesion
                     dispose();
-                    Conexion.desconectar();
                     Bienvenido vBienvenido = new Bienvenido();
                 }else if (code==3){ //Lista de visitados
                     new VentanaVisitas(almacen, getPadre()).setVisible(true);

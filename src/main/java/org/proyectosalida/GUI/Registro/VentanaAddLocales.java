@@ -2,7 +2,6 @@ package org.proyectosalida.GUI.Registro;
 
 import org.proyectosalida.Constructores.*;
 import org.proyectosalida.Datos.AlmacenDeDatos;
-import org.proyectosalida.Datos.Provider;
 import org.proyectosalida.GUI.InicioSesion;
 import org.proyectosalida.GUI.Salida2.VentSelectCarac;
 
@@ -139,7 +138,7 @@ public class VentanaAddLocales extends JFrame {
                 ventanaAddLocales.setVisible(true);
             }
             else{
-                guardarDueño(dueño);
+                //GUARDAR EN LA NUBE EL DUEÑO --> AQUI UN METODO
                 dispose();
                 //REDIRIGE DIRECTAMENTE A INICIA SESION HABIENDO GUARDADO LOS DATOS EN LA NUBE
                 JOptionPane.showMessageDialog(this, "Usuario creado con éxito!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
@@ -180,27 +179,6 @@ public class VentanaAddLocales extends JFrame {
         add(panel);
     }
 
-    private void guardarDueño(Dueño dueño) {
-        String id = dueño.getId();  // ID del documento
-
-        try{
-            Map<String, Object> datos = new HashMap<>();
-            datos.put("Nombre", dueño.getNombre());
-            datos.put("Apellido", dueño.getApellido());
-            datos.put("Edad", dueño.getEdad());
-            datos.put("Contraseña", dueño.getContraseña());
-            datos.put("Teléfono", dueño.getTelefono());
-            datos.put("Correo", dueño.getCorreo());
-            datos.put("Locales", dueño.getLocales());
-
-            Provider.guardarPersona("Dueño", id, datos);
-
-        }
-        catch(Exception e){
-            JOptionPane.showMessageDialog(null, "Error al registrar usuario");
-            System.out.println("Error" + e.getMessage());
-        }
-    }
 
     private void guardarLocal() {
 

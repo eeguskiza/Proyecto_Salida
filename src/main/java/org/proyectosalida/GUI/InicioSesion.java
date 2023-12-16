@@ -176,7 +176,7 @@ public class InicioSesion extends JFrame {
     }
 
     public static boolean inicioSesionDueño(String usuario, String contraseña, Dueño dueño) {
-        String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=/Users/erikeguskiza/Documents/BaseDeDatos/Wallet_proyectoSalida";
+        String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
 
         try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
             String sql = "SELECT * FROM DUEÑO WHERE ID = ? AND Contraseña = ?";
@@ -218,7 +218,7 @@ public class InicioSesion extends JFrame {
     }
 
     public static boolean inicioSesionCliente(String usuario, String contraseña, Cliente cliente) {
-        String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=/Users/erikeguskiza/Documents/BaseDeDatos/Wallet_proyectoSalida";
+        String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
 
         try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
             String sql = "SELECT * FROM CLIENTE WHERE ID = ? AND Contraseña = ?";

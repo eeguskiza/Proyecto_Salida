@@ -25,6 +25,7 @@ public class VentLocalesRecomendados extends JFrame {
     private ArrayList<Caracteristica> caracteristicasABuscar;
     private static HashMap<Local, ArrayList<Caracteristica>> resultadoBusqueda; //Se mapea el local con las caracteristicas que tienen en comun
     private Calendar calendario;
+    private ArrayList<String> idLocalesRecomendados;
 
 
     public VentLocalesRecomendados(ArrayList<Caracteristica>carcateristicasseleccionadas, AlmacenDeDatos almacen, Salida salida) {
@@ -33,6 +34,7 @@ public class VentLocalesRecomendados extends JFrame {
         caracteristicasABuscar = carcateristicasseleccionadas;
         selectedRow = -1;
         calendario = Calendar.getInstance();
+        idLocalesRecomendados = new ArrayList<>();
 
         // Crear el panel principal
         JPanel panelPrincipal = new JPanel(new BorderLayout());
@@ -87,7 +89,7 @@ public class VentLocalesRecomendados extends JFrame {
 
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                 Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-                Local localRow = conseguirobjeto((String) table.getValueAt(row, 0));
+                Local localRow = conseguirobjeto(idLocalesRecomendados.get(row));
 
                 c.setBackground(Color.WHITE);
                 if (isSelected) {
@@ -154,6 +156,7 @@ public class VentLocalesRecomendados extends JFrame {
         for (Local local : resultadoBusqueda.keySet()) {
             Object[] rowData = {local.getNombre(), local.getDireccion(),resultadoBusqueda.get(local) /*contarCaracteristicasEnComun(carcateristicasseleccionadas,local.getCaracteristicas())*/, local.getTelefono(), ""};
             modeloTabla.addRow(rowData);
+            idLocalesRecomendados.add(local.getId()); //Guardamos el id para luego saber a cual se le hace click.
 
         }
 
@@ -163,18 +166,20 @@ public class VentLocalesRecomendados extends JFrame {
         JButton esteBoton = new JButton("ESTE");
         botonera.add(esteBoton); panelPrincipal.add(botonera, BorderLayout.SOUTH);
         botonera.add(new JLabel("Doble click para ver más características..."));
-        esteBoton.addActionListener(e -> {
 
+        esteBoton.addActionListener(e -> {
         int fila=tabla.getSelectedRow();
         if (fila != -1) {
-            String nombre = (String) modeloTabla.getValueAt(fila, 0);
-            Local objeto = conseguirobjeto(nombre);
+            String id = idLocalesRecomendados.get(fila);
+            Local objeto = conseguirobjeto(id);
             salida.setLocal(objeto); //Se registra el local seleccionado a la Salida
+            //+1 a la poll adecuada
+            almacen.getValoresVotaciones().put(id, almacen.getValoresVotaciones().get(id)+1);
+
             if (objeto instanceof Bar) {
 
                 System.out.println("abrir ventana" + objeto);
                 dispose();
-                //TODO FALTA AÑADIR EL VOTO A LOS POLLS DEL MAINMENU PRIMERO
                 new MainMenuCliente(almacen, objeto.getWeb());
                 new VentCaracBar(objeto);
             }else {
@@ -221,15 +226,12 @@ public class VentLocalesRecomendados extends JFrame {
 
         return count;
     }
-    private static Local conseguirobjeto(String nombre){
-
+    private static Local conseguirobjeto(String id){
         for (Local local : resultadoBusqueda.keySet()) {
-            if (nombre.equals(local.getNombre())){
+            if(id.equals(local.getId())){
                 return local;
             }
-
         }
-
         return null;
     }
 

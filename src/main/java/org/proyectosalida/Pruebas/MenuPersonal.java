@@ -73,7 +73,7 @@ public class MenuPersonal extends JFrame {
             panel.add(clickableLabel("Añade Locales", 5));
             panel.add(clickableLabel("Configura Proximos Eventos", 6));
         }
-        panel.add(clickableLabel("Ajustes", 2));
+        panel.add(clickableLabel("Ajustes", 1));
         panel.add(clickableLabel("Cerrar Sesión", 1));
         panel.add(new JPanel());
 

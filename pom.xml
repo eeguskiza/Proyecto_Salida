@@ -92,6 +92,14 @@
             <version>23.3.0.23.09</version>
         </dependency>
 
+        <!-- https://mvnrepository.com/artifact/com.oracle.oci.sdk/oci-hdfs-connector -->
+        <dependency>
+            <groupId>com.oracle.oci.sdk</groupId>
+            <artifactId>oci-hdfs-connector</artifactId>
+            <version>3.3.4.1.4.0</version>
+        </dependency>
+
+
 
     </dependencies>
 

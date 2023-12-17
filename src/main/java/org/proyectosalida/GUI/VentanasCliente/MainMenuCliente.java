@@ -8,9 +8,12 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 import com.toedter.calendar.JCalendar;
 import org.proyectosalida.Constructores.Caracteristica;
+import org.proyectosalida.Constructores.Local;
 import org.proyectosalida.Constructores.Salida;
 import org.proyectosalida.Datos.AlmacenDeDatos;
 import org.proyectosalida.Constructores.Cliente;
@@ -164,41 +167,29 @@ public class MainMenuCliente extends JFrame {
 
 
         // Panel para contener las encuestas con un GridLayout para 6 elementos
-        JPanel pEncuesta = new JPanel(new GridLayout(6, 1)); // 6 filas, 1 columna
+        int rows = 0;
+        if(almacenDeDatos.getLocales().size() > 6){
+            rows = 6;
+        }else{
+            rows = almacenDeDatos.getLocales().size();
+        }
+        JPanel pEncuesta = new JPanel(new GridLayout(rows, 1)); // 6 filas, 1 columna
         panel1Encuesta.add(pEncuesta, BorderLayout.WEST);
 
-        // Creación de los paneles de encuesta con barras de progreso
-        JPanel panelStage = crearPanelEncuesta("Stage Live", 10);
-        JProgressBar pbStage = (JProgressBar) panelStage.getComponent(1);
-        //almacen.getProgressBarsVotaciones().add(pbStage);
 
-        JPanel panelBack = crearPanelEncuesta("Back Room", 10);
-        JProgressBar pbBack = (JProgressBar) panelBack.getComponent(1);
-        //almacen.getProgressBarsVotaciones().add( pbBack);
 
-        JPanel panelMoma = crearPanelEncuesta("Moma", 10);
-        JProgressBar pbMoma = (JProgressBar) panelMoma.getComponent(1);
-        //almacen.getProgressBarsVotaciones().add(pbMoma);
 
-        JPanel panelExtra1 = crearPanelEncuesta("Extra 1", 10);
-        JProgressBar pbExtra1 = (JProgressBar) panelExtra1.getComponent(1);
-        //almacen.getProgressBarsVotaciones().add( pbExtra1);
+       //TODO FALTA SABER ESCOGER LOS 6 LOCALES CON NUMEROS MAS GRANDES DEL HASHMAP YA QUE EL LIMITE SON 6 LOCALES
 
-        JPanel panelExtra2 = crearPanelEncuesta("Extra 2", 10);
-        JProgressBar pbExtra2 = (JProgressBar) panelExtra2.getComponent(1);
-        //almacen.getProgressBarsVotaciones().add(pbExtra2);
 
-        JPanel panelExtra3 = crearPanelEncuesta("Extra 3", 10);
-        JProgressBar pbExtra3 = (JProgressBar) panelExtra3.getComponent(1);
-        //almacen.getProgressBarsVotaciones().add(pbExtra3);
+        ArrayList<Local> localesSeleccionadosParaPoll = new ArrayList<>();
+        for(int valorPoll : almacenDeDatos.getValoresVotaciones().values()){
 
-        // Añadiendo todos los paneles al panel de encuestas
-        pEncuesta.add(panelStage);
-        pEncuesta.add(panelBack);
-        pEncuesta.add(panelMoma);
-        pEncuesta.add(panelExtra1);
-        pEncuesta.add(panelExtra2);
-        pEncuesta.add(panelExtra3);
+        }
+        for(int i=0; i<=rows; i++){
+            pEncuesta.add(crearPanelEncuesta(localesSeleccionadosParaPoll.get(i), 10));
+        }
+
 
 
         //PANEL 2 - REVIEWS
@@ -237,49 +228,21 @@ public class MainMenuCliente extends JFrame {
         }
     }
 
-    private JPanel crearPanelEncuesta(String titulo, int maxValor) { //CREA EL PANEL CON TITULO Y PROGRESSBAR CON SU CORRESP ACTION LISTENER
+    private JPanel crearPanelEncuesta(Local local, int maxValor) { //CREA EL PANEL CON TITULO Y PROGRESSBAR CON SU CORRESP ACTION LISTENER
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        panel.add(new JLabel(titulo));
+        String nombre = local.getNombre();
+        String id = local.getId();
+        panel.add(new JLabel(nombre));
         JProgressBar progressBar = new JProgressBar(0, maxValor);
+        progressBar.setValue(almacen.getValoresVotaciones().get(id));
 
         progressBar.setPreferredSize(new Dimension(150, 20));
         progressBar.setMinimumSize(new Dimension(150, 20));
-        progressBar.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                if(almacen.getVotoDiarioEncuesta()==false){
-                    almacen.setVotoDiarioEncuesta(true); //no se puede volver a votar
-                    mostrarTodosLosValoresEncuesta(); //revela el resto de valores
-                    //Incrementamos uno al pb que han hecho click
-                    int currentValue = progressBar.getValue();
-                    if (currentValue < progressBar.getMaximum()) {
-                        progressBar.setValue(currentValue + 1);
-                        updateProgressBarColor(progressBar);
-                    }
-                }
-
-            }
-        });
 
         panel.add(progressBar);
         return panel;
     }
 
-    public AlmacenDeDatos getAlmacen(){
-        return almacen;
-    }
-
-    private void mostrarTodosLosValoresEncuesta(){
-        ArrayList<JProgressBar> pbs = almacen.getProgressBarsVotaciones();
-        ArrayList<Integer> votos = almacen.getValoresVotaciones();
-        for(int i=0; i<pbs.size(); i++){
-            pbs.get(i).setValue(votos.get(i));
-            updateProgressBarColor(pbs.get(i));
-            //TODO FALTA ACTUALIZAR EL VOTO QUE ACABO DE INGRESAS CON EL CLICK A LA BASE DE DATOS Y CAMBIAR EL HASHMAP POR BD
-        }
-        //Cambiar el texto del encabezado del panel
-        labelEncabezado.setText("¡Mira lo que hacen el resto!");
-    }
 
     private BrowserView cargarMapa(String url){
         // Configuración de JxBrowser

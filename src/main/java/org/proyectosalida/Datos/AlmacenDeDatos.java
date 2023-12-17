@@ -19,8 +19,7 @@ public class AlmacenDeDatos {
     private boolean esCliente;
 
 //Listas
-    protected ArrayList<JProgressBar> progressBarsVotaciones;
-    protected ArrayList<Integer> valoresVotaciones;
+    public HashMap<String, Integer> valoresVotaciones; //id, num
     private ArrayList<Caracteristica> caracteristicas;
 
      private ArrayList<Usuario> usuarios;
@@ -30,9 +29,7 @@ public class AlmacenDeDatos {
 
 
     public AlmacenDeDatos(){
-
-        progressBarsVotaciones = new ArrayList<>();
-        valoresVotaciones = new ArrayList<>();
+        valoresVotaciones = new HashMap<>();
         votoDiarioEncuesta = false;
         caracteristicas = new ArrayList<>();
         usuarios = new ArrayList<>();
@@ -47,19 +44,23 @@ public class AlmacenDeDatos {
 
         //BORRAR ESTE METODO LUEGO
         añadirEjemplos();
+        //FALTA UN METODO PARA CARGAR TODOS LOS LOCALES DE LA BD A LOCALES
 
-        //muestra de votaciones de encuesta
-        valoresVotaciones.add(3);valoresVotaciones.add(8);valoresVotaciones.add(7);valoresVotaciones.add(4);valoresVotaciones.add(3);valoresVotaciones.add(5);
+
+        //ENCUENTRA VOTOS FUNCIONAL ESPERO:
+        //Inicializar hashmap con tds locales
+        for(Local local : locales){
+            valoresVotaciones.put(local.getId(), 0);
+        }
+
 
     }
 
-
-
-    public ArrayList<JProgressBar> getProgressBarsVotaciones() {
-        return progressBarsVotaciones;
+    public HashMap<String, Integer> getValoresVotaciones() {
+        return valoresVotaciones;
     }
-    public void setProgressBarsVotaciones(ArrayList<JProgressBar> progressBarsVotaciones) {
-        this.progressBarsVotaciones = progressBarsVotaciones;
+    public void setValoresVotaciones(HashMap<String, Integer> valoresVotaciones) {
+        this.valoresVotaciones = valoresVotaciones;
     }
 
     public boolean getVotoDiarioEncuesta() {
@@ -69,12 +70,6 @@ public class AlmacenDeDatos {
         this.votoDiarioEncuesta = votoDiarioEncuesta;
     }
 
-    public ArrayList<Integer> getValoresVotaciones() {
-        return valoresVotaciones;
-    }
-    public void setValoresVotaciones(ArrayList<Integer> valoresVotaciones) {
-        this.valoresVotaciones = valoresVotaciones;
-    }
 
     public ArrayList<Class> getClasesDeLocales() {
         return clasesDeLocales;

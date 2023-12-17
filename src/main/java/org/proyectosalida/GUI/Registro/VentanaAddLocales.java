@@ -7,6 +7,10 @@ import org.proyectosalida.GUI.Salida2.VentSelectCarac;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -95,57 +99,58 @@ public class VentanaAddLocales extends JFrame {
 
 
         botonGuardar.addActionListener(e -> {
+            try {
+                String nombre = ((JTextField) panel.getComponent(3)).getText();
+                String direccion = ((JTextField) panel.getComponent(5)).getText();
+                String CP = ((JTextField) panel.getComponent(7)).getText();
+                int aforo = Integer.parseInt(((JTextField) panel.getComponent(9)).getText());
+                String telefono = ((JTextField) panel.getComponent(11)).getText();
+                int mediaEdad = Integer.parseInt(((JTextField) panel.getComponent(13)).getText());
+                int mediaPrecio = Integer.parseInt(((JTextField) panel.getComponent(15)).getText());
+                Boolean terraza = null;
+                Local local;
 
-            String nombre = ((JTextField) panel.getComponent(3)).getText();
-            String direccion = ((JTextField) panel.getComponent(5)).getText();
-            String CP = ((JTextField) panel.getComponent(7)).getText();
-            int aforo = Integer.parseInt(((JTextField) panel.getComponent(9)).getText());
-            String telefono = ((JTextField) panel.getComponent(11)).getText();
-            int mediaEdad = Integer.parseInt(((JTextField) panel.getComponent(13)).getText());
-            int mediaPrecio = Integer.parseInt(((JTextField) panel.getComponent(15)).getText());
-            //String enlace = ((JTextField) panel.getComponent(17)).getText();
-            Boolean terraza = null;
-
-            setVisible(false);
-            enlace = JOptionPane.showInputDialog(null, "Introduce la URL que los clientes verán una vez seleccionen\n tu local para salir (P.E. GoogleMaps)", "Una ultima cosa...", JOptionPane.QUESTION_MESSAGE);
-
-            if(bbar.isSelected()){
-                if(checkboxSi.isSelected()){
-                    terraza = true;
-                }else if(checkboxNo.isSelected()){
-                    terraza = false;
-                }else{
-                    JOptionPane.showMessageDialog(null, "Seleccione todos los campos.");
-
+                if(bbar.isSelected()) {
+                    if(checkboxSi.isSelected()) {
+                        terraza = true;
+                    } else if(checkboxNo.isSelected()) {
+                        terraza = false;
+                    } else {
+                        JOptionPane.showMessageDialog(null, "Por favor, seleccione si el local tiene terraza o no.");
+                        return;
+                    }
+                    local = new Bar(nombre, direccion, CP, aforo, telefono, mediaEdad, mediaPrecio, enlace, horarios, terraza, caracteristicasSelecionadas);
+                } else if(bdisco.isSelected()) {
+                    local = new Discoteca(nombre, direccion, CP, aforo, telefono, mediaEdad, mediaPrecio, enlace, horarios, djResidente, djInvitado, caracteristicasSelecionadas);
+                } else {
+                    JOptionPane.showMessageDialog(null, "Por favor, seleccione un tipo de local.");
+                    return;
                 }
 
-                Bar bar = new Bar(nombre, direccion, CP, aforo, telefono, mediaEdad, mediaPrecio, enlace, horarios, terraza, caracteristicasSelecionadas);
-                System.out.println(bar);
-                dueño.getLocales().add(bar);
-            }else if(bdisco.isSelected()){
-                Discoteca disco = new Discoteca(nombre, direccion, CP, aforo, telefono, mediaEdad, mediaPrecio, enlace, horarios, djResidente, djInvitado, caracteristicasSelecionadas);
-                dueño.getLocales().add(disco);
-                System.out.println(disco);
-            }else{
-                JOptionPane.showMessageDialog(null, "Seleccione un tipo de local!");
-            }
-
-            //Preguntar si quiere añadirmas locales
-            boolean pregunta  = JOptionPane.showConfirmDialog(null, "¿Quieres añadir más locales?", "Añadir locales", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
-            if (pregunta){
-                dispose();
-                VentanaAddLocales ventanaAddLocales = new VentanaAddLocales(dueño, almacenDeDatos);
-                ventanaAddLocales.setVisible(true);
-            }
-            else{
-                //GUARDAR EN LA NUBE EL DUEÑO --> AQUI UN METODO
-                dispose();
-                //REDIRIGE DIRECTAMENTE A INICIA SESION HABIENDO GUARDADO LOS DATOS EN LA NUBE
-                JOptionPane.showMessageDialog(this, "Usuario creado con éxito!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
-                InicioSesion inicioSesion = new InicioSesion(this, almacenDeDatos);
-                inicioSesion.setVisible(true);
+                boolean exito = local instanceof Bar ? registrarBar(dueño, (Bar) local) : registrarDicoteca(dueño, (Discoteca) local);
+                if (exito) {
+                    int respuesta = JOptionPane.showConfirmDialog(this, "¿Desea añadir más locales?", "Añadir más locales", JOptionPane.YES_NO_OPTION);
+                    if (respuesta == JOptionPane.YES_OPTION) {
+                        this.dispose();
+                        new VentanaAddLocales(dueño, almacenDeDatos).setVisible(true);
+                    } else {
+                        this.dispose();
+                        // Aquí puedes agregar lógica adicional, como redirigir al usuario a otra pantalla
+                        JOptionPane.showMessageDialog(this, "Proceso completado.", "Finalizado", JOptionPane.INFORMATION_MESSAGE);
+                        // Ejemplo: Mostrar la pantalla de inicio de sesión
+                        new InicioSesion(null, almacenDeDatos).setVisible(true);
+                    }
+                } else {
+                    JOptionPane.showMessageDialog(this, "No se pudo agregar el local.", "Error", JOptionPane.ERROR_MESSAGE);
+                }
+            } catch (NumberFormatException ex) {
+                JOptionPane.showMessageDialog(this, "Error en los datos numéricos ingresados.", "Error de formato", JOptionPane.ERROR_MESSAGE);
+            } catch (Exception ex) {
+                JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
+
+
 
         botonVolver.addActionListener(e -> {
             //System.out.println(caracteristicas);
@@ -180,6 +185,7 @@ public class VentanaAddLocales extends JFrame {
     }
 
 
+
     private void guardarLocal() {
 
 
@@ -209,7 +215,83 @@ public class VentanaAddLocales extends JFrame {
     } //Y guardar locales/Dueño añadidos tambien
 
 
-    //Main de prueba
+    public static boolean registrarBar(Dueño dueño, Bar local) {
+        String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
+        JOptionPane.showMessageDialog(null, "Creando Bar...", "Registro en progreso", JOptionPane.INFORMATION_MESSAGE);
+
+        try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
+            String sql = "INSERT INTO BAR (ID, NOMBRE, DIRECCION, CODIGOPOSTAL, AFORO, TELEFONO, MEDIAEDAD, PRECIOMEDIO, LINKWEB, TIENETERRAZA, DUEÑOID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                // Configura los parámetros (asegúrate de que estos métodos existan en tu clase Bar)
+                pstmt.setString(1, local.getId());
+                pstmt.setString(2, local.getNombre());
+                pstmt.setString(3, local.getDireccion());
+                pstmt.setString(4, local.getCP());
+                pstmt.setInt(5, local.getAforo());
+                pstmt.setString(6, local.getTelefono());
+                pstmt.setInt(7, local.getMediaEdad());
+                pstmt.setInt(8, local.getPrecioMedio());
+                pstmt.setString(9, local.getWeb());
+
+                if(local.getTerraza()) {
+                    pstmt.setInt(10, 1);
+                } else {
+                    pstmt.setInt(10, 0);
+                }
+                pstmt.setString(11, dueño.getId());
+
+                int affectedRows = pstmt.executeUpdate();
+                if (affectedRows > 0) {
+                    JOptionPane.showMessageDialog(null, "Bar creado exitosamente", "Registro exitoso", JOptionPane.INFORMATION_MESSAGE);
+                    return true;
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se pudo registrar el bar.", "Error de registro", JOptionPane.ERROR_MESSAGE);
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al crear el bar: " + e.getMessage(), "Error de registro", JOptionPane.ERROR_MESSAGE);
+        }
+        return false;
+    }
+
+    public static boolean registrarDicoteca(Dueño dueño, Discoteca local){
+        String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
+        JOptionPane.showMessageDialog(null, "Creando Bar...", "Registro en progreso", JOptionPane.INFORMATION_MESSAGE);
+
+        try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
+            String sql = "INSERT INTO BAR (ID, NOMBRE, DIRECCION, CODIGOPOSTAL, AFORO, TELEFONO, MEDIAEDAD, PRECIOMEDIO, LINKWEB, DUEÑOID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                // Configura los parámetros (asegúrate de que estos métodos existan en tu clase Bar)
+                pstmt.setString(1, local.getId());
+                pstmt.setString(2, local.getNombre());
+                pstmt.setString(3, local.getDireccion());
+                pstmt.setString(4, local.getCP());
+                pstmt.setInt(5, local.getAforo());
+                pstmt.setString(6, local.getTelefono());
+                pstmt.setInt(7, local.getMediaEdad());
+                pstmt.setInt(8, local.getPrecioMedio());
+                pstmt.setString(9, local.getWeb());
+                pstmt.setString(10, dueño.getId());
+
+                int affectedRows = pstmt.executeUpdate();
+                if (affectedRows > 0) {
+                    JOptionPane.showMessageDialog(null, "Dicoteca creada exitosamente", "Registro exitoso", JOptionPane.INFORMATION_MESSAGE);
+                    return true;
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se pudo registrar la discoteca.", "Error de registro", JOptionPane.ERROR_MESSAGE);
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al crear la dicoteca: " + e.getMessage(), "Error de registro", JOptionPane.ERROR_MESSAGE);
+        }
+        return false;
+    }
+
+        //Main de prueba
     public static void main(String[] args) {
         try {
             // Establecer el look and feel de Nimbus
@@ -226,3 +308,4 @@ public class VentanaAddLocales extends JFrame {
 
     }
 }
+

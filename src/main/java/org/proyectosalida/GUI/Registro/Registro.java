@@ -175,15 +175,14 @@ public class Registro extends JFrame {
                         }else {
                             dispose();
                             //REDIRIGE DIRECTAMENTE A INICIA SESION HABIENDO GUARDADO LOS DATOS EN LA NUBE
-                            JOptionPane.showMessageDialog(this, "Usuario creado con éxito!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
                             InicioSesion inicioSesion = new InicioSesion(this, almacenDeDatos);
                             inicioSesion.setVisible(true);
                         }
                     } else {
                         Cliente nuevoUsuario = new Cliente(id, nombre, apellido, fechaNacimiento, contraseña, telefono, correo, new ArrayList<>());
                         System.out.println(nuevoUsuario.toString());
-
-                        JOptionPane.showMessageDialog(this, "Usuario creado con éxito!", "Éxito", JOptionPane.INFORMATION_MESSAGE);
+                        //Llama al metodo que lo añade en sql
+                        registrarCliente(nuevoUsuario);
                         InicioSesion inicioSesion = new InicioSesion(padre, almacenDeDatos);
                         this.dispose();
                         padre.dispose();
@@ -235,6 +234,41 @@ public class Registro extends JFrame {
                 pstmt.setString(5, dueño.getContraseña());
                 pstmt.setString(6, dueño.getTelefono());
                 pstmt.setString(7, dueño.getCorreo());
+
+                int affectedRows = pstmt.executeUpdate();
+
+                if (affectedRows > 0) {
+                    JOptionPane.showMessageDialog(null, "Usuario creado exitosamente", "Registro exitoso", JOptionPane.INFORMATION_MESSAGE);
+                    return true;
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se pudo registrar el dueño.", "Error de registro", JOptionPane.ERROR_MESSAGE);
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al crear el dueño: " + e.getMessage(), "Error de registro", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+    }
+
+    public static boolean registrarCliente(Cliente cliente) {
+        String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
+
+        // Mostrar mensaje de "Creando cliente..."
+        JOptionPane.showMessageDialog(null, "Creando cliente...", "Registro en progreso", JOptionPane.INFORMATION_MESSAGE);
+
+        try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
+            String sql = "INSERT INTO CLIENTE (ID, NOMBRE, APELLIDO, FECHANACIMIENTO, CONTRASEÑA, TELEFONO, EMAIL) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, cliente.getId());
+                pstmt.setString(2, cliente.getNombre());
+                pstmt.setString(3, cliente.getApellido());
+                pstmt.setDate(4, new java.sql.Date(cliente.getFechaNacimiento().getTime()));
+                pstmt.setString(5, cliente.getContraseña());
+                pstmt.setString(6, cliente.getTelefono());
+                pstmt.setString(7, cliente.getCorreo());
 
                 int affectedRows = pstmt.executeUpdate();
 

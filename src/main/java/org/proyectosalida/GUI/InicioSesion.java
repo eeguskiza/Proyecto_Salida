@@ -261,6 +261,9 @@ public class InicioSesion extends JFrame {
         return false;
     }
 
+    //Metodo para sacar los locales de lso dueños
+
+
     //org.Proyecto_Salida.Escritorio.Main de prueba
     public static void main(String[] args) {
         try {

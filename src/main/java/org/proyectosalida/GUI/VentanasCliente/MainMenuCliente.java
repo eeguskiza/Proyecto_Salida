@@ -241,7 +241,7 @@ public class MainMenuCliente extends JFrame {
 
     private BrowserView cargarMapa(String url){
         // Configuración de JxBrowser
-        String LICENSE_KEY = "6P830J66YCEA9SQDHRL8EDTZK57189867HR8YUD4L7QAI5ZHGIZK21JI39COT5XFHX0V";
+        String LICENSE_KEY = "1BNDHFSC1G8G98OJJHDTF78DD0CDDPDLQF4P63L618XNXGIMI8JN9NMU9C1PKN6NQLIHWK";
         EngineOptions options = EngineOptions.newBuilder(RenderingMode.HARDWARE_ACCELERATED)
                 .licenseKey(LICENSE_KEY)
                 .build();

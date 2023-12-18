@@ -73,7 +73,7 @@ public class MenuPersonal extends JFrame {
             panel.add(clickableLabel("Añade Locales", 5));
             panel.add(clickableLabel("Configura Proximos Eventos", 6));
         }
-        panel.add(clickableLabel("Ajustes", 1));
+        panel.add(clickableLabel("Ajustes", 2));
         panel.add(clickableLabel("Cerrar Sesión", 1));
         panel.add(new JPanel());
 
@@ -117,6 +117,9 @@ public class MenuPersonal extends JFrame {
                 if(code==1){ //Cerrar Sesion
                     dispose();
                     Bienvenido vBienvenido = new Bienvenido();
+                }else if (code==2){ //Ajustes
+                    abrirVentanaAjustes(usuario); //Mas facil si lo hago desde afuera del listener
+                    setVisible(false);
                 }else if (code==3){ //Lista de visitados
                     new VentanaVisitas(almacen, getPadre()).setVisible(true);
                     setVisible(false);
@@ -133,9 +136,6 @@ public class MenuPersonal extends JFrame {
                     VerLocales ventanaVerLocales = new VerLocales((Dueño) usuario, almacen);
                     ventanaVerLocales.setVisible(true);
                   */
-                }else if (code==2){
-                    abrirVentanaAjustes(usuario); //Mas facil si lo hago desde afuera del listener
-                    setVisible(false);
                 }
 
             }

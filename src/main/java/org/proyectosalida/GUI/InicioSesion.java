@@ -31,6 +31,7 @@ public class InicioSesion extends JFrame {
     protected JTable tabla2;
 
 
+
     public InicioSesion(JFrame padre, AlmacenDeDatos almacen){
         almacenDeDatos = almacen;
         Dueño dueño = new Dueño();
@@ -130,9 +131,9 @@ public class InicioSesion extends JFrame {
                 @Override
                 protected Boolean doInBackground() throws Exception {
                     if (esDueño) {
-                        return inicioSesionDueño(idField.getText(), String.valueOf(passwordField.getPassword()), dueño);
+                        return inicioSesionDueño(idField.getText(), String.valueOf(passwordField.getPassword()), dueño, almacen);
                     } else {
-                        return inicioSesionCliente(idField.getText(), String.valueOf(passwordField.getPassword()), cliente);
+                        return inicioSesionCliente(idField.getText(), String.valueOf(passwordField.getPassword()), cliente, almacen);
                     }
                 }
 
@@ -147,7 +148,7 @@ public class InicioSesion extends JFrame {
                             if (esDueño) {
                                 new VerLocales(dueño, almacenDeDatos).setVisible(true);
                             } else {
-                                new MainMenuCliente(null, "").setVisible(true);
+                                new MainMenuCliente(almacen, null).setVisible(true);
                             }
                             dispose();
                         } else {
@@ -175,7 +176,7 @@ public class InicioSesion extends JFrame {
 
     }
 
-    public static boolean inicioSesionDueño(String usuario, String contraseña, Dueño dueño) {
+    public static boolean inicioSesionDueño(String usuario, String contraseña, Dueño dueño, AlmacenDeDatos almacen) {
         String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
 
         try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
@@ -202,9 +203,86 @@ public class InicioSesion extends JFrame {
                     dueño.setContraseña(contraseña2);
                     dueño.setTelefono(telefono);
                     dueño.setCorreo(email);
+
+                    // Obtener todos los locales a su nombre en BAR
+                    String sqlLocalesBar = "SELECT * FROM bar WHERE dueñoid = ?";
+                    try (PreparedStatement pstmtLocales = conn.prepareStatement(sqlLocalesBar)) {
+                        pstmtLocales.setString(1, dueño.getId());
+                        ResultSet rsLocales = pstmtLocales.executeQuery();
+
+                        // Procesar locales de tipo bar
+                        while (rsLocales.next()) {
+                            String idBar = rs.getString("ID");
+                            String nombreBar = rs.getString("NOMBRE");
+                            String direccion = rs.getString("DIRECCION");
+                            String cp = rs.getString("CODIGOPOSTAL");
+                            int aforo = Integer.parseInt(rs.getString("AFORO"));
+                            String telefonoBar = rs.getString("TELEFONO");
+                            int mediaedad = Integer.parseInt(rs.getString("MEDIAEDAD"));
+                            int preciomedio = Integer.parseInt(rs.getString("PRECIOMEDIO"));
+                            String link = rs.getString("LINKWEB");
+                            int terrazaNum = Integer.parseInt(rs.getString("TIENETERRAZA"));
+                            Boolean terraza = false;
+                            if(terrazaNum == 1){
+                                terraza = true;
+                            }
+
+                            Bar bar = new Bar();
+                            bar.setId(idBar);
+                            bar.setNombre(nombreBar);
+                            bar.setDireccion(direccion);
+                            bar.setAforo(aforo);
+                            bar.setTelefono(telefono);
+                            bar.setMediaEdad(mediaedad);
+                            bar.setPrecioMedio(preciomedio);
+                            bar.setWeb(link);
+                            bar.setTerraza(terraza);
+                            bar.setCP(cp);
+
+                            dueño.getLocales().add(bar);
+                            System.out.println(bar.toString());
+                        }
+                    }
+
+                    // Obtener todos los locales a su nombre en Discoteca
+                    String sqlLocalesDisco = "SELECT * FROM bar WHERE dueñoid = ?";
+                    try (PreparedStatement pstmtLocales = conn.prepareStatement(sqlLocalesDisco)) {
+                        pstmtLocales.setString(1, id);
+                        ResultSet rsLocales = pstmtLocales.executeQuery();
+
+                        // Procesar locales de tipo bar
+                        while (rsLocales.next()) {
+                            String idDisco = rs.getString("ID");
+                            String nombreDisco = rs.getString("NOMBRE");
+                            String direccion = rs.getString("DIRECCION");
+                            String cp = rs.getString("CODIGOPOSTAL");
+                            int aforo = Integer.parseInt(rs.getString("CAPACIDAD"));
+                            String telefonoBar = rs.getString("TELEFONO");
+                            int mediaedad = Integer.parseInt(rs.getString("MEDIAEDAD"));
+                            int preciomedio = Integer.parseInt(rs.getString("PRECIOMEDIO"));
+                            String link = rs.getString("LINKWEB");
+
+
+                            Discoteca disco = new Discoteca();
+                            disco.setId(idDisco);
+                            disco.setNombre(nombreDisco);
+                            disco.setDireccion(direccion);
+                            disco.setCP(cp);
+                            disco.setAforo(aforo);
+                            disco.setTelefono(telefono);
+                            disco.setMediaEdad(mediaedad);
+                            disco.setPrecioMedio(preciomedio);
+                            disco.setWeb(link);
+
+                            dueño.getLocales().add(disco);
+                            System.out.println(disco.toString());
+                        }
+                    }
+
                     // Imprimir los valores de cada fila si se encuentra un dueño
                     System.out.println("Dueño encontrado: ID: " + id + ", Nombre: " + nombre);
                     System.out.println(dueño);
+                    almacen.getUsuarios().add(dueño);
                     return true;
                 } else {
                     System.out.println("No se encontró el dueño con el ID y contraseña proporcionados.");
@@ -217,7 +295,7 @@ public class InicioSesion extends JFrame {
         return false;
     }
 
-    public static boolean inicioSesionCliente(String usuario, String contraseña, Cliente cliente) {
+    public static boolean inicioSesionCliente(String usuario, String contraseña, Cliente cliente, AlmacenDeDatos almacen) {
         String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
 
         try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
@@ -248,6 +326,7 @@ public class InicioSesion extends JFrame {
                     // Imprimir los valores de cada fila si se encuentra un dueño
                     System.out.println("Cliente encontrado: ID: " + id + ", Nombre: " + nombre);
                     System.out.println(cliente);
+                    almacen.getUsuarios().add(cliente);
                     return true;
                 } else {
                     System.out.println("No se encontró el Cliente con el ID y contraseña proporcionados.");

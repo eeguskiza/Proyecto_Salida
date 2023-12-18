@@ -5,7 +5,6 @@ org\proyectosalida\GUI\Salida1\VentCaracBar.class
 org\proyectosalida\Constructores\Salida.class
 org\proyectosalida\GUI\VentanasDueño\VerLocales$1.class
 org\proyectosalida\Pruebas\VentanaAjustes.class
-org\proyectosalida\GUI\VentanasCliente\MainMenuCliente$2.class
 org\proyectosalida\Constructores\Usuario.class
 VentanaPreguntasFrecuentes$1.class
 org\proyectosalida\GUI\Salida2\MainMenuDuenio.class

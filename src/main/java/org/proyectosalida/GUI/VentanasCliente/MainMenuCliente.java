@@ -131,8 +131,8 @@ public class MainMenuCliente extends JFrame {
         // --------------- MAPA ------------------
         JPanel panelMapa = new JPanel(new BorderLayout());
         panelMapa.setBackground(Color.BLUE);
-        BrowserView view = cargarMapa(url);
-        panelMapa.add(view, BorderLayout.CENTER);
+        //BrowserView view = cargarMapa(url);
+        //panelMapa.add(view, BorderLayout.CENTER);
 
 
  
@@ -176,20 +176,15 @@ public class MainMenuCliente extends JFrame {
         JPanel pEncuesta = new JPanel(new GridLayout(rows, 1)); // 6 filas, 1 columna
         panel1Encuesta.add(pEncuesta, BorderLayout.WEST);
 
-
-
+        for(int i=0; i<rows; i++){
+            pEncuesta.add(crearPanelEncuesta(almacen.getLocales().get(i), 10));
+        }
 
        //TODO FALTA SABER ESCOGER LOS 6 LOCALES CON NUMEROS MAS GRANDES DEL HASHMAP YA QUE EL LIMITE SON 6 LOCALES
-
-
         ArrayList<Local> localesSeleccionadosParaPoll = new ArrayList<>();
         for(int valorPoll : almacenDeDatos.getValoresVotaciones().values()){
 
         }
-        for(int i=0; i<=rows; i++){
-            pEncuesta.add(crearPanelEncuesta(localesSeleccionadosParaPoll.get(i), 10));
-        }
-
 
 
         //PANEL 2 - REVIEWS

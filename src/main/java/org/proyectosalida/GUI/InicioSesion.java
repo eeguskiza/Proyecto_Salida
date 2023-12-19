@@ -241,7 +241,7 @@ public class InicioSesion extends JFrame {
                         }
                     }
 
-// Obtener todos los locales a su nombre en Discoteca
+                    // Obtener todos los locales a su nombre en Discoteca
                     String sqlLocalesDisco = "SELECT * FROM discoteca WHERE dueñoid = ?";
                     try (PreparedStatement pstmtLocalesDisco = conn.prepareStatement(sqlLocalesDisco)) {
                         pstmtLocalesDisco.setString(1, dueño.getId());

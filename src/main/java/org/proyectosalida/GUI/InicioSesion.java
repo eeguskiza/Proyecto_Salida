@@ -204,76 +204,8 @@ public class InicioSesion extends JFrame {
                     dueño.setTelefono(telefono);
                     dueño.setCorreo(email);
 
-                    // Obtener todos los locales a su nombre en BAR
-                    String sqlLocalesBar = "SELECT * FROM bar WHERE dueñoid = ?";
-                    try (PreparedStatement pstmtLocales = conn.prepareStatement(sqlLocalesBar)) {
-                        pstmtLocales.setString(1, dueño.getId());
-                        ResultSet rsLocales = pstmtLocales.executeQuery();
-
-                        // Procesar locales de tipo bar
-                        while (rsLocales.next()) {
-                            String idBar = rsLocales.getString("ID");
-                            String nombreBar = rsLocales.getString("NOMBRE");
-                            String direccion = rsLocales.getString("DIRECCION");
-                            String cp = rsLocales.getString("CODIGOPOSTAL");
-                            int aforo = rsLocales.getInt("AFORO");
-                            String telefonoBar = rsLocales.getString("TELEFONO");
-                            int mediaedad = rsLocales.getInt("MEDIAEDAD");
-                            int preciomedio = rsLocales.getInt("PRECIOMEDIO");
-                            String link = rsLocales.getString("LINKWEB");
-                            int terrazaNum = rsLocales.getInt("TIENETERRAZA");
-                            boolean terraza = (terrazaNum == 1);
-
-                            Bar bar = new Bar();
-                            bar.setId(idBar);
-                            bar.setNombre(nombreBar);
-                            bar.setDireccion(direccion);
-                            bar.setAforo(aforo);
-                            bar.setTelefono(telefonoBar);
-                            bar.setMediaEdad(mediaedad);
-                            bar.setPrecioMedio(preciomedio);
-                            bar.setWeb(link);
-                            bar.setTerraza(terraza);
-                            bar.setCP(cp);
-
-                            dueño.getLocales().add(bar);
-                            System.out.println(bar.toString());
-                        }
-                    }
-
-                    // Obtener todos los locales a su nombre en Discoteca
-                    String sqlLocalesDisco = "SELECT * FROM discoteca WHERE dueñoid = ?";
-                    try (PreparedStatement pstmtLocalesDisco = conn.prepareStatement(sqlLocalesDisco)) {
-                        pstmtLocalesDisco.setString(1, dueño.getId());
-                        ResultSet rsLocalesDisco = pstmtLocalesDisco.executeQuery();
-
-                        // Procesar locales de tipo discoteca
-                        while (rsLocalesDisco.next()) {
-                            String idDisco = rsLocalesDisco.getString("ID");
-                            String nombreDisco = rsLocalesDisco.getString("NOMBRE");
-                            String direccionDisco = rsLocalesDisco.getString("DIRECCION");
-                            String cpDisco = rsLocalesDisco.getString("CODIGOPOSTAL");
-                            int capacidad = rsLocalesDisco.getInt("CAPACIDAD");
-                            String telefonoDisco = rsLocalesDisco.getString("TELEFONO");
-                            int mediaEdadDisco = rsLocalesDisco.getInt("MEDIAEDAD");
-                            int precioMedioDisco = rsLocalesDisco.getInt("PRECIOMEDIO");
-                            String linkDisco = rsLocalesDisco.getString("LINKWEB");
-
-                            Discoteca disco = new Discoteca();
-                            disco.setId(idDisco);
-                            disco.setNombre(nombreDisco);
-                            disco.setDireccion(direccionDisco);
-                            disco.setCP(cpDisco);
-                            disco.setAforo(capacidad);
-                            disco.setTelefono(telefonoDisco);
-                            disco.setMediaEdad(mediaEdadDisco);
-                            disco.setPrecioMedio(precioMedioDisco);
-                            disco.setWeb(linkDisco);
-
-                            dueño.getLocales().add(disco);
-                            System.out.println(disco.toString());
-                        }
-                    }
+                    //Metodo flexible tanto para usuario como dueño
+                    cargarLocales(conn, dueño);
 
                     // Imprimir los valores de cada fila si se encuentra un dueño
                     System.out.println("Dueño encontrado: ID: " + id + ", Nombre: " + nombre);
@@ -336,7 +268,83 @@ public class InicioSesion extends JFrame {
         return false;
     }
 
-    //Metodo para sacar los locales de lso dueños
+
+
+    private static void cargarLocales(Connection conn, Dueño dueño) {
+        // Obtener todos los locales a su nombre en BAR
+        String sqlLocalesBar = "SELECT * FROM bar WHERE dueñoid = ?";
+        try (PreparedStatement pstmtLocales = conn.prepareStatement(sqlLocalesBar)) {
+            pstmtLocales.setString(1, dueño.getId());
+            ResultSet rsLocales = pstmtLocales.executeQuery();
+
+            // Procesar locales de tipo bar
+            while (rsLocales.next()) {
+                String idBar = rsLocales.getString("ID");
+                String nombreBar = rsLocales.getString("NOMBRE");
+                String direccion = rsLocales.getString("DIRECCION");
+                String cp = rsLocales.getString("CODIGOPOSTAL");
+                int aforo = rsLocales.getInt("AFORO");
+                String telefonoBar = rsLocales.getString("TELEFONO");
+                int mediaedad = rsLocales.getInt("MEDIAEDAD");
+                int preciomedio = rsLocales.getInt("PRECIOMEDIO");
+                String link = rsLocales.getString("LINKWEB");
+                int terrazaNum = rsLocales.getInt("TIENETERRAZA");
+                boolean terraza = (terrazaNum == 1);
+
+                Bar bar = new Bar();
+                bar.setId(idBar);
+                bar.setNombre(nombreBar);
+                bar.setDireccion(direccion);
+                bar.setAforo(aforo);
+                bar.setTelefono(telefonoBar);
+                bar.setMediaEdad(mediaedad);
+                bar.setPrecioMedio(preciomedio);
+                bar.setWeb(link);
+                bar.setTerraza(terraza);
+                bar.setCP(cp);
+
+                dueño.getLocales().add(bar);
+                System.out.println(bar.toString());
+            }
+
+            // Obtener todos los locales a su nombre en Discoteca
+            String sqlLocalesDisco = "SELECT * FROM discoteca WHERE dueñoid = ?";
+            try (PreparedStatement pstmtLocalesDisco = conn.prepareStatement(sqlLocalesDisco)) {
+                pstmtLocalesDisco.setString(1, dueño.getId());
+                ResultSet rsLocalesDisco = pstmtLocalesDisco.executeQuery();
+
+                // Procesar locales de tipo discoteca
+                while (rsLocalesDisco.next()) {
+                    String idDisco = rsLocalesDisco.getString("ID");
+                    String nombreDisco = rsLocalesDisco.getString("NOMBRE");
+                    String direccionDisco = rsLocalesDisco.getString("DIRECCION");
+                    String cpDisco = rsLocalesDisco.getString("CODIGOPOSTAL");
+                    int capacidad = rsLocalesDisco.getInt("CAPACIDAD");
+                    String telefonoDisco = rsLocalesDisco.getString("TELEFONO");
+                    int mediaEdadDisco = rsLocalesDisco.getInt("MEDIAEDAD");
+                    int precioMedioDisco = rsLocalesDisco.getInt("PRECIOMEDIO");
+                    String linkDisco = rsLocalesDisco.getString("LINKWEB");
+
+                    Discoteca disco = new Discoteca();
+                    disco.setId(idDisco);
+                    disco.setNombre(nombreDisco);
+                    disco.setDireccion(direccionDisco);
+                    disco.setCP(cpDisco);
+                    disco.setAforo(capacidad);
+                    disco.setTelefono(telefonoDisco);
+                    disco.setMediaEdad(mediaEdadDisco);
+                    disco.setPrecioMedio(precioMedioDisco);
+                    disco.setWeb(linkDisco);
+
+                    dueño.getLocales().add(disco);
+                    System.out.println(disco.toString());
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
 
 
     //org.Proyecto_Salida.Escritorio.Main de prueba

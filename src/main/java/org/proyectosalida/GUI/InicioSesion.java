@@ -204,8 +204,8 @@ public class InicioSesion extends JFrame {
                     dueño.setTelefono(telefono);
                     dueño.setCorreo(email);
 
-                    //Metodo flexible tanto para usuario como dueño
-                    cargarLocales(conn, dueño);
+                    //Metodo flexible tanto para usuario como dueño, ahora se usa para dueño
+                    cargarLocales(conn, true, dueño, almacen);
 
                     // Imprimir los valores de cada fila si se encuentra un dueño
                     System.out.println("Dueño encontrado: ID: " + id + ", Nombre: " + nombre);
@@ -251,6 +251,7 @@ public class InicioSesion extends JFrame {
                     cliente.setTelefono(telefono);
                     cliente.setCorreo(email);
 
+                    cargarLocales(conn, false, null, almacen);
                     // Imprimir los valores de cada fila si se encuentra un dueño
                     System.out.println("Cliente encontrado: ID: " + id + ", Nombre: " + nombre);
                     System.out.println(cliente);
@@ -270,11 +271,19 @@ public class InicioSesion extends JFrame {
 
 
 
-    private static void cargarLocales(Connection conn, Dueño dueño) {
-        // Obtener todos los locales a su nombre en BAR
-        String sqlLocalesBar = "SELECT * FROM bar WHERE dueñoid = ?";
+    private static void cargarLocales(Connection conn, Boolean isDueño, Dueño dueño, AlmacenDeDatos almacenDeDatos) {
+        // Obtener todos los locales a su nombre en BAR o todos los bares dependiendo si es cliente o dueño el que inicia sesion
+        String sqlLocalesBar = "";
+        if(isDueño){
+            sqlLocalesBar = "SELECT * FROM bar WHERE dueñoid = ?";
+        }else{
+            sqlLocalesBar = "SELECT * FROM bar";
+        }
+
         try (PreparedStatement pstmtLocales = conn.prepareStatement(sqlLocalesBar)) {
-            pstmtLocales.setString(1, dueño.getId());
+            if(isDueño){
+                pstmtLocales.setString(1, dueño.getId());
+            }
             ResultSet rsLocales = pstmtLocales.executeQuery();
 
             // Procesar locales de tipo bar
@@ -303,14 +312,25 @@ public class InicioSesion extends JFrame {
                 bar.setTerraza(terraza);
                 bar.setCP(cp);
 
-                dueño.getLocales().add(bar);
-                System.out.println(bar.toString());
+                if(isDueño){
+                    dueño.getLocales().add(bar);
+                }else{
+                    almacenDeDatos.getLocales().add(bar);
+                }
+                System.out.println("1 BAR añadido: "+bar.getNombre());
             }
 
-            // Obtener todos los locales a su nombre en Discoteca
-            String sqlLocalesDisco = "SELECT * FROM discoteca WHERE dueñoid = ?";
+            // Obtener todos los locales a su nombre en Discoteca o todas las Discotecas
+            String sqlLocalesDisco = "";
+            if(isDueño){
+                sqlLocalesDisco = "SELECT * FROM discoteca WHERE dueñoid = ?";
+            }else{
+                sqlLocalesDisco = "SELECT * FROM discoteca";
+            }
             try (PreparedStatement pstmtLocalesDisco = conn.prepareStatement(sqlLocalesDisco)) {
-                pstmtLocalesDisco.setString(1, dueño.getId());
+                if(isDueño){
+                    pstmtLocalesDisco.setString(1, dueño.getId());
+                }
                 ResultSet rsLocalesDisco = pstmtLocalesDisco.executeQuery();
 
                 // Procesar locales de tipo discoteca
@@ -336,12 +356,20 @@ public class InicioSesion extends JFrame {
                     disco.setPrecioMedio(precioMedioDisco);
                     disco.setWeb(linkDisco);
 
-                    dueño.getLocales().add(disco);
-                    System.out.println(disco.toString());
+                    if(isDueño){
+                        dueño.getLocales().add(disco);
+                    }else{
+                        almacenDeDatos.getLocales().add(disco);
+                    }
+                    System.out.println("1 DISCOTECA añadida: "+disco.getNombre());
                 }
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);
+        }
+
+        if(!isDueño){
+            almacenDeDatos.ininializarValoresEncuesta(); //Los valores de encuesta se ponen a 0 inicialmente
         }
 
     }

@@ -44,14 +44,9 @@ public class AlmacenDeDatos {
 
         //BORRAR ESTE METODO LUEGO
         añadirEjemplos();
-        //FALTA UN METODO PARA CARGAR TODOS LOS LOCALES DE LA BD A LOCALES
 
-
-        //ENCUENTRA VOTOS FUNCIONAL ESPERO:
-        //Inicializar hashmap con tds locales
-        for(Local local : locales){
-            valoresVotaciones.put(local.getId(), 0);
-        }
+        //FALTA UN METODO PARA CARGAR TODOS LOS LOCALES DE LA BD A LOCALES. ARREGLADO: SE HACE EN INICIOSESION
+        //Los valores de la encuesa se inicializan en InicioSesion
 
 
     }
@@ -245,6 +240,12 @@ public class AlmacenDeDatos {
         //FALTA CARGAR TODAS (O ALGUNAS) REVIEWS (VISITAS -> VALORACION) A VALORACIONES.
                     //SERIA ACCEDER A ALGUNOS USUARIOS Y DESCARGAR LAS SUYAS
 
+    }
+
+    public void ininializarValoresEncuesta(){
+        for(Local local : locales){
+            valoresVotaciones.put(local.getId(), 0);
+        }
     }
 
 

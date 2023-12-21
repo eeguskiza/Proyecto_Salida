@@ -279,9 +279,9 @@ public class ModificarLocales extends JFrame{
 
         //Actualizamos en bd tambien
         if(localSeleccionadoEnTree){ //Editando
-            actualizarDatosLocalBD(nuevo);
+            almacen.actualizarDatosLocalBD(nuevo);
         }else{
-            guardarLocalNuevoBD(nuevo, dueño);
+            almacen.guardarLocalNuevoBD(nuevo, dueño);
         }
 
         //Actualizar JTree
@@ -303,96 +303,6 @@ public class ModificarLocales extends JFrame{
 
 
     }
-
-    public static boolean actualizarDatosLocalBD(Local local) {
-        String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
-
-        try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
-            String sql = "";
-            if(local.getClass().equals(Bar.class)){
-                 sql = "UPDATE BAR SET NOMBRE = ?, DIRECCION = ?, CODIGOPOSTAL = ?, AFORO = ?, TELEFONO = ?, MEDIAEDAD = ?, PRECIOMEDIO = ?, LINKWEB = ?, TIENETERRAZA = ? WHERE ID = ?";
-            }else{
-                 sql = "UPDATE DISCOTECA SET NOMBRE = ?, DIRECCION = ?, CODIGOPOSTAL = ?, CAPACIDAD = ?, TELEFONO = ?, MEDIAEDAD = ?, PRECIOMEDIO = ?, LINKWEB = ? WHERE ID = ?";
-            }
-            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setString(1, local.getNombre());
-                pstmt.setString(2, local.getDireccion());
-                pstmt.setString(3, local.getCP());
-                pstmt.setInt(4, local.getAforo());
-                pstmt.setString(5, local.getTelefono());
-                pstmt.setInt(6, local.getMediaEdad());
-                pstmt.setInt(7, local.getPrecioMedio());
-                pstmt.setString(8, local.getWeb());
-
-                if(local.getClass().equals(Bar.class)){
-                    pstmt.setInt(9, ((Bar) local).getTerraza() ? 1 : 0); // Convierte el booleano a numero para la bd
-                    pstmt.setString(10, local.getId());
-                }else{
-                    pstmt.setString(9, local.getId());
-                }
-
-
-                int filasActualizadas = pstmt.executeUpdate();
-
-                if (filasActualizadas > 0) {
-                    System.out.println("Datos del Local actualizados en BD.");
-                    return true;
-                } else {
-                    System.out.println("No se pudo actualizar (BD).");
-                    return false;
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return false;
-    }
-
-    public static boolean guardarLocalNuevoBD(Local local, Dueño dueño) {
-        String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
-
-        try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
-            String sql = "";
-            if(local.getClass().equals(Discoteca.class)){
-                sql = "INSERT INTO DISCOTECA (ID, NOMBRE, DIRECCION, CODIGOPOSTAL, CAPACIDAD, TELEFONO, MEDIAEDAD, PRECIOMEDIO, LINKWEB, DUEÑOID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            }else{
-                sql = "INSERT INTO BAR (ID, NOMBRE, DIRECCION, CODIGOPOSTAL, AFORO, TELEFONO, MEDIAEDAD, PRECIOMEDIO, LINKWEB, TIENETERRAZA, DUEÑOID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            }
-            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setString(1, local.getId());
-                pstmt.setString(2, local.getNombre());
-                pstmt.setString(3, local.getDireccion());
-                pstmt.setString(4, local.getCP());
-                pstmt.setInt(5, local.getAforo());
-                pstmt.setString(6, local.getTelefono());
-                pstmt.setInt(7, local.getMediaEdad());
-                pstmt.setInt(8, local.getPrecioMedio());
-                pstmt.setString(9, local.getWeb());
-                if(local.getClass().equals(Discoteca.class)){
-                    pstmt.setString(10, dueño.getId());
-                }else{
-                    pstmt.setInt(10, ((Bar) local).getTerraza() ? 1 : 0); // Convierte el booleano a num para bd
-                    pstmt.setString(11, dueño.getId());
-                }
-
-                int filasInsertadas = pstmt.executeUpdate();
-
-                if (filasInsertadas > 0) {
-                    System.out.println("Nuevo Local en BD.");
-                    return true;
-                } else {
-                    System.out.println("No se pudo guardar el nuevo local.");
-                    return false;
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return false;
-    }
-
 
     public static void main(String[] args) {
         // Configuración del look and feel

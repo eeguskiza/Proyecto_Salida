@@ -217,8 +217,8 @@ public class VerLocales extends JFrame {
                         local.getWeb(),
                         horario,
                         "", //Discotecas no tienen terraza
-                        ((Discoteca) local).getDjResidente().getNombre(),
-                        ((Discoteca) local).getDjInvitado().getNombre(),
+                        ((Discoteca) local).getDjResidente(),
+                        ((Discoteca) local).getDjInvitado(),
                         caracteristicas
                 };
                 modelo.addRow(nuevo);

@@ -3,9 +3,11 @@ package org.proyectosalida.Datos;
 import org.proyectosalida.Constructores.*;
 
 import javax.swing.*;
+import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
+import java.util.Date;
 
 public class AlmacenDeDatos {
 
@@ -227,26 +229,303 @@ public class AlmacenDeDatos {
         return fechaString;
     }
 
-    //TODO HAY COSAS AQUI SIN TERMINAR ESENCIALES
-    public void iniciarUsuario(Usuario usuario){
-        if(usuarios != null){
-            usuarios.clear();
-        }
-
-        usuarios.add(usuario); //mediante .get(0) se obtendria el usuario iniciado
-
-        //FALTA CARGAR TODOS LOS LOCALES DE LA BD A LOCALES
-
-        //FALTA CARGAR TODAS (O ALGUNAS) REVIEWS (VISITAS -> VALORACION) A VALORACIONES.
-                    //SERIA ACCEDER A ALGUNOS USUARIOS Y DESCARGAR LAS SUYAS
-
-    }
-
     public void ininializarValoresEncuesta(){
         for(Local local : locales){
             valoresVotaciones.put(local.getId(), 0);
         }
     }
+
+
+    //----------MANEJO DE BASE DE DATOS-----------
+
+    public static boolean inicioSesionDueño(String usuario, String contraseña, Dueño dueño, AlmacenDeDatos almacen) {
+        String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
+
+        try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
+            String sql = "SELECT * FROM DUEÑO WHERE ID = ? AND Contraseña = ?";
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, usuario);
+                pstmt.setString(2, contraseña);
+
+                ResultSet rs = pstmt.executeQuery();
+
+                if (rs.next()) {
+                    String id = rs.getString("ID");
+                    String nombre = rs.getString("NOMBRE");
+                    String apellido = rs.getString("APELLIDO");
+                    java.sql.Date fechaNacimiento = rs.getDate("FECHANACIMIENTO");
+                    String contraseña2 = rs.getString("CONTRASEÑA");
+                    String telefono = rs.getString("TELEFONO");
+                    String email = rs.getString("EMAIL");
+
+                    dueño.setId(id);
+                    dueño.setNombre(nombre);
+                    dueño.setApellido(apellido);
+                    dueño.setFechaNacimiento(fechaNacimiento);
+                    dueño.setContraseña(contraseña2);
+                    dueño.setTelefono(telefono);
+                    dueño.setCorreo(email);
+
+                    //Metodo flexible tanto para usuario como dueño, ahora se usa para dueño
+                    cargarLocales(conn, true, dueño, almacen);
+
+                    // Imprimir los valores de cada fila si se encuentra un dueño
+                    System.out.println("Dueño encontrado: ID: " + id + ", Nombre: " + nombre);
+                    System.out.println(dueño);
+                    almacen.getUsuarios().add(dueño);
+                    return true;
+                } else {
+                    System.out.println("No se encontró el dueño con el ID y contraseña proporcionados.");
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public static boolean inicioSesionCliente(String usuario, String contraseña, Cliente cliente, AlmacenDeDatos almacen) {
+        String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
+
+        try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
+            String sql = "SELECT * FROM CLIENTE WHERE ID = ? AND Contraseña = ?";
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, usuario);
+                pstmt.setString(2, contraseña);
+
+                ResultSet rs = pstmt.executeQuery();
+
+                if (rs.next()) {
+                    String id = rs.getString("ID");
+                    String nombre = rs.getString("NOMBRE");
+                    String apellido = rs.getString("APELLIDO");
+                    java.sql.Date fechaNacimiento = rs.getDate("FECHANACIMIENTO");
+                    String contraseña2 = rs.getString("CONTRASEÑA");
+                    String telefono = rs.getString("TELEFONO");
+                    String email = rs.getString("EMAIL");
+
+                    cliente.setId(id);
+                    cliente.setNombre(nombre);
+                    cliente.setApellido(apellido);
+                    cliente.setFechaNacimiento(fechaNacimiento);
+                    cliente.setContraseña(contraseña2);
+                    cliente.setTelefono(telefono);
+                    cliente.setCorreo(email);
+
+                    cargarLocales(conn, false, null, almacen);
+                    // Imprimir los valores de cada fila si se encuentra un dueño
+                    System.out.println("Cliente encontrado: ID: " + id + ", Nombre: " + nombre);
+                    System.out.println(cliente);
+                    almacen.getUsuarios().add(cliente);
+                    return true;
+                } else {
+                    System.out.println("No se encontró el Cliente con el ID y contraseña proporcionados.");
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public static void cargarLocales(Connection conn, Boolean isDueño, Dueño dueño, AlmacenDeDatos almacenDeDatos) {
+        // Obtener todos los locales a su nombre en BAR o todos los bares dependiendo si es cliente o dueño el que inicia sesion
+        String sqlLocalesBar = "";
+        if(isDueño){
+            sqlLocalesBar = "SELECT * FROM bar WHERE dueñoid = ?";
+        }else{
+            sqlLocalesBar = "SELECT * FROM bar";
+        }
+
+        try (PreparedStatement pstmtLocales = conn.prepareStatement(sqlLocalesBar)) {
+            if(isDueño){
+                pstmtLocales.setString(1, dueño.getId());
+            }
+            ResultSet rsLocales = pstmtLocales.executeQuery();
+
+            // Procesar locales de tipo bar
+            while (rsLocales.next()) {
+                String idBar = rsLocales.getString("ID");
+                String nombreBar = rsLocales.getString("NOMBRE");
+                String direccion = rsLocales.getString("DIRECCION");
+                String cp = rsLocales.getString("CODIGOPOSTAL");
+                int aforo = rsLocales.getInt("AFORO");
+                String telefonoBar = rsLocales.getString("TELEFONO");
+                int mediaedad = rsLocales.getInt("MEDIAEDAD");
+                int preciomedio = rsLocales.getInt("PRECIOMEDIO");
+                String link = rsLocales.getString("LINKWEB");
+                int terrazaNum = rsLocales.getInt("TIENETERRAZA");
+                boolean terraza = (terrazaNum == 1);
+
+                Bar bar = new Bar();
+                bar.setId(idBar);
+                bar.setNombre(nombreBar);
+                bar.setDireccion(direccion);
+                bar.setAforo(aforo);
+                bar.setTelefono(telefonoBar);
+                bar.setMediaEdad(mediaedad);
+                bar.setPrecioMedio(preciomedio);
+                bar.setWeb(link);
+                bar.setTerraza(terraza);
+                bar.setCP(cp);
+
+                if(isDueño){
+                    dueño.getLocales().add(bar);
+                }else{
+                    almacenDeDatos.getLocales().add(bar);
+                }
+                System.out.println("1 BAR añadido: "+bar.getNombre());
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+
+        // Obtener todos los locales a su nombre en Discoteca o todas las Discotecas
+        String sqlLocalesDisco = "";
+        if(isDueño){
+            sqlLocalesDisco = "SELECT * FROM discoteca WHERE dueñoid = ?";
+        }else{
+            sqlLocalesDisco = "SELECT * FROM discoteca";
+        }
+        try (PreparedStatement pstmtLocalesDisco = conn.prepareStatement(sqlLocalesDisco)) {
+            if(isDueño){
+                pstmtLocalesDisco.setString(1, dueño.getId());
+            }
+            ResultSet rsLocalesDisco = pstmtLocalesDisco.executeQuery();
+
+            // Procesar locales de tipo discoteca
+            while (rsLocalesDisco.next()) {
+                String idDisco = rsLocalesDisco.getString("ID");
+                String nombreDisco = rsLocalesDisco.getString("NOMBRE");
+                String direccionDisco = rsLocalesDisco.getString("DIRECCION");
+                String cpDisco = rsLocalesDisco.getString("CODIGOPOSTAL");
+                int capacidad = rsLocalesDisco.getInt("CAPACIDAD");
+                String telefonoDisco = rsLocalesDisco.getString("TELEFONO");
+                int mediaEdadDisco = rsLocalesDisco.getInt("MEDIAEDAD");
+                int precioMedioDisco = rsLocalesDisco.getInt("PRECIOMEDIO");
+                String linkDisco = rsLocalesDisco.getString("LINKWEB");
+
+                Discoteca disco = new Discoteca();
+                disco.setId(idDisco);
+                disco.setNombre(nombreDisco);
+                disco.setDireccion(direccionDisco);
+                disco.setCP(cpDisco);
+                disco.setAforo(capacidad);
+                disco.setTelefono(telefonoDisco);
+                disco.setMediaEdad(mediaEdadDisco);
+                disco.setPrecioMedio(precioMedioDisco);
+                disco.setWeb(linkDisco);
+
+                if(isDueño){
+                    dueño.getLocales().add(disco);
+                }else{
+                    almacenDeDatos.getLocales().add(disco);
+                }
+                System.out.println("1 DISCOTECA añadida: "+disco.getNombre());
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        if(!isDueño){
+            almacenDeDatos.ininializarValoresEncuesta(); //Los valores de encuesta se ponen a 0 inicialmente
+        }
+
+    }
+
+    public static boolean actualizarDatosLocalBD(Local local) {
+        String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
+
+        try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
+            String sql = "";
+            if(local.getClass().equals(Bar.class)){
+                sql = "UPDATE BAR SET NOMBRE = ?, DIRECCION = ?, CODIGOPOSTAL = ?, AFORO = ?, TELEFONO = ?, MEDIAEDAD = ?, PRECIOMEDIO = ?, LINKWEB = ?, TIENETERRAZA = ? WHERE ID = ?";
+            }else{
+                sql = "UPDATE DISCOTECA SET NOMBRE = ?, DIRECCION = ?, CODIGOPOSTAL = ?, CAPACIDAD = ?, TELEFONO = ?, MEDIAEDAD = ?, PRECIOMEDIO = ?, LINKWEB = ? WHERE ID = ?";
+            }
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, local.getNombre());
+                pstmt.setString(2, local.getDireccion());
+                pstmt.setString(3, local.getCP());
+                pstmt.setInt(4, local.getAforo());
+                pstmt.setString(5, local.getTelefono());
+                pstmt.setInt(6, local.getMediaEdad());
+                pstmt.setInt(7, local.getPrecioMedio());
+                pstmt.setString(8, local.getWeb());
+
+                if(local.getClass().equals(Bar.class)){
+                    pstmt.setInt(9, ((Bar) local).getTerraza() ? 1 : 0); // Convierte el booleano a numero para la bd
+                    pstmt.setString(10, local.getId());
+                }else{
+                    pstmt.setString(9, local.getId());
+                }
+
+
+                int filasActualizadas = pstmt.executeUpdate();
+
+                if (filasActualizadas > 0) {
+                    System.out.println("Datos del Local actualizados en BD.");
+                    return true;
+                } else {
+                    System.out.println("No se pudo actualizar (BD).");
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public static boolean guardarLocalNuevoBD(Local local, Dueño dueño) {
+        String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
+
+        try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
+            String sql = "";
+            if(local.getClass().equals(Discoteca.class)){
+                sql = "INSERT INTO DISCOTECA (ID, NOMBRE, DIRECCION, CODIGOPOSTAL, CAPACIDAD, TELEFONO, MEDIAEDAD, PRECIOMEDIO, LINKWEB, DUEÑOID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            }else{
+                sql = "INSERT INTO BAR (ID, NOMBRE, DIRECCION, CODIGOPOSTAL, AFORO, TELEFONO, MEDIAEDAD, PRECIOMEDIO, LINKWEB, TIENETERRAZA, DUEÑOID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            }
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, local.getId());
+                pstmt.setString(2, local.getNombre());
+                pstmt.setString(3, local.getDireccion());
+                pstmt.setString(4, local.getCP());
+                pstmt.setInt(5, local.getAforo());
+                pstmt.setString(6, local.getTelefono());
+                pstmt.setInt(7, local.getMediaEdad());
+                pstmt.setInt(8, local.getPrecioMedio());
+                pstmt.setString(9, local.getWeb());
+                if(local.getClass().equals(Discoteca.class)){
+                    pstmt.setString(10, dueño.getId());
+                }else{
+                    pstmt.setInt(10, ((Bar) local).getTerraza() ? 1 : 0); // Convierte el booleano a num para bd
+                    pstmt.setString(11, dueño.getId());
+                }
+
+                int filasInsertadas = pstmt.executeUpdate();
+
+                if (filasInsertadas > 0) {
+                    System.out.println("Nuevo Local en BD.");
+                    return true;
+                } else {
+                    System.out.println("No se pudo guardar el nuevo local.");
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
 
 
 }

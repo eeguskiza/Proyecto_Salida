@@ -14,6 +14,10 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -287,6 +291,8 @@ public class ModificarLocales extends JFrame{
 
 
     }
+
+
 
     public static void main(String[] args) {
         // Configuración del look and feel

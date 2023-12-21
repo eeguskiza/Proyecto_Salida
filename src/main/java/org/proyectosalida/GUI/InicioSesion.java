@@ -319,50 +319,52 @@ public class InicioSesion extends JFrame {
                 }
                 System.out.println("1 BAR añadido: "+bar.getNombre());
             }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
 
-            // Obtener todos los locales a su nombre en Discoteca o todas las Discotecas
-            String sqlLocalesDisco = "";
+        // Obtener todos los locales a su nombre en Discoteca o todas las Discotecas
+        String sqlLocalesDisco = "";
+        if(isDueño){
+            sqlLocalesDisco = "SELECT * FROM discoteca WHERE dueñoid = ?";
+        }else{
+            sqlLocalesDisco = "SELECT * FROM discoteca";
+        }
+        try (PreparedStatement pstmtLocalesDisco = conn.prepareStatement(sqlLocalesDisco)) {
             if(isDueño){
-                sqlLocalesDisco = "SELECT * FROM discoteca WHERE dueñoid = ?";
-            }else{
-                sqlLocalesDisco = "SELECT * FROM discoteca";
+                pstmtLocalesDisco.setString(1, dueño.getId());
             }
-            try (PreparedStatement pstmtLocalesDisco = conn.prepareStatement(sqlLocalesDisco)) {
+            ResultSet rsLocalesDisco = pstmtLocalesDisco.executeQuery();
+
+            // Procesar locales de tipo discoteca
+            while (rsLocalesDisco.next()) {
+                String idDisco = rsLocalesDisco.getString("ID");
+                String nombreDisco = rsLocalesDisco.getString("NOMBRE");
+                String direccionDisco = rsLocalesDisco.getString("DIRECCION");
+                String cpDisco = rsLocalesDisco.getString("CODIGOPOSTAL");
+                int capacidad = rsLocalesDisco.getInt("CAPACIDAD");
+                String telefonoDisco = rsLocalesDisco.getString("TELEFONO");
+                int mediaEdadDisco = rsLocalesDisco.getInt("MEDIAEDAD");
+                int precioMedioDisco = rsLocalesDisco.getInt("PRECIOMEDIO");
+                String linkDisco = rsLocalesDisco.getString("LINKWEB");
+
+                Discoteca disco = new Discoteca();
+                disco.setId(idDisco);
+                disco.setNombre(nombreDisco);
+                disco.setDireccion(direccionDisco);
+                disco.setCP(cpDisco);
+                disco.setAforo(capacidad);
+                disco.setTelefono(telefonoDisco);
+                disco.setMediaEdad(mediaEdadDisco);
+                disco.setPrecioMedio(precioMedioDisco);
+                disco.setWeb(linkDisco);
+
                 if(isDueño){
-                    pstmtLocalesDisco.setString(1, dueño.getId());
+                    dueño.getLocales().add(disco);
+                }else{
+                    almacenDeDatos.getLocales().add(disco);
                 }
-                ResultSet rsLocalesDisco = pstmtLocalesDisco.executeQuery();
-
-                // Procesar locales de tipo discoteca
-                while (rsLocalesDisco.next()) {
-                    String idDisco = rsLocalesDisco.getString("ID");
-                    String nombreDisco = rsLocalesDisco.getString("NOMBRE");
-                    String direccionDisco = rsLocalesDisco.getString("DIRECCION");
-                    String cpDisco = rsLocalesDisco.getString("CODIGOPOSTAL");
-                    int capacidad = rsLocalesDisco.getInt("CAPACIDAD");
-                    String telefonoDisco = rsLocalesDisco.getString("TELEFONO");
-                    int mediaEdadDisco = rsLocalesDisco.getInt("MEDIAEDAD");
-                    int precioMedioDisco = rsLocalesDisco.getInt("PRECIOMEDIO");
-                    String linkDisco = rsLocalesDisco.getString("LINKWEB");
-
-                    Discoteca disco = new Discoteca();
-                    disco.setId(idDisco);
-                    disco.setNombre(nombreDisco);
-                    disco.setDireccion(direccionDisco);
-                    disco.setCP(cpDisco);
-                    disco.setAforo(capacidad);
-                    disco.setTelefono(telefonoDisco);
-                    disco.setMediaEdad(mediaEdadDisco);
-                    disco.setPrecioMedio(precioMedioDisco);
-                    disco.setWeb(linkDisco);
-
-                    if(isDueño){
-                        dueño.getLocales().add(disco);
-                    }else{
-                        almacenDeDatos.getLocales().add(disco);
-                    }
-                    System.out.println("1 DISCOTECA añadida: "+disco.getNombre());
-                }
+                System.out.println("1 DISCOTECA añadida: "+disco.getNombre());
             }
         } catch (SQLException e) {
             throw new RuntimeException(e);

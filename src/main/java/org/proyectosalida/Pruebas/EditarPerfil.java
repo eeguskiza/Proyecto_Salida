@@ -1,7 +1,6 @@
 package org.proyectosalida.Pruebas;
 
 import org.proyectosalida.Constructores.Cliente;
-import org.proyectosalida.Constructores.Dueño;
 import org.proyectosalida.Constructores.Usuario;
 import org.proyectosalida.Datos.AlmacenDeDatos;
 
@@ -13,11 +12,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
 
 public class EditarPerfil extends JFrame {
     private Boolean viewPassword = false;
@@ -48,7 +44,7 @@ public class EditarPerfil extends JFrame {
         JPanel  main = new JPanel(new GridLayout(nRowsMenu,2,10,10));
         add(main);
         JPanel panelContraseña = new JPanel(new BorderLayout()); JButton verContraseña = new JButton(new ImageIcon(image_hid)); verContraseña.setBackground(Color.WHITE); JPasswordField passwordField = new JPasswordField(usuario.getContraseña()); panelContraseña.add(passwordField); panelContraseña.add(verContraseña, BorderLayout.EAST); passwordField.setEditable(editable); passwordField.setEnabled(editable);
-        main.add(new JLabel("ID (@)", JLabel.CENTER)); JTextField idfield = new JTextField(usuario.getId()); main.add(idfield); idfield.setEditable(editable); idfield.setEnabled(editable);
+        main.add(new JLabel("ID (@)", JLabel.CENTER)); JTextField idfield = new JTextField(usuario.getId()); main.add(idfield); idfield.setEditable(false); idfield.setEnabled(false); //De momento mejor si no editamos los ids que sino se lia mucho
         main.add(new JLabel("Nombre", JLabel.CENTER)); JTextField nombrefield = new JTextField(usuario.getNombre());main.add(nombrefield); nombrefield.setEditable(editable); nombrefield.setEnabled(editable);
         main.add(new JLabel("Apellido", JLabel.CENTER));JTextField apellidofield = new JTextField(usuario.getApellido()); main.add(apellidofield);apellidofield.setEditable(editable); apellidofield.setEnabled(editable);
         main.add(new JLabel("Fecha de nacimiento", JLabel.CENTER));JTextField edadfield = new JTextField(almacen.transformarDateAString(usuario.getFechaNacimiento())); main.add(edadfield); edadfield.setEditable(editable); edadfield.setEnabled(editable);
@@ -110,7 +106,7 @@ public class EditarPerfil extends JFrame {
             if(editable){ //Funciona como guardar cambios
 
                 //ACTUALIZAR CAMBIOS EN LOCAL
-                String id = ((JTextField) main.getComponent(1)).getText();
+                //String id = ((JTextField) main.getComponent(1)).getText();
                 String nombre = ((JTextField) main.getComponent(3)).getText();
                 String apellido = ((JTextField) main.getComponent(5)).getText();
 
@@ -128,7 +124,7 @@ public class EditarPerfil extends JFrame {
                 System.out.println(usuario.toString());
 
                 usuario.setNombre(nombre);
-                usuario.setId(id);
+                //usuario.setId(id);
                 usuario.setApellido(apellido);
                 usuario.setFechaNacimiento(fechaNacimiento);
                 usuario.setContraseña(contraseña);
@@ -138,7 +134,7 @@ public class EditarPerfil extends JFrame {
                 System.out.println(usuario.toString());
 
                 //ACTUALIZAR EN BASE DE DATOS
-                actualizarDatosClienteBD(usuario, nombre, apellido, fechaNacimiento, contraseña, telefono, correo);
+                actualizarDatosUsuarioBD(usuario, nombre, apellido, fechaNacimiento, contraseña, telefono, correo);
 
                 new EditarPerfil(almacen, false, padre);
                 dispose();
@@ -154,7 +150,7 @@ public class EditarPerfil extends JFrame {
         });
     }
 
-    public static boolean actualizarDatosClienteBD(Usuario usuario, String nombre, String apellido, Date fechaNacimiento, String contraseña, String tlf, String email) {
+    public static boolean actualizarDatosUsuarioBD(Usuario usuario, String nombre, String apellido, Date fechaNacimiento, String contraseña, String tlf, String email) {
         String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
 
         try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {

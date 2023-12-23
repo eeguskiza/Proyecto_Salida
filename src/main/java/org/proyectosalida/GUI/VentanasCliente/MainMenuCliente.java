@@ -89,7 +89,7 @@ public class MainMenuCliente extends JFrame {
                 Date fechaHoy = new Date();
                 System.out.println("El usuario quiere salir hoy: " + fechaHoy);
 
-                Salida salida = new Salida(almacen.getCliente(), almacen.getCaracteristicas(), fechaHoy, null);
+                Salida salida = new Salida((Cliente) almacen.getUsuarios().get(0), almacen.getCaracteristicas(), fechaHoy, null);
                 System.out.println(salida.toString());
                 VentSelectCarac v = new VentSelectCarac(caracteristicasSeleccionadas, false, almacenDeDatos, salida); //Le paso la salida para obtener los valores en la tabla de elecciones tambien
             } else if (opcion == JOptionPane.NO_OPTION) {

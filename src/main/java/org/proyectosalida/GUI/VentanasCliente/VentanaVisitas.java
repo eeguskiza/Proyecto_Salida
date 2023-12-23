@@ -20,7 +20,7 @@ import java.util.Date;
 public class VentanaVisitas extends JFrame {
 
     public VentanaVisitas(AlmacenDeDatos almacen, JFrame padre){
-        Cliente usuario = (Cliente) almacen.getUsuariosPrueba().get(1);
+        Cliente usuario = (Cliente) almacen.getUsuarios().get(0);
         setTitle("Tus visitas registradas");
         setSize(1200, 800);
         setDefaultCloseOperation(EXIT_ON_CLOSE);

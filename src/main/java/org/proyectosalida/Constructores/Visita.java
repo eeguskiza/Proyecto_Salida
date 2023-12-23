@@ -3,36 +3,49 @@ package org.proyectosalida.Constructores;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 
 public class Visita {
-    private Cliente cliente;
+    private String clienteID;
     private Local local;
     private Date fecha;
     private String hora;
     private String valoracion; //A futuros esto un objeto nuevo
+    private String id;
 
     public Visita() {
-        this.cliente = new Cliente();
+        this.id = "";
+        this.clienteID = "";
         this.local = null;
         this.fecha = new Date();
         this.hora = "";
         this.valoracion = "";
     }
 
-    public Visita(Cliente cliente, Local local, Date fecha, String hora, String valoracion) {
-        this.cliente = cliente;
+    public Visita(String clienteID, Local local, Date fecha, String hora, String valoracion) {
+        this.id = generarId(local.getNombre(), clienteID);
+        this.clienteID = clienteID;
         this.local = local;
         this.fecha = fecha;
         this.hora = hora;
         this.valoracion = valoracion;
     }
 
-    public Cliente getCliente() {
-        return cliente;
+
+    public String getId() {
+        return id;
     }
 
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getClienteID() {
+        return clienteID;
+    }
+
+    public void setClienteID(String clienteID) {
+        this.clienteID = clienteID;
     }
 
     public Local getLocal() {
@@ -86,7 +99,20 @@ public class Visita {
 
     @Override
     public String toString() {
-        return "Visita{" + "cliente=" + cliente + ", local=" + local + ", fecha=" + fecha + ", hora=" + hora + ", valoracion=" + valoracion + '}';
+        return "Visita{" +
+                "clienteID=" + clienteID +
+                ", local=" + local +
+                ", fecha=" + fecha +
+                ", hora='" + hora + '\'' +
+                ", valoracion='" + valoracion + '\'' +
+                ", id='" + id + '\'' +
+                '}';
+    }
+
+    private static String generarId(String nombre, String apellido) {
+        Random random = new Random();
+        int numeroAleatorio = 100 + random.nextInt(800);
+        return (nombre.isEmpty() ? "X" : nombre.substring(0, 2).toUpperCase()) + numeroAleatorio + apellido.substring(1,3).toUpperCase();
     }
 
 

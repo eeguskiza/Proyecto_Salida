@@ -173,6 +173,10 @@ public class VentLocalesRecomendados extends JFrame {
             String id = idLocalesRecomendados.get(fila);
             Local objeto = conseguirobjeto(id);
             salida.setLocal(objeto); //Se registra el local seleccionado a la Salida
+            Visita visitaNueva = new Visita(salida.getCliente().getId(), salida.getLocal(), salida.getFecha(), salida.getFecha().getHours()+":"+salida.getFecha().getMinutes(), "");
+            salida.getCliente().getVisitas().add(visitaNueva);
+            almacen.guardarVisitaBD(visitaNueva, (Cliente) almacen.getUsuarios().get(0));
+
             //+1 a la poll adecuada
             almacen.getValoresVotaciones().put(id, almacen.getValoresVotaciones().get(id)+1);
 

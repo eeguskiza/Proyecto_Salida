@@ -197,13 +197,13 @@ public class AlmacenDeDatos {
 
         SimpleDateFormat formatoFecha = new SimpleDateFormat("dd/MM/yyyy");
         Cliente cliente = new Cliente("maialenblancoo","Maialen", "Blanco", new GregorianCalendar(2004, Calendar.MAY, 4).getTime(), "Contraseña2", "687 322 612", "maialen.blanco@opendeusto.es", null);
-        Visita v1 = new Visita(cliente, Stage,null , "01:21", "El establecimiento muy bien pero precios muy altos!");
+        /*Visita v1 = new Visita(cliente, Stage,null , "01:21", "El establecimiento muy bien pero precios muy altos!");
         v1.setFecha("23/06/2024");
         Visita v2 = new Visita(cliente, Monty, null, "01:03", "Buen copeo por la tarde-noche");
         v2.setFecha("16/04/2024");
         ArrayList<Visita> visitas = new ArrayList<>();
         visitas.add(v1); visitas.add(v2);
-        cliente.setVisitas(visitas);
+        cliente.setVisitas(visitas); */
 
         usuariosPrueba.add(dueño); //todo Esto hay que quitarlo aunk no interfiere con bd ya que es otro array
         usuariosPrueba.add(cliente); //lo mismo
@@ -525,6 +525,74 @@ public class AlmacenDeDatos {
 
         return false;
     }
+
+    public static boolean guardarVisitaBD(Visita nuevaVisita, Cliente cliente) {
+        String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
+
+        try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
+            String sql = "INSERT INTO visita (ID, CLIENTEID, LOCALID, FECHA, VALORACION) VALUES (?, ?, ?, ?, ?)";
+
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, nuevaVisita.getId());
+                pstmt.setString(2, cliente.getId());
+                pstmt.setString(3, nuevaVisita.getLocal().getId());
+                pstmt.setDate(4, new java.sql.Date(nuevaVisita.getFecha().getTime()));
+                pstmt.setString(5, nuevaVisita.getValoracion());
+
+                int filasInsertadas = pstmt.executeUpdate();
+
+                if (filasInsertadas > 0) {
+                    System.out.println("Nueva visita guardada en la base de datos.");
+                    return true;
+                } else {
+                    System.out.println("No se pudo guardar la nueva visita.");
+                    return false;
+                }
+            }
+            }catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
+
+    public static void cargarVisitasCliente(Cliente cliente) {
+        String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
+        try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
+
+        String sql = "SELECT * FROM visita WHERE CLIENTEID = ?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, cliente.getId());
+
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                String idVisita = rs.getString("ID");
+                String clienteId = rs.getString("CLIENTEID");
+                String localId = rs.getString("LOCALID");
+                Date fecha = rs.getDate("FECHA");
+                String valoracion = rs.getString("VALORACION");
+
+                Visita visita = new Visita();
+                visita.setId(idVisita);
+                visita.setClienteID(cliente.getId());
+                visita.setFecha(fecha);
+                visita.setHora(fecha.getHours()+":"+fecha.getMinutes());
+                visita.setValoracion(valoracion);
+
+                //RECORRER TABLA LOCALES PARA ENCONTRAR LOCAL Y HACER CONSTRUCTOR
+
+
+                cliente.getVisitas().add(visita);
+            }
+        }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
 
 

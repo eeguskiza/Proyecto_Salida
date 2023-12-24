@@ -45,7 +45,7 @@ public class AlmacenDeDatos {
         System.out.println("ALMACEN CREADO");
 
         //BORRAR ESTE METODO LUEGO
-        añadirEjemplos();
+        //añadirEjemplos();
 
         //FALTA UN METODO PARA CARGAR TODOS LOS LOCALES DE LA BD A LOCALES. ARREGLADO: SE HACE EN INICIOSESION
         //Los valores de la encuesa se inicializan en InicioSesion
@@ -313,10 +313,12 @@ public class AlmacenDeDatos {
                     cliente.setTelefono(telefono);
                     cliente.setCorreo(email);
 
-                    cargarLocales(conn, false, null, almacen);
+                    cargarLocales(conn, false, null, almacen); //No es optimo descargar todos los locales para la busqueda mas adelante pero bueno
+                    System.out.println("LOCALES CARGADOS, PASANDO A LAS VISITAS");
+                    cargarVisitasCliente(conn, cliente);
                     // Imprimir los valores de cada fila si se encuentra un dueño
                     System.out.println("Cliente encontrado: ID: " + id + ", Nombre: " + nombre);
-                    System.out.println(cliente);
+                    //System.out.println(cliente);
                     almacen.getUsuarios().add(cliente);
                     return true;
                 } else {
@@ -556,9 +558,8 @@ public class AlmacenDeDatos {
         return false;
     }
 
-    public static void cargarVisitasCliente(Cliente cliente) {
-        String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
-        try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
+    /*
+    public static void cargarVisitasCliente(Connection conn, Cliente cliente) {
 
         String sql = "SELECT * FROM visita WHERE CLIENTEID = ?";
 
@@ -578,18 +579,193 @@ public class AlmacenDeDatos {
                 visita.setId(idVisita);
                 visita.setClienteID(cliente.getId());
                 visita.setFecha(fecha);
-                visita.setHora(fecha.getHours()+":"+fecha.getMinutes());
+                //visita.setHora(fecha.getHours()+":"+fecha.getMinutes());
                 visita.setValoracion(valoracion);
 
-                //RECORRER TABLA LOCALES PARA ENCONTRAR LOCAL Y HACER CONSTRUCTOR
+                //RECORRER TABLA LOCALES PARA ENCONTRAR LOCAL Y HACER CONSTRUCTOR Y AÑADIRLO A VISITA
+                Bar bar = new Bar();
+                String sqlBar = "Select * from bar where id = localId";
+                try (PreparedStatement pstmt1 = conn.prepareStatement(sqlBar)) {
+                    ResultSet rs1 = pstmt1.executeQuery();
+
+                    while (rs1.next()){
+                        String idBar = rs1.getString("ID");
+                        String nombreBar = rs1.getString("NOMBRE");
+                        String direccion = rs1.getString("DIRECCION");
+                        String cp = rs1.getString("CODIGOPOSTAL");
+                        int aforo = rs1.getInt("AFORO");
+                        String telefonoBar = rs1.getString("TELEFONO");
+                        int mediaedad = rs1.getInt("MEDIAEDAD");
+                        int preciomedio = rs1.getInt("PRECIOMEDIO");
+                        String link = rs1.getString("LINKWEB");
+                        int terrazaNum = rs1.getInt("TIENETERRAZA");
+                        boolean terraza = (terrazaNum == 1);
+
+                        bar.setId(idBar);
+                        bar.setNombre(nombreBar);
+                        bar.setDireccion(direccion);
+                        bar.setAforo(aforo);
+                        bar.setTelefono(telefonoBar);
+                        bar.setMediaEdad(mediaedad);
+                        bar.setPrecioMedio(preciomedio);
+                        bar.setWeb(link);
+                        bar.setTerraza(terraza);
+                        bar.setCP(cp);
+                    }
+                }
+                if(bar.getId() != ""){
+                    visita.setLocal(bar);
+                }else{
+                    Discoteca disco = new Discoteca();
+                    String sqlDisco = "Select * from bar where id = ?";
+                    try (PreparedStatement pstmt2 = conn.prepareStatement(sqlDisco)) {
+                        pstmt2.setString(1, localId);
+                        ResultSet rs2 = pstmt2.executeQuery();
+
+                        while (rs2.next()){
+                            String idDisco = rs2.getString("ID");
+                            String nombreDisco = rs2.getString("NOMBRE");
+                            String direccionDisco = rs2.getString("DIRECCION");
+                            String cpDisco = rs2.getString("CODIGOPOSTAL");
+                            int capacidad = rs2.getInt("CAPACIDAD");
+                            String telefonoDisco = rs2.getString("TELEFONO");
+                            int mediaEdadDisco = rs2.getInt("MEDIAEDAD");
+                            int precioMedioDisco = rs2.getInt("PRECIOMEDIO");
+                            String linkDisco = rs2.getString("LINKWEB");
+
+                            disco.setId(idDisco);
+                            disco.setNombre(nombreDisco);
+                            disco.setDireccion(direccionDisco);
+                            disco.setCP(cpDisco);
+                            disco.setAforo(capacidad);
+                            disco.setTelefono(telefonoDisco);
+                            disco.setMediaEdad(mediaEdadDisco);
+                            disco.setPrecioMedio(precioMedioDisco);
+                            disco.setWeb(linkDisco);
+
+                            visita.setLocal(disco);
+                        }
+                    }
+                }
 
 
                 cliente.getVisitas().add(visita);
             }
-        }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+     */
+
+    public static void cargarVisitasCliente(Connection conn, Cliente cliente) {
+        String sql = "SELECT * FROM visita WHERE CLIENTEID = ?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, cliente.getId());
+
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                String idVisita = rs.getString("ID");
+                String clienteId = rs.getString("CLIENTEID");
+                String localId = rs.getString("LOCALID");
+                Date fecha = rs.getDate("FECHA");
+                String valoracion = rs.getString("VALORACION");
+
+                Visita visita = new Visita();
+                visita.setId(idVisita);
+                visita.setClienteID(clienteId);
+                visita.setFecha(fecha);
+                visita.setValoracion(valoracion);
+
+
+                Bar bar = buscarBarPorId(conn, localId);
+                if (bar != null) {
+                    visita.setLocal(bar);
+                } else {
+                    Discoteca disco = buscarDiscotecaPorId(conn, localId);
+                    if (disco != null) {
+                        visita.setLocal(disco);
+                    } else {
+                        System.out.println("Local no encontrado para ID: " + localId);
+                    }
+                }
+                cliente.getVisitas().add(visita);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static Bar buscarBarPorId(Connection conn, String id) throws SQLException {
+        String sqlBar = "SELECT * FROM bar WHERE ID = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sqlBar)) {
+            pstmt.setString(1, id);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                Bar bar = new Bar();
+                String idBar = rs.getString("ID");
+                String nombreBar = rs.getString("NOMBRE");
+                String direccion = rs.getString("DIRECCION");
+                String cp = rs.getString("CODIGOPOSTAL");
+                int aforo = rs.getInt("AFORO");
+                String telefonoBar = rs.getString("TELEFONO");
+                int mediaedad = rs.getInt("MEDIAEDAD");
+                int preciomedio = rs.getInt("PRECIOMEDIO");
+                String link = rs.getString("LINKWEB");
+                int terrazaNum = rs.getInt("TIENETERRAZA");
+                boolean terraza = (terrazaNum == 1);
+
+                bar.setId(idBar);
+                bar.setNombre(nombreBar);
+                bar.setDireccion(direccion);
+                bar.setAforo(aforo);
+                bar.setTelefono(telefonoBar);
+                bar.setMediaEdad(mediaedad);
+                bar.setPrecioMedio(preciomedio);
+                bar.setWeb(link);
+                bar.setTerraza(terraza);
+                bar.setCP(cp);
+                return bar;
+            }
+        }
+        return null;
+    }
+
+    private static Discoteca buscarDiscotecaPorId(Connection conn, String id) throws SQLException {
+        String sqlDisco = "SELECT * FROM discoteca WHERE ID = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sqlDisco)) {
+            pstmt.setString(1, id);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                Discoteca disco = new Discoteca();
+                String idDisco = rs.getString("ID");
+                String nombreDisco = rs.getString("NOMBRE");
+                String direccionDisco = rs.getString("DIRECCION");
+                String cpDisco = rs.getString("CODIGOPOSTAL");
+                int capacidad = rs.getInt("CAPACIDAD");
+                String telefonoDisco = rs.getString("TELEFONO");
+                int mediaEdadDisco = rs.getInt("MEDIAEDAD");
+                int precioMedioDisco = rs.getInt("PRECIOMEDIO");
+                String linkDisco = rs.getString("LINKWEB");
+
+                disco.setId(idDisco);
+                disco.setNombre(nombreDisco);
+                disco.setDireccion(direccionDisco);
+                disco.setCP(cpDisco);
+                disco.setAforo(capacidad);
+                disco.setTelefono(telefonoDisco);
+                disco.setMediaEdad(mediaEdadDisco);
+                disco.setPrecioMedio(precioMedioDisco);
+                disco.setWeb(linkDisco);
+                return disco;
+            }
+        }
+        return null;
     }
 
 

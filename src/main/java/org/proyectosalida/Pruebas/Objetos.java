@@ -53,7 +53,7 @@ public class Objetos {
         horariosBack.add(new Horario("Sabado - Domingo", "12:00", "06:00"));
         horariosBack.add(new Horario("Domingo - Lunes", "12:00", "04:00"));
 
-        ArrayList<Caracteristica>caracteristicasMonty=new ArrayList<>();
+        ArrayList<Caracteristica>caracteristicasMonty=new ArrayList<>();/*
         caracteristicasMonty.add(Caracteristica.PINTXOS);
         caracteristicasMonty.add(Caracteristica.TERRAZA);
         caracteristicasMonty.add(Caracteristica.CERVEZAS);
@@ -63,13 +63,16 @@ public class Objetos {
         caracteristicasMonty.add(Caracteristica.TARTAS_CASERAS);
         caracteristicasMonty.add(Caracteristica.RACIONES);
         caracteristicasMonty.add(Caracteristica.CARTA_VARIADA);
+        */
 
 
-        ArrayList<Caracteristica>CaracteristicasBack=new ArrayList<>();
+
+        ArrayList<Caracteristica>CaracteristicasBack=new ArrayList<>();/*
         CaracteristicasBack.add(Caracteristica.CERVEZAS);
         CaracteristicasBack.add(Caracteristica.MUSICA);
         CaracteristicasBack.add(Caracteristica.COMBINADOS);
         CaracteristicasBack.add(Caracteristica.ZONA_PRIVADA);
+        */
 
 
 

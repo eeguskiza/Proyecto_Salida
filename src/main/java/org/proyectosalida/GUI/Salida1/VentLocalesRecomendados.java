@@ -212,7 +212,7 @@ public class VentLocalesRecomendados extends JFrame {
             @Override
             public void run() {
                 ArrayList<Caracteristica> caracts = new ArrayList<>();
-                caracts.add(Caracteristica.PINTXOS); caracts.add(Caracteristica.BAILE); caracts.add(Caracteristica.AFTERWORK);
+                //caracts.add(Caracteristica.PINTXOS); caracts.add(Caracteristica.BAILE); caracts.add(Caracteristica.AFTERWORK);
                 Salida salida = new Salida(null, null, new Date(), null);
                 new VentLocalesRecomendados(caracts, new AlmacenDeDatos(), salida);
             }

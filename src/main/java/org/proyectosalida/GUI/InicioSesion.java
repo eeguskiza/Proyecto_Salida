@@ -37,7 +37,6 @@ public class InicioSesion extends JFrame {
         Dueño dueño = new Dueño();
         Cliente cliente = new Cliente();
 
-
         this.setTitle("Inicia Sesión");
         this.setSize(500, 300);
         this.setLocationRelativeTo(padre);

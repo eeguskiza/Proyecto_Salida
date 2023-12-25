@@ -22,7 +22,7 @@ public class AlmacenDeDatos {
 
 //Listas
     public HashMap<String, Integer> valoresVotaciones; //id, num
-    private ArrayList<Caracteristica> caracteristicas;
+    private static ArrayList<Caracteristica> caracteristicas; //todas las caracterisiticas
 
      private ArrayList<Usuario> usuarios;
      private ArrayList<Usuario> usuariosPrueba;
@@ -43,6 +43,7 @@ public class AlmacenDeDatos {
         esCliente = false;
 
         System.out.println("ALMACEN CREADO");
+        descargarCaracteristicas();
 
         //BORRAR ESTE METODO LUEGO
         //añadirEjemplos();
@@ -168,6 +169,7 @@ public class AlmacenDeDatos {
         horariosDisco.add(new Horario("Domingo", "00:30", "05:00"));
 
         ArrayList<Caracteristica>caracteristicasMonty=new ArrayList<>();
+        /*
         caracteristicasMonty.add(Caracteristica.PINTXOS);
         caracteristicasMonty.add(Caracteristica.TERRAZA);
         caracteristicasMonty.add(Caracteristica.CERVEZAS);
@@ -177,6 +179,7 @@ public class AlmacenDeDatos {
         c2.add(Caracteristica.BAILE);
         c2.add(Caracteristica.PINTXOS);
         c2.add(Caracteristica.MUSICA);
+         */
 
         Bar Monty = new Bar("Monty", "Heros Kalea, 16, Bilbo, Bizkaia", "48009", 75, "944 23 63 36", 0, 0, null, horariosMonty, true,caracteristicasMonty);
 
@@ -185,7 +188,7 @@ public class AlmacenDeDatos {
 
         //Discoteca añadir a dueño 1
         //    public Discoteca(String nombre, String direccion, String CP, int Aforo, String telefono, int MediaEdad, int PrecioMedio, String web, ArrayList<Horario> horarios, DJ djResidente, DJ djInvitado,ArrayList<Caracteristica>caracteristicas) {
-        Discoteca Stage = new Discoteca("StageLive", "C/ Algo en Bilbo", "48005", 300, "784 348 357", 18, 15, linkStage, horariosDisco, new DJ("DJ Theo", "", "", "", 0, "", "", ""), new DJ("DJ 2", "", "", "", 0, "", "", ""), c2);
+        Discoteca Stage = new Discoteca("StageLive", "C/ Algo en Bilbo", "48005", 300, "784 348 357", 18, 15, linkStage, horariosDisco, new DJ("DJ Theo", "", "", "", 0, "", "", ""), new DJ("DJ 2", "", "", "", 0, "", "", ""), null);
         Discoteca Back = new Discoteca("BackRoom", "C/ Abando", "48005", 250, "678 439 389", 19, 15, linkBack, horariosMonty, new DJ("Almaba Ice", "Ice", "a", "España", 19, "Reggaeton", "Reggeaton", "@almava_ice"), new DJ("DJ 2", "", "", "", 0, "", "", ""), caracteristicasMonty);
 
         dueño.agregarLocal(Stage);
@@ -284,7 +287,6 @@ public class AlmacenDeDatos {
         }
         return false;
     }
-
     public static boolean inicioSesionCliente(String usuario, String contraseña, Cliente cliente, AlmacenDeDatos almacen) {
         String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
 
@@ -374,6 +376,12 @@ public class AlmacenDeDatos {
                 bar.setTerraza(terraza);
                 bar.setCP(cp);
 
+                try {
+                    cargarCaracteristicasLocal(conn, bar);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
                 if(isDueño){
                     dueño.getLocales().add(bar);
                 }else{
@@ -422,6 +430,8 @@ public class AlmacenDeDatos {
                 disco.setPrecioMedio(precioMedioDisco);
                 disco.setWeb(linkDisco);
 
+                cargarCaracteristicasLocal(conn, disco);
+
                 if(isDueño){
                     dueño.getLocales().add(disco);
                 }else{
@@ -438,7 +448,45 @@ public class AlmacenDeDatos {
         }
 
     }
+    public static void cargarCaracteristicasLocal(Connection conn, Local local){
+        String id = local.getId();
+        System.out.println(id);
+        String sql = "select * from caracteristicas_locales where id_local = ?";
 
+        ArrayList<String> idCaracteristicas = new ArrayList<>();
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, id);
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                String idc = rs.getString("ID_CARACTERISTICA");
+                idCaracteristicas.add(idc);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        for(String value:idCaracteristicas){
+            System.out.println(value);
+        }
+
+        for(String idCaracteristica : idCaracteristicas){
+            String sql2 = "SELECT descripcion FROM caracteristicas WHERE ID = ?";
+
+            try (PreparedStatement pstmt = conn.prepareStatement(sql2)) {
+                pstmt.setString(1, idCaracteristica);
+                ResultSet rs = pstmt.executeQuery();
+
+                while (rs.next()) {
+                    Caracteristica nueva = Caracteristica.valueOf(rs.getString("descripcion"));
+                    local.getCaracteristicas().add(nueva);
+                    System.out.println("Caracteristica añadida: "+nueva);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+    }
     public static boolean actualizarDatosLocalBD(Local local) {
         String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
 
@@ -483,7 +531,6 @@ public class AlmacenDeDatos {
 
         return false;
     }
-
     public static boolean guardarLocalNuevoBD(Local local, Dueño dueño) {
         String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
 
@@ -557,7 +604,6 @@ public class AlmacenDeDatos {
 
         return false;
     }
-
     public static void cargarVisitasCliente(Connection conn, Cliente cliente) {
         String sql = "SELECT * FROM visita WHERE CLIENTEID = ?";
 
@@ -634,7 +680,6 @@ public class AlmacenDeDatos {
         }
         return null;
     }
-
     private static Discoteca buscarDiscotecaPorId(Connection conn, String id) throws SQLException {
         String sqlDisco = "SELECT * FROM discoteca WHERE ID = ?";
         try (PreparedStatement pstmt = conn.prepareStatement(sqlDisco)) {
@@ -668,6 +713,47 @@ public class AlmacenDeDatos {
         return null;
     }
 
+/*    public static void subirCaracteristicasaBD() {
+        String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
+
+        try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
+            String sql = "INSERT INTO Caracteristicas (id, descripcion) VALUES (?, ?)";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+
+            // Iterar sobre los valores de la enumeración y realizar las inserciones
+            int id = 1; // ID inicial, puedes ajustarlo según tu lógica de asignación de IDs
+            for (Caracteristica caracteristica : Caracteristica.values()) {
+                pstmt.setInt(1, id);
+                pstmt.setString(2, caracteristica.name());
+                pstmt.addBatch(); // Agregar la operación de inserción al lote
+                id++; // Incrementar el ID para el siguiente elemento
+            }
+
+            // Ejecutar el lote de inserciones
+            pstmt.executeBatch();
+            System.out.println("Inserción exitosa de todas las características.");
+        } catch (SQLException e) {
+            System.out.println("Error al insertar las características: " + e.getMessage());
+        }
+    }
+ */
+    private static void descargarCaracteristicas(){
+        String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
+
+        try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
+            String sql = "SELECT descripcion FROM Caracteristicas";
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                String descripcion = rs.getString("descripcion");
+                Caracteristica caracteristica = Caracteristica.valueOf(descripcion);
+                caracteristicas.add(caracteristica);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al descargar las características: " + e.getMessage());
+        }
+    }
 
 
 

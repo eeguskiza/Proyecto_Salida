@@ -1,24 +1,24 @@
 package org.proyectosalida.Constructores;
 
 public class Horario {
-    private String dia;
+    private Integer dia;
     private String horaInicio;
     private String horaFin;
 
     public Horario() {
     }
 
-    public Horario(String dia, String horaInicio, String horaFin) {
+    public Horario(Integer dia, String horaInicio, String horaFin) {
         this.dia = dia;
         this.horaInicio = horaInicio;
         this.horaFin = horaFin;
     }
 
-    public String getDia() {
+    public Integer getDia() {
         return dia;
     }
 
-    public void setDia(String dia) {
+    public void setDia(Integer dia) {
         this.dia = dia;
     }
 

@@ -109,13 +109,30 @@ public class VentanaAddHorarios extends JFrame {
             }
             for (int i = 0; i < panel.getComponentCount(); i += 3) {
                 String dia = ((JLabel) panel.getComponent(i)).getText().replace(":", "");
+                int ndia = -1;
+                if (dia.equals("Lunes")) {
+                    ndia = 1;
+                } else if (dia.equals("Martes")) {
+                    ndia = 2;
+                } else if (dia.equals("Miércoles")) {
+                    ndia = 3;
+                } else if (dia.equals("Jueves")) {
+                    ndia = 4;
+                } else if (dia.equals("Viernes")) {
+                    ndia = 5;
+                } else if (dia.equals("Sábado")) {
+                    ndia = 6;
+                } else if (dia.equals("Domingo")) {
+                    ndia = 7;
+                }
+
                 JSpinner horaInicioSpinner = (JSpinner) panel.getComponent(i + 1);
                 JSpinner horaFinSpinner = (JSpinner) panel.getComponent(i + 2);
 
                 String horaInicio = formatSpinnerValue(horaInicioSpinner);
                 String horaFin = formatSpinnerValue(horaFinSpinner);
 
-                horarios.add(new Horario(dia, horaInicio, horaFin));
+                horarios.add(new Horario(ndia, horaInicio, horaFin));
 
             }
             System.out.println(horarios);

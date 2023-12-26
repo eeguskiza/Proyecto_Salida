@@ -34,24 +34,24 @@ public class Objetos {
         DJ dj1 = new DJ();
         DJ dj2 = new DJ();
 
-        ArrayList<Horario> horariosMonty = new ArrayList<>();
+        ArrayList<Horario> horariosMonty = new ArrayList<>();/*
         horariosMonty.add(new Horario("Lunes", "07:30", "23:30"));
         horariosMonty.add(new Horario("Martes", "07:30", "23:30"));
         horariosMonty.add(new Horario("Miercoles", "07:30", "23:30"));
         horariosMonty.add(new Horario("Jueves", "07:30", "23:30"));
         horariosMonty.add(new Horario("Viernes", "07:30", "23:30"));
         horariosMonty.add(new Horario("Sabado", "07:30", "23:30"));
-        horariosMonty.add(new Horario("Domingo", "07:30", "16:00"));
+        horariosMonty.add(new Horario("Domingo", "07:30", "16:00"));*/
 
 
-        ArrayList<Horario> horariosBack = new ArrayList<>();
+        ArrayList<Horario> horariosBack = new ArrayList<>();/*
         horariosBack.add(new Horario("Lunes - Martes", "12:00", "04:00"));
         horariosBack.add(new Horario("Martes - Miercoles", "12:00", "04:00"));
         horariosBack.add(new Horario("Miercoles - Jueves", "12:00", "04:00"));
         horariosBack.add(new Horario("Jueves - Viernes", "12:00", "04:00"));
         horariosBack.add(new Horario("Viernes - Sabado", "12:00", "06:00"));
         horariosBack.add(new Horario("Sabado - Domingo", "12:00", "06:00"));
-        horariosBack.add(new Horario("Domingo - Lunes", "12:00", "04:00"));
+        horariosBack.add(new Horario("Domingo - Lunes", "12:00", "04:00"));*/
 
         ArrayList<Caracteristica>caracteristicasMonty=new ArrayList<>();/*
         caracteristicasMonty.add(Caracteristica.PINTXOS);

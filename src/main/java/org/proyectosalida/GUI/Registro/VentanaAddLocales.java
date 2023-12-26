@@ -127,7 +127,7 @@ public class VentanaAddLocales extends JFrame {
                     return;
                 }
 
-                boolean exito = local instanceof Bar ? registrarBar(dueño, (Bar) local) : registrarDicoteca(dueño, (Discoteca) local);
+                boolean exito = local instanceof Bar ? almacenDeDatos.registrarBar(dueño, (Bar) local) : almacenDeDatos.registrarDicoteca(dueño, (Discoteca) local);
                 if (exito) {
                     int respuesta = JOptionPane.showConfirmDialog(this, "¿Desea añadir más locales?", "Añadir más locales", JOptionPane.YES_NO_OPTION);
                     if (respuesta == JOptionPane.YES_OPTION) {
@@ -215,81 +215,7 @@ public class VentanaAddLocales extends JFrame {
     } //Y guardar locales/Dueño añadidos tambien
 
 
-    public static boolean registrarBar(Dueño dueño, Bar local) {
-        String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
-        JOptionPane.showMessageDialog(null, "Creando Bar...", "Registro en progreso", JOptionPane.INFORMATION_MESSAGE);
 
-        try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
-            String sql = "INSERT INTO BAR (ID, NOMBRE, DIRECCION, CODIGOPOSTAL, AFORO, TELEFONO, MEDIAEDAD, PRECIOMEDIO, LINKWEB, TIENETERRAZA, DUEÑOID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                // Configura los parámetros (asegúrate de que estos métodos existan en tu clase Bar)
-                pstmt.setString(1, local.getId());
-                pstmt.setString(2, local.getNombre());
-                pstmt.setString(3, local.getDireccion());
-                pstmt.setString(4, local.getCP());
-                pstmt.setInt(5, local.getAforo());
-                pstmt.setString(6, local.getTelefono());
-                pstmt.setInt(7, local.getMediaEdad());
-                pstmt.setInt(8, local.getPrecioMedio());
-                pstmt.setString(9, local.getWeb());
-
-                if(local.getTerraza()) {
-                    pstmt.setInt(10, 1);
-                } else {
-                    pstmt.setInt(10, 0);
-                }
-                pstmt.setString(11, dueño.getId());
-
-                int affectedRows = pstmt.executeUpdate();
-                if (affectedRows > 0) {
-                    JOptionPane.showMessageDialog(null, "Bar creado exitosamente", "Registro exitoso", JOptionPane.INFORMATION_MESSAGE);
-                    return true;
-                } else {
-                    JOptionPane.showMessageDialog(null, "No se pudo registrar el bar.", "Error de registro", JOptionPane.ERROR_MESSAGE);
-                    return false;
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Error al crear el bar: " + e.getMessage(), "Error de registro", JOptionPane.ERROR_MESSAGE);
-        }
-        return false;
-    }
-
-    public static boolean registrarDicoteca(Dueño dueño, Discoteca local){
-        String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
-        JOptionPane.showMessageDialog(null, "Creando Bar...", "Registro en progreso", JOptionPane.INFORMATION_MESSAGE);
-
-        try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
-            String sql = "INSERT INTO BAR (ID, NOMBRE, DIRECCION, CODIGOPOSTAL, AFORO, TELEFONO, MEDIAEDAD, PRECIOMEDIO, LINKWEB, DUEÑOID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                // Configura los parámetros (asegúrate de que estos métodos existan en tu clase Bar)
-                pstmt.setString(1, local.getId());
-                pstmt.setString(2, local.getNombre());
-                pstmt.setString(3, local.getDireccion());
-                pstmt.setString(4, local.getCP());
-                pstmt.setInt(5, local.getAforo());
-                pstmt.setString(6, local.getTelefono());
-                pstmt.setInt(7, local.getMediaEdad());
-                pstmt.setInt(8, local.getPrecioMedio());
-                pstmt.setString(9, local.getWeb());
-                pstmt.setString(10, dueño.getId());
-
-                int affectedRows = pstmt.executeUpdate();
-                if (affectedRows > 0) {
-                    JOptionPane.showMessageDialog(null, "Dicoteca creada exitosamente", "Registro exitoso", JOptionPane.INFORMATION_MESSAGE);
-                    return true;
-                } else {
-                    JOptionPane.showMessageDialog(null, "No se pudo registrar la discoteca.", "Error de registro", JOptionPane.ERROR_MESSAGE);
-                    return false;
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Error al crear la dicoteca: " + e.getMessage(), "Error de registro", JOptionPane.ERROR_MESSAGE);
-        }
-        return false;
-    }
 
         //Main de prueba
     public static void main(String[] args) {

@@ -151,22 +151,22 @@ public class AlmacenDeDatos {
         String linkStage = "https://www.google.com/maps/place/Stage+Live/@43.2641429,-2.9311399,16.1z/data=!4m6!3m5!1s0xd4e4fc54aa9e77b:0x73e67015ad689356!8m2!3d43.2643475!4d-2.9275594!16s%2Fg%2F11fy_6ght3?entry=ttu";
         String linkBack = "https://www.google.com/maps/place/Back%26Stage/@43.264306,-2.9302868,17z/data=!3m2!4b1!5s0xd4e4fda648c70af:0x6b8148661f92eaae!4m6!3m5!1s0xd4e4fda73f10843:0xfdf73bd3595b6008!8m2!3d43.2643021!4d-2.9277119!16s%2Fg%2F1ptx16dgd?entry=ttu";
         ArrayList<Horario> horariosMonty = new ArrayList<>();
-        horariosMonty.add(new Horario("Lunes", "07:30", "23:30"));
-        horariosMonty.add(new Horario("Martes", "07:30", "23:30"));
-        horariosMonty.add(new Horario("Miercoles", "07:30", "23:30"));
-        horariosMonty.add(new Horario("Jueves", "07:30", "23:30"));
-        horariosMonty.add(new Horario("Viernes", "07:30", "23:30"));
-        horariosMonty.add(new Horario("Sabado", "07:30", "23:30"));
-        horariosMonty.add(new Horario("Domingo", "07:30", "16:00"));
+        horariosMonty.add(new Horario(1, "07:30", "23:30"));
+        horariosMonty.add(new Horario(2, "07:30", "23:30"));
+        horariosMonty.add(new Horario(3, "07:30", "23:30"));
+        horariosMonty.add(new Horario(4, "07:30", "23:30"));
+        horariosMonty.add(new Horario(5, "07:30", "23:30"));
+        horariosMonty.add(new Horario(6, "07:30", "23:30"));
+        horariosMonty.add(new Horario(7, "07:30", "16:00"));
 
         ArrayList<Horario> horariosDisco = new ArrayList<>();
-        horariosDisco.add(new Horario("Lunes", "00:30", "05:30"));
-        horariosDisco.add(new Horario("Martes", "00:30", "05:30"));
-        horariosDisco.add(new Horario("Miercoles", "00:30", "05:30"));
-        horariosDisco.add(new Horario("Jueves", "06:30", "16:30"));
-        horariosDisco.add(new Horario("Viernes", "00:30", "05:30"));
-        horariosDisco.add(new Horario("Sabado", "00:30", "05:30"));
-        horariosDisco.add(new Horario("Domingo", "00:30", "05:00"));
+        horariosDisco.add(new Horario(1, "00:30", "05:30"));
+        horariosDisco.add(new Horario(2, "00:30", "05:30"));
+        horariosDisco.add(new Horario(3, "00:30", "05:30"));
+        horariosDisco.add(new Horario(4, "06:30", "16:30"));
+        horariosDisco.add(new Horario(5, "00:30", "05:30"));
+        horariosDisco.add(new Horario(6, "00:30", "05:30"));
+        horariosDisco.add(new Horario(7, "00:30", "05:00"));
 
         ArrayList<Caracteristica>caracteristicasMonty=new ArrayList<>();
         /*
@@ -240,6 +240,74 @@ public class AlmacenDeDatos {
 
 
     //----------MANEJO DE BASE DE DATOS-----------
+    public static boolean registrarDueño(Dueño dueño) {
+        String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
+
+        // Mostrar mensaje de "Creando dueño..."
+        //JOptionPane.showMessageDialog(null, "Creando dueño...", "Registro en progreso", JOptionPane.INFORMATION_MESSAGE);
+
+        try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
+            String sql = "INSERT INTO DUEÑO (ID, NOMBRE, APELLIDO, FECHANACIMIENTO, CONTRASEÑA, TELEFONO, EMAIL) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, dueño.getId());
+                pstmt.setString(2, dueño.getNombre());
+                pstmt.setString(3, dueño.getApellido());
+                pstmt.setDate(4, new java.sql.Date(dueño.getFechaNacimiento().getTime()));
+                pstmt.setString(5, dueño.getContraseña());
+                pstmt.setString(6, dueño.getTelefono());
+                pstmt.setString(7, dueño.getCorreo());
+
+                int affectedRows = pstmt.executeUpdate();
+
+                if (affectedRows > 0) {
+                    JOptionPane.showMessageDialog(null, "Usuario creado exitosamente", "Registro exitoso", JOptionPane.INFORMATION_MESSAGE);
+                    return true;
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se pudo registrar el dueño.", "Error de registro", JOptionPane.ERROR_MESSAGE);
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al crear el dueño: " + e.getMessage(), "Error de registro", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+    }
+    public static boolean registrarCliente(Cliente cliente) {
+        String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
+
+        // Mostrar mensaje de "Creando cliente..."
+        JOptionPane.showMessageDialog(null, "Creando cliente...", "Registro en progreso", JOptionPane.INFORMATION_MESSAGE);
+
+        try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
+            String sql = "INSERT INTO CLIENTE (ID, NOMBRE, APELLIDO, FECHANACIMIENTO, CONTRASEÑA, TELEFONO, EMAIL) VALUES (?, ?, ?, ?, ?, ?, ?)";
+
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, cliente.getId());
+                pstmt.setString(2, cliente.getNombre());
+                pstmt.setString(3, cliente.getApellido());
+                pstmt.setDate(4, new java.sql.Date(cliente.getFechaNacimiento().getTime()));
+                pstmt.setString(5, cliente.getContraseña());
+                pstmt.setString(6, cliente.getTelefono());
+                pstmt.setString(7, cliente.getCorreo());
+
+                int affectedRows = pstmt.executeUpdate();
+
+                if (affectedRows > 0) {
+                    JOptionPane.showMessageDialog(null, "Usuario creado exitosamente", "Registro exitoso", JOptionPane.INFORMATION_MESSAGE);
+                    return true;
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se pudo registrar el dueño.", "Error de registro", JOptionPane.ERROR_MESSAGE);
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al crear el dueño: " + e.getMessage(), "Error de registro", JOptionPane.ERROR_MESSAGE);
+            return false;
+        }
+    }
 
     public static boolean inicioSesionDueño(String usuario, String contraseña, Dueño dueño, AlmacenDeDatos almacen) {
         String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
@@ -332,6 +400,85 @@ public class AlmacenDeDatos {
             e.printStackTrace();
         }
 
+        return false;
+    }
+
+    public static boolean registrarBar(Dueño dueño, Bar local) {
+        String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
+        JOptionPane.showMessageDialog(null, "Creando Bar...", "Registro en progreso", JOptionPane.INFORMATION_MESSAGE);
+
+        try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
+            String sql = "INSERT INTO BAR (ID, NOMBRE, DIRECCION, CODIGOPOSTAL, AFORO, TELEFONO, MEDIAEDAD, PRECIOMEDIO, LINKWEB, TIENETERRAZA, DUEÑOID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                // Configura los parámetros (asegúrate de que estos métodos existan en tu clase Bar)
+                pstmt.setString(1, local.getId());
+                pstmt.setString(2, local.getNombre());
+                pstmt.setString(3, local.getDireccion());
+                pstmt.setString(4, local.getCP());
+                pstmt.setInt(5, local.getAforo());
+                pstmt.setString(6, local.getTelefono());
+                pstmt.setInt(7, local.getMediaEdad());
+                pstmt.setInt(8, local.getPrecioMedio());
+                pstmt.setString(9, local.getWeb());
+
+                if(local.getTerraza()) {
+                    pstmt.setInt(10, 1);
+                } else {
+                    pstmt.setInt(10, 0);
+                }
+                pstmt.setString(11, dueño.getId());
+
+                guardarHorariosEnBD(conn, local, local.getHorarios());
+
+                int affectedRows = pstmt.executeUpdate();
+                if (affectedRows > 0) {
+                    JOptionPane.showMessageDialog(null, "Bar creado exitosamente", "Registro exitoso", JOptionPane.INFORMATION_MESSAGE);
+                    return true;
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se pudo registrar el bar.", "Error de registro", JOptionPane.ERROR_MESSAGE);
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al crear el bar: " + e.getMessage(), "Error de registro", JOptionPane.ERROR_MESSAGE);
+        }
+        return false;
+    }
+    public static boolean registrarDicoteca(Dueño dueño, Discoteca local){
+        String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
+        JOptionPane.showMessageDialog(null, "Creando Bar...", "Registro en progreso", JOptionPane.INFORMATION_MESSAGE);
+
+        try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
+            String sql = "INSERT INTO BAR (ID, NOMBRE, DIRECCION, CODIGOPOSTAL, AFORO, TELEFONO, MEDIAEDAD, PRECIOMEDIO, LINKWEB, DUEÑOID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                // Configura los parámetros (asegúrate de que estos métodos existan en tu clase Bar)
+                pstmt.setString(1, local.getId());
+                pstmt.setString(2, local.getNombre());
+                pstmt.setString(3, local.getDireccion());
+                pstmt.setString(4, local.getCP());
+                pstmt.setInt(5, local.getAforo());
+                pstmt.setString(6, local.getTelefono());
+                pstmt.setInt(7, local.getMediaEdad());
+                pstmt.setInt(8, local.getPrecioMedio());
+                pstmt.setString(9, local.getWeb());
+                pstmt.setString(10, dueño.getId());
+
+                guardarHorariosEnBD(conn, local, local.getHorarios());
+
+                int affectedRows = pstmt.executeUpdate();
+                if (affectedRows > 0) {
+                    JOptionPane.showMessageDialog(null, "Dicoteca creada exitosamente", "Registro exitoso", JOptionPane.INFORMATION_MESSAGE);
+                    return true;
+                } else {
+                    JOptionPane.showMessageDialog(null, "No se pudo registrar la discoteca.", "Error de registro", JOptionPane.ERROR_MESSAGE);
+                    return false;
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(null, "Error al crear la dicoteca: " + e.getMessage(), "Error de registro", JOptionPane.ERROR_MESSAGE);
+        }
         return false;
     }
 
@@ -713,7 +860,31 @@ public class AlmacenDeDatos {
         return null;
     }
 
-/*    public static void subirCaracteristicasaBD() {
+    public static void guardarHorariosEnBD(Connection conn, Local local, List<Horario> horarios) {
+
+            String sqlInsert = "INSERT INTO HORARIOS (LOCALID, HORAINICIO, HORAFIN, DIA) VALUES (?, ?, ?, ?)";
+
+            try (PreparedStatement pstmt = conn.prepareStatement(sqlInsert)) {
+                for (Horario horario : horarios) {
+                    System.out.println(local.getId());
+                    System.out.println(horario.getHoraInicio());
+                    System.out.println(horario.getHoraFin());
+                    pstmt.setString(1, local.getId());
+                    pstmt.setString(2, horario.getHoraInicio());
+                    pstmt.setString(3, horario.getHoraFin());
+                    pstmt.setInt(4, horario.getDia());
+
+                    pstmt.executeUpdate();
+                }
+                System.out.println("Horarios guardados exitosamente en la base de datos para Local "+ local.getNombre());
+            } catch (SQLException e) {
+                e.printStackTrace();
+                System.out.println("No se han podido guardar los horarios");
+        }
+    }
+
+
+    /*    public static void subirCaracteristicasaBD() {
         String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
 
         try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {

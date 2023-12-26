@@ -164,7 +164,7 @@ public class Registro extends JFrame {
                         ArrayList<Local> locales = new ArrayList<>();
                         Dueño nuevoUsuario = new Dueño(id, nombre, apellido, fechaNacimiento, contraseña, telefono, correo, locales);
                         //Llama al metodo que lo añade en sql
-                        registrarDueño(nuevoUsuario);
+                        almacenDeDatos.registrarDueño(nuevoUsuario);
                         System.out.println(nuevoUsuario.toString());
                         //Option pane para decidir si quiere añadir locales o no (gurada un boll para llamar a la ventana)
                         boolean loc = JOptionPane.showConfirmDialog(null, "¿Desea añadir locales?", "Añadir locales", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
@@ -182,7 +182,7 @@ public class Registro extends JFrame {
                         Cliente nuevoUsuario = new Cliente(id, nombre, apellido, fechaNacimiento, contraseña, telefono, correo, new ArrayList<>());
                         System.out.println(nuevoUsuario.toString());
                         //Llama al metodo que lo añade en sql
-                        registrarCliente(nuevoUsuario);
+                        almacenDeDatos.registrarCliente(nuevoUsuario);
                         InicioSesion inicioSesion = new InicioSesion(padre, almacenDeDatos);
                         this.dispose();
                         padre.dispose();
@@ -217,75 +217,7 @@ public class Registro extends JFrame {
     }
 
 
-    public static boolean registrarDueño(Dueño dueño) {
-        String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
 
-        // Mostrar mensaje de "Creando dueño..."
-        JOptionPane.showMessageDialog(null, "Creando dueño...", "Registro en progreso", JOptionPane.INFORMATION_MESSAGE);
-
-        try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
-            String sql = "INSERT INTO DUEÑO (ID, NOMBRE, APELLIDO, FECHANACIMIENTO, CONTRASEÑA, TELEFONO, EMAIL) VALUES (?, ?, ?, ?, ?, ?, ?)";
-
-            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setString(1, dueño.getId());
-                pstmt.setString(2, dueño.getNombre());
-                pstmt.setString(3, dueño.getApellido());
-                pstmt.setDate(4, new java.sql.Date(dueño.getFechaNacimiento().getTime()));
-                pstmt.setString(5, dueño.getContraseña());
-                pstmt.setString(6, dueño.getTelefono());
-                pstmt.setString(7, dueño.getCorreo());
-
-                int affectedRows = pstmt.executeUpdate();
-
-                if (affectedRows > 0) {
-                    JOptionPane.showMessageDialog(null, "Usuario creado exitosamente", "Registro exitoso", JOptionPane.INFORMATION_MESSAGE);
-                    return true;
-                } else {
-                    JOptionPane.showMessageDialog(null, "No se pudo registrar el dueño.", "Error de registro", JOptionPane.ERROR_MESSAGE);
-                    return false;
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Error al crear el dueño: " + e.getMessage(), "Error de registro", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-    }
-
-    public static boolean registrarCliente(Cliente cliente) {
-        String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
-
-        // Mostrar mensaje de "Creando cliente..."
-        JOptionPane.showMessageDialog(null, "Creando cliente...", "Registro en progreso", JOptionPane.INFORMATION_MESSAGE);
-
-        try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
-            String sql = "INSERT INTO CLIENTE (ID, NOMBRE, APELLIDO, FECHANACIMIENTO, CONTRASEÑA, TELEFONO, EMAIL) VALUES (?, ?, ?, ?, ?, ?, ?)";
-
-            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setString(1, cliente.getId());
-                pstmt.setString(2, cliente.getNombre());
-                pstmt.setString(3, cliente.getApellido());
-                pstmt.setDate(4, new java.sql.Date(cliente.getFechaNacimiento().getTime()));
-                pstmt.setString(5, cliente.getContraseña());
-                pstmt.setString(6, cliente.getTelefono());
-                pstmt.setString(7, cliente.getCorreo());
-
-                int affectedRows = pstmt.executeUpdate();
-
-                if (affectedRows > 0) {
-                    JOptionPane.showMessageDialog(null, "Usuario creado exitosamente", "Registro exitoso", JOptionPane.INFORMATION_MESSAGE);
-                    return true;
-                } else {
-                    JOptionPane.showMessageDialog(null, "No se pudo registrar el dueño.", "Error de registro", JOptionPane.ERROR_MESSAGE);
-                    return false;
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            JOptionPane.showMessageDialog(null, "Error al crear el dueño: " + e.getMessage(), "Error de registro", JOptionPane.ERROR_MESSAGE);
-            return false;
-        }
-    }
 
 
 

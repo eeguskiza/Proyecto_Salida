@@ -38,8 +38,27 @@ public class Horario {
         this.horaFin = horaFin;
     }
 
+    public String toLetters(Integer dia){
+        if (dia.equals(1)) {
+            return "Lunes";
+        } else if (dia.equals(2)) {
+            return "Martes";
+        } else if (dia.equals(3)) {
+            return  "Miercoles";
+        } else if (dia.equals(4)) {
+            return "Jueves";
+        } else if (dia.equals(5)) {
+            return "Viernes";
+        } else if (dia.equals(6)) {
+            return  "Sabado";
+        } else if (dia.equals(7)) {
+            return  "Domigo";
+        }
+        return "";
+    }
+
     @Override
     public String toString() {
-        return dia + " --> " + horaInicio + " - " + horaFin;
+        return toLetters(dia) + " --> " + horaInicio + " - " + horaFin;
     }
 }

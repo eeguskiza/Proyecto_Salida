@@ -523,11 +523,9 @@ public class AlmacenDeDatos {
                 bar.setTerraza(terraza);
                 bar.setCP(cp);
 
-                try {
-                    cargarCaracteristicasLocal(conn, bar);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                cargarCaracteristicasLocal(conn, bar);
+                ArrayList<Horario> horariosLocal = cargarHorariosLocal(conn, bar);
+                bar.setHorarios(horariosLocal);
 
                 if(isDueño){
                     dueño.getLocales().add(bar);
@@ -578,6 +576,8 @@ public class AlmacenDeDatos {
                 disco.setWeb(linkDisco);
 
                 cargarCaracteristicasLocal(conn, disco);
+                ArrayList<Horario> horariosLocal = cargarHorariosLocal(conn, disco);
+                disco.setHorarios(horariosLocal);
 
                 if(isDueño){
                     dueño.getLocales().add(disco);
@@ -661,6 +661,7 @@ public class AlmacenDeDatos {
                     pstmt.setString(9, local.getId());
                 }
 
+                actualizarHorariosLocal(conn, local, local.getHorarios());
 
                 int filasActualizadas = pstmt.executeUpdate();
 
@@ -720,6 +721,80 @@ public class AlmacenDeDatos {
         }
 
         return false;
+    }
+
+    public static void guardarHorariosEnBD(Connection conn, Local local, List<Horario> horarios) {
+
+        String sqlInsert = "INSERT INTO HORARIOS (IDLOCAL, DIA, HORAINICIO, HORAFIN) VALUES (?, ?, ?, ?)";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sqlInsert)) {
+            for (Horario horario : horarios) {
+                pstmt.setString(1, local.getId());
+                pstmt.setString(3, horario.getHoraInicio());
+                pstmt.setString(4, horario.getHoraFin());
+                pstmt.setString(2, String.valueOf(horario.getDia()));
+
+                pstmt.executeUpdate();
+            }
+            System.out.println("Horarios guardados exitosamente en la base de datos para Local "+ local.getNombre());
+        } catch (SQLException e) {
+            System.out.println("No se han podido guardar los horarios");
+            System.out.println(e.getMessage());
+        }
+    }
+    public static ArrayList<Horario> cargarHorariosLocal(Connection conn, Local local) {
+
+        ArrayList<Horario> horariosLocal = new ArrayList<>();
+        String sqlInsert = "SELECT * FROM HORARIOS WHERE IDLOCAL = ?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sqlInsert)) {
+            pstmt.setString(1, local.getId());
+            ResultSet rs = pstmt.executeQuery();
+
+            while (rs.next()) {
+                int dia = Integer.parseInt(rs.getString("DIA"));
+                String horaInicio = rs.getString("HORAINICIO");
+                String horaFin = rs.getString("HORAFIN");
+
+                Horario horario = new Horario(dia, horaInicio, horaFin);
+                horariosLocal.add(horario);
+            }
+            System.out.println("Horarios Cargados correctamente!");
+        } catch (SQLException e) {
+            System.out.println("No se han podido cargar los horarios");
+            System.out.println(e.getMessage());
+        }
+        return horariosLocal;
+    }
+    public static void actualizarHorariosLocal(Connection conn, Local local, ArrayList<Horario> horariosNuevos){
+        String sqlDelete = "DELETE from HORARIOS where IDLOCAL=?";
+        String sqlInsert = "INSERT into HORARIOS (idlocal, dia, horainicio, horafin) values (?, ?, ?, ?)";
+
+        try{
+            //Eliminamos primero
+            System.out.println(local.getId());
+            PreparedStatement deleteStmt = conn.prepareStatement(sqlDelete);
+            deleteStmt.setString(1, local.getId());
+            deleteStmt.executeUpdate();
+            System.out.println("Eliminado correctamente!");
+
+            //Insertamos nuevos
+            PreparedStatement insertstmt = conn.prepareStatement(sqlInsert);
+            for(Horario horario : horariosNuevos){
+                insertstmt.setString(1, local.getId());
+                insertstmt.setString(2, String.valueOf(horario.getDia()));
+                insertstmt.setString(3, horario.getHoraInicio());
+                insertstmt.setString(4, horario.getHoraFin());
+
+                insertstmt.executeUpdate();
+            }
+
+            System.out.println("Horarios actualizados para "+local.getId()+ " ("+local.getNombre()+")");
+
+        } catch (SQLException e) {
+            System.out.println("No se ha podido actualizar HORARIOS");
+            System.out.println(e.getMessage());
+        }
     }
 
     public static boolean guardarVisitaBD(Visita nuevaVisita, Cliente cliente) {
@@ -860,54 +935,7 @@ public class AlmacenDeDatos {
         return null;
     }
 
-    public static void guardarHorariosEnBD(Connection conn, Local local, List<Horario> horarios) {
 
-            String sqlInsert = "INSERT INTO HORARIOS (LOCALID, HORAINICIO, HORAFIN, DIA) VALUES (?, ?, ?, ?)";
-
-            try (PreparedStatement pstmt = conn.prepareStatement(sqlInsert)) {
-                for (Horario horario : horarios) {
-                    System.out.println(local.getId());
-                    System.out.println(horario.getHoraInicio());
-                    System.out.println(horario.getHoraFin());
-                    pstmt.setString(1, local.getId());
-                    pstmt.setString(2, horario.getHoraInicio());
-                    pstmt.setString(3, horario.getHoraFin());
-                    pstmt.setInt(4, horario.getDia());
-
-                    pstmt.executeUpdate();
-                }
-                System.out.println("Horarios guardados exitosamente en la base de datos para Local "+ local.getNombre());
-            } catch (SQLException e) {
-                e.printStackTrace();
-                System.out.println("No se han podido guardar los horarios");
-        }
-    }
-
-
-    /*    public static void subirCaracteristicasaBD() {
-        String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
-
-        try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
-            String sql = "INSERT INTO Caracteristicas (id, descripcion) VALUES (?, ?)";
-            PreparedStatement pstmt = conn.prepareStatement(sql);
-
-            // Iterar sobre los valores de la enumeración y realizar las inserciones
-            int id = 1; // ID inicial, puedes ajustarlo según tu lógica de asignación de IDs
-            for (Caracteristica caracteristica : Caracteristica.values()) {
-                pstmt.setInt(1, id);
-                pstmt.setString(2, caracteristica.name());
-                pstmt.addBatch(); // Agregar la operación de inserción al lote
-                id++; // Incrementar el ID para el siguiente elemento
-            }
-
-            // Ejecutar el lote de inserciones
-            pstmt.executeBatch();
-            System.out.println("Inserción exitosa de todas las características.");
-        } catch (SQLException e) {
-            System.out.println("Error al insertar las características: " + e.getMessage());
-        }
-    }
- */
     private static void descargarCaracteristicas(){
         String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
 
@@ -924,7 +952,7 @@ public class AlmacenDeDatos {
         } catch (SQLException e) {
             System.out.println("Error al descargar las características: " + e.getMessage());
         }
-    }
+    } //En array Caracteristicas se ponen todas las  que hay en BD
 
 
 

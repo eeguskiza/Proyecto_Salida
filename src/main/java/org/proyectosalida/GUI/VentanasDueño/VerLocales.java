@@ -182,6 +182,7 @@ public class VerLocales extends JFrame {
 
             String terraza = "";
 
+
             if(local.getClass().equals(Bar.class)){
                 if(((Bar) local).getTerraza()){
                     terraza = "SI";
@@ -197,12 +198,14 @@ public class VerLocales extends JFrame {
                         local.getMediaEdad(),
                         local.getPrecioMedio(),
                         local.getWeb(),
+
                         horario,
                         terraza,
                         "", //Los bares no tienen DJ's
                         "",
                         caracteristicas
                 };
+                System.out.println(local.getWeb());
                 modelo.addRow(nuevo);
                 almacen.getClasesDeLocales().add(Bar.class);
             }else if(local.getClass().equals(Discoteca.class)){

@@ -545,6 +545,8 @@ public class AlmacenDeDatos {
                     pstmt.setString(11, dueño.getId());
                 }
 
+                guardarHorariosEnBD(conn, local, local.getHorarios());
+
                 int filasInsertadas = pstmt.executeUpdate();
 
                 if (filasInsertadas > 0) {

@@ -145,8 +145,6 @@ public class Registro extends JFrame {
                 contraseña = String.valueOf(((JPasswordField) panelContraseña.getComponent(0)).getPassword());
                 System.out.println("Contraseña Oculta");
             }
-            System.out.println(contraseña);
-            System.out.println(confirmarContraseña);
 
             String telefono = ((JTextField) panel.getComponent(13)).getText();
             String correo = ((JTextField) panel.getComponent(15)).getText();

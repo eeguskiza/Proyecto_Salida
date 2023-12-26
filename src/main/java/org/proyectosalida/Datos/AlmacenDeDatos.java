@@ -523,7 +523,8 @@ public class AlmacenDeDatos {
                 bar.setTerraza(terraza);
                 bar.setCP(cp);
 
-                cargarCaracteristicasLocal(conn, bar);
+                ArrayList<Caracteristica> caracteristicas = cargarCaracteristicasLocal(conn, bar);
+                bar.setCaracteristicas(caracteristicas);
                 ArrayList<Horario> horariosLocal = cargarHorariosLocal(conn, bar);
                 bar.setHorarios(horariosLocal);
 
@@ -575,7 +576,8 @@ public class AlmacenDeDatos {
                 disco.setPrecioMedio(precioMedioDisco);
                 disco.setWeb(linkDisco);
 
-                cargarCaracteristicasLocal(conn, disco);
+                ArrayList<Caracteristica> caracteristicas = cargarCaracteristicasLocal(conn, disco);
+                disco.setCaracteristicas(caracteristicas);
                 ArrayList<Horario> horariosLocal = cargarHorariosLocal(conn, disco);
                 disco.setHorarios(horariosLocal);
 
@@ -595,10 +597,13 @@ public class AlmacenDeDatos {
         }
 
     }
-    public static void cargarCaracteristicasLocal(Connection conn, Local local){
+    public static ArrayList<Caracteristica> cargarCaracteristicasLocal(Connection conn, Local local){
         String id = local.getId();
         System.out.println(id);
-        String sql = "select * from caracteristicas_locales where id_local = ?";
+
+        ArrayList<Caracteristica> caracteristicas = new ArrayList<>();
+
+        String sql = "select * from caracteristicaslocales where idlocal = ?";
 
         ArrayList<String> idCaracteristicas = new ArrayList<>();
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -606,16 +611,15 @@ public class AlmacenDeDatos {
             ResultSet rs = pstmt.executeQuery();
 
             while (rs.next()) {
-                String idc = rs.getString("ID_CARACTERISTICA");
+                String idc = rs.getString("IDCARACTERISTICA");
                 idCaracteristicas.add(idc);
             }
+            System.out.println("ID's conseguidos!");
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println("No se pueden conseguir los id's de las Caract.");
+            System.out.println(e.getMessage());
         }
 
-        for(String value:idCaracteristicas){
-            System.out.println(value);
-        }
 
         for(String idCaracteristica : idCaracteristicas){
             String sql2 = "SELECT descripcion FROM caracteristicas WHERE ID = ?";
@@ -626,13 +630,17 @@ public class AlmacenDeDatos {
 
                 while (rs.next()) {
                     Caracteristica nueva = Caracteristica.valueOf(rs.getString("descripcion"));
-                    local.getCaracteristicas().add(nueva);
+                    caracteristicas.add(nueva);
                     System.out.println("Caracteristica añadida: "+nueva);
                 }
+
+                System.out.println("Caracteristicas añadidas al local!");
             } catch (SQLException e) {
-                e.printStackTrace();
+                System.out.println("No se pueden añadir las caracteristicas...");
+                System.out.println(e.getMessage());
             }
         }
+        return caracteristicas;
     }
     public static boolean actualizarDatosLocalBD(Local local) {
         String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";

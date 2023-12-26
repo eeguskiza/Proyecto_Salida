@@ -46,6 +46,11 @@ public class VentanaAddHorarios extends JFrame {
             MaskFormatter formatter = new MaskFormatter("##:##");
             formatter.setPlaceholderCharacter('_'); // Carácter para el espacio en blanco
 
+            //Miramos si el arraylist esta vacio en el caso de no haberlos iniciado en el registro
+            if(horarios.isEmpty()){
+                inicializarArrayHorarios(horarios); //ESto no deberia surgir ya que en registro es obligatorio hacerlo creo
+            }
+
             //Saco los horarios en caso de haberlos
             if(!esNuevoElHorario){
                 for(Horario horario : horarios){
@@ -169,6 +174,13 @@ public class VentanaAddHorarios extends JFrame {
         SimpleDateFormat formatter = new SimpleDateFormat("HH:mm");
         String formattedValue = formatter.format(spinner.getValue());
         return formattedValue;
+    }
+
+    private void inicializarArrayHorarios(ArrayList<Horario> horarios){
+        for(int i=1; i<8; i++){
+            Horario nuevo = new Horario(i, "12:00", "23:00");
+            horarios.add(nuevo);
+        }
     }
 
     public static void main(String[] args) {

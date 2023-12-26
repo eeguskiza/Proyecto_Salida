@@ -110,24 +110,25 @@ public class VentanaAddLocales extends JFrame {
                 Boolean terraza = null;
                 Local local;
 
-                if(bbar.isSelected()) {
-                    if(checkboxSi.isSelected()) {
+                if (bbar.isSelected()) {
+                    if (checkboxSi.isSelected()) {
                         terraza = true;
-                    } else if(checkboxNo.isSelected()) {
+                    } else if (checkboxNo.isSelected()) {
                         terraza = false;
                     } else {
                         JOptionPane.showMessageDialog(null, "Por favor, seleccione si el local tiene terraza o no.");
                         return;
                     }
                     local = new Bar(nombre, direccion, CP, aforo, telefono, mediaEdad, mediaPrecio, enlace, horarios, terraza, caracteristicasSelecionadas);
-                } else if(bdisco.isSelected()) {
+                } else if (bdisco.isSelected()) {
                     local = new Discoteca(nombre, direccion, CP, aforo, telefono, mediaEdad, mediaPrecio, enlace, horarios, djResidente, djInvitado, caracteristicasSelecionadas);
                 } else {
                     JOptionPane.showMessageDialog(null, "Por favor, seleccione un tipo de local.");
                     return;
                 }
 
-                boolean exito = local instanceof Bar ? almacenDeDatos.registrarBar(dueño, (Bar) local) : almacenDeDatos.registrarDicoteca(dueño, (Discoteca) local);
+                boolean exito = almacenDeDatos.guardarLocalNuevoBD(local, dueño);
+
                 if (exito) {
                     int respuesta = JOptionPane.showConfirmDialog(this, "¿Desea añadir más locales?", "Añadir más locales", JOptionPane.YES_NO_OPTION);
                     if (respuesta == JOptionPane.YES_OPTION) {
@@ -135,9 +136,7 @@ public class VentanaAddLocales extends JFrame {
                         new VentanaAddLocales(dueño, almacenDeDatos).setVisible(true);
                     } else {
                         this.dispose();
-                        // Aquí puedes agregar lógica adicional, como redirigir al usuario a otra pantalla
                         JOptionPane.showMessageDialog(this, "Proceso completado.", "Finalizado", JOptionPane.INFORMATION_MESSAGE);
-                        // Ejemplo: Mostrar la pantalla de inicio de sesión
                         new InicioSesion(null, almacenDeDatos).setVisible(true);
                     }
                 } else {
@@ -149,6 +148,7 @@ public class VentanaAddLocales extends JFrame {
                 JOptionPane.showMessageDialog(this, "Error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             }
         });
+
 
 
 

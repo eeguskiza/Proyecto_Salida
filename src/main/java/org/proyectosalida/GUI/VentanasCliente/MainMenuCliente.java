@@ -34,6 +34,8 @@ public class MainMenuCliente extends JFrame {
     private JLabel labelEncabezado;
     private ArrayList<Caracteristica> caracteristicasSeleccionadas;
     private Cliente usuario;
+    private ArrayList<Visita> VSR;
+    private DefaultTableModel modelo;
 
     public MainMenuCliente(AlmacenDeDatos almacenDeDatos, String url) {
         setTitle("Main Menu");
@@ -44,6 +46,7 @@ public class MainMenuCliente extends JFrame {
         caracteristicasSeleccionadas = new ArrayList<>();
         almacen = almacenDeDatos;
         usuario = (Cliente) almacen.getUsuarios().get(0);
+        VSR = new ArrayList<>();
 
         // Panel para el botón del menú
         JPanel panelMenu = new JPanel(new BorderLayout());
@@ -194,7 +197,7 @@ public class MainMenuCliente extends JFrame {
         JPanel panel3ReviewsPendientes = new JPanel(new BorderLayout());
         panel3ReviewsPendientes.setBackground(Color.yellow);
 
-        DefaultTableModel modelo = new DefaultTableModel();
+        modelo = new DefaultTableModel();
         JTable tablaReviewsPendientes = new JTable(modelo){
             @Override
             public boolean isCellEditable(int row, int column) {
@@ -205,19 +208,22 @@ public class MainMenuCliente extends JFrame {
         JScrollPane scrollReviews = new JScrollPane(tablaReviewsPendientes);
         modelo.setColumnIdentifiers(new Object[]{"LOCAL", "FECHA"});
 
-        int vsr = llenarTablaConReviewsPendientes(modelo, tablaReviewsPendientes);
+
+        int vsr = llenarTablaConReviewsPendientes();
         if(vsr>0){
             panel3ReviewsPendientes.add(new JLabel("TUS REVIEWS PENDIENTES:"), BorderLayout.NORTH);
             panel3ReviewsPendientes.add(scrollReviews, BorderLayout.CENTER);
         }else{
-            panel3ReviewsPendientes.add(new JLabel("FELICIDADES, NO TIENES REVIEWS PENDIENTES!"));
+            panel3ReviewsPendientes.add(new JLabel("FELICIDADES, NO TIENES REVIEWS PENDIENTES!"), BorderLayout.NORTH);
         }
 
         tablaReviewsPendientes.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 if(e.getClickCount() ==2){ //DOBLE CLICK ES PARA PODER RELLENAR LA REVIEW
-
+                    int row = tablaReviewsPendientes.rowAtPoint(e.getPoint());
+                    Visita visitaseleccionada = VSR.get(row);
+                    new RegistrarValoracion(visitaseleccionada, almacen, getThis());
                 }
             }
         });
@@ -229,7 +235,8 @@ public class MainMenuCliente extends JFrame {
         this.setVisible(true);
     }
 
-    private Integer llenarTablaConReviewsPendientes(DefaultTableModel modelo, JTable tabla){
+    private Integer llenarTablaConReviewsPendientes(){
+
         int vsr=0;
         int vt =0;
         for(Visita visita : usuario.getVisitas()){
@@ -237,14 +244,17 @@ public class MainMenuCliente extends JFrame {
             if(visita.getValoracion() == null){
                 Object[] row = {visita.getLocal().getNombre().toUpperCase(), visita.getFecha()};
                 modelo.addRow(row);
+                VSR.add(visita);
                 vsr++;
             }
         }
         System.out.println("VT: "+vt);
         System.out.println("VSR: "+vsr);
-        tabla.revalidate();
-        tabla.repaint();
         return vsr;
+    }
+
+    private MainMenuCliente getThis(){
+        return this;
     }
 
     @Override
@@ -323,4 +333,10 @@ public class MainMenuCliente extends JFrame {
         });
     }
 
+    public void recargarTablaReview() {
+        //Borrar toda la tabla
+        modelo.setRowCount(0);
+        //Volver a cargar la tabla
+        llenarTablaConReviewsPendientes();
+    }
 }

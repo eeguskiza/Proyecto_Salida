@@ -115,27 +115,30 @@ public class VentLocalesRecomendados extends JFrame {
                     if(diaSemanaSelec == -1){
                         diaSemanaSelec=6;
                     }
-                    Horario horario = localRow.getHorarios().get(diaSemanaSelec);
-                    int horaActual = calendario.get(Calendar.HOUR_OF_DAY); //Solo la hora en 24h
-                    int minutoActual = calendario.get(Calendar.MINUTE);
-                    String[] partesHoraInicio = horario.getHoraInicio().split(":");
-                    int horaApertura = Integer.parseInt(partesHoraInicio[0]);
-                    int minApertura = Integer.parseInt(partesHoraInicio[1]);
-                    String[] partesHoraFin = horario.getHoraFin().split(":");
-                    int horaCierre = Integer.parseInt(partesHoraFin[0]);
-                    int minCierre = Integer.parseInt(partesHoraFin[1]);
+                    if(localRow.getHorarios().size()>0){
+                        Horario horario = localRow.getHorarios().get(diaSemanaSelec);
+                        int horaActual = calendario.get(Calendar.HOUR_OF_DAY); //Solo la hora en 24h
+                        int minutoActual = calendario.get(Calendar.MINUTE);
+                        String[] partesHoraInicio = horario.getHoraInicio().split(":");
+                        int horaApertura = Integer.parseInt(partesHoraInicio[0]);
+                        int minApertura = Integer.parseInt(partesHoraInicio[1]);
+                        String[] partesHoraFin = horario.getHoraFin().split(":");
+                        int horaCierre = Integer.parseInt(partesHoraFin[0]);
+                        int minCierre = Integer.parseInt(partesHoraFin[1]);
 
-                    boolean estaAbierto = false;
-                    if ((horaApertura < horaActual && horaActual < horaCierre) || (horaActual > horaCierre && horaCierre < horaApertura)) {
-                        estaAbierto = true;
-                    }
+                        boolean estaAbierto = false;
+                        if ((horaApertura < horaActual && horaActual < horaCierre) || (horaActual > horaCierre && horaCierre < horaApertura)) {
+                            estaAbierto = true;
+                        }
 
-                    if(estaAbierto){
-                        texto.setText("<html><font color='green'>ABIERTO</font> (hasta " + horario.getHoraFin() + ")</html>");
+                        if(estaAbierto){
+                            texto.setText("<html><font color='green'>ABIERTO</font> (hasta " + horario.getHoraFin() + ")</html>");
+                        }else{
+                            texto.setText("<html><font color='red'>CERRADO</font> (" + horario.getHoraInicio() + ")</html>");
+                        }
                     }else{
-                        texto.setText("<html><font color='red'>CERRADO</font> (" + horario.getHoraInicio() + ")</html>");
+                        texto.setText("NO HORARIOS");
                     }
-
                     return texto;
                 }
 

@@ -867,6 +867,29 @@ public class AlmacenDeDatos {
             e.printStackTrace();
         }
     }
+    public static void actualizarValoracionVisita(String idVisita, String valoracion) {
+        String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
+
+        try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
+            String sql = "UPDATE VISITA SET VALORACION = ? WHERE ID = ?";
+
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                    pstmt.setString(1, valoracion);
+                    pstmt.setString(2, idVisita);
+
+                int filasActualizadas = pstmt.executeUpdate();
+
+                if (filasActualizadas > 0) {
+                    System.out.println("Valoracion actualizada!");
+                } else {
+                    System.out.println("No se pudo actualizar la valoracion");
+                }
+
+                }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+    }
 
     private static Bar buscarBarPorId(Connection conn, String id) throws SQLException {
         String sqlBar = "SELECT * FROM bar WHERE ID = ?";
@@ -935,48 +958,6 @@ public class AlmacenDeDatos {
         }
         return null;
     }
-
-    /*public ArrayList<Visita> getVisitasSinReview(Cliente cliente){
-        ArrayList<Visita> visitasSinReview = new ArrayList<>();
-
-        String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
-
-        try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
-            String sql = "SELECT * FROM VISITA WHERE CLIENTEID = ? AND VALORACION IS NULL";
-            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setString(1, cliente.getId());
-
-                ResultSet rs = pstmt.executeQuery();
-                while(rs.next()){
-                    Visita nueva = new Visita();
-                    nueva.setId(rs.getString("ID"));
-                    nueva.setClienteID(rs.getString("clienteid"));
-                    nueva.setFecha(transformarStringADate(rs.getString("fecha")));
-                    //nueva.setHora();
-                    //nueva.setLocal();
-                    String idLocal = rs.getString("LOCALID");
-                    Bar bar = buscarBarPorId(conn, idLocal);
-                    if(bar!=null){
-                        nueva.setLocal(bar);
-                    }else{
-                        Discoteca disco = buscarDiscotecaPorId(conn, idLocal);
-                        if(disco!=null){
-                            nueva.setLocal(disco);
-                        }else{
-                            System.out.println("NO SE PUEDE ENCONTRAR EL LOCAL CON ESE ID EN LA BD: "+idLocal);
-                        }
-                    }
-
-                    visitasSinReview.add(nueva);
-                }
-            }
-            System.out.println("VISITAS SIN REVIEW CARGADAS");
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
-
-        return visitasSinReview;
-    }*/
 
 
     private static void descargarCaracteristicas(){

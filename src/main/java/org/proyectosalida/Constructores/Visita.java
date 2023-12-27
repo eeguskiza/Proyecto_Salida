@@ -22,6 +22,7 @@ public class Visita {
         this.valoracion = "";
     }
 
+
     public Visita(String clienteID, Local local, Date fecha, String hora, String valoracion) {
         this.id = generarId(local.getNombre(), clienteID);
         this.clienteID = clienteID;

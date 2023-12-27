@@ -850,15 +850,18 @@ public class AlmacenDeDatos {
                 Bar bar = buscarBarPorId(conn, localId);
                 if (bar != null) {
                     visita.setLocal(bar);
+                    cliente.getVisitas().add(visita);
                 } else {
                     Discoteca disco = buscarDiscotecaPorId(conn, localId);
                     if (disco != null) {
                         visita.setLocal(disco);
+                        cliente.getVisitas().add(visita);
                     } else {
-                        System.out.println("Local no encontrado para ID: " + localId);
+                        System.out.println("Local no encontrado para ID: " + localId+". Evitandolo...");
+                        //visita.setLocal(new Bar("NotFound/Removed", "", "", 0, "", 0,0, "", null, false, null));
                     }
                 }
-                cliente.getVisitas().add(visita);
+
             }
         } catch (SQLException e) {
             e.printStackTrace();
@@ -932,6 +935,48 @@ public class AlmacenDeDatos {
         }
         return null;
     }
+
+    /*public ArrayList<Visita> getVisitasSinReview(Cliente cliente){
+        ArrayList<Visita> visitasSinReview = new ArrayList<>();
+
+        String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
+
+        try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
+            String sql = "SELECT * FROM VISITA WHERE CLIENTEID = ? AND VALORACION IS NULL";
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, cliente.getId());
+
+                ResultSet rs = pstmt.executeQuery();
+                while(rs.next()){
+                    Visita nueva = new Visita();
+                    nueva.setId(rs.getString("ID"));
+                    nueva.setClienteID(rs.getString("clienteid"));
+                    nueva.setFecha(transformarStringADate(rs.getString("fecha")));
+                    //nueva.setHora();
+                    //nueva.setLocal();
+                    String idLocal = rs.getString("LOCALID");
+                    Bar bar = buscarBarPorId(conn, idLocal);
+                    if(bar!=null){
+                        nueva.setLocal(bar);
+                    }else{
+                        Discoteca disco = buscarDiscotecaPorId(conn, idLocal);
+                        if(disco!=null){
+                            nueva.setLocal(disco);
+                        }else{
+                            System.out.println("NO SE PUEDE ENCONTRAR EL LOCAL CON ESE ID EN LA BD: "+idLocal);
+                        }
+                    }
+
+                    visitasSinReview.add(nueva);
+                }
+            }
+            System.out.println("VISITAS SIN REVIEW CARGADAS");
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return visitasSinReview;
+    }*/
 
 
     private static void descargarCaracteristicas(){

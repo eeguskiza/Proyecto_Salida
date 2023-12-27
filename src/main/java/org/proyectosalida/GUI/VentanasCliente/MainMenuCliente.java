@@ -1,6 +1,8 @@
 package org.proyectosalida.GUI.VentanasCliente;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -12,11 +14,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import com.toedter.calendar.JCalendar;
-import org.proyectosalida.Constructores.Caracteristica;
-import org.proyectosalida.Constructores.Local;
-import org.proyectosalida.Constructores.Salida;
+import org.proyectosalida.Constructores.*;
 import org.proyectosalida.Datos.AlmacenDeDatos;
-import org.proyectosalida.Constructores.Cliente;
 import com.formdev.flatlaf.*;
 import com.teamdev.jxbrowser.browser.Browser;
 import com.teamdev.jxbrowser.engine.Engine;
@@ -34,6 +33,7 @@ public class MainMenuCliente extends JFrame {
     public AlmacenDeDatos almacen;
     private JLabel labelEncabezado;
     private ArrayList<Caracteristica> caracteristicasSeleccionadas;
+    private Cliente usuario;
 
     public MainMenuCliente(AlmacenDeDatos almacenDeDatos, String url) {
         setTitle("Main Menu");
@@ -43,7 +43,7 @@ public class MainMenuCliente extends JFrame {
         setLayout(new BorderLayout());
         caracteristicasSeleccionadas = new ArrayList<>();
         almacen = almacenDeDatos;
-        Cliente usuario = almacen.getCliente();
+        usuario = (Cliente) almacen.getUsuarios().get(0);
 
         // Panel para el botón del menú
         JPanel panelMenu = new JPanel(new BorderLayout());
@@ -90,7 +90,7 @@ public class MainMenuCliente extends JFrame {
                 System.out.println("El usuario quiere salir hoy: " + fechaHoy);
 
                 Salida salida = new Salida((Cliente) almacen.getUsuarios().get(0), almacen.getCaracteristicas(), fechaHoy, null);
-                System.out.println(salida.toString());
+                //System.out.println(salida.toString());
                 VentSelectCarac v = new VentSelectCarac(caracteristicasSeleccionadas, false, almacenDeDatos, salida); //Le paso la salida para obtener los valores en la tabla de elecciones tambien
             } else if (opcion == JOptionPane.NO_OPTION) {
                 JCalendar calendar = new JCalendar();
@@ -165,7 +165,6 @@ public class MainMenuCliente extends JFrame {
         // Añadir la etiqueta al panel en la parte superior (Norte)
         panel1Encuesta.add(labelEncabezado, BorderLayout.NORTH);
 
-
         // Panel para contener las encuestas con un GridLayout para 6 elementos
         int rows = 0;
         if(almacenDeDatos.getLocales().size() > 6){
@@ -191,14 +190,61 @@ public class MainMenuCliente extends JFrame {
         JPanel panel2Reviews = new JPanel();
         panel2Reviews.setBackground(Color.pink);
 
-        //PANEL 3 - PROMOCIONES
-        JPanel panel3Promociones = new JPanel();
-        panel3Promociones.setBackground(Color.yellow);
+        //PANEL 3 - REVIEWS PENDIENTES
+        JPanel panel3ReviewsPendientes = new JPanel(new BorderLayout());
+        panel3ReviewsPendientes.setBackground(Color.yellow);
 
-        bottomPanel.add(panel1Encuesta); bottomPanel.add(panel2Reviews); bottomPanel.add(panel3Promociones);
+        DefaultTableModel modelo = new DefaultTableModel();
+        JTable tablaReviewsPendientes = new JTable(modelo){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        tablaReviewsPendientes.setRowHeight(35);
+        JScrollPane scrollReviews = new JScrollPane(tablaReviewsPendientes);
+        modelo.setColumnIdentifiers(new Object[]{"LOCAL", "FECHA"});
+
+        int vsr = llenarTablaConReviewsPendientes(modelo, tablaReviewsPendientes);
+        if(vsr>0){
+            panel3ReviewsPendientes.add(new JLabel("TUS REVIEWS PENDIENTES:"), BorderLayout.NORTH);
+            panel3ReviewsPendientes.add(scrollReviews, BorderLayout.CENTER);
+        }else{
+            panel3ReviewsPendientes.add(new JLabel("FELICIDADES, NO TIENES REVIEWS PENDIENTES!"));
+        }
+
+        tablaReviewsPendientes.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(e.getClickCount() ==2){ //DOBLE CLICK ES PARA PODER RELLENAR LA REVIEW
+
+                }
+            }
+        });
+
+
+        bottomPanel.add(panel1Encuesta); bottomPanel.add(panel2Reviews); bottomPanel.add(panel3ReviewsPendientes);
 
         // Set the frame visible
         this.setVisible(true);
+    }
+
+    private Integer llenarTablaConReviewsPendientes(DefaultTableModel modelo, JTable tabla){
+        int vsr=0;
+        int vt =0;
+        for(Visita visita : usuario.getVisitas()){
+            vt++;
+            if(visita.getValoracion() == null){
+                Object[] row = {visita.getLocal().getNombre().toUpperCase(), visita.getFecha()};
+                modelo.addRow(row);
+                vsr++;
+            }
+        }
+        System.out.println("VT: "+vt);
+        System.out.println("VSR: "+vsr);
+        tabla.revalidate();
+        tabla.repaint();
+        return vsr;
     }
 
     @Override

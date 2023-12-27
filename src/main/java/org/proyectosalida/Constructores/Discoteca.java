@@ -34,6 +34,14 @@ public class Discoteca extends Local {
 
     @Override
     public String toString() {
+        String djresi = "";
+        if(djResidente != null){
+            djresi = djResidente.getNombre();
+        }
+        String djinvi = "";
+        if(djInvitado != null){
+            djinvi = djInvitado.getNombre();
+        }
         return "Discoteca {" +
                 "\n\tID: '" + id + '\'' +
                 "\n\tNombre: '" + nombre + '\'' +
@@ -44,8 +52,8 @@ public class Discoteca extends Local {
                 "\n\tPrecio Medio: " + PrecioMedio +
                 "\n\tWeb: '" + web + '\'' +
                 "\n\tHorarios: " + horarios +
-                "\n\tDJ Residente: '" + djResidente.getNombre() + '\'' +
-                "\n\tDJ Invitado: '" + djInvitado.getNombre() + '\'' +
+                "\n\tDJ Residente: '" + djresi + '\'' +
+                "\n\tDJ Invitado: '" + djinvi + '\'' +
                 "\n}"+"\n\tWeb: '" + web + '\''+"\n\tcarcateristicas: "+caracteristicas;
     }
 

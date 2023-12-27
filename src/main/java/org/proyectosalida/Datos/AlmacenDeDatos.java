@@ -546,6 +546,7 @@ public class AlmacenDeDatos {
                 }
 
                 guardarHorariosEnBD(conn, local, local.getHorarios());
+                guardarCaracteristicasLocal(conn, local);
 
                 int filasInsertadas = pstmt.executeUpdate();
 
@@ -591,6 +592,7 @@ public class AlmacenDeDatos {
                 }
 
                 actualizarHorariosLocal(conn, local, local.getHorarios());
+                actualizarCaracteristicasLocal(conn, local);
 
                 int filasActualizadas = pstmt.executeUpdate();
 
@@ -655,10 +657,67 @@ public class AlmacenDeDatos {
         return caracteristicas;
     }
     public static void guardarCaracteristicasLocal(Connection conn, Local local){
+        String sqlGetID = "SELECT id FROM CARACTERISTICAS where DESCRIPCION = ?";
+        ArrayList<String> IDCaracts = new ArrayList<>();
 
+        for(Caracteristica caracteristica:local.getCaracteristicas()){
+            System.out.println(caracteristica.toString());
+            try (PreparedStatement pstmt = conn.prepareStatement(sqlGetID)) {
+                pstmt.setString(1, caracteristica.toString());
+                ResultSet rs = pstmt.executeQuery();
+
+                while (rs.next()) {
+                    IDCaracts.add(rs.getString("ID"));
+                }
+
+                System.out.println("ID's encontrados...");
+            } catch (SQLException e) {
+                System.out.println("No se pueden encontrar los ID's de las caracteristicas seleccionadas");
+                System.out.println(e.getMessage());
+            }
+        }
+
+        String sqlInsert = "INSERT into CARACTERISTICASLOCALES (idlocal, idcaracteristica) VALUES (?, ?)";
+        for(String idc : IDCaracts){
+            try (PreparedStatement pstmt = conn.prepareStatement(sqlInsert)) {
+                pstmt.setString(1, local.getId());
+                pstmt.setString(2, idc);
+
+                int filasInsertadas = pstmt.executeUpdate();
+
+                if (filasInsertadas > 0) {
+                    System.out.println("Caracteristica añadida en BD.");
+                } else {
+                    System.out.println("No se pudo añadir la nueva caracteristica en BD.");
+                }
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
     }
-    public static void actualizarCaracteristicasLocal(Connection conn, Local local, ArrayList<Caracteristica> caracteristicasNuevas){
+    public static void actualizarCaracteristicasLocal(Connection conn, Local local) {
+        //BORRAR TODAS LAS CARACT EN TABLA CON ID DEL LOCAL
+        String sqlBorrar = "DELETE from CARACTERISTICASLOCALES where IDLOCAL=?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sqlBorrar)){
+            pstmt.setString(1, local.getId());
 
+            int filasInsertadas = pstmt.executeUpdate();
+
+            if (filasInsertadas > 0) {
+                System.out.println("Caracteristica antigua Borrada.");
+            } else {
+                System.out.println("No se pudo borrar la caracteristica antigua.");
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        //AÑADIR LAS NUEVAS
+        try{
+            guardarCaracteristicasLocal(conn, local);
+        }catch(Exception e){
+            System.out.println("No se pueden actualizar: "+ e.getMessage());
+        }
     }
 
 

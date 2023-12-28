@@ -1,6 +1,8 @@
 package org.proyectosalida.GUI.VentanasCliente;
 
 import javax.swing.*;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
@@ -159,17 +161,27 @@ public class MainMenuCliente extends JFrame {
 
         bottomPanel.setLayout(new GridLayout(1,3));
 
+
+        Border bordeInterno = BorderFactory.createEmptyBorder(5, 15, 5, 15);
+        Border bordeExterno = BorderFactory.createEmptyBorder(20, 10, 10, 10);
+        Border bordeUltraextremo = BorderFactory.createEmptyBorder(5, 5, 5, 5);
+        Color colorExterno = new Color(183, 183, 183);
+        int sizeTitulos = 15;
+
+
         //PANEL 1 - ENCUESTAS
         // Panel para las encuestas
-        JPanel panel1Encuesta = new JPanel(new BorderLayout());
+        JPanel panel1Encuesta = new JPanel(new BorderLayout()); panel1Encuesta.setBorder(bordeUltraextremo);
+        JPanel p1 = new JPanel(new BorderLayout()); panel1Encuesta.add(p1, BorderLayout.CENTER);
+        p1.setBorder(bordeExterno);
+        p1.setBackground(colorExterno);
         // Crear la etiqueta y configurar el texto centrado
-        labelEncabezado = new JLabel("¿A dónde sales hoy tú?");
-        labelEncabezado.setFont(new Font("Arial", Font.BOLD, 20));
-
+        labelEncabezado = new JLabel("SAL Y DESCUBLE QUE HACE EL RESTO...");
+        labelEncabezado.setFont(new Font("Arial", Font.BOLD, sizeTitulos));
         labelEncabezado.setHorizontalAlignment(SwingConstants.CENTER);
 
         // Añadir la etiqueta al panel en la parte superior (Norte)
-        panel1Encuesta.add(labelEncabezado, BorderLayout.NORTH);
+        p1.add(labelEncabezado, BorderLayout.NORTH);
 
         // Panel para contener las encuestas con un GridLayout para 6 elementos
         int rows = 0;
@@ -179,7 +191,9 @@ public class MainMenuCliente extends JFrame {
             rows = almacenDeDatos.getLocales().size();
         }
         JPanel pEncuesta = new JPanel(new GridLayout(rows, 1)); // 6 filas, 1 columna
-        panel1Encuesta.add(pEncuesta, BorderLayout.WEST);
+
+        pEncuesta.setBorder(bordeInterno);
+        p1.add(pEncuesta, BorderLayout.CENTER);
 
         for(int i=0; i<rows; i++){
             pEncuesta.add(crearPanelEncuesta(almacen.getLocales().get(i), 10));
@@ -193,8 +207,10 @@ public class MainMenuCliente extends JFrame {
 
 
         //PANEL 2 - REVIEWS
-        JPanel panel2Reviews = new JPanel(new BorderLayout());
-        panel2Reviews.setBackground(Color.pink);
+        JPanel panel2Reviews = new JPanel(new BorderLayout()); panel2Reviews.setBorder(bordeUltraextremo);
+        JPanel p2 = new JPanel(new BorderLayout()); panel2Reviews.add(p2, BorderLayout.CENTER);
+        p2.setBorder(bordeExterno);
+        p2.setBackground(colorExterno);
         ArrayList<Visita> visitasConValoracion = new ArrayList<>();
         String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
 
@@ -206,8 +222,11 @@ public class MainMenuCliente extends JFrame {
             System.out.println(e.getMessage());
         }
 
-        panel2Reviews.add(new JLabel("ÚLTIMAS REVIEWS PUBLICADAS:"), BorderLayout.NORTH);
-        JPanel panelGrid = new JPanel(new GridLayout(8,1)); panel2Reviews.add(panelGrid, BorderLayout.CENTER);
+        JLabel labelEncabezado2 = new JLabel("ÚLTIMAS REVIEWS PUBLICADAS:"); p2.add(labelEncabezado2, BorderLayout.NORTH);
+        labelEncabezado2.setFont(new Font("Arial", Font.BOLD, sizeTitulos));
+        labelEncabezado2.setHorizontalAlignment(SwingConstants.CENTER);
+        JPanel panelGrid = new JPanel(new GridLayout(8,1)); p2.add(panelGrid, BorderLayout.CENTER);
+        panelGrid.setBorder(bordeInterno);
         if(visitasConValoracion.size()>0){
             for(int i=0; i<3; i++){
                 Visita visita = visitasConValoracion.get(i);
@@ -223,8 +242,10 @@ public class MainMenuCliente extends JFrame {
 
 
         //PANEL 3 - REVIEWS PENDIENTES
-        JPanel panel3ReviewsPendientes = new JPanel(new BorderLayout());
-        panel3ReviewsPendientes.setBackground(Color.yellow);
+        JPanel panel3ReviewsPendientes = new JPanel(new BorderLayout()); panel3ReviewsPendientes.setBorder(bordeUltraextremo);
+        JPanel p3 = new JPanel(new BorderLayout()); panel3ReviewsPendientes.add(p3, BorderLayout.CENTER);
+        p3.setBorder(bordeExterno);
+        p3.setBackground(colorExterno);
 
         modelo = new DefaultTableModel();
         JTable tablaReviewsPendientes = new JTable(modelo){
@@ -233,18 +254,24 @@ public class MainMenuCliente extends JFrame {
                 return false;
             }
         };
+        tablaReviewsPendientes.setBorder(bordeInterno);
         tablaReviewsPendientes.setRowHeight(35);
         JScrollPane scrollReviews = new JScrollPane(tablaReviewsPendientes);
         modelo.setColumnIdentifiers(new Object[]{"LOCAL", "FECHA"});
 
 
         int vsr = llenarTablaConReviewsPendientes();
+        JLabel labelEncabezado3 = null;
         if(vsr>0){
-            panel3ReviewsPendientes.add(new JLabel("TUS REVIEWS PENDIENTES:"), BorderLayout.NORTH);
-            panel3ReviewsPendientes.add(scrollReviews, BorderLayout.CENTER);
+            labelEncabezado3 = new JLabel("TUS REVIEWS PENDIENTES:");
+            p3.add(scrollReviews, BorderLayout.CENTER);
         }else{
-            panel3ReviewsPendientes.add(new JLabel("FELICIDADES, NO TIENES REVIEWS PENDIENTES!"), BorderLayout.NORTH);
+            labelEncabezado3 = new JLabel("FELICIDADES, NO TIENES REVIEWS PENDIENTES!");
         }
+        p3.add(labelEncabezado3, BorderLayout.NORTH);
+        labelEncabezado3.setFont(new Font("Arial", Font.BOLD, sizeTitulos));
+        labelEncabezado3.setHorizontalAlignment(SwingConstants.CENTER);
+
 
         tablaReviewsPendientes.addMouseListener(new MouseAdapter() {
             @Override
@@ -259,6 +286,7 @@ public class MainMenuCliente extends JFrame {
 
 
         bottomPanel.add(panel1Encuesta); bottomPanel.add(panel2Reviews); bottomPanel.add(panel3ReviewsPendientes);
+        //bottomPanel.setBorder(bordeUltraextremo);
 
         // Set the frame visible
         this.setVisible(true);
@@ -314,7 +342,6 @@ public class MainMenuCliente extends JFrame {
         String id = local.getId();
         panel.add(new JLabel(nombre));
         JProgressBar progressBar = new JProgressBar(0, maxValor);
-        System.out.println(id);
         progressBar.setValue(almacen.getValoresVotaciones().get(id));
 
         progressBar.setPreferredSize(new Dimension(150, 20));

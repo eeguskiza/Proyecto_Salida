@@ -5,6 +5,7 @@ import org.proyectosalida.Datos.AlmacenDeDatos;
 import org.proyectosalida.GUI.Salida2.MainMenuDuenio;
 import org.proyectosalida.GUI.VentanasCliente.MainMenuCliente;
 import org.proyectosalida.GUI.VentanasDueño.VerLocales;
+import org.proyectosalida.GUI.*;
 import org.proyectosalida.Datos.Credenciales;
 
 import javax.swing.*;
@@ -122,8 +123,13 @@ public class InicioSesion extends JFrame {
             boolean esDueño = rbtnDueño.isSelected();
 
             // Muestra un mensaje de carga
+            /*
             JOptionPane mensajeCarga = new JOptionPane("Verificando credenciales...", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{}, null);
             JDialog dialog = mensajeCarga.createDialog("Cargando");
+
+             */
+
+            CustomOptionPaneLogin customOptionPaneLogin = new CustomOptionPaneLogin();
 
             // SwingWorker para manejar la operación en segundo plano
             SwingWorker<Boolean, Void> worker = new SwingWorker<>() {
@@ -140,10 +146,11 @@ public class InicioSesion extends JFrame {
                 protected void done() {
                     try {
                         boolean exito = get();
-                        dialog.dispose();
+                        //dialog.dispose();
+                        customOptionPaneLogin.dispose();
                         if (exito) {
-                            String mensaje = esDueño ? "Inicio de sesión exitoso como Dueño." : "Inicio de sesión exitoso como Cliente.";
-                            JOptionPane.showMessageDialog(InicioSesion.this, mensaje);
+                            //String mensaje = esDueño ? "Inicio de sesión exitoso como Dueño." : "Inicio de sesión exitoso como Cliente.";
+                            //JOptionPane.showMessageDialog(InicioSesion.this, mensaje);
                             if (esDueño) {
                                 new VerLocales(dueño, almacenDeDatos).setVisible(true);
                             } else {
@@ -160,7 +167,8 @@ public class InicioSesion extends JFrame {
             };
 
             worker.execute();
-            dialog.setVisible(true);
+            //dialog.setVisible(true);
+            customOptionPaneLogin.show();
         });
 
 

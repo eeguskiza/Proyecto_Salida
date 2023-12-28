@@ -8,6 +8,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
@@ -190,8 +193,32 @@ public class MainMenuCliente extends JFrame {
 
 
         //PANEL 2 - REVIEWS
-        JPanel panel2Reviews = new JPanel();
+        JPanel panel2Reviews = new JPanel(new BorderLayout());
         panel2Reviews.setBackground(Color.pink);
+        ArrayList<Visita> visitasConValoracion = new ArrayList<>();
+        String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
+
+                //Conexion tontorrona para sacar todas las visitas con reviews
+        try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
+            visitasConValoracion = almacen.cargarVisitasCliente(conn, null); //CLIENTE EN NULL == SE DESCARGA TODAS LAS VISITAS CON REVIEWS
+            //FALTA CARGAR TODOS LOS OBJ USUARIOS DE LAS VISITAS PARA SACAR EL NOMBRE
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+
+        panel2Reviews.add(new JLabel("ÚLTIMAS REVIEWS PUBLICADAS:"), BorderLayout.NORTH);
+        JPanel panelGrid = new JPanel(new GridLayout(8,1)); panel2Reviews.add(panelGrid, BorderLayout.CENTER);
+        for(int i=0; i<3; i++){
+            Visita visita = visitasConValoracion.get(i);
+            panelGrid.add(new JLabel("NombreUsuario para "+visita.getLocal().getNombre().toUpperCase()+":"));
+            panelGrid.add(new JLabel(visita.getValoracion()));
+            if(i!=2){
+                panelGrid.add(new JPanel());
+            }
+        }
+
+
+
 
         //PANEL 3 - REVIEWS PENDIENTES
         JPanel panel3ReviewsPendientes = new JPanel(new BorderLayout());

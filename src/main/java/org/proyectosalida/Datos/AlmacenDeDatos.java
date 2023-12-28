@@ -824,11 +824,20 @@ public class AlmacenDeDatos {
 
         return false;
     }
-    public static void cargarVisitasCliente(Connection conn, Cliente cliente) {
-        String sql = "SELECT * FROM visita WHERE CLIENTEID = ?";
+    public static ArrayList<Visita> cargarVisitasCliente(Connection conn, Cliente cliente) {
+       String sql = "";
+        if(cliente == null){
+            sql = "SELECT * FROM VISITA WHERE VALORACION IS NOT NULL"; //Para pillar todas las visitas
+        }else{
+            sql = "SELECT * FROM visita WHERE CLIENTEID = ?";
+        }
+
+        ArrayList<Visita> visitasConValoracion = new ArrayList<>();
 
         try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, cliente.getId());
+            if(cliente != null){
+                pstmt.setString(1, cliente.getId());
+            }
 
             ResultSet rs = pstmt.executeQuery();
 
@@ -850,22 +859,38 @@ public class AlmacenDeDatos {
                 Bar bar = buscarBarPorId(conn, localId);
                 if (bar != null) {
                     visita.setLocal(bar);
-                    cliente.getVisitas().add(visita);
+                    if(cliente != null){
+                        cliente.getVisitas().add(visita);
+                    }else{
+                        visitasConValoracion.add(visita);
+                    }
                 } else {
                     Discoteca disco = buscarDiscotecaPorId(conn, localId);
                     if (disco != null) {
                         visita.setLocal(disco);
-                        cliente.getVisitas().add(visita);
+                        if(cliente != null){
+                            cliente.getVisitas().add(visita);
+                        }else{
+                            visitasConValoracion.add(visita);
+                        }
                     } else {
-                        System.out.println("Local no encontrado para ID: " + localId+". Evitandolo...");
+                        System.out.println("Local no encontrado para ID: " + localId + ". Evitandolo...");
                         //visita.setLocal(new Bar("NotFound/Removed", "", "", 0, "", 0,0, "", null, false, null));
                     }
                 }
 
             }
+            System.out.println("Visitas descargadas!");
         } catch (SQLException e) {
             e.printStackTrace();
         }
+
+        if(cliente == null){
+            return visitasConValoracion;
+        }else{
+            return null;
+        }
+
     }
     public static void actualizarValoracionVisita(String idVisita, String valoracion) {
         String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
@@ -956,6 +981,14 @@ public class AlmacenDeDatos {
                 return disco;
             }
         }
+        return null;
+    }
+
+
+
+   //TODO HACER ESTO CUANDO HAYAMOS JUNTADO LAS DOS TABLAS EN LA BD EN UNA SOLA
+    public static Usuario buscarUsuarioPorId(Connection conn, String id){
+
         return null;
     }
 

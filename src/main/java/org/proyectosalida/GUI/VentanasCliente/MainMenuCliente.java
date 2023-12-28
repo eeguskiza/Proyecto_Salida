@@ -314,6 +314,7 @@ public class MainMenuCliente extends JFrame {
         String id = local.getId();
         panel.add(new JLabel(nombre));
         JProgressBar progressBar = new JProgressBar(0, maxValor);
+        System.out.println(id);
         progressBar.setValue(almacen.getValoresVotaciones().get(id));
 
         progressBar.setPreferredSize(new Dimension(150, 20));

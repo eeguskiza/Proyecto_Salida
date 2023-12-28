@@ -21,12 +21,12 @@ public class AlmacenDeDatos {
     private boolean esCliente;
 
 //Listas
-    public HashMap<String, Integer> valoresVotaciones; //id, num
+    public static HashMap<String, Integer> valoresVotaciones; //id, num
     private static ArrayList<Caracteristica> caracteristicas; //todas las caracterisiticas
 
      private ArrayList<Usuario> usuarios;
      private ArrayList<Usuario> usuariosPrueba;
-     private ArrayList<Local> locales; //Todos los locales en nuestra bd
+     private static ArrayList<Local> locales; //Todos los locales en nuestra bd
     private ArrayList<Class> clasesDeLocales; //PARA LA TABLA DE DUEÑO EN MAINMENUDUEÑO
 
 
@@ -232,7 +232,7 @@ public class AlmacenDeDatos {
         return fechaString;
     }
 
-    public void ininializarValoresEncuesta(){
+    public static void inicializarValoresEncuesta(){
         for(Local local : locales){
             valoresVotaciones.put(local.getId(), 0);
         }
@@ -386,6 +386,7 @@ public class AlmacenDeDatos {
                     cliente.setCorreo(email);
 
                     cargarLocales(conn, false, null, almacen); //No es optimo descargar todos los locales para la busqueda mas adelante pero bueno
+                    inicializarValoresEncuesta();
                     System.out.println("LOCALES CARGADOS, PASANDO A LAS VISITAS");
                     cargarVisitasCliente(conn, cliente);
                     // Imprimir los valores de cada fila si se encuentra un dueño
@@ -953,7 +954,7 @@ public class AlmacenDeDatos {
                 String nombreDisco = rs.getString("NOMBRE");
                 String direccionDisco = rs.getString("DIRECCION");
                 String cpDisco = rs.getString("CODIGOPOSTAL");
-                int capacidad = rs.getInt("CAPACIDAD");
+                int capacidad = rs.getInt("AFORO");
                 String telefonoDisco = rs.getString("TELEFONO");
                 int mediaEdadDisco = rs.getInt("MEDIAEDAD");
                 int precioMedioDisco = rs.getInt("PRECIOMEDIO");

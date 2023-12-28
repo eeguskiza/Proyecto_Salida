@@ -247,16 +247,17 @@ public class AlmacenDeDatos {
         //JOptionPane.showMessageDialog(null, "Creando dueño...", "Registro en progreso", JOptionPane.INFORMATION_MESSAGE);
 
         try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
-            String sql = "INSERT INTO DUEÑO (ID, NOMBRE, APELLIDO, FECHANACIMIENTO, CONTRASEÑA, TELEFONO, EMAIL) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO USUARIO (TIPO, ID, NOMBRE, APELLIDO, FECHANACIMIENTO, CONTRASEÑA, TELEFONO, EMAIL) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setString(1, dueño.getId());
-                pstmt.setString(2, dueño.getNombre());
-                pstmt.setString(3, dueño.getApellido());
-                pstmt.setDate(4, new java.sql.Date(dueño.getFechaNacimiento().getTime()));
-                pstmt.setString(5, dueño.getContraseña());
-                pstmt.setString(6, dueño.getTelefono());
-                pstmt.setString(7, dueño.getCorreo());
+                pstmt.setString(1, "dueño");
+                pstmt.setString(2, dueño.getId());
+                pstmt.setString(3, dueño.getNombre());
+                pstmt.setString(4, dueño.getApellido());
+                pstmt.setDate(5, new java.sql.Date(dueño.getFechaNacimiento().getTime()));
+                pstmt.setString(6, dueño.getContraseña());
+                pstmt.setString(7, dueño.getTelefono());
+                pstmt.setString(8, dueño.getCorreo());
 
                 int affectedRows = pstmt.executeUpdate();
 
@@ -281,16 +282,17 @@ public class AlmacenDeDatos {
         JOptionPane.showMessageDialog(null, "Creando cliente...", "Registro en progreso", JOptionPane.INFORMATION_MESSAGE);
 
         try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
-            String sql = "INSERT INTO CLIENTE (ID, NOMBRE, APELLIDO, FECHANACIMIENTO, CONTRASEÑA, TELEFONO, EMAIL) VALUES (?, ?, ?, ?, ?, ?, ?)";
+            String sql = "INSERT INTO USUARIO (TIPO, ID, NOMBRE, APELLIDO, FECHANACIMIENTO, CONTRASEÑA, TELEFONO, EMAIL) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setString(1, cliente.getId());
-                pstmt.setString(2, cliente.getNombre());
-                pstmt.setString(3, cliente.getApellido());
-                pstmt.setDate(4, new java.sql.Date(cliente.getFechaNacimiento().getTime()));
-                pstmt.setString(5, cliente.getContraseña());
-                pstmt.setString(6, cliente.getTelefono());
-                pstmt.setString(7, cliente.getCorreo());
+                pstmt.setString(1, "cliente");
+                pstmt.setString(2, cliente.getId());
+                pstmt.setString(3, cliente.getNombre());
+                pstmt.setString(4, cliente.getApellido());
+                pstmt.setDate(5, new java.sql.Date(cliente.getFechaNacimiento().getTime()));
+                pstmt.setString(6, cliente.getContraseña());
+                pstmt.setString(7, cliente.getTelefono());
+                pstmt.setString(8, cliente.getCorreo());
 
                 int affectedRows = pstmt.executeUpdate();
 
@@ -313,7 +315,7 @@ public class AlmacenDeDatos {
         String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
 
         try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
-            String sql = "SELECT * FROM DUEÑO WHERE ID = ? AND Contraseña = ?";
+            String sql = "SELECT * FROM USUARIO WHERE ID = ? AND Contraseña = ? AND TIPO='dueño'";
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setString(1, usuario);
                 pstmt.setString(2, contraseña);
@@ -359,7 +361,7 @@ public class AlmacenDeDatos {
         String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
 
         try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
-            String sql = "SELECT * FROM CLIENTE WHERE ID = ? AND Contraseña = ?";
+            String sql = "SELECT * FROM USUARIO WHERE ID = ? AND Contraseña = ? AND TIPO = 'cliente'";
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setString(1, usuario);
                 pstmt.setString(2, contraseña);
@@ -403,25 +405,29 @@ public class AlmacenDeDatos {
         return false;
     }
 
+
     public static void cargarLocales(Connection conn, Boolean isDueño, Dueño dueño, AlmacenDeDatos almacenDeDatos) {
-        // Obtener todos los locales a su nombre en BAR o todos los bares dependiendo si es cliente o dueño el que inicia sesion
-        String sqlLocalesBar = "";
+        String sqlLocal = "";
         if(isDueño){
-            sqlLocalesBar = "SELECT * FROM bar WHERE dueñoid = ?";
+            sqlLocal = "SELECT * FROM LOCAL WHERE dueñoid = ?";
         }else{
-            sqlLocalesBar = "SELECT * FROM bar";
+            sqlLocal = "SELECT * FROM LOCAL";
         }
 
-        try (PreparedStatement pstmtLocales = conn.prepareStatement(sqlLocalesBar)) {
+        try (PreparedStatement pstmtLocales = conn.prepareStatement(sqlLocal)) {
             if(isDueño){
                 pstmtLocales.setString(1, dueño.getId());
             }
             ResultSet rsLocales = pstmtLocales.executeQuery();
 
-            // Procesar locales de tipo bar
+            if(!rsLocales.next()){
+                System.out.println("La tabla de LOCALES esta VACIA para esta busqueda.");
+            }
+
             while (rsLocales.next()) {
-                String idBar = rsLocales.getString("ID");
-                String nombreBar = rsLocales.getString("NOMBRE");
+                String tipo = rsLocales.getString("TIPO");
+                String id = rsLocales.getString("ID");
+                String nombre = rsLocales.getString("NOMBRE");
                 String direccion = rsLocales.getString("DIRECCION");
                 String cp = rsLocales.getString("CODIGOPOSTAL");
                 int aforo = rsLocales.getInt("AFORO");
@@ -433,88 +439,66 @@ public class AlmacenDeDatos {
                 boolean terraza = (terrazaNum == 1);
 
                 Bar bar = new Bar();
-                bar.setId(idBar);
-                bar.setNombre(nombreBar);
-                bar.setDireccion(direccion);
-                bar.setAforo(aforo);
-                bar.setTelefono(telefonoBar);
-                bar.setMediaEdad(mediaedad);
-                bar.setPrecioMedio(preciomedio);
-                bar.setWeb(link);
-                bar.setTerraza(terraza);
-                bar.setCP(cp);
-
-                ArrayList<Caracteristica> caracteristicas = cargarCaracteristicasLocal(conn, bar);
-                bar.setCaracteristicas(caracteristicas);
-                ArrayList<Horario> horariosLocal = cargarHorariosLocal(conn, bar);
-                bar.setHorarios(horariosLocal);
-
-                if(isDueño){
-                    dueño.getLocales().add(bar);
-                }else{
-                    almacenDeDatos.getLocales().add(bar);
-                }
-                System.out.println("1 BAR añadido: "+bar.getNombre());
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-
-        // Obtener todos los locales a su nombre en Discoteca o todas las Discotecas
-        String sqlLocalesDisco = "";
-        if(isDueño){
-            sqlLocalesDisco = "SELECT * FROM discoteca WHERE dueñoid = ?";
-        }else{
-            sqlLocalesDisco = "SELECT * FROM discoteca";
-        }
-        try (PreparedStatement pstmtLocalesDisco = conn.prepareStatement(sqlLocalesDisco)) {
-            if(isDueño){
-                pstmtLocalesDisco.setString(1, dueño.getId());
-            }
-            ResultSet rsLocalesDisco = pstmtLocalesDisco.executeQuery();
-
-            // Procesar locales de tipo discoteca
-            while (rsLocalesDisco.next()) {
-                String idDisco = rsLocalesDisco.getString("ID");
-                String nombreDisco = rsLocalesDisco.getString("NOMBRE");
-                String direccionDisco = rsLocalesDisco.getString("DIRECCION");
-                String cpDisco = rsLocalesDisco.getString("CODIGOPOSTAL");
-                int capacidad = rsLocalesDisco.getInt("CAPACIDAD");
-                String telefonoDisco = rsLocalesDisco.getString("TELEFONO");
-                int mediaEdadDisco = rsLocalesDisco.getInt("MEDIAEDAD");
-                int precioMedioDisco = rsLocalesDisco.getInt("PRECIOMEDIO");
-                String linkDisco = rsLocalesDisco.getString("LINKWEB");
-
                 Discoteca disco = new Discoteca();
-                disco.setId(idDisco);
-                disco.setNombre(nombreDisco);
-                disco.setDireccion(direccionDisco);
-                disco.setCP(cpDisco);
-                disco.setAforo(capacidad);
-                disco.setTelefono(telefonoDisco);
-                disco.setMediaEdad(mediaEdadDisco);
-                disco.setPrecioMedio(precioMedioDisco);
-                disco.setWeb(linkDisco);
+                if("bar".equals(tipo)){
+                    bar.setId(id);
+                    bar.setNombre(nombre);
+                    bar.setDireccion(direccion);
+                    bar.setAforo(aforo);
+                    bar.setTelefono(telefonoBar);
+                    bar.setMediaEdad(mediaedad);
+                    bar.setPrecioMedio(preciomedio);
+                    bar.setWeb(link);
+                    bar.setTerraza(terraza);
+                    bar.setCP(cp);
 
-                ArrayList<Caracteristica> caracteristicas = cargarCaracteristicasLocal(conn, disco);
-                disco.setCaracteristicas(caracteristicas);
-                ArrayList<Horario> horariosLocal = cargarHorariosLocal(conn, disco);
-                disco.setHorarios(horariosLocal);
+                    ArrayList<Caracteristica> caracteristicas = cargarCaracteristicasLocal(conn, bar);
+                    bar.setCaracteristicas(caracteristicas);
+                    ArrayList<Horario> horariosLocal = cargarHorariosLocal(conn, bar);
+                    bar.setHorarios(horariosLocal);
+
+                }else if("discoteca".equals(tipo)){
+                    disco.setId(id);
+                    disco.setNombre(nombre);
+                    disco.setDireccion(direccion);
+                    disco.setAforo(aforo);
+                    disco.setTelefono(telefonoBar);
+                    disco.setMediaEdad(mediaedad);
+                    disco.setPrecioMedio(preciomedio);
+                    disco.setWeb(link);
+                    disco.setCP(cp);
+
+                    ArrayList<Caracteristica> caracteristicas = cargarCaracteristicasLocal(conn, disco);
+                    disco.setCaracteristicas(caracteristicas);
+                    ArrayList<Horario> horariosLocal = cargarHorariosLocal(conn, disco);
+                    disco.setHorarios(horariosLocal);
+                }else{
+                    System.out.println("Falla encontrar el tipo correctamente aqui");
+                }
+
 
                 if(isDueño){
-                    dueño.getLocales().add(disco);
+                    if("bar".equals(tipo)){
+                        dueño.getLocales().add(bar);
+                    }else if("discoteca".equals(tipo)){
+                        dueño.getLocales().add(disco);
+                    }else{
+                        System.out.println("fallo 1");
+                    }
+                    System.out.println("1 BAR añadido: "+bar.getNombre());
                 }else{
-                    almacenDeDatos.getLocales().add(disco);
+                    if("bar".equals(tipo)){
+                        almacenDeDatos.getLocales().add(bar);
+                    }else if("discoteca".equals(tipo)){
+                        almacenDeDatos.getLocales().add(disco);
+                    }else{
+                        System.out.println("Fallo 2");
+                    }
+                    System.out.println("1 DSICO añadido: "+disco.getNombre());
                 }
-                System.out.println("1 DISCOTECA añadida: "+disco.getNombre());
             }
         } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-
-        if(!isDueño){
-            almacenDeDatos.ininializarValoresEncuesta(); //Los valores de encuesta se ponen a 0 inicialmente
+            System.out.println(e.getMessage());
         }
 
     }
@@ -522,28 +506,31 @@ public class AlmacenDeDatos {
         String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
 
         try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
-            String sql = "";
+            String sql = "INSERT INTO LOCAL (TIPO, ID, NOMBRE, DIRECCION, CODIGOPOSTAL, AFORO, TELEFONO, MEDIAEDAD, PRECIOMEDIO, LINKWEB, TIENETERRAZA, DUEÑOID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+
+            String tipo;
             if(local.getClass().equals(Discoteca.class)){
-                sql = "INSERT INTO DISCOTECA (ID, NOMBRE, DIRECCION, CODIGOPOSTAL, CAPACIDAD, TELEFONO, MEDIAEDAD, PRECIOMEDIO, LINKWEB, DUEÑOID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                tipo = "discoteca";
             }else{
-                sql = "INSERT INTO BAR (ID, NOMBRE, DIRECCION, CODIGOPOSTAL, AFORO, TELEFONO, MEDIAEDAD, PRECIOMEDIO, LINKWEB, TIENETERRAZA, DUEÑOID) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                tipo = "bar";
             }
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setString(1, local.getId());
-                pstmt.setString(2, local.getNombre());
-                pstmt.setString(3, local.getDireccion());
-                pstmt.setString(4, local.getCP());
-                pstmt.setInt(5, local.getAforo());
-                pstmt.setString(6, local.getTelefono());
-                pstmt.setInt(7, local.getMediaEdad());
-                pstmt.setInt(8, local.getPrecioMedio());
-                pstmt.setString(9, local.getWeb());
+                pstmt.setString(1, tipo);
+                pstmt.setString(2, local.getId());
+                pstmt.setString(3, local.getNombre());
+                pstmt.setString(4, local.getDireccion());
+                pstmt.setString(5, local.getCP());
+                pstmt.setInt(6, local.getAforo());
+                pstmt.setString(7, local.getTelefono());
+                pstmt.setInt(8, local.getMediaEdad());
+                pstmt.setInt(9, local.getPrecioMedio());
+                pstmt.setString(10, local.getWeb());
                 if(local.getClass().equals(Discoteca.class)){
-                    pstmt.setString(10, dueño.getId());
+                    pstmt.setString(11, null);
                 }else{
-                    pstmt.setInt(10, ((Bar) local).getTerraza() ? 1 : 0); // Convierte el booleano a num para bd
-                    pstmt.setString(11, dueño.getId());
+                    pstmt.setInt(11, ((Bar) local).getTerraza() ? 1 : 0); // Convierte el booleano a num para bd
                 }
+                pstmt.setString(12, dueño.getId());
 
                 guardarHorariosEnBD(conn, local, local.getHorarios());
                 guardarCaracteristicasLocal(conn, local);
@@ -551,6 +538,7 @@ public class AlmacenDeDatos {
                 int filasInsertadas = pstmt.executeUpdate();
 
                 if (filasInsertadas > 0) {
+                    conn.commit();
                     System.out.println("Nuevo Local en BD.");
                     return true;
                 } else {
@@ -568,28 +556,30 @@ public class AlmacenDeDatos {
         String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
 
         try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
-            String sql = "";
+            String sql = "UPDATE BAR SET NOMBRE = ?, DIRECCION = ?, CODIGOPOSTAL = ?, AFORO = ?, TELEFONO = ?, MEDIAEDAD = ?, PRECIOMEDIO = ?, LINKWEB = ?, TIENETERRAZA = ? WHERE ID = ?";
+
+            String tipo = "";
             if(local.getClass().equals(Bar.class)){
-                sql = "UPDATE BAR SET NOMBRE = ?, DIRECCION = ?, CODIGOPOSTAL = ?, AFORO = ?, TELEFONO = ?, MEDIAEDAD = ?, PRECIOMEDIO = ?, LINKWEB = ?, TIENETERRAZA = ? WHERE ID = ?";
+                tipo = "bar";
             }else{
-                sql = "UPDATE DISCOTECA SET NOMBRE = ?, DIRECCION = ?, CODIGOPOSTAL = ?, CAPACIDAD = ?, TELEFONO = ?, MEDIAEDAD = ?, PRECIOMEDIO = ?, LINKWEB = ? WHERE ID = ?";
+                tipo = "discoteca";
             }
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setString(1, local.getNombre());
-                pstmt.setString(2, local.getDireccion());
-                pstmt.setString(3, local.getCP());
-                pstmt.setInt(4, local.getAforo());
-                pstmt.setString(5, local.getTelefono());
-                pstmt.setInt(6, local.getMediaEdad());
-                pstmt.setInt(7, local.getPrecioMedio());
-                pstmt.setString(8, local.getWeb());
-
+                pstmt.setString(1, tipo);
+                pstmt.setString(2, local.getNombre());
+                pstmt.setString(3, local.getDireccion());
+                pstmt.setString(4, local.getCP());
+                pstmt.setInt(5, local.getAforo());
+                pstmt.setString(6, local.getTelefono());
+                pstmt.setInt(7, local.getMediaEdad());
+                pstmt.setInt(8, local.getPrecioMedio());
+                pstmt.setString(9, local.getWeb());
                 if(local.getClass().equals(Bar.class)){
-                    pstmt.setInt(9, ((Bar) local).getTerraza() ? 1 : 0); // Convierte el booleano a numero para la bd
-                    pstmt.setString(10, local.getId());
+                    pstmt.setInt(10, ((Bar) local).getTerraza() ? 1 : 0); // Convierte el booleano a numero para la bd
                 }else{
-                    pstmt.setString(9, local.getId());
+                    pstmt.setString(10, null);
                 }
+                pstmt.setString(11, local.getId());
 
                 actualizarHorariosLocal(conn, local, local.getHorarios());
                 actualizarCaracteristicasLocal(conn, local);
@@ -917,7 +907,7 @@ public class AlmacenDeDatos {
     }
 
     private static Bar buscarBarPorId(Connection conn, String id) throws SQLException {
-        String sqlBar = "SELECT * FROM bar WHERE ID = ?";
+        String sqlBar = "SELECT * FROM LOCAL WHERE ID = ? AND TIPO = 'bar'";
         try (PreparedStatement pstmt = conn.prepareStatement(sqlBar)) {
             pstmt.setString(1, id);
             ResultSet rs = pstmt.executeQuery();
@@ -952,7 +942,7 @@ public class AlmacenDeDatos {
         return null;
     }
     private static Discoteca buscarDiscotecaPorId(Connection conn, String id) throws SQLException {
-        String sqlDisco = "SELECT * FROM discoteca WHERE ID = ?";
+        String sqlDisco = "SELECT * FROM LOCAL WHERE ID = ? AND TIPO = 'discoteca'";
         try (PreparedStatement pstmt = conn.prepareStatement(sqlDisco)) {
             pstmt.setString(1, id);
             ResultSet rs = pstmt.executeQuery();

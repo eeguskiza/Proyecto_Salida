@@ -208,12 +208,14 @@ public class MainMenuCliente extends JFrame {
 
         panel2Reviews.add(new JLabel("ÚLTIMAS REVIEWS PUBLICADAS:"), BorderLayout.NORTH);
         JPanel panelGrid = new JPanel(new GridLayout(8,1)); panel2Reviews.add(panelGrid, BorderLayout.CENTER);
-        for(int i=0; i<3; i++){
-            Visita visita = visitasConValoracion.get(i);
-            panelGrid.add(new JLabel("NombreUsuario para "+visita.getLocal().getNombre().toUpperCase()+":"));
-            panelGrid.add(new JLabel(visita.getValoracion()));
-            if(i!=2){
-                panelGrid.add(new JPanel());
+        if(visitasConValoracion.size()>0){
+            for(int i=0; i<3; i++){
+                Visita visita = visitasConValoracion.get(i);
+                panelGrid.add(new JLabel("NombreUsuario para "+visita.getLocal().getNombre().toUpperCase()+":"));
+                panelGrid.add(new JLabel(visita.getValoracion()));
+                if(i!=2){
+                    panelGrid.add(new JPanel());
+                }
             }
         }
 

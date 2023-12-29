@@ -143,6 +143,7 @@ public class MainMenuCliente extends JFrame {
         //panelMapa.add(view, BorderLayout.CENTER);
 
 
+
  
         // Bottom panel
         JPanel bottomPanel = new JPanel();

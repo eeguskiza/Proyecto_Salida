@@ -539,7 +539,6 @@ public class AlmacenDeDatos {
                 int filasInsertadas = pstmt.executeUpdate();
 
                 if (filasInsertadas > 0) {
-                    conn.commit();
                     System.out.println("Nuevo Local en BD.");
                     return true;
                 } else {

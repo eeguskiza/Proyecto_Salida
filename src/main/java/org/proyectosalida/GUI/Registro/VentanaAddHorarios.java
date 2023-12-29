@@ -47,9 +47,14 @@ public class VentanaAddHorarios extends JFrame {
             formatter.setPlaceholderCharacter('_'); // Carácter para el espacio en blanco
 
             //Miramos si el arraylist esta vacio en el caso de no haberlos iniciado en el registro
+            System.out.println(horarios.size());
+            /*
             if(horarios.isEmpty()){
                 inicializarArrayHorarios(horarios); //ESto no deberia surgir ya que en registro es obligatorio hacerlo creo
             }
+
+             */
+            System.out.println(horarios.size());
 
             //Saco los horarios en caso de haberlos
             if(!esNuevoElHorario){

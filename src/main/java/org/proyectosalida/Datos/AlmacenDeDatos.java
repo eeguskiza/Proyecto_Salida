@@ -533,8 +533,13 @@ public class AlmacenDeDatos {
                 }
                 pstmt.setString(12, dueño.getId());
 
+
                 guardarHorariosEnBD(conn, local, local.getHorarios());
                 guardarCaracteristicasLocal(conn, local);
+                if(local.getClass().equals(Discoteca.class)){
+                    guardarDjBD(true, ((Discoteca) local).getDjResidente(), local.getId());
+                    guardarDjBD(false, ((Discoteca) local).getDjInvitado(), local.getId());
+                }
 
                 int filasInsertadas = pstmt.executeUpdate();
 
@@ -904,6 +909,76 @@ public class AlmacenDeDatos {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
+    }
+
+    public static boolean guardarDjBD(Boolean residente, DJ dj, String idLocal){ //Si residente es false entonces es invitado
+        String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
+
+        try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
+
+            //GUARDAMOS EL DJ EN SU TABLA
+            String sql = "INSERT INTO DJ (INSTAGRAM, NOMBRE, APELLIDO, NOMBREMUSICAL, NACIONALIDAD, EDAD, GENEROMUSICAL, ESTILOMUSICAL) VALUES (?,?,?,?,?,?,?,?)";
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, dj.getInstagram());
+                pstmt.setString(2, dj.getNombre());
+                pstmt.setString(3, dj.getApellido());
+                pstmt.setString(4, dj.getNombreMusical());
+                pstmt.setString(5, dj.getNacionalidad());
+                pstmt.setInt(6, dj.getEdad());
+                pstmt.setString(7, dj.getGeneroMusical());
+                pstmt.setString(8, dj.getEstiloMusical());
+
+                int filasInsertadas = pstmt.executeUpdate();
+
+                if (filasInsertadas > 0) {
+                    System.out.println("DJ registrado en BD!.");
+                } else {
+                    System.out.println("No se pudo guardar el nuevo dj.");
+                    return false;
+                }
+            }
+
+            //GUARDAMOS LA REFERENCIA DEL ID UNIENDOLO AL LOCAL CORRESP.
+            //Primero van los residentes, asi que se crearia la nueva linea en la tabla, luego con el invitado seria editar la linea y añadir el nuevo id(invitado)
+            if(residente){
+                String sqlPrimero = "INSERT INTO DJLOCALES (IDLOCAL, IDRESIDENTE, IDINVITADO) VALUES (?,?,?)";
+                try (PreparedStatement pstmt = conn.prepareStatement(sqlPrimero)) {
+                    pstmt.setString(1, idLocal);
+                    pstmt.setString(2, dj.getInstagram());
+                    pstmt.setString(3, null);
+
+                    int filasInsertadas = pstmt.executeUpdate();
+
+                    if (filasInsertadas > 0) {
+                        System.out.println("DJ RESIDENTE añadido a la tabla con el local.");
+                    } else {
+                        System.out.println("No se pudo guardar la referencia del local con dj RESIDENTE");
+                        return false;
+                    }
+                }
+            }else{
+                String sqlSegundo = "UPDATE DJLOCALES SET IDINVITADO = ? WHERE IDLOCAL = ?";
+                try (PreparedStatement pstmt = conn.prepareStatement(sqlSegundo)) {
+                    pstmt.setString(1, dj.getInstagram());
+                    pstmt.setString(2, idLocal);
+
+                    int filasActualizadas = pstmt.executeUpdate();
+
+                    if (filasActualizadas > 0) {
+                        System.out.println("INVITADO AÑADIDO!");
+                        return true;
+                    } else {
+                        System.out.println("INVITADO NO SE PUEDE ACTUALIZAR!");
+                        return false;
+                    }
+                }
+            }
+
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return true;
     }
 
     private static Bar buscarBarPorId(Connection conn, String id) throws SQLException {

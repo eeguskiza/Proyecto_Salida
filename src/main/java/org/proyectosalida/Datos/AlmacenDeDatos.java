@@ -973,13 +973,47 @@ public class AlmacenDeDatos {
         }
         return null;
     }
+    public static Usuario buscarUsuarioPorId(String id){
+        String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
 
+        Usuario usuario = null;
+        try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
+            String sql = "SELECT * FROM USUARIO WHERE ID = ?";
 
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, id);
+                ResultSet rs = pstmt.executeQuery();
 
-   //TODO HACER ESTO CUANDO HAYAMOS JUNTADO LAS DOS TABLAS EN LA BD EN UNA SOLA
-    public static Usuario buscarUsuarioPorId(Connection conn, String id){
+                if(rs.next()){
+                    String tipo = rs.getString("tipo");
+                    if("cliente".equals(tipo)){
+                        usuario = new Cliente();
+                    }else if ("dueño".equals(tipo)){
+                        usuario = new Dueño();
+                    }else{
+                        System.out.println("Usuario mal introducido para cargar usuario por ID: "+tipo);
+                    }
 
-        return null;
+                    String nombre = rs.getString("nombre");
+                    String apellido = rs.getString("apellido");
+                    Date fechanacimiento = rs.getDate("fechanacimiento");
+                    String contraseña = rs.getString("contraseña");
+                    String telefono = rs.getString("telefono");
+                    String email = rs.getString("email");
+
+                    usuario.setNombre(nombre);
+                    usuario.setApellido(apellido);
+                    usuario.setFechaNacimiento(fechanacimiento);
+                    usuario.setContraseña(contraseña);
+                    usuario.setTelefono(telefono);
+                    usuario.setCorreo(email);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return usuario;
     }
 
 

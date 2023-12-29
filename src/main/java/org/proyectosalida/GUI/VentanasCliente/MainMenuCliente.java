@@ -230,7 +230,9 @@ public class MainMenuCliente extends JFrame {
         if(visitasConValoracion.size()>0){
             for(int i=0; i<3; i++){
                 Visita visita = visitasConValoracion.get(i);
-                panelGrid.add(new JLabel("NombreUsuario para "+visita.getLocal().getNombre().toUpperCase()+":"));
+                String userId = visita.getClienteID();
+                Usuario usuarioDeLaVisita = almacenDeDatos.buscarUsuarioPorId(userId);
+                panelGrid.add(new JLabel(usuarioDeLaVisita.getNombre()+" para "+visita.getLocal().getNombre().toUpperCase()+":"));
                 panelGrid.add(new JLabel(visita.getValoracion()));
                 if(i!=2){
                     panelGrid.add(new JPanel());

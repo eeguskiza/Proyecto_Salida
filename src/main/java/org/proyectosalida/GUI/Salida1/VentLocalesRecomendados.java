@@ -82,6 +82,13 @@ public class VentLocalesRecomendados extends JFrame {
                     }
                 }
             }
+
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                if(e.getClickCount() == 2){
+                    botonAdelanteMetodo(tabla, salida, almacen);
+                }
+            }
         });
 
         tabla.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
@@ -137,7 +144,7 @@ public class VentLocalesRecomendados extends JFrame {
                             texto.setText("<html><font color='red'>CERRADO</font> (" + horario.getHoraInicio() + ")</html>");
                         }
                     }else{
-                        texto.setText("NO HORARIOS");
+                        texto.setText("NO REGISTRADO");
                     }
                     return texto;
                 }
@@ -168,9 +175,22 @@ public class VentLocalesRecomendados extends JFrame {
         JPanel botonera = new JPanel(new FlowLayout()); //me daba toc que el boton ocupara t0do el ancho de la ventana jajaja
         JButton esteBoton = new JButton("ESTE");
         botonera.add(esteBoton); panelPrincipal.add(botonera, BorderLayout.SOUTH);
-        botonera.add(new JLabel("Doble click para ver más características..."));
+        botonera.add(new JLabel("Selecciona uno para seguir adelante"));
 
         esteBoton.addActionListener(e -> {
+            botonAdelanteMetodo(tabla, salida, almacen);
+        });
+
+        // Configuración de la ventana
+        setContentPane(panelPrincipal);
+        setVisible(true);
+        setTitle("Lugares Recomendados");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setSize(1100, 700);
+        setLocationRelativeTo(null);
+    }
+
+    private void botonAdelanteMetodo(JTable tabla, Salida salida, AlmacenDeDatos almacen){
         int fila=tabla.getSelectedRow();
         if (fila != -1) {
             String id = idLocalesRecomendados.get(fila);
@@ -204,15 +224,7 @@ public class VentLocalesRecomendados extends JFrame {
         } else {
             // Manejar el caso en el que no hay ninguna fila seleccionada
 
-        }});
-
-        // Configuración de la ventana
-        setContentPane(panelPrincipal);
-        setVisible(true);
-        setTitle("Lugares Recomendados");
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        setSize(1100, 700);
-        setLocationRelativeTo(null);
+        }
     }
 
     public static void main(String[] args) {

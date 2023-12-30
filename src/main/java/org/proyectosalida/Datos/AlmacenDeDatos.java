@@ -830,7 +830,7 @@ public class AlmacenDeDatos {
                 }
             }
             }catch (SQLException e) {
-            e.printStackTrace();
+            System.out.println(e.getMessage());
         }
 
         return false;

@@ -13,7 +13,7 @@ import java.util.Date;
 public class AlmacenDeDatos {
 
     //CONEXION BASE DE DATOS
-    private Connection conn;
+    private static Connection conn;
 
 //OBJ
     private Cliente cliente;
@@ -257,7 +257,6 @@ public class AlmacenDeDatos {
         // Mostrar mensaje de "Creando dueño..."
         //JOptionPane.showMessageDialog(null, "Creando dueño...", "Registro en progreso", JOptionPane.INFORMATION_MESSAGE);
 
-        try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
             String sql = "INSERT INTO USUARIO (TIPO, ID, NOMBRE, APELLIDO, FECHANACIMIENTO, CONTRASEÑA, TELEFONO, EMAIL) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -279,7 +278,7 @@ public class AlmacenDeDatos {
                     JOptionPane.showMessageDialog(null, "No se pudo registrar el dueño.", "Error de registro", JOptionPane.ERROR_MESSAGE);
                     return false;
                 }
-            }
+
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Error al crear el dueño: " + e.getMessage(), "Error de registro", JOptionPane.ERROR_MESSAGE);
@@ -292,7 +291,6 @@ public class AlmacenDeDatos {
         // Mostrar mensaje de "Creando cliente..."
         JOptionPane.showMessageDialog(null, "Creando cliente...", "Registro en progreso", JOptionPane.INFORMATION_MESSAGE);
 
-        try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
             String sql = "INSERT INTO USUARIO (TIPO, ID, NOMBRE, APELLIDO, FECHANACIMIENTO, CONTRASEÑA, TELEFONO, EMAIL) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
@@ -314,7 +312,7 @@ public class AlmacenDeDatos {
                     JOptionPane.showMessageDialog(null, "No se pudo registrar el dueño.", "Error de registro", JOptionPane.ERROR_MESSAGE);
                     return false;
                 }
-            }
+
         } catch (SQLException e) {
             e.printStackTrace();
             JOptionPane.showMessageDialog(null, "Error al crear el dueño: " + e.getMessage(), "Error de registro", JOptionPane.ERROR_MESSAGE);
@@ -325,7 +323,6 @@ public class AlmacenDeDatos {
     public static boolean inicioSesionDueño(String usuario, String contraseña, Dueño dueño, AlmacenDeDatos almacen) {
         String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
 
-        try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
             String sql = "SELECT * FROM USUARIO WHERE ID = ? AND Contraseña = ? AND TIPO='dueño'";
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setString(1, usuario);
@@ -362,7 +359,7 @@ public class AlmacenDeDatos {
                     System.out.println("No se encontró el dueño con el ID y contraseña proporcionados.");
                     return false;
                 }
-            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -371,7 +368,6 @@ public class AlmacenDeDatos {
     public static boolean inicioSesionCliente(String usuario, String contraseña, Cliente cliente, AlmacenDeDatos almacen) {
         String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
 
-        try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
             String sql = "SELECT * FROM USUARIO WHERE ID = ? AND Contraseña = ? AND TIPO = 'cliente'";
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
                 pstmt.setString(1, usuario);
@@ -410,7 +406,7 @@ public class AlmacenDeDatos {
                     System.out.println("No se encontró el Cliente con el ID y contraseña proporcionados.");
                     return false;
                 }
-            }
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -1196,6 +1192,25 @@ public class AlmacenDeDatos {
             System.out.println(e.getMessage());
         }
         return false;
+    }
+    public static int encontrarValorMaximoVotacion(){
+        String sql  = "SELECT VALOR FROM VOTACION ORDER BY VALOR DESC";
+        int fila = 1;
+        int valor = -1;
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            ResultSet rs = pstmt.executeQuery();
+
+            while(rs.next() && fila ==1){ //Solo coge la primera fila asi
+                valor = rs.getInt("VALOR");
+                fila ++;
+            }
+
+        }catch (SQLException e){
+
+        }
+
+        return valor;
+
     }
 
 

@@ -197,17 +197,20 @@ public class MainMenuCliente extends JFrame {
         p1.add(pEncuesta, BorderLayout.CENTER);
 
         int index =0;
+        int max = -1;
+        int posiblemax = almacen.encontrarValorMaximoVotacion();
+        if( posiblemax != -1){
+            max = posiblemax;
+            System.out.println("VALOR MAXIMO ENCONTRADO: "+max);
+        }else{
+            System.out.println("NO SE HA PODIDO ENCONTRAR EL VALOR MAXIMO.");
+        }
         for (Map.Entry<String, Integer> entry : almacen.valoresVotaciones.entrySet()) {
             String nombre = entry.getKey();
             int valor = entry.getValue();
-            crearPanelEncuesta(pEncuesta, nombre, valor, 20, index);
+
+            crearPanelEncuesta(pEncuesta, nombre, valor, max);
             index++;
-        }
-
-       //TODO FALTA SABER ESCOGER LOS 6 LOCALES CON NUMEROS MAS GRANDES DEL HASHMAP YA QUE EL LIMITE SON 6 LOCALES
-        ArrayList<Local> localesSeleccionadosParaPoll = new ArrayList<>();
-        for(int valorPoll : almacenDeDatos.getValoresVotaciones().values()){
-
         }
 
 
@@ -343,7 +346,7 @@ public class MainMenuCliente extends JFrame {
         }
     }
 
-    private void crearPanelEncuesta(JPanel panelEnc, String nombre, int valorPB, int maxValor, int index) { //CREA EL PANEL CON TITULO Y PROGRESSBAR CON SU CORRESP ACTION LISTENER
+    private void crearPanelEncuesta(JPanel panelEnc, String nombre, int valorPB, int maxValor) { //CREA EL PANEL CON TITULO Y PROGRESSBAR CON SU CORRESP ACTION LISTENER
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
         panel.add(new JLabel(nombre));
         JProgressBar progressBar = new JProgressBar(0, maxValor);
@@ -353,10 +356,7 @@ public class MainMenuCliente extends JFrame {
         progressBar.setMinimumSize(new Dimension(150, 20));
 
         panel.add(progressBar);
-
-        if(index<6){
-            panelEnc.add(panel);
-        }
+        panelEnc.add(panel);
     }
 
 

@@ -3,6 +3,7 @@ package org.proyectosalida.Datos;
 import org.proyectosalida.Constructores.*;
 
 import javax.swing.*;
+import java.io.ObjectStreamClass;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -386,7 +387,8 @@ public class AlmacenDeDatos {
                     cliente.setCorreo(email);
 
                     cargarLocales(conn, false, null, almacen); //No es optimo descargar todos los locales para la busqueda mas adelante pero bueno
-                    inicializarValoresEncuesta();
+                    cargarValoresVotaciones(conn);
+
                     System.out.println("LOCALES CARGADOS, PASANDO A LAS VISITAS");
                     cargarVisitasCliente(conn, cliente);
                     // Imprimir los valores de cada fila si se encuentra un dueño
@@ -1227,7 +1229,60 @@ public class AlmacenDeDatos {
         }
     } //En array Caracteristicas se ponen todas las  que hay en BD
 
+    public static void cargarValoresVotaciones(Connection conn){
+        //SE CARGAN EN EL HASHMAP VALORESVOTACIONES DEL ALMACEN DE DATOS
+        String sqlCargar = "SELECT * FROM VOTACION WHERE IDLOCAL = ?";
+        for(Local local : locales){
+            try (PreparedStatement pstmt = conn.prepareStatement(sqlCargar)) {
+                pstmt.setString(1, local.getId());
+                ResultSet rs = pstmt.executeQuery();
+                int valor = 0;
+                Boolean apto = false;
+
+                if (!rs.next()) {
+                    System.out.println("El local no esta en la tabla de valores (BD). Añadiendolo...");
+                    apto = inicializarLocalEnVotacion(conn, local);
+                }else{
+                    valor = rs.getInt("VALOR");
+                    apto = true;
+                }
+
+                //Para todos los casos van a estar en la tabla en este punto no? Y ya tenemos su valor asignado
+                if(apto){
+                    valoresVotaciones.put(local.getNombre(), valor);
+                    System.out.println("------Valor en Votacion ("+local.getId()+"): "+valor);
+                }else{
+                    System.out.println("NO SE HA PODIDO INICIALIZAR NI GUARDAR -->  "+local.getNombre());
+                }
+
+            }catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+    private static boolean inicializarLocalEnVotacion(Connection conn, Local local){
+        String sql = "INSERT INTO VOTACION (IDLOCAL, VALOR) VALUES (?,?)";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, local.getId());
+            pstmt.setInt(2, 0);
+
+            int filasInsertadas = pstmt.executeUpdate();
+
+            if (filasInsertadas > 0) {
+                System.out.println("Local inicializado en tabla VOTACION.");
+                return true;
+            } else {
+                System.out.println("NO se pudo inicializar el local en VOTACION.");
+                return false;
+            }
+
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+
+        return false;
+    }
 
 
-
-}
+        }

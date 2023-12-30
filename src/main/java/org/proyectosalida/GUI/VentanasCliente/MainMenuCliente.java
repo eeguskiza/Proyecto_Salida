@@ -186,18 +186,22 @@ public class MainMenuCliente extends JFrame {
 
         // Panel para contener las encuestas con un GridLayout para 6 elementos
         int rows = 0;
-        if(almacenDeDatos.getLocales().size() > 6){
+        if(almacenDeDatos.getValoresVotaciones().size() > 6){
             rows = 6;
         }else{
-            rows = almacenDeDatos.getLocales().size();
+            rows = almacenDeDatos.getValoresVotaciones().size();
         }
         JPanel pEncuesta = new JPanel(new GridLayout(rows, 1)); // 6 filas, 1 columna
 
         pEncuesta.setBorder(bordeInterno);
         p1.add(pEncuesta, BorderLayout.CENTER);
 
-        for(int i=0; i<rows; i++){
-            pEncuesta.add(crearPanelEncuesta(almacen.getLocales().get(i), 10));
+        int index =0;
+        for (Map.Entry<String, Integer> entry : almacen.valoresVotaciones.entrySet()) {
+            String nombre = entry.getKey();
+            int valor = entry.getValue();
+            crearPanelEncuesta(pEncuesta, nombre, valor, 20, index);
+            index++;
         }
 
        //TODO FALTA SABER ESCOGER LOS 6 LOCALES CON NUMEROS MAS GRANDES DEL HASHMAP YA QUE EL LIMITE SON 6 LOCALES
@@ -339,19 +343,20 @@ public class MainMenuCliente extends JFrame {
         }
     }
 
-    private JPanel crearPanelEncuesta(Local local, int maxValor) { //CREA EL PANEL CON TITULO Y PROGRESSBAR CON SU CORRESP ACTION LISTENER
+    private void crearPanelEncuesta(JPanel panelEnc, String nombre, int valorPB, int maxValor, int index) { //CREA EL PANEL CON TITULO Y PROGRESSBAR CON SU CORRESP ACTION LISTENER
         JPanel panel = new JPanel(new FlowLayout(FlowLayout.CENTER));
-        String nombre = local.getNombre();
-        String id = local.getId();
         panel.add(new JLabel(nombre));
         JProgressBar progressBar = new JProgressBar(0, maxValor);
-        progressBar.setValue(almacen.getValoresVotaciones().get(id));
+        progressBar.setValue(valorPB);
 
         progressBar.setPreferredSize(new Dimension(150, 20));
         progressBar.setMinimumSize(new Dimension(150, 20));
 
         panel.add(progressBar);
-        return panel;
+
+        if(index<6){
+            panelEnc.add(panel);
+        }
     }
 
 

@@ -108,7 +108,7 @@ public class MainMenuCliente extends JFrame {
                     Date fechaElegida = calendar.getDate();
                     System.out.println("El usuario quiere salir otro día: " + fechaElegida);
 
-                    Salida salida = new Salida(almacen.getCliente(), almacen.getCaracteristicas(), fechaElegida, null);
+                    Salida salida = new Salida((Cliente) almacen.getUsuarios().get(0), almacen.getCaracteristicas(), fechaElegida, null);
                     System.out.println(salida.toString());
                     VentSelectCarac v = new VentSelectCarac(caracteristicasSeleccionadas, false, almacenDeDatos, salida);
                 } else {
@@ -168,6 +168,7 @@ public class MainMenuCliente extends JFrame {
         Border bordeUltraextremo = BorderFactory.createEmptyBorder(5, 5, 5, 5);
         Color colorExterno = new Color(183, 183, 183);
         int sizeTitulos = 15;
+        int sizeEncabezadoTexto = 12;
 
 
         //PANEL 1 - ENCUESTAS
@@ -177,7 +178,7 @@ public class MainMenuCliente extends JFrame {
         p1.setBorder(bordeExterno);
         p1.setBackground(colorExterno);
         // Crear la etiqueta y configurar el texto centrado
-        labelEncabezado = new JLabel("SAL Y DESCUBLE QUE HACE EL RESTO...");
+        labelEncabezado = new JLabel("SAL Y DESCUBLE QUE HACE EL RESTO!");
         labelEncabezado.setFont(new Font("Arial", Font.BOLD, sizeTitulos));
         labelEncabezado.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -194,7 +195,7 @@ public class MainMenuCliente extends JFrame {
         JPanel pEncuesta = new JPanel(new GridLayout(rows, 1)); // 6 filas, 1 columna
 
         pEncuesta.setBorder(bordeInterno);
-        p1.add(pEncuesta, BorderLayout.CENTER);
+
 
         int index =0;
         int max = -1;
@@ -205,12 +206,27 @@ public class MainMenuCliente extends JFrame {
         }else{
             System.out.println("NO SE HA PODIDO ENCONTRAR EL VALOR MAXIMO.");
         }
-        for (Map.Entry<String, Integer> entry : almacen.valoresVotaciones.entrySet()) {
-            String nombre = entry.getKey();
-            int valor = entry.getValue();
 
-            crearPanelEncuesta(pEncuesta, nombre, valor, max);
-            index++;
+        JPanel panelSinVotaciones = new JPanel(new GridLayout(6, 1));
+        for(int i=0; i<6;i++){
+            crearPanelEncuesta(panelSinVotaciones, "**********", 0, 10);
+        }
+
+        if(almacen.getValoresVotaciones().size() == 0){
+            p1.add(panelSinVotaciones, BorderLayout.CENTER);
+        }else{
+            p1.remove(0);
+
+            p1.add(pEncuesta, BorderLayout.CENTER);
+            for (Map.Entry<String, Integer> entry : almacen.valoresVotaciones.entrySet()) {
+                String nombre = entry.getKey();
+                int valor = entry.getValue();
+
+                crearPanelEncuesta(pEncuesta, nombre, valor, max);
+                index++;
+            }
+            p1.add(labelEncabezado, BorderLayout.NORTH);
+            labelEncabezado.setText("LA GENTE EN CAMBIO...");
         }
 
 
@@ -240,7 +256,9 @@ public class MainMenuCliente extends JFrame {
                 Visita visita = visitasConValoracion.get(i);
                 String userId = visita.getClienteID();
                 Usuario usuarioDeLaVisita = almacenDeDatos.buscarUsuarioPorId(userId);
-                panelGrid.add(new JLabel(usuarioDeLaVisita.getNombre()+" para "+visita.getLocal().getNombre().toUpperCase()+":"));
+                JLabel labelenunciadoReview = new JLabel(usuarioDeLaVisita.getNombre()+" para "+visita.getLocal().getNombre().toUpperCase()+":");
+                labelenunciadoReview.setFont(new Font("Arial", Font.BOLD, sizeEncabezadoTexto));
+                panelGrid.add(labelenunciadoReview);
                 panelGrid.add(new JLabel(visita.getValoracion()));
                 if(i!=2){
                     panelGrid.add(new JPanel());

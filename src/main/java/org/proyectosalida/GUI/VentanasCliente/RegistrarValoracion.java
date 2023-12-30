@@ -21,10 +21,15 @@ public class RegistrarValoracion extends JFrame {
         registrar.addActionListener(e -> {
             String valoracion =tvaloracion.getText();
             visita.setValoracion(valoracion);
-            almacen.actualizarValoracionVisita(visita.getId(), valoracion);
-            dispose();
-            //Recargar pantalla principal para ver cambios
-            mm.recargarTablaReview();
+            Boolean actualizado = almacen.actualizarValoracionVisita(visita.getId(), valoracion);
+            if(!actualizado){
+                JOptionPane.showMessageDialog(null, "Mensaje demasiado largo, acortelo a algo simple.");
+            }else{
+                dispose();
+                //Recargar pantalla principal para ver cambios
+                mm.recargarTablaReview();
+            }
+
         });
 
         setVisible(true);

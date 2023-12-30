@@ -902,7 +902,7 @@ public class AlmacenDeDatos {
         }
 
     }
-    public static void actualizarValoracionVisita(String idVisita, String valoracion) {
+    public static boolean actualizarValoracionVisita(String idVisita, String valoracion) {
         String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
 
         try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
@@ -916,13 +916,16 @@ public class AlmacenDeDatos {
 
                 if (filasActualizadas > 0) {
                     System.out.println("Valoracion actualizada!");
+                    return true;
                 } else {
                     System.out.println("No se pudo actualizar la valoracion");
+                    return false;
                 }
 
                 }
         } catch (SQLException e) {
             System.out.println(e.getMessage());
+            return false;
         }
     }
 

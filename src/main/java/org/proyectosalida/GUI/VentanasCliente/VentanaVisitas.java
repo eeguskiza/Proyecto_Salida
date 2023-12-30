@@ -43,7 +43,12 @@ public class VentanaVisitas extends JFrame {
                 return super.getColumnClass(columnIndex);
             }
         };
-        JTable table = new JTable(modelo);
+        JTable table = new JTable(modelo){
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
         JScrollPane scroll = new JScrollPane(table);
         main.add(scroll);
 

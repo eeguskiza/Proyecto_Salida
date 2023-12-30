@@ -1050,28 +1050,33 @@ public class AlmacenDeDatos {
         //ACTUALIZAR DATOS DEL DJ
         String sql = "UPDATE DJ SET INSTAGRAM = ?, NOMBRE = ?, APELLIDO = ?, NOMBREMUSICAL =?, NACIONALIDAD=?, EDAD=?, GENEROMUSICAL=?, ESTILOMUSICAL=? WHERE ID =?";
 
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, nuevo.getInstagram());
-            pstmt.setString(2, nuevo.getNombre());
-            pstmt.setString(3, nuevo.getApellido());
-            pstmt.setString(4, nuevo.getNombreMusical());
-            pstmt.setString(5, nuevo.getNacionalidad());
-            pstmt.setInt(6, nuevo.getEdad());
-            pstmt.setString(7, nuevo.getGeneroMusical());
-            pstmt.setString(8, nuevo.getEstiloMusical());
-            pstmt.setInt(9, nuevo.getId());
+        if(nuevo.getId() != null){
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setString(1, nuevo.getInstagram());
+                pstmt.setString(2, nuevo.getNombre());
+                pstmt.setString(3, nuevo.getApellido());
+                pstmt.setString(4, nuevo.getNombreMusical());
+                pstmt.setString(5, nuevo.getNacionalidad());
+                pstmt.setInt(6, nuevo.getEdad());
+                pstmt.setString(7, nuevo.getGeneroMusical());
+                pstmt.setString(8, nuevo.getEstiloMusical());
+                pstmt.setInt(9, nuevo.getId());
 
-            int filasActualizadas = pstmt.executeUpdate();
+                int filasActualizadas = pstmt.executeUpdate();
 
-            if (filasActualizadas > 0) {
-                System.out.println("DATOS DJ ACTUALIZADOS!");
-            } else {
-                System.out.println("No se pudo actualizar LOS DATOS DEL DJ");
-                return false;
+                if (filasActualizadas > 0) {
+                    System.out.println("DATOS DJ ACTUALIZADOS!");
+                } else {
+                    System.out.println("No se pudo actualizar LOS DATOS DEL DJ");
+                    return false;
+                }
+            }catch (SQLException e) {
+                System.out.println("en actualizar datos dj: "+e.getMessage());
             }
-        }catch (SQLException e) {
-            System.out.println("en actualizar datos dj: "+e.getMessage());
+        }else{
+            guardarDjBD(residente, nuevo, idlocal);
         }
+
 
         return true;
     }

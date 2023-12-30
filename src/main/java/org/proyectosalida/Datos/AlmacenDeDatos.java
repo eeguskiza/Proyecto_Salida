@@ -12,6 +12,9 @@ import java.util.Date;
 
 public class AlmacenDeDatos {
 
+    //CONEXION BASE DE DATOS
+    private Connection conn;
+
 //OBJ
     private Cliente cliente;
     private Dueño dueño;
@@ -42,6 +45,13 @@ public class AlmacenDeDatos {
 
         esDueño = false;
         esCliente = false;
+
+        String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
+        try{
+            conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023");
+        }catch (SQLException e){
+            JOptionPane.showMessageDialog(null, "No se ha podido conectar a la Base de Datos. \nCompruebe la conexión a Internet y vuelva a intentarlo.");
+        }
 
         System.out.println("ALMACEN CREADO");
         descargarCaracteristicas();
@@ -387,7 +397,7 @@ public class AlmacenDeDatos {
                     cliente.setCorreo(email);
 
                     cargarLocales(conn, false, null, almacen); //No es optimo descargar todos los locales para la busqueda mas adelante pero bueno
-                    cargarValoresVotaciones(conn);
+                    //cargarValoresVotaciones(conn); lo he puesto en cuando se registra una salida para que antes no lo vean
 
                     System.out.println("LOCALES CARGADOS, PASANDO A LAS VISITAS");
                     cargarVisitasCliente(conn, cliente);
@@ -1083,35 +1093,47 @@ public class AlmacenDeDatos {
         return true;
     }
 
-    public static void cargarValoresVotaciones(Connection conn){
-        //SE CARGAN EN EL HASHMAP VALORESVOTACIONES DEL ALMACEN DE DATOS
-        String sqlCargar = "SELECT * FROM VOTACION WHERE IDLOCAL = ?";
-        for(Local local : locales){
-            try (PreparedStatement pstmt = conn.prepareStatement(sqlCargar)) {
-                pstmt.setString(1, local.getId());
-                ResultSet rs = pstmt.executeQuery();
-                int valor = 0;
-                Boolean apto = false;
+    public static void cargarValoresVotaciones(){
+        String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
 
-                if (!rs.next()) {
-                    System.out.println("El local no esta en la tabla de valores (BD). Añadiendolo...");
-                    apto = inicializarLocalEnVotacion(conn, local);
-                }else{
-                    valor = rs.getInt("VALOR");
-                    apto = true;
+        try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
+
+            //RECORRER LOCALES PARA SI ALGUNO NO ESTA METIO EN LA TABLA AÑADIRLO
+            String sqlCheckLocal = "SELECT * FROM VOTACION WHERE idlocal=?";
+            for(Local local : locales){
+                try (PreparedStatement pstmt = conn.prepareStatement(sqlCheckLocal)) {
+                    pstmt.setString(1, local.getId());
+
+                    ResultSet rs = pstmt.executeQuery();
+                    if (!rs.next()) {
+                        System.out.println("El local no esta en la tabla de valores (BD). Añadiendolo...");
+                        inicializarLocalEnVotacion(conn, local);
+                    }
+
                 }
-
-                //Para todos los casos van a estar en la tabla en este punto no? Y ya tenemos su valor asignado
-                if(apto){
-                    valoresVotaciones.put(local.getNombre(), valor);
-                    System.out.println("------Valor en Votacion ("+local.getId()+"): "+valor);
-                }else{
-                    System.out.println("NO SE HA PODIDO INICIALIZAR NI GUARDAR -->  "+local.getNombre());
-                }
-
-            }catch (SQLException e) {
-                System.out.println(e.getMessage());
             }
+
+            //PILLAR LOS 6 MAS GRANDES
+            String sql = "SELECT * FROM VOTACION ORDER BY VALOR DESC";
+            int index = 0;
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+
+                ResultSet rs = pstmt.executeQuery();
+                while (rs.next() && index < 6) {
+                    String idlocal = rs.getString("IDLOCAL");
+                    Local local = buscarLocalPorId(conn, idlocal);
+                    String nombre = local.getNombre();
+                    int valor = rs.getInt("VALOR");
+
+                    valoresVotaciones.put(nombre, valor);
+                    index++;
+                    System.out.println("------Valor en Votacion (" + local.getId() + "): " + valor);
+                }
+
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
         }
     }
     private static boolean inicializarLocalEnVotacion(Connection conn, Local local){
@@ -1177,6 +1199,27 @@ public class AlmacenDeDatos {
     }
 
 
+    public static Local buscarLocalPorId(Connection conn, String id){
+        Local local = null;
+        try{
+            local = buscarBarPorId(conn, id);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        if(local == null){
+            try{
+                local = buscarDiscotecaPorId(conn, id);
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+
+        if(local == null){
+            System.out.println("NO se ha ENCONTRADO el LOCAL en la BD");
+        }
+        return local;
+    }
     private static Bar buscarBarPorId(Connection conn, String id) throws SQLException {
         String sqlBar = "SELECT * FROM LOCAL WHERE ID = ? AND TIPO = 'bar'";
         try (PreparedStatement pstmt = conn.prepareStatement(sqlBar)) {
@@ -1286,23 +1329,7 @@ public class AlmacenDeDatos {
 
         return usuario;
     }
-    public static Local buscarLocalPorId(Connection conn, String id){
-        Local local = null;
-        try{
-            local = buscarBarPorId(conn, id);
-        } catch (SQLException e) {
-            System.out.println(e.getMessage());
-        }
 
-        if(local == null){
-            try{
-                local = buscarDiscotecaPorId(conn, id);
-            } catch (SQLException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-        return local;
-    }
 
 
 

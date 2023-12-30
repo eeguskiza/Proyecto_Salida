@@ -180,8 +180,11 @@ public class VentLocalesRecomendados extends JFrame {
             salida.getCliente().getVisitas().add(visitaNueva);
             almacen.guardarVisitaBD(visitaNueva, (Cliente) almacen.getUsuarios().get(0));
 
+            //Cargamos todos los valores a la poll para que los vean una vez hayan registrado la salida
+            almacen.cargarValoresVotaciones();
+
             //+1 a la poll adecuada
-            almacen.getValoresVotaciones().put(objeto.getNombre(), almacen.getValoresVotaciones().get(objeto.getNombre())+1);
+            //almacen.getValoresVotaciones().put(objeto.getNombre(), almacen.getValoresVotaciones().get(objeto.getNombre())+1);
             almacen.actualizarValorVotacion(objeto);
 
 

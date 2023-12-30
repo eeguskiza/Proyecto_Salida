@@ -473,6 +473,8 @@ public class AlmacenDeDatos {
                     disco.setCaracteristicas(caracteristicas);
                     ArrayList<Horario> horariosLocal = cargarHorariosLocal(conn, disco);
                     disco.setHorarios(horariosLocal);
+                    disco.setDjResidente(cargarDjBD(conn, true, disco.getId()));
+                    disco.setDjInvitado(cargarDjBD(conn, false, disco.getId()));
                 }else{
                     System.out.println("Falla encontrar el tipo correctamente aqui");
                 }
@@ -557,7 +559,7 @@ public class AlmacenDeDatos {
 
         return false;
     }
-    public static boolean actualizarDatosLocalBD(Local local) {
+    public static boolean actualizarDatosLocalBD(Local local, String instagramAntiguoDJ) {
         String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
 
         try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
@@ -588,6 +590,11 @@ public class AlmacenDeDatos {
 
                 actualizarHorariosLocal(conn, local, local.getHorarios());
                 actualizarCaracteristicasLocal(conn, local);
+                if(local.getClass().equals(Discoteca.class)){
+                    System.out.println("-----------EMPIEZAN LOS DJ'S--------------");
+                    actualizarDj(conn, ((Discoteca) local).getDjResidente(), true, local.getId() , instagramAntiguoDJ);
+                    actualizarDj(conn, ((Discoteca) local).getDjInvitado(), false, local.getId() , instagramAntiguoDJ);
+                }
 
                 int filasActualizadas = pstmt.executeUpdate();
 
@@ -938,13 +945,26 @@ public class AlmacenDeDatos {
                 }
             }
 
+            //SACO EL ID DEL DJ QUE ACABO DE GUARDAR
+            int idDJ =0;
+            String sqlid = "SELECT * FROM DJ WHERE INSTAGRAM =?";
+            try (PreparedStatement pstmt = conn.prepareStatement(sqlid)) {
+                pstmt.setString(1, dj.getInstagram());
+
+                ResultSet rs = pstmt.executeQuery();
+                if(rs.next()){
+                    idDJ = rs.getInt("ID");
+                }
+            }
+            System.out.println("ID del DJ que se acaba de crear: "+idDJ);
+
             //GUARDAMOS LA REFERENCIA DEL ID UNIENDOLO AL LOCAL CORRESP.
             //Primero van los residentes, asi que se crearia la nueva linea en la tabla, luego con el invitado seria editar la linea y añadir el nuevo id(invitado)
             if(residente){
                 String sqlPrimero = "INSERT INTO DJLOCALES (IDLOCAL, IDRESIDENTE, IDINVITADO) VALUES (?,?,?)";
                 try (PreparedStatement pstmt = conn.prepareStatement(sqlPrimero)) {
                     pstmt.setString(1, idLocal);
-                    pstmt.setString(2, dj.getInstagram());
+                    pstmt.setInt(2, idDJ);
                     pstmt.setString(3, null);
 
                     int filasInsertadas = pstmt.executeUpdate();
@@ -959,7 +979,7 @@ public class AlmacenDeDatos {
             }else{
                 String sqlSegundo = "UPDATE DJLOCALES SET IDINVITADO = ? WHERE IDLOCAL = ?";
                 try (PreparedStatement pstmt = conn.prepareStatement(sqlSegundo)) {
-                    pstmt.setString(1, dj.getInstagram());
+                    pstmt.setInt(1, idDJ);
                     pstmt.setString(2, idLocal);
 
                     int filasActualizadas = pstmt.executeUpdate();
@@ -978,6 +998,109 @@ public class AlmacenDeDatos {
             System.out.println(e.getMessage());
         }
 
+        return true;
+    }
+    public static DJ cargarDjBD(Connection conn, Boolean residente, String idlocal){
+        //ENCONTRAR LOS ID'S DE LOS DJ'S CON EL ID DEL LOCAL
+        int idresidente = -1;
+        int idinvitado = -1;
+        String sql = "SELECT * FROM DJLOCALES WHERE IDLOCAL = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, idlocal);
+            ResultSet rs = pstmt.executeQuery();
+
+            if(rs.next()){
+                idresidente = rs.getInt("IDRESIDENTE");
+                idinvitado = rs.getInt("IDINVITADO");
+                System.out.println("id's encontrados para los DJ's!");
+            }
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+
+        //CREAR LOS CONSTRUCTORES DEL DJ CON EL ID OBTENIDO
+        DJ nuevo = new DJ();
+
+        int idActual = residente ? idresidente : idinvitado;
+
+        String sql1 = "SELECT * FROM DJ WHERE ID = ?";
+        try (PreparedStatement pstmt = conn.prepareStatement(sql1)) {
+            pstmt.setInt(1, idActual);
+            ResultSet rs = pstmt.executeQuery();
+
+            if (rs.next()) {
+                nuevo.setNombre(rs.getString("nombre"));
+                nuevo.setApellido(rs.getString("apellido"));
+                nuevo.setNombreMusical(rs.getString("nombremusical"));
+                nuevo.setNacionalidad(rs.getString("nacionalidad"));
+                nuevo.setEdad(rs.getInt("edad"));
+                nuevo.setGeneroMusical(rs.getString("generomusical"));
+                nuevo.setEstiloMusical(rs.getString("estilomusical"));
+                nuevo.setInstagram(rs.getString("INSTAGRAM"));
+                nuevo.setId(idActual);
+            }
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        return nuevo;
+
+    }
+    public static boolean actualizarDj(Connection conn, DJ nuevo, Boolean residente, String idlocal, String instagramAntiguo){
+        System.out.println(instagramAntiguo);
+        //ACTUALIZAR DATOS DEL DJ
+        String sql = "UPDATE DJ SET INSTAGRAM = ?, NOMBRE = ?, APELLIDO = ?, NOMBREMUSICAL =?, NACIONALIDAD=?, EDAD=?, GENEROMUSICAL=?, ESTILOMUSICAL=? WHERE ID =?";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, nuevo.getInstagram());
+            pstmt.setString(2, nuevo.getNombre());
+            pstmt.setString(3, nuevo.getApellido());
+            pstmt.setString(4, nuevo.getNombreMusical());
+            pstmt.setString(5, nuevo.getNacionalidad());
+            pstmt.setInt(6, nuevo.getEdad());
+            pstmt.setString(7, nuevo.getGeneroMusical());
+            pstmt.setString(8, nuevo.getEstiloMusical());
+            pstmt.setInt(9, nuevo.getId());
+
+            int filasActualizadas = pstmt.executeUpdate();
+
+            if (filasActualizadas > 0) {
+                System.out.println("DATOS DJ ACTUALIZADOS!");
+            } else {
+                System.out.println("No se pudo actualizar LOS DATOS DEL DJ");
+                return false;
+            }
+        }catch (SQLException e) {
+            System.out.println("en actualizar datos dj: "+e.getMessage());
+            //SI NO SE HAN CAMBIADO DATOS COMO LA PK (EL INSTAGRAM) VA A SALTAR ESTE ERROR PERO ES POR QUE NO SE PUEDE REPETIR, EN VERDAD TODO ESTA BIEN
+        }
+
+        //ACTUALIZAR ID POR SI LO HAN CAMBIADO QUE ES MUY PROBABLE QUE OCURRA YA QUE EL ID ES EL INSTAGRAM
+        /*String sql2="";
+
+        if(residente){
+            sql2 = "UPDATE DJLOCALES SET IDRESIDENTE =? WHERE IDLOCAL =?";
+        }else{
+            sql2 = "UPDATE DJLOCALES SET IDINVITADO =? WHERE IDLOCAL =?";
+        }
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql2)) {
+            pstmt.setString(1, nuevo.getInstagram());
+            pstmt.setString(2, idlocal);
+
+            int filasActualizadas = pstmt.executeUpdate();
+
+            if (filasActualizadas > 0) {
+                System.out.println("ID'S DJ CAMBIADOS!");
+            } else {
+                System.out.println("No se pudo actualizar LOS ID'S DEL DJ");
+                return false;
+            }
+        }catch (SQLException e) {
+            System.out.println("En actualizar ID's de dj: "+e.getMessage());
+        }
+
+        return true;*/
         return true;
     }
 
@@ -1089,6 +1212,23 @@ public class AlmacenDeDatos {
         }
 
         return usuario;
+    }
+    public static Local buscarLocalPorId(Connection conn, String id){
+        Local local = null;
+        try{
+            local = buscarBarPorId(conn, id);
+        } catch (SQLException e) {
+            System.out.println(e.getMessage());
+        }
+
+        if(local == null){
+            try{
+                local = buscarDiscotecaPorId(conn, id);
+            } catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+        return local;
     }
 
 

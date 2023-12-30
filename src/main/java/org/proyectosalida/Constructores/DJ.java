@@ -12,6 +12,7 @@ public class DJ{
     private String generoMusical;
     private String estiloMusical;
     private String instagram;
+    private Integer id;
 
     /*
     Precio
@@ -29,6 +30,7 @@ public class DJ{
         this.generoMusical = "";
         this.estiloMusical = "";
         this.instagram = "";
+        this.id = null;
     }
 
     public DJ(String nombre, String apellido, String nombreMusical, String nacionalidad, int edad, String generoMusical, String estiloMusical, String instagram) {
@@ -40,6 +42,7 @@ public class DJ{
         this.generoMusical = generoMusical;
         this.estiloMusical = estiloMusical;
         this.instagram = instagram;
+        this.id = null;
     }
 
     public String getNombre() {
@@ -104,6 +107,14 @@ public class DJ{
 
     public void setInstagram(String instagram) {
         this.instagram = instagram;
+    }
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     @Override

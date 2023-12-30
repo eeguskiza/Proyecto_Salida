@@ -76,7 +76,7 @@ public class VerLocales extends JFrame {
             //TODO - QUE SE ABRA INICIO DE SESION?
         });
 
-        JButton registrarNuevo = new JButton("Registrar Nuevo");
+        JButton registrarNuevo = new JButton("Registrar/Actualizar");
         botonera.add(registrarNuevo);
         registrarNuevo.addActionListener(e -> {
             ModificarLocales vr = new ModificarLocales(almacen, this);
@@ -209,6 +209,14 @@ public class VerLocales extends JFrame {
                 modelo.addRow(nuevo);
                 almacen.getClasesDeLocales().add(Bar.class);
             }else if(local.getClass().equals(Discoteca.class)){
+                String nombreInvitado = "";
+                String nombreResidente = "";
+                if(((Discoteca) local).getDjInvitado() != null){
+                    nombreInvitado = ((Discoteca) local).getDjInvitado().getNombre();
+                }
+                if(((Discoteca) local).getDjResidente() != null){
+                    nombreResidente = ((Discoteca) local).getDjResidente().getNombre();
+                }
                 Object[] nuevo = {
                         local.getNombre(),
                         local.getDireccion(),
@@ -220,8 +228,8 @@ public class VerLocales extends JFrame {
                         local.getWeb(),
                         horario,
                         "", //Discotecas no tienen terraza
-                        ((Discoteca) local).getDjResidente(),
-                        ((Discoteca) local).getDjInvitado(),
+                        nombreResidente,
+                        nombreInvitado,
                         caracteristicas
                 };
                 modelo.addRow(nuevo);

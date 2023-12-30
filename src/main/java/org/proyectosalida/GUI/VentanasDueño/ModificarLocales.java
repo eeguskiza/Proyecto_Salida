@@ -36,6 +36,7 @@ public class ModificarLocales extends JFrame{
     private DJ djResidente;
     private DJ djInvitado;
 
+    private String instagramAntiguoDJ;
     public ModificarLocales(AlmacenDeDatos almacn, JFrame padre){
         localSeleccionadoEnTree = false;
         //setTitle("Modifica o añade un nuevo local, "+almacn.getUsuarios().get(0).getNombre());
@@ -47,6 +48,7 @@ public class ModificarLocales extends JFrame{
         //localesPorClase = new HashMap<>();
         localSelec = null;
         almacen = almacn;
+        instagramAntiguoDJ = "";
 
         //Esto para hacer pruebas sin BD
         if(almacn.getUsuarios().size()!= 0){
@@ -195,6 +197,7 @@ public class ModificarLocales extends JFrame{
             if(localSeleccionadoEnTree){
                 VentanaRegistrarDJ v1 = new VentanaRegistrarDJ(djResidente, this, false);
                 v1.setVisible(true);
+                instagramAntiguoDJ = djResidente.getInstagram();
             }else{
                 VentanaRegistrarDJ v1 = new VentanaRegistrarDJ(djResidente, this, true);
                 v1.setVisible(true);
@@ -206,6 +209,7 @@ public class ModificarLocales extends JFrame{
             if(localSeleccionadoEnTree){
                 VentanaRegistrarDJ v2 = new VentanaRegistrarDJ(djInvitado, this, false);
                 v2.setVisible(true);
+                instagramAntiguoDJ = djInvitado.getInstagram();
             }else{
                 VentanaRegistrarDJ v2 = new VentanaRegistrarDJ(djInvitado, this, true);
                 v2.setVisible(true);
@@ -221,7 +225,7 @@ public class ModificarLocales extends JFrame{
                     terraza = true;
                 }
                 Bar nuevo = new Bar(tNombre.getText(), tDireccion.getText(), ((SpinnerNumberModel) sCp.getModel()).getNumber().toString(), ((SpinnerNumberModel) sAforo.getModel()).getNumber().intValue(), tTelefono.getText(), ((SpinnerNumberModel) sEdad.getModel()).getNumber().intValue(), ((SpinnerNumberModel) sPrecio.getModel()).getNumber().intValue(), tWeb.getText(), horariosSelec, terraza, caracteristicasSelec);
-                actualizarLocalUsuario(nuevo);
+                actualizarLocalUsuario(nuevo, instagramAntiguoDJ);
                 almacen.getClasesDeLocales().add(nuevo.getClass());
                 clearForm(tNombre, tDireccion, tTelefono, tWeb, sCp,  sAforo,  sPrecio,  sEdad);
                 //TODO FALTA GUARDARLO CORRRECTAMENTE EN BD?
@@ -232,7 +236,7 @@ public class ModificarLocales extends JFrame{
                 }
             }else if(bdiscoteca.isSelected()){
                 Discoteca nueva = new Discoteca(tNombre.getText(), tDireccion.getText(), ((SpinnerNumberModel) sCp.getModel()).getNumber().toString(), ((SpinnerNumberModel) sAforo.getModel()).getNumber().intValue(), tTelefono.getText(), ((SpinnerNumberModel) sEdad.getModel()).getNumber().intValue(), ((SpinnerNumberModel) sPrecio.getModel()).getNumber().intValue(), tWeb.getText(), horariosSelec, djResidente, djInvitado, caracteristicasSelec);
-                actualizarLocalUsuario(nueva);
+                actualizarLocalUsuario(nueva, instagramAntiguoDJ);
                 almacen.getClasesDeLocales().add(nueva.getClass());
                 clearForm(tNombre, tDireccion, tTelefono, tWeb,  sCp,  sAforo,  sPrecio,  sEdad);
                 //TODO LO MISMO VAYA
@@ -260,7 +264,7 @@ public class ModificarLocales extends JFrame{
         }
     }
 
-    private void actualizarLocalUsuario(Local nuevo){
+    private void actualizarLocalUsuario(Local nuevo, String instagramAntiguoDJ){
         for(int i=0; i<dueño.getLocales().size(); i++){
             Local local = dueño.getLocales().get(i);
             if(localSelec != null){
@@ -279,7 +283,7 @@ public class ModificarLocales extends JFrame{
 
         //Actualizamos en bd tambien
         if(localSeleccionadoEnTree){ //Editando
-            almacen.actualizarDatosLocalBD(nuevo);
+            almacen.actualizarDatosLocalBD(nuevo, instagramAntiguoDJ);
         }else{
             almacen.guardarLocalNuevoBD(nuevo, dueño);
         }

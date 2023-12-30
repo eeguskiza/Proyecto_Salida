@@ -1083,6 +1083,100 @@ public class AlmacenDeDatos {
         return true;
     }
 
+    public static void cargarValoresVotaciones(Connection conn){
+        //SE CARGAN EN EL HASHMAP VALORESVOTACIONES DEL ALMACEN DE DATOS
+        String sqlCargar = "SELECT * FROM VOTACION WHERE IDLOCAL = ?";
+        for(Local local : locales){
+            try (PreparedStatement pstmt = conn.prepareStatement(sqlCargar)) {
+                pstmt.setString(1, local.getId());
+                ResultSet rs = pstmt.executeQuery();
+                int valor = 0;
+                Boolean apto = false;
+
+                if (!rs.next()) {
+                    System.out.println("El local no esta en la tabla de valores (BD). Añadiendolo...");
+                    apto = inicializarLocalEnVotacion(conn, local);
+                }else{
+                    valor = rs.getInt("VALOR");
+                    apto = true;
+                }
+
+                //Para todos los casos van a estar en la tabla en este punto no? Y ya tenemos su valor asignado
+                if(apto){
+                    valoresVotaciones.put(local.getNombre(), valor);
+                    System.out.println("------Valor en Votacion ("+local.getId()+"): "+valor);
+                }else{
+                    System.out.println("NO SE HA PODIDO INICIALIZAR NI GUARDAR -->  "+local.getNombre());
+                }
+
+            }catch (SQLException e) {
+                System.out.println(e.getMessage());
+            }
+        }
+    }
+    private static boolean inicializarLocalEnVotacion(Connection conn, Local local){
+        String sql = "INSERT INTO VOTACION (IDLOCAL, VALOR) VALUES (?,?)";
+
+        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            pstmt.setString(1, local.getId());
+            pstmt.setInt(2, 0);
+
+            int filasInsertadas = pstmt.executeUpdate();
+
+            if (filasInsertadas > 0) {
+                System.out.println("Local inicializado en tabla VOTACION.");
+                return true;
+            } else {
+                System.out.println("NO se pudo inicializar el local en VOTACION.");
+                return false;
+            }
+
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+
+        return false;
+    }
+    public static boolean actualizarValorVotacion(Local local){
+        String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
+
+        try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
+
+            //GET VALOR EN BD
+            int valorActual = 0;
+            String sqlGetValor = "SELECT * FROM VOTACION WHERE IDLOCAL = ?";
+            try (PreparedStatement pstmt = conn.prepareStatement(sqlGetValor)) {
+                pstmt.setString(1, local.getId());
+
+                ResultSet rs = pstmt.executeQuery();
+                if(rs.next()){
+                    valorActual = rs.getInt("VALOR");
+                }
+            }
+
+            //ACTUALIZAR CON +1
+            String sql = "UPDATE VOTACION SET VALOR =? WHERE IDLOCAL =?";
+            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
+                pstmt.setInt(1, valorActual+1);
+                pstmt.setString(2, local.getId());
+
+                int filasInsertadas = pstmt.executeUpdate();
+
+                if (filasInsertadas > 0) {
+                    System.out.println("VOTACION ACTUALIZADO EN BD.");
+                    return true;
+                } else {
+                    System.out.println("NO se pudo actualizar la VOTACION.");
+                    return false;
+                }
+            }
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+        return false;
+    }
+
+
     private static Bar buscarBarPorId(Connection conn, String id) throws SQLException {
         String sqlBar = "SELECT * FROM LOCAL WHERE ID = ? AND TIPO = 'bar'";
         try (PreparedStatement pstmt = conn.prepareStatement(sqlBar)) {
@@ -1211,6 +1305,7 @@ public class AlmacenDeDatos {
     }
 
 
+
     private static void descargarCaracteristicas(){
         String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
 
@@ -1229,60 +1324,7 @@ public class AlmacenDeDatos {
         }
     } //En array Caracteristicas se ponen todas las  que hay en BD
 
-    public static void cargarValoresVotaciones(Connection conn){
-        //SE CARGAN EN EL HASHMAP VALORESVOTACIONES DEL ALMACEN DE DATOS
-        String sqlCargar = "SELECT * FROM VOTACION WHERE IDLOCAL = ?";
-        for(Local local : locales){
-            try (PreparedStatement pstmt = conn.prepareStatement(sqlCargar)) {
-                pstmt.setString(1, local.getId());
-                ResultSet rs = pstmt.executeQuery();
-                int valor = 0;
-                Boolean apto = false;
 
-                if (!rs.next()) {
-                    System.out.println("El local no esta en la tabla de valores (BD). Añadiendolo...");
-                    apto = inicializarLocalEnVotacion(conn, local);
-                }else{
-                    valor = rs.getInt("VALOR");
-                    apto = true;
-                }
-
-                //Para todos los casos van a estar en la tabla en este punto no? Y ya tenemos su valor asignado
-                if(apto){
-                    valoresVotaciones.put(local.getNombre(), valor);
-                    System.out.println("------Valor en Votacion ("+local.getId()+"): "+valor);
-                }else{
-                    System.out.println("NO SE HA PODIDO INICIALIZAR NI GUARDAR -->  "+local.getNombre());
-                }
-
-            }catch (SQLException e) {
-                System.out.println(e.getMessage());
-            }
-        }
-    }
-    private static boolean inicializarLocalEnVotacion(Connection conn, Local local){
-        String sql = "INSERT INTO VOTACION (IDLOCAL, VALOR) VALUES (?,?)";
-
-        try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-            pstmt.setString(1, local.getId());
-            pstmt.setInt(2, 0);
-
-            int filasInsertadas = pstmt.executeUpdate();
-
-            if (filasInsertadas > 0) {
-                System.out.println("Local inicializado en tabla VOTACION.");
-                return true;
-            } else {
-                System.out.println("NO se pudo inicializar el local en VOTACION.");
-                return false;
-            }
-
-        }catch (SQLException e){
-            System.out.println(e.getMessage());
-        }
-
-        return false;
-    }
 
 
         }

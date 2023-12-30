@@ -9,6 +9,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Date;
+import java.sql.Timestamp;
 
 public class AlmacenDeDatos {
 
@@ -858,11 +859,14 @@ public class AlmacenDeDatos {
                 Date fecha = rs.getDate("FECHA");
                 String valoracion = rs.getString("VALORACION");
 
+                SimpleDateFormat sdf = new SimpleDateFormat("HH:mm");
+                String hora = sdf.format(fecha);
+
                 Visita visita = new Visita();
                 visita.setId(idVisita);
                 visita.setClienteID(clienteId);
                 visita.setFecha(fecha);
-                visita.setHora("CORREGIR ESTO");
+                visita.setHora(hora);
                 visita.setValoracion(valoracion);
 
 

@@ -2,22 +2,14 @@ package org.proyectosalida.GUI;
 
 import org.proyectosalida.Constructores.*;
 import org.proyectosalida.Datos.AlmacenDeDatos;
-import org.proyectosalida.GUI.Salida2.MainMenuDuenio;
 import org.proyectosalida.GUI.VentanasCliente.MainMenuCliente;
 import org.proyectosalida.GUI.VentanasDueño.VerLocales;
-import org.proyectosalida.GUI.*;
-import org.proyectosalida.Datos.Credenciales;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.*;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
-import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import javax.swing.SwingWorker;
 

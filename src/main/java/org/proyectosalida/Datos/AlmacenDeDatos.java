@@ -592,8 +592,8 @@ public class AlmacenDeDatos {
                 actualizarCaracteristicasLocal(conn, local);
                 if(local.getClass().equals(Discoteca.class)){
                     System.out.println("-----------EMPIEZAN LOS DJ'S--------------");
-                    actualizarDj(conn, ((Discoteca) local).getDjResidente(), true, local.getId() , instagramAntiguoDJ);
-                    actualizarDj(conn, ((Discoteca) local).getDjInvitado(), false, local.getId() , instagramAntiguoDJ);
+                    actualizarDj(conn, ((Discoteca) local).getDjResidente(), true, local.getId());
+                    actualizarDj(conn, ((Discoteca) local).getDjInvitado(), false, local.getId());
                 }
 
                 int filasActualizadas = pstmt.executeUpdate();
@@ -1046,8 +1046,7 @@ public class AlmacenDeDatos {
         return nuevo;
 
     }
-    public static boolean actualizarDj(Connection conn, DJ nuevo, Boolean residente, String idlocal, String instagramAntiguo){
-        System.out.println(instagramAntiguo);
+    public static boolean actualizarDj(Connection conn, DJ nuevo, Boolean residente, String idlocal){
         //ACTUALIZAR DATOS DEL DJ
         String sql = "UPDATE DJ SET INSTAGRAM = ?, NOMBRE = ?, APELLIDO = ?, NOMBREMUSICAL =?, NACIONALIDAD=?, EDAD=?, GENEROMUSICAL=?, ESTILOMUSICAL=? WHERE ID =?";
 
@@ -1072,35 +1071,8 @@ public class AlmacenDeDatos {
             }
         }catch (SQLException e) {
             System.out.println("en actualizar datos dj: "+e.getMessage());
-            //SI NO SE HAN CAMBIADO DATOS COMO LA PK (EL INSTAGRAM) VA A SALTAR ESTE ERROR PERO ES POR QUE NO SE PUEDE REPETIR, EN VERDAD TODO ESTA BIEN
         }
 
-        //ACTUALIZAR ID POR SI LO HAN CAMBIADO QUE ES MUY PROBABLE QUE OCURRA YA QUE EL ID ES EL INSTAGRAM
-        /*String sql2="";
-
-        if(residente){
-            sql2 = "UPDATE DJLOCALES SET IDRESIDENTE =? WHERE IDLOCAL =?";
-        }else{
-            sql2 = "UPDATE DJLOCALES SET IDINVITADO =? WHERE IDLOCAL =?";
-        }
-
-        try (PreparedStatement pstmt = conn.prepareStatement(sql2)) {
-            pstmt.setString(1, nuevo.getInstagram());
-            pstmt.setString(2, idlocal);
-
-            int filasActualizadas = pstmt.executeUpdate();
-
-            if (filasActualizadas > 0) {
-                System.out.println("ID'S DJ CAMBIADOS!");
-            } else {
-                System.out.println("No se pudo actualizar LOS ID'S DEL DJ");
-                return false;
-            }
-        }catch (SQLException e) {
-            System.out.println("En actualizar ID's de dj: "+e.getMessage());
-        }
-
-        return true;*/
         return true;
     }
 

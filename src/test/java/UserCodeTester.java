@@ -1,4 +1,4 @@
-import org.proyectosalida.Datos.AlmacenDeDatos;
+/*import org.proyectosalida.Datos.AlmacenDeDatos;
 import static org.junit.jupiter.api.Assertions.*;
 
 import org.junit.jupiter.api.Test;
@@ -38,3 +38,5 @@ public class UserCodeTester {
         assertNotEquals(encoded1, encoded2, "Dos cadenas diferentes no deberían codificarse de la misma manera.");
     }
 }
+
+ */

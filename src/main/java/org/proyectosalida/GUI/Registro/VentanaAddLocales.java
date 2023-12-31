@@ -141,7 +141,7 @@ public class VentanaAddLocales extends JFrame {
                     } else {
                         this.dispose();
                         JOptionPane.showMessageDialog(this, "Proceso completado.", "Finalizado", JOptionPane.INFORMATION_MESSAGE);
-                        new InicioSesion(null, almacenDeDatos).setVisible(true);
+                        new InicioSesion(null, almacenDeDatos, false).setVisible(true);
                     }
                 } else {
                     JOptionPane.showMessageDialog(this, "No se pudo agregar el local.", "Error", JOptionPane.ERROR_MESSAGE);

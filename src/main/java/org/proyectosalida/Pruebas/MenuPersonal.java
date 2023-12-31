@@ -3,6 +3,7 @@ package org.proyectosalida.Pruebas;
 import org.proyectosalida.Constructores.*;
 import org.proyectosalida.Datos.AlmacenDeDatos;
 import org.proyectosalida.GUI.Bienvenido;
+import org.proyectosalida.GUI.InicioSesion;
 import org.proyectosalida.GUI.VentanasCliente.MainMenuCliente;
 import org.proyectosalida.GUI.VentanasCliente.VentanaVisitas;
 import org.proyectosalida.GUI.VentanasDueño.ModificarLocales;
@@ -118,7 +119,10 @@ public class MenuPersonal extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 if(code==1){ //Cerrar Sesion
                     dispose();
-                    Bienvenido vBienvenido = new Bienvenido();
+                    //Bienvenido vBienvenido = new Bienvenido();
+                    AlmacenDeDatos almacenNuevo = new AlmacenDeDatos();
+                    InicioSesion vIniciar = new InicioSesion(null, almacenNuevo, true);
+                    vIniciar.setVisible(true);
                 }else if (code==2){ //Ajustes
                     abrirVentanaAjustes(usuario); //Mas facil si lo hago desde afuera del listener
                     setVisible(false);

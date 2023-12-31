@@ -94,8 +94,8 @@ public class Registro extends JFrame {
         panelImagen.add(etiquetaImagen, BorderLayout.CENTER);
 
         JPanel panelBotones = new JPanel();
-        JButton aceptar = new JButton("Aceptar");
-        JButton cancelar = new JButton("Cancelar");
+        JButton aceptar = new JButton("Regístrame");
+        JButton cancelar = new JButton("Iniciar Sesión (Otra cuenta)");
 
         // Crear un contenedor principal para todos los paneles
         JPanel contenedorPrincipal = new JPanel(new BorderLayout());
@@ -204,14 +204,14 @@ public class Registro extends JFrame {
                         }else {
                             dispose();
                             //REDIRIGE DIRECTAMENTE A INICIA SESION HABIENDO GUARDADO LOS DATOS EN LA NUBE
-                            InicioSesion inicioSesion = new InicioSesion(this, almacenDeDatos);
+                            InicioSesion inicioSesion = new InicioSesion(this, almacenDeDatos, false);
                             inicioSesion.setVisible(true);
                         }
                     } else {
                         Cliente nuevoUsuario = new Cliente(id, nombre, apellido, fechaNacimiento, contraseña, telefono, correo, new ArrayList<>());
                         //Llama al metodo que lo añade en sql
                         almacenDeDatos.registrarCliente(nuevoUsuario);
-                        InicioSesion inicioSesion = new InicioSesion(padre, almacenDeDatos);
+                        InicioSesion inicioSesion = new InicioSesion(padre, almacenDeDatos, false);
                         this.dispose();
                         padre.dispose();
                         inicioSesion.setVisible(true);
@@ -231,7 +231,8 @@ public class Registro extends JFrame {
 
         cancelar.addActionListener(e -> {
             this.dispose();
-            padre.setVisible(true);
+            InicioSesion inicioSesion = new InicioSesion(null, almacenDeDatos, false);
+            inicioSesion.setVisible(true);
                 });
 
         panelBotones.add(aceptar);

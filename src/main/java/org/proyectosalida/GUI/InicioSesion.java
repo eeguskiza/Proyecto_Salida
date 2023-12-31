@@ -3,6 +3,7 @@ package org.proyectosalida.GUI;
 import com.teamdev.jxbrowser.deps.org.checkerframework.checker.units.qual.C;
 import org.proyectosalida.Constructores.*;
 import org.proyectosalida.Datos.AlmacenDeDatos;
+import org.proyectosalida.GUI.Registro.Registro;
 import org.proyectosalida.GUI.VentanasCliente.MainMenuCliente;
 import org.proyectosalida.GUI.VentanasDueño.VerLocales;
 import org.slf4j.ILoggerFactory;
@@ -32,7 +33,7 @@ public class InicioSesion extends JFrame {
 
 
 
-    public InicioSesion(JFrame padre, AlmacenDeDatos almacen){
+    public InicioSesion(JFrame padre, AlmacenDeDatos almacen, Boolean inicioSesionAutomaticoDesactivado){
         almacenDeDatos = almacen;
 
         Dueño dueño = new Dueño();
@@ -86,7 +87,7 @@ public class InicioSesion extends JFrame {
         // Panel para los botones de aceptar y cancelar
         JPanel panelBotones = new JPanel(new FlowLayout(FlowLayout.CENTER, 10, 10));
         JButton aceptar = new JButton("Aceptar");
-        JButton cancelar = new JButton("Cancelar");
+        JButton cancelar = new JButton("Registrar");
         panelBotones.add(aceptar);
         panelBotones.add(cancelar);
 
@@ -147,8 +148,9 @@ public class InicioSesion extends JFrame {
 
 
         cancelar.addActionListener(e -> {
-            this.setVisible(false);
-            padre.setVisible(true);
+            dispose();
+            Registro registro = new Registro(null, almacenDeDatos);
+            registro.setVisible(true);
         });
 
         this.add(panelBotones, BorderLayout.SOUTH);
@@ -156,7 +158,9 @@ public class InicioSesion extends JFrame {
         addComponentListener(new ComponentAdapter() {
             @Override
             public void componentShown(ComponentEvent e) {
-                inicioSesionAutomaticoPorPropiedades(almacen, dueño, cliente);
+               if(!inicioSesionAutomaticoDesactivado){
+                   inicioSesionAutomaticoPorPropiedades(almacen, dueño, cliente);
+               }
             }
         });
 
@@ -237,7 +241,7 @@ public class InicioSesion extends JFrame {
         }
 
         SwingUtilities.invokeLater(() -> {
-            new InicioSesion(null, new AlmacenDeDatos()).setVisible(true);
+            new InicioSesion(null, new AlmacenDeDatos(), true).setVisible(true);
         });
     }
 

@@ -56,7 +56,7 @@ public class Bienvenido extends JFrame {
         });
 
         inicioSesion.addActionListener(e -> {
-            InicioSesion i = new InicioSesion(this, almacen);
+            InicioSesion i = new InicioSesion(this, almacen, false);
             i.setVisible(true);
             this.setVisible(false);
         });

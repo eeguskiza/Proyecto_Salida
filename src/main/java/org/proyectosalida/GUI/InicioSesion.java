@@ -1,5 +1,6 @@
 package org.proyectosalida.GUI;
 
+import com.teamdev.jxbrowser.deps.org.checkerframework.checker.units.qual.C;
 import org.proyectosalida.Constructores.*;
 import org.proyectosalida.Datos.AlmacenDeDatos;
 import org.proyectosalida.GUI.VentanasCliente.MainMenuCliente;
@@ -11,6 +12,8 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 import javax.swing.SwingWorker;
@@ -31,28 +34,16 @@ public class InicioSesion extends JFrame {
 
     public InicioSesion(JFrame padre, AlmacenDeDatos almacen){
         almacenDeDatos = almacen;
-        Properties properties = almacen.cargarPropiedades();
 
         Dueño dueño = new Dueño();
         Cliente cliente = new Cliente();
         recordarSesion = false;
 
-        prop = almacen.cargarPropiedades();
 
         this.setTitle("Inicia Sesión");
         this.setSize(500, 300);
         this.setLocationRelativeTo(padre);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
-
-        //MIrar si hay inicio de sesion guardado y si eso iniciar sesion directamente:
-        if(!prop.isEmpty()){
-            Boolean isdueño = new Boolean(prop.getProperty("esdueño"));
-            String usuario = prop.getProperty("usuario");
-            String contraseña = prop.getProperty("contraseña");
-
-            iniciarSesion(isdueño, almacen, usuario, contraseña, dueño, cliente);
-        }
 
 
         JPanel panelIDContraseña = new JPanel(new GridLayout(3, 2, 10, 10)); // Layout para los campos y etiquetas
@@ -162,6 +153,13 @@ public class InicioSesion extends JFrame {
 
         this.add(panelBotones, BorderLayout.SOUTH);
 
+        addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentShown(ComponentEvent e) {
+                inicioSesionAutomaticoPorPropiedades(almacen, dueño, cliente);
+            }
+        });
+
     }
 
 
@@ -215,6 +213,17 @@ public class InicioSesion extends JFrame {
 
         worker.execute();
         customOptionPaneLogin.show();
+    }
+
+    private void inicioSesionAutomaticoPorPropiedades(AlmacenDeDatos almacen, Dueño dueño, Cliente cliente){
+        prop = almacen.cargarPropiedades();
+        if(!prop.isEmpty()){
+            Boolean isdueño = new Boolean(prop.getProperty("esdueño"));
+            String usuario = prop.getProperty("usuario");
+            String contraseña = prop.getProperty("contraseña");
+
+            iniciarSesion(isdueño, almacen, usuario, contraseña, dueño, cliente);
+        }
     }
 
     //org.Proyecto_Salida.Escritorio.Main de prueba

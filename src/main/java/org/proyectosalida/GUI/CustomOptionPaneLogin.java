@@ -39,7 +39,7 @@ public class CustomOptionPaneLogin extends JFrame {
         dialog.pack();
         dialog.setLocationRelativeTo(null); // Centrar en la pantalla
         dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        dialog.setSize(500, 250);
+        dialog.setSize(350, 200);
         dialog.setLocationRelativeTo(null);
     }
 

@@ -66,6 +66,7 @@ public class VentanaAjustes {
         btnAccesoCuenta.addActionListener(e ->{
             EditarPerfil vep = new EditarPerfil(almacen, false, getPadre());
             vep.setVisible(true);
+            getPadre().setVisible(false);
         });
 
 
@@ -76,7 +77,8 @@ public class VentanaAjustes {
         });
 
         btnAyuda.addActionListener(e -> {
-            //VentanaPreguntasFrecuentes ventanaPreguntasFrecuentes = new VentanaPreguntasFrecuentes(getPadre());
+            VentanaPreguntasFrecuentes ventanaPreguntasFrecuentes = new VentanaPreguntasFrecuentes(getPadre());
+            getPadre().setVisible(false);
         });
 
         btnBotonVolver.addActionListener(e -> {

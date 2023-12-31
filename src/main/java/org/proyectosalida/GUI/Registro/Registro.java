@@ -4,6 +4,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -19,10 +20,16 @@ import org.proyectosalida.GUI.InicioSesion;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+import javax.swing.JFileChooser;
+import javax.swing.filechooser.FileNameExtensionFilter;
+
 public class Registro extends JFrame {
     boolean viendoContraseña;
     JButton botonVerContraseña;
     JTextField textFieldContraseña = null;
+    JButton botonSeleccionarFoto = new JButton("Seleccionar Foto");
+    JLabel etiquetaImagen = new JLabel();
+    JPanel panelImagen = new JPanel(new BorderLayout());
 
     public Registro(JFrame padre, AlmacenDeDatos almacenDeDatos) {
 
@@ -68,7 +75,8 @@ public class Registro extends JFrame {
         panel.add(panelContraseña);
 
         panel.add(new JLabel("Comfirmar contraseña:", JLabel.CENTER));
-        panel.add(new JPasswordField(20));
+        JPanel panelConfirmarContraseña = new JPanel(new BorderLayout());JPasswordField passwordField2 = new JPasswordField(20); panelConfirmarContraseña.add(passwordField2); panel.add(panelConfirmarContraseña);
+        panel.add(panelConfirmarContraseña);
 
         panel.add(new JLabel("Teléfono:", JLabel.CENTER));
         panel.add(new JTextField(20));
@@ -76,9 +84,36 @@ public class Registro extends JFrame {
         panel.add(new JLabel("Correo:", JLabel.CENTER));
         panel.add(new JTextField(20));
 
+        // Configuración de panelImagen
+        panelImagen.add(botonSeleccionarFoto, BorderLayout.NORTH);
+        etiquetaImagen.setPreferredSize(new Dimension(200, 200)); // Configura el tamaño deseado de la etiqueta de la imagen
+        panelImagen.add(etiquetaImagen, BorderLayout.CENTER);
+
         JPanel panelBotones = new JPanel();
         JButton aceptar = new JButton("Aceptar");
         JButton cancelar = new JButton("Cancelar");
+
+        // Crear un contenedor principal para todos los paneles
+        JPanel contenedorPrincipal = new JPanel(new BorderLayout());
+        contenedorPrincipal.add(panel, BorderLayout.CENTER); // El panel con los campos de texto
+        contenedorPrincipal.add(panelBotones, BorderLayout.SOUTH); // Los botones
+        contenedorPrincipal.add(panelImagen, BorderLayout.EAST); // El panel de imagen
+
+        // Añade el contenedor principal a la ventana
+        this.add(contenedorPrincipal);
+
+        botonSeleccionarFoto.addActionListener(e -> {
+            JFileChooser fileChooser = new JFileChooser();
+            fileChooser.setFileFilter(new FileNameExtensionFilter("Imágenes", "jpg", "png", "jpeg"));
+            int resultado = fileChooser.showOpenDialog(null);
+            if (resultado == JFileChooser.APPROVE_OPTION) {
+                File archivoSeleccionado = fileChooser.getSelectedFile();
+                ImageIcon icono = new ImageIcon(archivoSeleccionado.getAbsolutePath());
+                Image imagen = icono.getImage().getScaledInstance(200, 200, Image.SCALE_SMOOTH); // Ajusta el tamaño según tus necesidades
+                etiquetaImagen.setIcon(new ImageIcon(imagen));
+            }
+        });
+
 
         botonVerContraseña.addActionListener(new ActionListener() {
             @Override

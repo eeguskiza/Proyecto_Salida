@@ -403,7 +403,7 @@ public class MainMenuCliente extends JFrame {
 
         Platform.runLater(() -> {
             WebView webView = new WebView();
-            webView.getEngine().load(url != null ? url : "https://www.google.com/maps");
+            webView.getEngine().load(url != null ? url : "https://www.google.com/maps/preview");
             jfxPanel.setScene(new Scene(webView));
         });
 

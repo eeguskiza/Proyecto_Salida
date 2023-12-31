@@ -19,28 +19,44 @@ public class VentCaracBar extends JFrame {
 
         // Labels y TextFields para cada característica del local
         panelPrincipal.add(new JLabel("Nombre:"));
-        panelPrincipal.add(new JTextField(local.getNombre()));
+        panelPrincipal.add(new JTextField(local.getNombre()){{
+            setEditable(false);
+        }});
 
         panelPrincipal.add(new JLabel("Dirección:"));
-        panelPrincipal.add(new JTextField(local.getDireccion()));
+        panelPrincipal.add(new JTextField(local.getDireccion()){{
+            setEditable(false);
+        }});
 
         panelPrincipal.add(new JLabel("Código Postal:"));
-        panelPrincipal.add(new JTextField(local.getCP()));
+        panelPrincipal.add(new JTextField(local.getCP()){{
+            setEditable(false);
+        }});
 
         panelPrincipal.add(new JLabel("Aforo:"));
-        panelPrincipal.add(new JTextField(Integer.toString(local.getAforo())));
+        panelPrincipal.add(new JTextField(Integer.toString(local.getAforo())){{
+            setEditable(false);
+        }});
 
         panelPrincipal.add(new JLabel("Teléfono:"));
-        panelPrincipal.add(new JTextField(local.getTelefono()));
+        panelPrincipal.add(new JTextField(local.getTelefono()){{
+            setEditable(false);
+        }});
 
         panelPrincipal.add(new JLabel("Media de Edad:"));
-        panelPrincipal.add(new JTextField(Integer.toString(local.getMediaEdad())));
+        panelPrincipal.add(new JTextField(Integer.toString(local.getMediaEdad())){{
+            setEditable(false);
+        }});
 
         panelPrincipal.add(new JLabel("Precio Medio:"));
-        panelPrincipal.add(new JTextField(Integer.toString(local.getPrecioMedio())));
+        panelPrincipal.add(new JTextField(Integer.toString(local.getPrecioMedio())){{
+            setEditable(false);
+        }});
 
         panelPrincipal.add(new JLabel("Web:"));
-        panelPrincipal.add(new JTextField(local.getWeb()));
+        panelPrincipal.add(new JTextField(local.getWeb()){{
+            setEditable(false);
+        }});
 /*
         panelPrincipal.add(new JLabel("Terraza:"));
         panelPrincipal.add(new JTextField(Boolean.toString(local.isTerraza())));
@@ -48,7 +64,9 @@ public class VentCaracBar extends JFrame {
 
  */
         panelPrincipal.add(new JLabel("Características:"));
-        panelPrincipal.add(new JTextField(obtenerCaracteristicas(local.getCaracteristicas())));
+        panelPrincipal.add(new JTextField(obtenerCaracteristicas(local.getCaracteristicas())){{
+            setEditable(false);
+        }});
 
         // Botón de Aceptar
         JButton btnAceptar = new JButton("Aceptar");

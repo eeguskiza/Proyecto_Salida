@@ -72,10 +72,11 @@ public class AlmacenDeDatos {
 
     }
     //PROPERTIES
-    public static void guardarPropiedades(String usuario, String contraseña) {
+    public static void guardarPropiedades(String usuario, String contraseña, Boolean esDueño) {
         Properties prop = new Properties();
 
         // Establece las propiedades
+        prop.setProperty("esdueño", esDueño.toString());
         prop.setProperty("usuario", usuario);
         prop.setProperty("contraseña", contraseña);
 
@@ -83,11 +84,9 @@ public class AlmacenDeDatos {
         try (FileOutputStream output = new FileOutputStream(PROPERTIES_PATH)) {
             prop.store(output, "Configuración de la aplicación");
             logger.info("Sesión guardada para la proxima vez!");
-            System.out.println("yep, guardado");
         } catch (IOException ex) {
             ex.printStackTrace();
             logger.warning("No se ha podido guardar la sesión.");
-            System.out.println("No, error");
         }
     }
 
@@ -403,6 +402,19 @@ public class AlmacenDeDatos {
     }
 
 
+    public  static boolean inicioSesion(String usuario, String contraseña, Usuario u, AlmacenDeDatos almacenDeDatos){
+        Boolean done;
+        done =  inicioSesionCliente(usuario, contraseña, (Cliente) u, almacenDeDatos);
+        if(!done){
+            done = inicioSesionDueño(usuario, contraseña, (Dueño) u, almacenDeDatos);
+        }
+        if(!done){
+            logger.warning("Usuario no encontrado en la Base de Datos");
+            return false;
+        }else{
+            return true;
+        }
+    }
     public static boolean inicioSesionDueño(String usuario, String contraseña, Dueño dueño, AlmacenDeDatos almacen) {
         String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
 

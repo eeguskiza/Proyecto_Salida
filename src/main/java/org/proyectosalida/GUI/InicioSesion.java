@@ -25,21 +25,35 @@ public class InicioSesion extends JFrame {
     protected JTable tabla;
     protected JTable tabla2;
     private Boolean recordarSesion;
+    private Properties prop;
 
 
 
     public InicioSesion(JFrame padre, AlmacenDeDatos almacen){
         almacenDeDatos = almacen;
-        //Properties properties = almacen.cargarPropiedades();
+        Properties properties = almacen.cargarPropiedades();
 
         Dueño dueño = new Dueño();
         Cliente cliente = new Cliente();
         recordarSesion = false;
 
+        prop = almacen.cargarPropiedades();
+
         this.setTitle("Inicia Sesión");
         this.setSize(500, 300);
         this.setLocationRelativeTo(padre);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+
+
+        //MIrar si hay inicio de sesion guardado y si eso iniciar sesion directamente:
+        if(!prop.isEmpty()){
+            Boolean isdueño = new Boolean(prop.getProperty("esdueño"));
+            String usuario = prop.getProperty("usuario");
+            String contraseña = prop.getProperty("contraseña");
+
+            iniciarSesion(isdueño, almacen, usuario, contraseña, dueño, cliente);
+        }
+
 
         JPanel panelIDContraseña = new JPanel(new GridLayout(3, 2, 10, 10)); // Layout para los campos y etiquetas
         panelIDContraseña.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
@@ -137,56 +151,7 @@ public class InicioSesion extends JFrame {
 
         aceptar.addActionListener(e -> {
             boolean esDueño = rbtnDueño.isSelected();
-            System.out.println(recordarSesion);
-
-            // Ocultar la ventana actual
-            InicioSesion.this.setVisible(false);
-
-            CustomOptionPaneLogin customOptionPaneLogin = new CustomOptionPaneLogin("Iniciando sesión...");
-
-
-            // SwingWorker para manejar la operación en segundo plano
-            SwingWorker<Boolean, Void> worker = new SwingWorker<>() {
-                @Override
-                protected Boolean doInBackground() throws Exception {
-                    if (esDueño) {
-                        return almacen.inicioSesionDueño(idField.getText(), String.valueOf(passwordField.getPassword()), dueño, almacen);
-                    } else {
-                        return almacen.inicioSesionCliente(idField.getText(), String.valueOf(passwordField.getPassword()), cliente, almacen);
-                    }
-                }
-
-                @Override
-                protected void done() {
-                    try {
-                        boolean exito = get();
-                        customOptionPaneLogin.dispose();
-                        if (exito) {
-                            if(recordarSesion){
-                                System.out.println("Guardando propiedades?");
-                                almacen.guardarPropiedades(idField.getText(), String.valueOf(passwordField.getPassword()));
-                            }
-                            if (esDueño) {
-                                new VerLocales(dueño, almacenDeDatos).setVisible(true);
-                            } else {
-                                new MainMenuCliente(almacen, "https://www.openstreetmap.org/#map=17/43.27063/-2.93807").setVisible(true);
-                            }
-                            dispose();
-                        } else {
-                            // Mostrar la ventana de inicio de sesión nuevamente si el inicio de sesión es fallido
-                            InicioSesion.this.setVisible(true);
-                            JOptionPane.showMessageDialog(InicioSesion.this, "Inicio de sesión fallido. Verifique sus credenciales.");
-                        }
-                    } catch (InterruptedException | ExecutionException ex) {
-                        // En caso de error, también mostrar la ventana de inicio de sesión
-                        InicioSesion.this.setVisible(true);
-                        ex.printStackTrace();
-                    }
-                }
-            };
-
-            worker.execute();
-            customOptionPaneLogin.show();
+            iniciarSesion(esDueño, almacen, idField.getText(), new String(passwordField.getPassword()), dueño, cliente);
         });
 
 
@@ -200,6 +165,57 @@ public class InicioSesion extends JFrame {
     }
 
 
+    private void iniciarSesion(Boolean esDueño, AlmacenDeDatos almacen, String id, String password, Dueño dueño, Cliente cliente){
+
+        // Ocultar la ventana actual
+        InicioSesion.this.setVisible(false);
+
+        CustomOptionPaneLogin customOptionPaneLogin = new CustomOptionPaneLogin("Iniciando sesión...");
+
+
+        // SwingWorker para manejar la operación en segundo plano
+        SwingWorker<Boolean, Void> worker = new SwingWorker<>() {
+            @Override
+            protected Boolean doInBackground() throws Exception {
+                if (esDueño) {
+                    return almacen.inicioSesionDueño(id, password, dueño, almacen);
+                } else {
+                    return almacen.inicioSesionCliente(id, password, cliente, almacen);
+                }
+            }
+
+            @Override
+            protected void done() {
+                try {
+                    boolean exito = get();
+                    customOptionPaneLogin.dispose();
+                    if (exito) {
+                        if(recordarSesion){
+                            System.out.println("Guardando propiedades?");
+                            almacen.guardarPropiedades(id, password, esDueño);
+                        }
+                        if (esDueño) {
+                            new VerLocales(dueño, almacenDeDatos).setVisible(true);
+                        } else {
+                            new MainMenuCliente(almacen, "https://www.openstreetmap.org/#map=17/43.27063/-2.93807").setVisible(true);
+                        }
+                        dispose();
+                    } else {
+                        // Mostrar la ventana de inicio de sesión nuevamente si el inicio de sesión es fallido
+                        InicioSesion.this.setVisible(true);
+                        JOptionPane.showMessageDialog(InicioSesion.this, "Inicio de sesión fallido. Verifique sus credenciales.");
+                    }
+                } catch (InterruptedException | ExecutionException ex) {
+                    // En caso de error, también mostrar la ventana de inicio de sesión
+                    InicioSesion.this.setVisible(true);
+                    ex.printStackTrace();
+                }
+            }
+        };
+
+        worker.execute();
+        customOptionPaneLogin.show();
+    }
 
     //org.Proyecto_Salida.Escritorio.Main de prueba
     public static void main(String[] args) {

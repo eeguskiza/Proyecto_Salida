@@ -293,6 +293,17 @@ public class AlmacenDeDatos {
         }
     }
 
+    // Método para codificar la contraseña
+    public static String encode(String password) {
+        return Base64.getEncoder().encodeToString(password.getBytes());
+    }
+
+    // Método para decodificar la contraseña
+    public static String decode(String encodedPassword) {
+        byte[] decodedBytes = Base64.getDecoder().decode(encodedPassword);
+        return new String(decodedBytes);
+    }
+
 
     //----------MANEJO DE BASE DE DATOS-----------
     public static boolean registrarDueño(Dueño dueño) {
@@ -309,7 +320,7 @@ public class AlmacenDeDatos {
                 pstmt.setString(3, dueño.getNombre());
                 pstmt.setString(4, dueño.getApellido());
                 pstmt.setDate(5, new java.sql.Date(dueño.getFechaNacimiento().getTime()));
-                pstmt.setString(6, dueño.getContraseña());
+                pstmt.setString(6, encode(dueño.getContraseña()));
                 pstmt.setString(7, dueño.getTelefono());
                 pstmt.setString(8, dueño.getCorreo());
 
@@ -345,7 +356,7 @@ public class AlmacenDeDatos {
                 pstmt.setString(3, cliente.getNombre());
                 pstmt.setString(4, cliente.getApellido());
                 pstmt.setDate(5, new java.sql.Date(cliente.getFechaNacimiento().getTime()));
-                pstmt.setString(6, cliente.getContraseña());
+                pstmt.setString(6, encode(cliente.getContraseña()));
                 pstmt.setString(7, cliente.getTelefono());
                 pstmt.setString(8, cliente.getCorreo());
 
@@ -383,7 +394,7 @@ public class AlmacenDeDatos {
                 pstmt.setString(1, nombre);
                 pstmt.setString(2, apellido);
                 pstmt.setDate(3, new java.sql.Date(fechaNacimiento.getTime()));
-                pstmt.setString(4, contraseña);
+                pstmt.setString(4, encode(contraseña));
                 pstmt.setString(5, tlf);
                 pstmt.setString(6, email);
                 pstmt.setString(7, usuario.getId());
@@ -421,7 +432,7 @@ public class AlmacenDeDatos {
                     String nombre = rs.getString("NOMBRE");
                     String apellido = rs.getString("APELLIDO");
                     java.sql.Date fechaNacimiento = rs.getDate("FECHANACIMIENTO");
-                    String contraseña2 = rs.getString("CONTRASEÑA");
+                    String contraseña2 = decode(rs.getString("CONTRASEÑA"));
                     String telefono = rs.getString("TELEFONO");
                     String email = rs.getString("EMAIL");
 
@@ -465,7 +476,7 @@ public class AlmacenDeDatos {
                     String nombre = rs.getString("NOMBRE");
                     String apellido = rs.getString("APELLIDO");
                     java.sql.Date fechaNacimiento = rs.getDate("FECHANACIMIENTO");
-                    String contraseña2 = rs.getString("CONTRASEÑA");
+                    String contraseña2 = decode(rs.getString("CONTRASEÑA"));
                     String telefono = rs.getString("TELEFONO");
                     String email = rs.getString("EMAIL");
 

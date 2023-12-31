@@ -7,6 +7,8 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import org.proyectosalida.Constructores.Caracteristica;
 
+import static org.proyectosalida.Datos.AlmacenDeDatos.logger;
+
 public class VentAddCarcLocal extends JFrame {
     protected Caracteristica caracteristica;
     public VentAddCarcLocal(JFrame padre, ArrayList<Caracteristica> caracteristicas) {
@@ -25,11 +27,11 @@ public class VentAddCarcLocal extends JFrame {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     if (checkBoxCaracteristica.isSelected()) {
-                        System.out.println("Has seleccionado " + caracteristica);
+                        logger.info("Has seleccionado " + caracteristica);
                         caracteristicas.add(caracteristica);
                     } else {
                         caracteristicas.remove(caracteristica);
-                        System.out.println(caracteristica + " deseleccionado");
+                        logger.info("Has deseleccionado " + caracteristica);
                     }
                 }
             });

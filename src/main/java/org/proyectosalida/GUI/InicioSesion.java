@@ -4,6 +4,7 @@ import org.proyectosalida.Constructores.*;
 import org.proyectosalida.Datos.AlmacenDeDatos;
 import org.proyectosalida.GUI.VentanasCliente.MainMenuCliente;
 import org.proyectosalida.GUI.VentanasDueño.VerLocales;
+import org.slf4j.ILoggerFactory;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
@@ -102,7 +103,7 @@ public class InicioSesion extends JFrame {
                     textFieldContraseña = new JTextField(contraseña);
                     passPanel.add(textFieldContraseña);
                     viendoContraseña = true;
-                    System.out.println(2);
+                    almacen.logger.info("Contraseña mostrada");
                 }
 
                 passPanel.add(verContraseña, BorderLayout.EAST);

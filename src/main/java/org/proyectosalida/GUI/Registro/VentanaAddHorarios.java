@@ -13,6 +13,8 @@ import java.util.Calendar;
 import java.util.Date;
 import javax.swing.text.MaskFormatter;
 
+import static org.proyectosalida.Datos.AlmacenDeDatos.logger;
+
 
 /* Horarios
         ArrayList<Horario> horariosMonty = new ArrayList<>();
@@ -47,14 +49,14 @@ public class VentanaAddHorarios extends JFrame {
             formatter.setPlaceholderCharacter('_'); // Carácter para el espacio en blanco
 
             //Miramos si el arraylist esta vacio en el caso de no haberlos iniciado en el registro
-            System.out.println(horarios.size());
+            logger.info("Tamaño del arraylist de horarios: " + horarios.size());
             /*
             if(horarios.isEmpty()){
                 inicializarArrayHorarios(horarios); //ESto no deberia surgir ya que en registro es obligatorio hacerlo creo
             }
 
              */
-            System.out.println(horarios.size());
+            logger.info("Tamaño del arraylist de horarios: " + horarios.size());
 
             //Saco los horarios en caso de haberlos
             if(!esNuevoElHorario){
@@ -145,7 +147,6 @@ public class VentanaAddHorarios extends JFrame {
                 horarios.add(new Horario(ndia, horaInicio, horaFin));
 
             }
-            System.out.println(horarios);
             dispose();
             ventanaAnterior.setVisible(true);
         });

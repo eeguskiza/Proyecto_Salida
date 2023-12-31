@@ -3,39 +3,41 @@ package org.proyectosalida.Datos;
 import org.proyectosalida.Constructores.*;
 
 import javax.swing.*;
-import java.io.ObjectStreamClass;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.Date;
-import java.sql.Timestamp;
+import java.util.logging.Logger;
 
 public class AlmacenDeDatos {
+    //Logger para seguimiento errores
+    public static Logger logger = Logger.getLogger(AlmacenDeDatos.class.getName());
 
     //CONEXION BASE DE DATOS
     private static Connection conn;
 
-//OBJ
+    //OBJ
     private Cliente cliente;
     private Dueño dueño;
     private boolean votoDiarioEncuesta; //El boolean va aqui ya que sino siempre que se habra y cierre la main ventana se va a restablecer el valor, aqui no. Solo se puede una vez así.
 
-//Booleans
+    //Booleans
     private boolean esDueño;
     private boolean esCliente;
 
-//Listas
+    //Listas
     public static HashMap<String, Integer> valoresVotaciones; //id, num
     private static ArrayList<Caracteristica> caracteristicas; //todas las caracterisiticas
-
-     private ArrayList<Usuario> usuarios;
-     private ArrayList<Usuario> usuariosPrueba;
-     private static ArrayList<Local> locales; //Todos los locales en nuestra bd
+    private ArrayList<Usuario> usuarios;
+    private ArrayList<Usuario> usuariosPrueba;
+    private static ArrayList<Local> locales; //Todos los locales en nuestra bd
     private ArrayList<Class> clasesDeLocales; //PARA LA TABLA DE DUEÑO EN MAINMENUDUEÑO
 
 
     public AlmacenDeDatos(){
+        logger = Logger.getLogger(AlmacenDeDatos.class.getName());
+        logger.info("Creando almacen de datos...");
         valoresVotaciones = new HashMap<>();
         votoDiarioEncuesta = false;
         caracteristicas = new ArrayList<>();
@@ -278,15 +280,17 @@ public class AlmacenDeDatos {
                 int affectedRows = pstmt.executeUpdate();
 
                 if (affectedRows > 0) {
+                    logger.info("Usuario creado exitosamente");
                     JOptionPane.showMessageDialog(null, "Usuario creado exitosamente", "Registro exitoso", JOptionPane.INFORMATION_MESSAGE);
                     return true;
                 } else {
+                    logger.warning("No se pudo registrar el dueño.");
                     JOptionPane.showMessageDialog(null, "No se pudo registrar el dueño.", "Error de registro", JOptionPane.ERROR_MESSAGE);
                     return false;
                 }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.warning("Error al crear el dueño: " + e.getMessage());
             JOptionPane.showMessageDialog(null, "Error al crear el dueño: " + e.getMessage(), "Error de registro", JOptionPane.ERROR_MESSAGE);
             return false;
         }
@@ -312,15 +316,17 @@ public class AlmacenDeDatos {
                 int affectedRows = pstmt.executeUpdate();
 
                 if (affectedRows > 0) {
+                    logger.info("Usuario creado exitosamente");
                     JOptionPane.showMessageDialog(null, "Usuario creado exitosamente", "Registro exitoso", JOptionPane.INFORMATION_MESSAGE);
                     return true;
                 } else {
+                    logger.warning("No se pudo registrar el dueño.");
                     JOptionPane.showMessageDialog(null, "No se pudo registrar el dueño.", "Error de registro", JOptionPane.ERROR_MESSAGE);
                     return false;
                 }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.warning("Error al crear el dueño: " + e.getMessage());
             JOptionPane.showMessageDialog(null, "Error al crear el dueño: " + e.getMessage(), "Error de registro", JOptionPane.ERROR_MESSAGE);
             return false;
         }
@@ -349,15 +355,15 @@ public class AlmacenDeDatos {
                 int filasActualizadas = pstmt.executeUpdate();
 
                 if (filasActualizadas > 0) {
-                    System.out.println("Datos del cliente actualizados en la base de datos.");
+                    logger.info("Datos del usuario actualizados en la base de datos.");
                     return true;
                 } else {
-                    System.out.println("No se pudo actualizar los datos del cliente.");
+                    logger.warning("No se pudo actualizar los datos del usuario.");
                     return false;
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.warning("Error al actualizar los datos del usuario: " + e.getMessage());
         }
 
         return false;
@@ -395,12 +401,11 @@ public class AlmacenDeDatos {
                     cargarLocales(conn, true, dueño, almacen);
 
                     // Imprimir los valores de cada fila si se encuentra un dueño
-                    System.out.println("Dueño encontrado: ID: " + id + ", Nombre: " + nombre);
-                    System.out.println(dueño);
+                    logger.info("Dueño encontrado: ID: " + id + ", Nombre: " + nombre);
                     almacen.getUsuarios().add(dueño);
                     return true;
                 } else {
-                    System.out.println("No se encontró el dueño con el ID y contraseña proporcionados.");
+                    logger.warning("No se encontró el dueño con el ID y contraseña proporcionados.");
                     return false;
                 }
 
@@ -439,20 +444,20 @@ public class AlmacenDeDatos {
                     cargarLocales(conn, false, null, almacen); //No es optimo descargar todos los locales para la busqueda mas adelante pero bueno
                     //cargarValoresVotaciones(conn); lo he puesto en cuando se registra una salida para que antes no lo vean
 
-                    System.out.println("LOCALES CARGADOS, PASANDO A LAS VISITAS");
+                    logger.info("LOCALES: "+locales+"PASANDO A VISITAS");
                     cargarVisitasCliente(conn, cliente);
                     // Imprimir los valores de cada fila si se encuentra un dueño
-                    System.out.println("Cliente encontrado: ID: " + id + ", Nombre: " + nombre);
+                    logger.info("Cliente encontrado: ID: " + id + ", Nombre: " + nombre);
                     //System.out.println(cliente);
                     almacen.getUsuarios().add(cliente);
                     return true;
                 } else {
-                    System.out.println("No se encontró el Cliente con el ID y contraseña proporcionados.");
+                    logger.warning("No se encontró el cliente con el ID y contraseña proporcionados.");
                     return false;
                 }
 
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.warning("Error al iniciar sesión: " + e.getMessage());
         }
 
         return false;
@@ -522,7 +527,7 @@ public class AlmacenDeDatos {
                     disco.setDjResidente(cargarDjBD(conn, true, disco.getId()));
                     disco.setDjInvitado(cargarDjBD(conn, false, disco.getId()));
                 } else {
-                    System.out.println("Falla encontrar el tipo correctamente aqui");
+                    logger.warning("No se ha encontrado el tipo de local.");
                 }
 
                 if (isDueño) {
@@ -531,22 +536,23 @@ public class AlmacenDeDatos {
                     } else if ("discoteca".equals(tipo)){
                         dueño.getLocales().add(disco);
                     } else {
-                        System.out.println("fallo 1");
+                        logger.warning("Fallo 1");
                     }
-                    System.out.println("1 BAR añadido: "+bar.getNombre());
+                    logger.info("1 LOCAL añadido: "+bar.getNombre());
                 } else {
                     if ("bar".equals(tipo)){
                         almacenDeDatos.getLocales().add(bar);
                     } else if ("discoteca".equals(tipo)){
                         almacenDeDatos.getLocales().add(disco);
                     } else {
-                        System.out.println("Fallo 2");
+                        logger.warning("Fallo 2");
                     }
-                    System.out.println("1 DSICO añadido: "+disco.getNombre());
+                    logger.info("2 LOCAL añadido: "+bar.getNombre());
                 }
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            logger.warning("No se pueden cargar los locales.");
+            logger.warning(e.getMessage());
         }
     }
 
@@ -591,15 +597,15 @@ public class AlmacenDeDatos {
                 int filasInsertadas = pstmt.executeUpdate();
 
                 if (filasInsertadas > 0) {
-                    System.out.println("Nuevo Local en BD.");
+                    logger.info("Local guardado en BD.");
                     return true;
                 } else {
-                    System.out.println("No se pudo guardar el nuevo local.");
+                    logger.warning("No se pudo guardar el local en BD.");
                     return false;
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.warning("Error al guardar el local en BD: " + e.getMessage());
         }
 
         return false;
@@ -636,7 +642,7 @@ public class AlmacenDeDatos {
                 actualizarHorariosLocal(conn, local, local.getHorarios());
                 actualizarCaracteristicasLocal(conn, local);
                 if(local.getClass().equals(Discoteca.class)){
-                    System.out.println("-----------EMPIEZAN LOS DJ'S--------------");
+                    logger.info("-----------------EMPIEZAN LOS DJ'S-----------------");
                     actualizarDj(conn, ((Discoteca) local).getDjResidente(), true, local.getId());
                     actualizarDj(conn, ((Discoteca) local).getDjInvitado(), false, local.getId());
                 }
@@ -644,15 +650,15 @@ public class AlmacenDeDatos {
                 int filasActualizadas = pstmt.executeUpdate();
 
                 if (filasActualizadas > 0) {
-                    System.out.println("Datos del Local actualizados en BD.");
+                    logger.info("Local actualizado en BD.");
                     return true;
                 } else {
-                    System.out.println("No se pudo actualizar (BD).");
+                    logger.warning("No se pudo actualizar el local en BD.");
                     return false;
                 }
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.warning("Error al actualizar el local en BD: " + e.getMessage());
         }
 
         return false;
@@ -675,10 +681,10 @@ public class AlmacenDeDatos {
                 String idc = rs.getString("IDCARACTERISTICA");
                 idCaracteristicas.add(idc);
             }
-            System.out.println("ID's conseguidos!");
+           logger.info("ID's de las caracteristicas encontrados.");
         } catch (SQLException e) {
-            System.out.println("No se pueden conseguir los id's de las Caract.");
-            System.out.println(e.getMessage());
+            logger.warning("No se pueden encontrar los ID's de las caracteristicas seleccionadas");
+            logger.warning(e.getMessage());
         }
 
 
@@ -692,13 +698,13 @@ public class AlmacenDeDatos {
                 while (rs.next()) {
                     Caracteristica nueva = Caracteristica.valueOf(rs.getString("descripcion"));
                     caracteristicas.add(nueva);
-                    System.out.println("Caracteristica añadida: "+nueva);
+                    logger.info("Caracteristica añadida: "+nueva);
                 }
 
-                System.out.println("Caracteristicas añadidas al local!");
+                logger.info("Caracteristicas añadidas.");
             } catch (SQLException e) {
-                System.out.println("No se pueden añadir las caracteristicas...");
-                System.out.println(e.getMessage());
+                logger.warning("No se pueden encontrar las caracteristicas seleccionadas");
+                logger.warning(e.getMessage());
             }
         }
         return caracteristicas;
@@ -717,10 +723,10 @@ public class AlmacenDeDatos {
                     IDCaracts.add(rs.getString("ID"));
                 }
 
-                System.out.println("ID's encontrados...");
+                logger.info("ID's de las caracteristicas encontrados.");
             } catch (SQLException e) {
-                System.out.println("No se pueden encontrar los ID's de las caracteristicas seleccionadas");
-                System.out.println(e.getMessage());
+                logger.warning("No se pueden encontrar los ID's de las caracteristicas seleccionadas");
+                logger.warning(e.getMessage());
             }
         }
 
@@ -733,12 +739,12 @@ public class AlmacenDeDatos {
                 int filasInsertadas = pstmt.executeUpdate();
 
                 if (filasInsertadas > 0) {
-                    System.out.println("Caracteristica añadida en BD.");
+                    logger.info("Nueva caracteristica guardada en la base de datos.");
                 } else {
-                    System.out.println("No se pudo añadir la nueva caracteristica en BD.");
+                    logger.warning("No se pudo guardar la nueva caracteristica.");
                 }
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                logger.warning(e.getMessage());
             }
         }
     }
@@ -751,19 +757,19 @@ public class AlmacenDeDatos {
             int filasInsertadas = pstmt.executeUpdate();
 
             if (filasInsertadas > 0) {
-                System.out.println("Caracteristica antigua Borrada.");
+                logger.info("Caracteristicas antiguas borradas correctamente.");
             } else {
-                System.out.println("No se pudo borrar la caracteristica antigua.");
+                logger.warning("No se pudo borrar las caracteristicas antiguas.");
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            logger.warning(e.getMessage());
         }
 
         //AÑADIR LAS NUEVAS
         try{
             guardarCaracteristicasLocal(conn, local);
         }catch(Exception e){
-            System.out.println("No se pueden actualizar: "+ e.getMessage());
+            logger.warning(e.getMessage());
         }
     }
 
@@ -781,10 +787,10 @@ public class AlmacenDeDatos {
 
                 pstmt.executeUpdate();
             }
-            System.out.println("Horarios guardados exitosamente en la base de datos para Local "+ local.getNombre());
+            logger.info("Horarios guardados correctamente!");
         } catch (SQLException e) {
-            System.out.println("No se han podido guardar los horarios");
-            System.out.println(e.getMessage());
+            logger.warning("No se han podido guardar los horarios");
+            logger.warning(e.getMessage());
         }
     }
     public static ArrayList<Horario> cargarHorariosLocal(Connection conn, Local local) {
@@ -804,10 +810,10 @@ public class AlmacenDeDatos {
                 Horario horario = new Horario(dia, horaInicio, horaFin);
                 horariosLocal.add(horario);
             }
-            System.out.println("Horarios Cargados correctamente!");
+            logger.info("Horarios cargados correctamente!");
         } catch (SQLException e) {
-            System.out.println("No se han podido cargar los horarios");
-            System.out.println(e.getMessage());
+            logger.warning("No se han podido cargar los horarios");
+            logger.warning(e.getMessage());
         }
         return horariosLocal;
     }
@@ -817,11 +823,11 @@ public class AlmacenDeDatos {
 
         try{
             //Eliminamos primero
-            System.out.println(local.getId());
+            logger.info("Eliminando horarios antiguos...");
             PreparedStatement deleteStmt = conn.prepareStatement(sqlDelete);
             deleteStmt.setString(1, local.getId());
             deleteStmt.executeUpdate();
-            System.out.println("Eliminado correctamente!");
+            logger.info("Horarios antiguos eliminados correctamente!");
 
             //Insertamos nuevos
             PreparedStatement insertstmt = conn.prepareStatement(sqlInsert);
@@ -834,11 +840,11 @@ public class AlmacenDeDatos {
                 insertstmt.executeUpdate();
             }
 
-            System.out.println("Horarios actualizados para "+local.getId()+ " ("+local.getNombre()+")");
+            logger.info("Horarios nuevos insertados correctamente!" + horariosNuevos+ "en local: "+local.getId() );
 
         } catch (SQLException e) {
-            System.out.println("No se ha podido actualizar HORARIOS");
-            System.out.println(e.getMessage());
+           logger.warning("No se han podido actualizar los horarios");
+           logger.warning(e.getMessage());
         }
     }
 
@@ -858,15 +864,15 @@ public class AlmacenDeDatos {
                 int filasInsertadas = pstmt.executeUpdate();
 
                 if (filasInsertadas > 0) {
-                    System.out.println("Nueva visita guardada en la base de datos.");
+                    logger.info("Nueva visita guardada en la base de datos.");
                     return true;
                 } else {
-                    System.out.println("No se pudo guardar la nueva visita.");
+                    logger.warning("No se pudo guardar la nueva visita.");
                     return false;
                 }
             }
             }catch (SQLException e) {
-            System.out.println(e.getMessage());
+           logger.warning(e.getMessage());
         }
 
         return false;
@@ -924,15 +930,15 @@ public class AlmacenDeDatos {
                             visitasConValoracion.add(visita);
                         }
                     } else {
-                        System.out.println("Local no encontrado para ID: " + localId + ". Evitandolo...");
+                        logger.warning("Local no encontrado para ID: " + localId + ". Evitandolo...");
                         //visita.setLocal(new Bar("NotFound/Removed", "", "", 0, "", 0,0, "", null, false, null));
                     }
                 }
 
             }
-            System.out.println("Visitas descargadas!");
+            logger.info("Visitas cargadas correctamente!");
         } catch (SQLException e) {
-            e.printStackTrace();
+            logger.warning("No se han podido cargar las visitas");
         }
 
         if(cliente == null){
@@ -957,16 +963,16 @@ public class AlmacenDeDatos {
                 int filasActualizadas = pstmt.executeUpdate();
 
                 if (filasActualizadas > 0) {
-                    System.out.println("Valoracion actualizada!");
+                    logger.info("Valoracion actualizada en la base de datos.");
                     return true;
                 } else {
-                    System.out.println("No se pudo actualizar la valoracion");
+                    logger.warning("No se pudo actualizar la valoracion.");
                     return false;
                 }
 
                 }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            logger.warning(e.getMessage());
             return false;
         }
     }
@@ -991,9 +997,9 @@ public class AlmacenDeDatos {
                 int filasInsertadas = pstmt.executeUpdate();
 
                 if (filasInsertadas > 0) {
-                    System.out.println("DJ registrado en BD!.");
+                    logger.info("Nuevo dj guardado en la base de datos.");
                 } else {
-                    System.out.println("No se pudo guardar el nuevo dj.");
+                    logger.warning("No se pudo guardar el nuevo dj.");
                     return false;
                 }
             }
@@ -1009,7 +1015,7 @@ public class AlmacenDeDatos {
                     idDJ = rs.getInt("ID");
                 }
             }
-            System.out.println("ID del DJ que se acaba de crear: "+idDJ);
+            logger.info("ID del dj encontrado: "+idDJ);
 
             //GUARDAMOS LA REFERENCIA DEL ID UNIENDOLO AL LOCAL CORRESP.
             //Primero van los residentes, asi que se crearia la nueva linea en la tabla, luego con el invitado seria editar la linea y añadir el nuevo id(invitado)
@@ -1023,9 +1029,9 @@ public class AlmacenDeDatos {
                     int filasInsertadas = pstmt.executeUpdate();
 
                     if (filasInsertadas > 0) {
-                        System.out.println("DJ RESIDENTE añadido a la tabla con el local.");
+                        logger.info("Nueva referencia del dj guardada en la base de datos.");
                     } else {
-                        System.out.println("No se pudo guardar la referencia del local con dj RESIDENTE");
+                        logger.warning("No se pudo guardar la nueva referencia del dj.");
                         return false;
                     }
                 }
@@ -1038,17 +1044,17 @@ public class AlmacenDeDatos {
                     int filasActualizadas = pstmt.executeUpdate();
 
                     if (filasActualizadas > 0) {
-                        System.out.println("INVITADO AÑADIDO!");
+                       logger.info("Nueva referencia del dj guardada en la base de datos.");
                         return true;
                     } else {
-                        System.out.println("INVITADO NO SE PUEDE ACTUALIZAR!");
+                        logger.warning("No se pudo guardar la nueva referencia del dj.");
                         return false;
                     }
                 }
             }
 
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            logger.warning(e.getMessage());
         }
 
         return true;
@@ -1065,10 +1071,10 @@ public class AlmacenDeDatos {
             if(rs.next()){
                 idresidente = rs.getInt("IDRESIDENTE");
                 idinvitado = rs.getInt("IDINVITADO");
-                System.out.println("id's encontrados para los DJ's!");
+                logger.info("ID's de los dj's encontrados: "+idresidente+", "+idinvitado);
             }
         }catch (SQLException e){
-            System.out.println(e.getMessage());
+           logger.warning(e.getMessage());
         }
 
         //CREAR LOS CONSTRUCTORES DEL DJ CON EL ID OBTENIDO
@@ -1093,7 +1099,7 @@ public class AlmacenDeDatos {
                 nuevo.setId(idActual);
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            logger.warning(e.getMessage());
         }
 
         return nuevo;
@@ -1118,13 +1124,13 @@ public class AlmacenDeDatos {
                 int filasActualizadas = pstmt.executeUpdate();
 
                 if (filasActualizadas > 0) {
-                    System.out.println("DATOS DJ ACTUALIZADOS!");
+                   logger.info("Datos del dj actualizados correctamente.");
                 } else {
-                    System.out.println("No se pudo actualizar LOS DATOS DEL DJ");
+                    logger.warning("No se pudo actualizar los datos del dj.");
                     return false;
                 }
             }catch (SQLException e) {
-                System.out.println("en actualizar datos dj: "+e.getMessage());
+                logger.warning(e.getMessage());
             }
         }else{
             guardarDjBD(residente, nuevo, idlocal);
@@ -1147,7 +1153,7 @@ public class AlmacenDeDatos {
 
                     ResultSet rs = pstmt.executeQuery();
                     if (!rs.next()) {
-                        System.out.println("El local no esta en la tabla de valores (BD). Añadiendolo...");
+                        logger.info("Local no encontrado en tabla VOTACION, añadiendolo...");
                         inicializarLocalEnVotacion(conn, local);
                     }
 
@@ -1168,12 +1174,13 @@ public class AlmacenDeDatos {
 
                     valoresVotaciones.put(nombre, valor);
                     index++;
-                    System.out.println("------Valor en Votacion (" + local.getId() + "): " + valor);
+                    logger.info("Local añadido a valoresVotaciones: "+nombre+", "+valor);
                 }
 
             }
 
         } catch (SQLException e) {
+            logger.warning(e.getMessage());
             throw new RuntimeException(e);
         }
     }
@@ -1187,15 +1194,15 @@ public class AlmacenDeDatos {
             int filasInsertadas = pstmt.executeUpdate();
 
             if (filasInsertadas > 0) {
-                System.out.println("Local inicializado en tabla VOTACION.");
+                logger.info("Local inicializado en VOTACION.");
                 return true;
             } else {
-                System.out.println("NO se pudo inicializar el local en VOTACION.");
+                logger.info("NO se pudo inicializar el local en VOTACION.");
                 return false;
             }
 
         }catch (SQLException e){
-            System.out.println(e.getMessage());
+            logger.warning(e.getMessage());
         }
 
         return false;
@@ -1226,15 +1233,15 @@ public class AlmacenDeDatos {
                 int filasInsertadas = pstmt.executeUpdate();
 
                 if (filasInsertadas > 0) {
-                    System.out.println("VOTACION ACTUALIZADO EN BD.");
+                    logger.info("VOTACION actualizada correctamente.");
                     return true;
                 } else {
-                    System.out.println("NO se pudo actualizar la VOTACION.");
+                   logger.info("NO se pudo actualizar la VOTACION.");
                     return false;
                 }
             }
         }catch (SQLException e){
-            System.out.println(e.getMessage());
+            logger.warning(e.getMessage());
         }
         return false;
     }
@@ -1251,7 +1258,7 @@ public class AlmacenDeDatos {
             }
 
         }catch (SQLException e){
-
+            logger.warning(e.getMessage());
         }
 
         return valor;
@@ -1264,19 +1271,21 @@ public class AlmacenDeDatos {
         try{
             local = buscarBarPorId(conn, id);
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            logger.warning("No se ha encontrado el local en la BD");
+            logger.warning(e.getMessage());
         }
 
         if(local == null){
             try{
                 local = buscarDiscotecaPorId(conn, id);
             } catch (SQLException e) {
-                System.out.println(e.getMessage());
+                logger.warning("No se ha encontrado el local en la BD");
+                logger.warning(e.getMessage());
             }
         }
 
         if(local == null){
-            System.out.println("NO se ha ENCONTRADO el LOCAL en la BD");
+           logger.warning("No se ha encontrado el local en la BD");
         }
         return local;
     }
@@ -1365,7 +1374,7 @@ public class AlmacenDeDatos {
                     }else if ("dueño".equals(tipo)){
                         usuario = new Dueño();
                     }else{
-                        System.out.println("Usuario mal introducido para cargar usuario por ID: "+tipo);
+                        logger.info("No se ha encontrado el tipo de usuario.");
                     }
 
                     String nombre = rs.getString("nombre");
@@ -1384,7 +1393,8 @@ public class AlmacenDeDatos {
                 }
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            logger.warning("No se ha encontrado el usuario en la BD");
+            logger.warning(e.getMessage());
         }
 
         return usuario;
@@ -1406,8 +1416,10 @@ public class AlmacenDeDatos {
                 Caracteristica caracteristica = Caracteristica.valueOf(descripcion);
                 caracteristicas.add(caracteristica);
             }
+            logger.info("Caracteristicas descargadas correctamente!");
         } catch (SQLException e) {
-            System.out.println("Error al descargar las características: " + e.getMessage());
+            logger.warning("No se han podido descargar las caracteristicas");
+            logger.warning(e.getMessage());
         }
     } //En array Caracteristicas se ponen todas las  que hay en BD
 

@@ -3,10 +3,14 @@ package org.proyectosalida.GUI.VentanasCliente;
 import javax.swing.*;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.Arrays;
+
 import org.proyectosalida.Constructores.Caracteristica;
 import com.toedter.calendar.JCalendar;
 import org.proyectosalida.Datos.AlmacenDeDatos;
 import org.proyectosalida.GUI.Salida1.VentLocalesRecomendados;
+
+import static org.proyectosalida.Datos.AlmacenDeDatos.logger;
 
 public class VentanaGustos extends JFrame {
     private ArrayList<Caracteristica> caracteristicasSeleccionadas = new ArrayList<>();
@@ -40,7 +44,7 @@ public class VentanaGustos extends JFrame {
             setVisible(false);
             // Hacer algo con las características seleccionadas
             // Ejemplo: imprimir en consola
-            System.out.println("Características seleccionadas: " + caracteristicasSeleccionadas);
+            logger.info("Características seleccionadas: " + Arrays.toString(caracteristicasSeleccionadas.toArray()));
         });
         panelPrincipal.add(Aceptar);
 
@@ -71,11 +75,11 @@ public class VentanaGustos extends JFrame {
             JCheckBox checkBoxCaracteristica = new JCheckBox(caracteristica.name());
             checkBoxCaracteristica.addActionListener(e -> {
                 if (checkBoxCaracteristica.isSelected()) {
-                    System.out.println("Has seleccionado " + caracteristica);
+                    logger.info(caracteristica + " seleccionado");
                     caracteristicasSeleccionadas.add(caracteristica);
                 } else {
                     caracteristicasSeleccionadas.remove(caracteristica);
-                    System.out.println(caracteristica + " deseleccionado");
+                    logger.info(caracteristica + " deseleccionado");
                 }
             });
             gustosPanel.add(checkBoxCaracteristica);

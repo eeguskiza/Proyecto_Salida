@@ -107,7 +107,6 @@ public class Registro extends JFrame {
         });
 
         aceptar.addActionListener(e -> {
-            System.out.println(1);
             String id = ((JTextField) panel.getComponent(1)).getText();
             String nombre = ((JTextField) panel.getComponent(3)).getText();
             String apellido = ((JTextField) panel.getComponent(5)).getText();
@@ -116,10 +115,10 @@ public class Registro extends JFrame {
 
             if (seleccion == 0) {
                 tipoUsuarioSeleccionado = true;
-                System.out.println("cliente");
+                almacenDeDatos.logger.info("Cliente seleccionado");
             } else if (seleccion == 1) {
                 tipoUsuarioSeleccionado = false;
-                System.out.println("dueño");
+                almacenDeDatos.logger.info("Dueño seleccionado");
             } else {
                 JOptionPane.showMessageDialog(this, "Por favor, seleccione un tipo de usuario.", "Error", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -140,10 +139,10 @@ public class Registro extends JFrame {
             String contraseña = null;
             if(viendoContraseña){
                 contraseña = ((JTextField) panelContraseña.getComponent(0)).getText();
-                System.out.println("Viendo Contraseña");
+                almacenDeDatos.logger.info("Contraseña Visible");
             }else{
                 contraseña = String.valueOf(((JPasswordField) panelContraseña.getComponent(0)).getPassword());
-                System.out.println("Contraseña Oculta");
+                almacenDeDatos.logger.info("Contraseña Oculta");
             }
 
             String telefono = ((JTextField) panel.getComponent(13)).getText();
@@ -163,7 +162,6 @@ public class Registro extends JFrame {
                         Dueño nuevoUsuario = new Dueño(id, nombre, apellido, fechaNacimiento, contraseña, telefono, correo, locales);
                         //Llama al metodo que lo añade en sql
                         almacenDeDatos.registrarDueño(nuevoUsuario);
-                        System.out.println(nuevoUsuario.toString());
                         //Option pane para decidir si quiere añadir locales o no (gurada un boll para llamar a la ventana)
                         boolean loc = JOptionPane.showConfirmDialog(null, "¿Desea añadir locales?", "Añadir locales", JOptionPane.YES_NO_OPTION) == JOptionPane.YES_OPTION;
                         if (loc == true) {
@@ -178,7 +176,6 @@ public class Registro extends JFrame {
                         }
                     } else {
                         Cliente nuevoUsuario = new Cliente(id, nombre, apellido, fechaNacimiento, contraseña, telefono, correo, new ArrayList<>());
-                        System.out.println(nuevoUsuario.toString());
                         //Llama al metodo que lo añade en sql
                         almacenDeDatos.registrarCliente(nuevoUsuario);
                         InicioSesion inicioSesion = new InicioSesion(padre, almacenDeDatos);
@@ -190,6 +187,7 @@ public class Registro extends JFrame {
 
                 } catch (Exception ex) {
                     JOptionPane.showMessageDialog(this, "Error al crear el usuario: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+                    almacenDeDatos.logger.warning("Error al crear el usuario: " + ex.getMessage());
                 }
 
 

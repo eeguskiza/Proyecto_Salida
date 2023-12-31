@@ -37,6 +37,8 @@ import com.teamdev.jxbrowser.view.swing.BrowserView;
 import org.proyectosalida.GUI.Salida2.VentSelectCarac;
 import org.proyectosalida.Pruebas.MenuPersonal;
 
+import static org.proyectosalida.Datos.AlmacenDeDatos.logger;
+
 
 public class MainMenuCliente extends JFrame {
 
@@ -105,7 +107,7 @@ public class MainMenuCliente extends JFrame {
             if (opcion == JOptionPane.YES_OPTION) {
 
                 Date fechaHoy = new Date();
-                System.out.println("El usuario quiere salir hoy: " + fechaHoy);
+                logger.info("El usuario quiere salir hoy: " + fechaHoy);
 
                 Salida salida = new Salida((Cliente) almacen.getUsuarios().get(0), almacen.getCaracteristicas(), fechaHoy, null);
                 //System.out.println(salida.toString());
@@ -117,14 +119,13 @@ public class MainMenuCliente extends JFrame {
 
                 if (result == JOptionPane.OK_OPTION) {
                     Date fechaElegida = calendar.getDate();
-                    System.out.println("El usuario quiere salir otro día: " + fechaElegida);
+                    logger.info("El usuario quiere salir en otra fecha: " + fechaElegida);
 
                     Salida salida = new Salida((Cliente) almacen.getUsuarios().get(0), almacen.getCaracteristicas(), fechaElegida, null);
-                    System.out.println(salida.toString());
                     VentSelectCarac v = new VentSelectCarac(caracteristicasSeleccionadas, false, almacenDeDatos, salida);
                     ventanaIsVisible=false;
                 } else {
-                    System.out.println("No se ha seleccionado una opción");
+                    logger.warning("El usuario ha cancelado la selección de fecha");
                 }
             }
         });
@@ -212,9 +213,9 @@ public class MainMenuCliente extends JFrame {
         int posiblemax = almacen.encontrarValorMaximoVotacion();
         if( posiblemax != -1){
             max = posiblemax;
-            System.out.println("VALOR MAXIMO ENCONTRADO: "+max);
+            logger.info("El valor máximo de votación es: " + max);
         }else{
-            System.out.println("NO SE HA PODIDO ENCONTRAR EL VALOR MAXIMO.");
+            logger.warning("No se ha encontrado el valor máximo de votación");
         }
 
         JPanel panelSinVotaciones = new JPanel(new GridLayout(6, 1));
@@ -265,7 +266,7 @@ public class MainMenuCliente extends JFrame {
                         cargarUltimasReviews(visitasConValoracion, almacenDeDatos, sizeEncabezadoTexto, panelGrid);
                     });
                     try {
-                        Thread.sleep(5000); // Esperar 5 segundos
+                        Thread.sleep(15000); // Esperar 5 segundos
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -329,7 +330,7 @@ public class MainMenuCliente extends JFrame {
     }
 
     private void cargarUltimasReviews(ArrayList<Visita> visitasConValoracion, AlmacenDeDatos almacenDeDatos, int sizeEncabezadoTexto, JPanel panelGrid){
-        System.out.println("CARGANDO ULTIMAS REVIEWS");
+        logger.info("Cargando las últimas reviews publicadas");
         String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
 
         //Conexion tontorrona para sacar todas las visitas con reviews
@@ -370,8 +371,8 @@ public class MainMenuCliente extends JFrame {
                 vsr++;
             }
         }
-        System.out.println("VT: "+vt);
-        System.out.println("VSR: "+vsr);
+        logger.info("Se han cargado "+vsr+" reviews pendientes de un total de "+vt+" visitas");
+        logger.info("Se han cargado "+vsr+" reviews pendientes de un total de "+vt+" visitas");
         return vsr;
     }
 
@@ -434,7 +435,8 @@ public class MainMenuCliente extends JFrame {
             // Establecer el look and feel de Nimbus
             UIManager.setLookAndFeel(new FlatLightLaf());
         } catch (UnsupportedLookAndFeelException e) {
-            e.printStackTrace();
+            logger.warning("El look and feel no está soportado");
+            logger.warning(e.getMessage());
             // Aquí puedes manejar la excepción o dejar que se use el look and feel predeterminado
         }
 

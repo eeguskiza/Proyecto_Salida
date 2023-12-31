@@ -15,6 +15,7 @@ import java.util.HashMap;
 
 import org.proyectosalida.Constructores.*;
 import org.proyectosalida.Datos.AlmacenDeDatos;
+import org.proyectosalida.GUI.CustomOptionPaneLogin;
 import org.proyectosalida.GUI.VentanasCliente.MainMenuCliente;
 
 public class VentLocalesRecomendados extends JFrame {
@@ -85,8 +86,21 @@ public class VentLocalesRecomendados extends JFrame {
 
             @Override
             public void mouseClicked(MouseEvent e) {
-                if(e.getClickCount() == 2){
-                    botonAdelanteMetodo(tabla, salida, almacen);
+                if (e.getClickCount() == 2) {
+                    CustomOptionPaneLogin custom = new CustomOptionPaneLogin("Registrando visita...");
+                    custom.show();
+                    new SwingWorker<Void, Void>() {
+                        @Override
+                        protected Void doInBackground() throws Exception {
+                            botonAdelanteMetodo(tabla, salida, almacen, custom);
+                            return null;
+                        }
+
+                        @Override
+                        protected void done() {
+                            custom.dispose();
+                        }
+                    }.execute();
                 }
             }
         });
@@ -174,11 +188,13 @@ public class VentLocalesRecomendados extends JFrame {
         // Crear el botón "ESTE" en la esquina inferior derecha
         JPanel botonera = new JPanel(new FlowLayout()); //me daba toc que el boton ocupara t0do el ancho de la ventana jajaja
         JButton esteBoton = new JButton("ESTE");
-        botonera.add(esteBoton); panelPrincipal.add(botonera, BorderLayout.SOUTH);
+        //botonera.add(esteBoton);
+        panelPrincipal.add(botonera, BorderLayout.SOUTH);
         botonera.add(new JLabel("Selecciona uno para seguir adelante"));
 
         esteBoton.addActionListener(e -> {
-            botonAdelanteMetodo(tabla, salida, almacen);
+            //botonAdelanteMetodo(tabla, salida, almacen);
+            //esto ya no se ejecuta
         });
 
         // Configuración de la ventana
@@ -190,7 +206,7 @@ public class VentLocalesRecomendados extends JFrame {
         setLocationRelativeTo(null);
     }
 
-    private void botonAdelanteMetodo(JTable tabla, Salida salida, AlmacenDeDatos almacen){
+    private void botonAdelanteMetodo(JTable tabla, Salida salida, AlmacenDeDatos almacen, CustomOptionPaneLogin custom){
         int fila=tabla.getSelectedRow();
         if (fila != -1) {
             String id = idLocalesRecomendados.get(fila);
@@ -211,10 +227,12 @@ public class VentLocalesRecomendados extends JFrame {
             if (objeto instanceof Bar) {
 
                 System.out.println("abrir ventana" + objeto);
+                //custom.dispose();
                 dispose();
                 new MainMenuCliente(almacen, objeto.getWeb());
                 new VentCaracBar(objeto);
             }else {
+                //custom.dispose();
                 new MainMenuCliente(almacen, objeto.getWeb());
                 new VentCaracDisco(objeto);
                 dispose();

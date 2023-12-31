@@ -7,11 +7,11 @@ public class CustomOptionPaneLogin {
 
     private JDialog dialog;
 
-    public CustomOptionPaneLogin() {
-        createDialog(); // Método para crear el diálogo
+    public CustomOptionPaneLogin(String texto) {
+        createDialog(texto); // Método para crear el diálogo
     }
 
-    private void createDialog() {
+    private void createDialog(String texto) {
         // Crear un nuevo JDialog
         dialog = new JDialog();
         dialog.setTitle("Cargando");
@@ -27,7 +27,7 @@ public class CustomOptionPaneLogin {
         // Agregar el mensaje al panel
         JPanel panelPanelTexto = new JPanel(new GridLayout(3, 1));
         panelPanelTexto.add(new JPanel());
-        JLabel label = new JLabel("Verificando credenciales...");
+        JLabel label = new JLabel(texto);
         JPanel panelTexto = new JPanel(new FlowLayout());
         panelTexto.add(label);
         panelPanelTexto.add(panelTexto);
@@ -50,7 +50,7 @@ public class CustomOptionPaneLogin {
     }
 
     public static void main(String[] args) {
-        CustomOptionPaneLogin customOptionPaneLogin = new CustomOptionPaneLogin();
+        CustomOptionPaneLogin customOptionPaneLogin = new CustomOptionPaneLogin("");
         customOptionPaneLogin.show(); // Mostrar el diálogo desde la clase misma
     }
 }

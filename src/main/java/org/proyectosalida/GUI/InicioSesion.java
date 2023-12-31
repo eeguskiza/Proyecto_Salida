@@ -121,7 +121,7 @@ public class InicioSesion extends JFrame {
 
              */
 
-            CustomOptionPaneLogin customOptionPaneLogin = new CustomOptionPaneLogin();
+            CustomOptionPaneLogin customOptionPaneLogin = new CustomOptionPaneLogin("Iniciando sesión...");
 
             // SwingWorker para manejar la operación en segundo plano
             SwingWorker<Boolean, Void> worker = new SwingWorker<>() {

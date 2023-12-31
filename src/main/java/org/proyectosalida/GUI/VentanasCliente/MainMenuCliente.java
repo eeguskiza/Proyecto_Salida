@@ -266,7 +266,7 @@ public class MainMenuCliente extends JFrame {
                         cargarUltimasReviews(visitasConValoracion, almacenDeDatos, sizeEncabezadoTexto, panelGrid);
                     });
                     try {
-                        Thread.sleep(15000); // Esperar 5 segundos
+                        Thread.sleep(15000); // Esperar 15 segundos
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -421,12 +421,13 @@ public class MainMenuCliente extends JFrame {
 
         Platform.runLater(() -> {
             WebView webView = new WebView();
-            webView.getEngine().load(url != null ? url : "https://www.google.com/maps/preview");
+            webView.getEngine().load(url != null ? url : "https://www.openstreetmap.org/#map=12/43.3340/-2.9073");
             jfxPanel.setScene(new Scene(webView));
         });
 
         return jfxPanel;
     }
+
 
 
 

@@ -11,6 +11,7 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 import javax.swing.SwingWorker;
 
@@ -28,6 +29,8 @@ public class InicioSesion extends JFrame {
 
     public InicioSesion(JFrame padre, AlmacenDeDatos almacen){
         almacenDeDatos = almacen;
+        //Properties properties = almacen.cargarPropiedades();
+
         Dueño dueño = new Dueño();
         Cliente cliente = new Cliente();
 
@@ -115,14 +118,11 @@ public class InicioSesion extends JFrame {
         aceptar.addActionListener(e -> {
             boolean esDueño = rbtnDueño.isSelected();
 
-            // Muestra un mensaje de carga
-            /*
-            JOptionPane mensajeCarga = new JOptionPane("Verificando credenciales...", JOptionPane.INFORMATION_MESSAGE, JOptionPane.DEFAULT_OPTION, null, new Object[]{}, null);
-            JDialog dialog = mensajeCarga.createDialog("Cargando");
-
-             */
+            // Ocultar la ventana actual
+            InicioSesion.this.setVisible(false);
 
             CustomOptionPaneLogin customOptionPaneLogin = new CustomOptionPaneLogin("Iniciando sesión...");
+
 
             // SwingWorker para manejar la operación en segundo plano
             SwingWorker<Boolean, Void> worker = new SwingWorker<>() {
@@ -139,11 +139,8 @@ public class InicioSesion extends JFrame {
                 protected void done() {
                     try {
                         boolean exito = get();
-                        //dialog.dispose();
                         customOptionPaneLogin.dispose();
                         if (exito) {
-                            //String mensaje = esDueño ? "Inicio de sesión exitoso como Dueño." : "Inicio de sesión exitoso como Cliente.";
-                            //JOptionPane.showMessageDialog(InicioSesion.this, mensaje);
                             if (esDueño) {
                                 new VerLocales(dueño, almacenDeDatos).setVisible(true);
                             } else {
@@ -151,19 +148,21 @@ public class InicioSesion extends JFrame {
                             }
                             dispose();
                         } else {
+                            // Mostrar la ventana de inicio de sesión nuevamente si el inicio de sesión es fallido
+                            InicioSesion.this.setVisible(true);
                             JOptionPane.showMessageDialog(InicioSesion.this, "Inicio de sesión fallido. Verifique sus credenciales.");
                         }
                     } catch (InterruptedException | ExecutionException ex) {
+                        // En caso de error, también mostrar la ventana de inicio de sesión
+                        InicioSesion.this.setVisible(true);
                         ex.printStackTrace();
                     }
                 }
             };
 
             worker.execute();
-            //dialog.setVisible(true);
             customOptionPaneLogin.show();
         });
-
 
 
         cancelar.addActionListener(e -> {

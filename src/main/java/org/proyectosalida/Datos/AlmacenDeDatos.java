@@ -3,6 +3,9 @@ package org.proyectosalida.Datos;
 import org.proyectosalida.Constructores.*;
 
 import javax.swing.*;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -11,6 +14,8 @@ import java.util.Date;
 import java.util.logging.Logger;
 
 public class AlmacenDeDatos {
+    //Properties
+    public static String PROPERTIES_PATH = "src/main/java/org/proyectosalida/Datos/config.dat";
     //Logger para seguimiento errores
     public static Logger logger = Logger.getLogger(AlmacenDeDatos.class.getName());
 
@@ -67,6 +72,37 @@ public class AlmacenDeDatos {
 
 
     }
+    //PROPERTIES
+    public static void guardarPropiedades(boolean miBoolean, String usuario, String contraseña) {
+        Properties prop = new Properties();
+
+        // Establece las propiedades
+        prop.setProperty("miBoolean", String.valueOf(miBoolean));
+        prop.setProperty("usuario", usuario);
+        prop.setProperty("contraseña", contraseña);
+
+        // Guarda las propiedades en un archivo
+        try (FileOutputStream output = new FileOutputStream(PROPERTIES_PATH)) {
+            prop.store(output, "Configuración de la aplicación");
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    public Properties cargarPropiedades() {
+        Properties prop = new Properties();
+
+        // Carga las propiedades desde un archivo
+        try (FileInputStream input = new FileInputStream(PROPERTIES_PATH)) {
+            prop.load(input);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+
+        return prop;
+    }
+
+
 
     public HashMap<String, Integer> getValoresVotaciones() {
         return valoresVotaciones;

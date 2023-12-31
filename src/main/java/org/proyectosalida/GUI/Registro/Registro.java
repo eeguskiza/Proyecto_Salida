@@ -25,8 +25,11 @@ import javax.swing.filechooser.FileNameExtensionFilter;
 
 public class Registro extends JFrame {
     boolean viendoContraseña;
+    boolean viendoContraseñaConf;
     JButton botonVerContraseña;
+    JButton botonVerConfConstraseña;
     JTextField textFieldContraseña = null;
+    JTextField textFieldContraseña2 = null;
     JButton botonSeleccionarFoto = new JButton("Seleccionar Foto");
     JLabel etiquetaImagen = new JLabel();
     JPanel panelImagen = new JPanel(new BorderLayout());
@@ -34,6 +37,7 @@ public class Registro extends JFrame {
     public Registro(JFrame padre, AlmacenDeDatos almacenDeDatos) {
 
         viendoContraseña=false;
+        viendoContraseñaConf = false;
         botonVerContraseña = new JButton();
 
         Object[] opciones = {"Cliente", "Dueño"};
@@ -48,7 +52,7 @@ public class Registro extends JFrame {
         }
 
         this.setTitle("Registro");
-        this.setSize(500, 500);
+        this.setSize(700, 500);
         this.setLocationRelativeTo(padre);
 
         JPanel panel = new JPanel(new GridLayout(0, 2, 10, 10)); // Layout para los campos y etiquetas
@@ -75,7 +79,7 @@ public class Registro extends JFrame {
         panel.add(panelContraseña);
 
         panel.add(new JLabel("Comfirmar contraseña:", JLabel.CENTER));
-        JPanel panelConfirmarContraseña = new JPanel(new BorderLayout());JPasswordField passwordField2 = new JPasswordField(20); panelConfirmarContraseña.add(passwordField2);
+        JPanel panelConfirmarContraseña = new JPanel(new BorderLayout());JPasswordField passwordField2 = new JPasswordField(20); panelConfirmarContraseña.add(passwordField2); botonVerConfConstraseña = new JButton(new ImageIcon(image_hid)); panelConfirmarContraseña.add(botonVerConfConstraseña, BorderLayout.EAST); botonVerConfConstraseña.setBackground(Color.white);
         panel.add(panelConfirmarContraseña);
 
         panel.add(new JLabel("Teléfono:", JLabel.CENTER));
@@ -114,31 +118,15 @@ public class Registro extends JFrame {
             }
         });
 
-
         botonVerContraseña.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                String contraseña = String.valueOf(passwordField.getPassword());
-
-                if (viendoContraseña) {
-                    contraseña = textFieldContraseña.getText();
-                    botonVerContraseña.setIcon(new ImageIcon(image_hid));
-                    panelContraseña.removeAll();
-                    passwordField.setText(contraseña); // Restablece el texto en el JPasswordField
-                    panelContraseña.add(passwordField);
-                    viendoContraseña = false;
-                } else {
-                    botonVerContraseña.setIcon(new ImageIcon(image_sho));
-                    panelContraseña.removeAll();
-                    textFieldContraseña = new JTextField(contraseña);
-                    panelContraseña.add(textFieldContraseña);
-                    viendoContraseña = true;
-                }
-
-                panelContraseña.add(botonVerContraseña, BorderLayout.EAST);
-                panelContraseña.revalidate();
-                panelContraseña.repaint();
+                actualizarCampoContraseña(passwordField, image_hid, image_sho,  panelContraseña, botonVerContraseña);
             }
+        });
+
+        botonVerConfConstraseña.addActionListener(e -> {
+            actualizarCampoContraseña(passwordField2, image_hid, image_sho, panelConfirmarContraseña, botonVerConfConstraseña);
         });
 
         aceptar.addActionListener(e -> {
@@ -170,7 +158,7 @@ public class Registro extends JFrame {
             }
 
             //String contraseña = new String(((JPasswordField) panel.getComponent(9)).getPassword());
-            String confirmarContraseña = new String(((JPasswordField) panelConfirmarContraseña.getComponent(0)).getPassword());
+            //String confirmarContraseña = new String(((JPasswordField) panelConfirmarContraseña.getComponent(0)).getPassword());
             String contraseña = null;
             if(viendoContraseña){
                 contraseña = ((JTextField) panelContraseña.getComponent(0)).getText();
@@ -179,6 +167,16 @@ public class Registro extends JFrame {
                 contraseña = String.valueOf(((JPasswordField) panelContraseña.getComponent(0)).getPassword());
                 almacenDeDatos.logger.info("Contraseña Oculta");
             }
+
+            String confirmarContraseña = null;
+            if(viendoContraseñaConf){
+                confirmarContraseña = ((JTextField) panelConfirmarContraseña.getComponent(0)).getText();
+                almacenDeDatos.logger.info("ConfContraseña Visible");
+            }else{
+                confirmarContraseña = String.valueOf(((JPasswordField) panelConfirmarContraseña.getComponent(0)).getPassword());
+                almacenDeDatos.logger.info("ConfContraseña Oculta");
+            }
+
 
             String telefono = ((JTextField) panel.getComponent(13)).getText();
             String correo = ((JTextField) panel.getComponent(15)).getText();
@@ -241,7 +239,6 @@ public class Registro extends JFrame {
 
         // Agregar el panel a la ventana
         //this.add(panel);
-        System.out.println("SIIIII");
         this.add(panelBotones, BorderLayout.SOUTH);
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -251,7 +248,28 @@ public class Registro extends JFrame {
 
 
 
+    private void actualizarCampoContraseña(JPasswordField passwordField, Image image_hid, Image image_sho, JPanel panelContraseña, JButton botonVerContraseña){
+        String contraseña = String.valueOf(passwordField.getPassword());
 
+        if (viendoContraseña) {
+            contraseña = textFieldContraseña.getText();
+            botonVerContraseña.setIcon(new ImageIcon(image_hid));
+            panelContraseña.removeAll();
+            passwordField.setText(contraseña); // Restablece el texto en el JPasswordField
+            panelContraseña.add(passwordField);
+            viendoContraseña = false;
+        } else {
+            botonVerContraseña.setIcon(new ImageIcon(image_sho));
+            panelContraseña.removeAll();
+            textFieldContraseña = new JTextField(contraseña);
+            panelContraseña.add(textFieldContraseña);
+            viendoContraseña = true;
+        }
+
+        panelContraseña.add(botonVerContraseña, BorderLayout.EAST);
+        panelContraseña.revalidate();
+        panelContraseña.repaint();
+    }
 
 
 

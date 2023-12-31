@@ -13,7 +13,13 @@
             <id>com.teamdev</id>
             <url>https://europe-maven.pkg.dev/jxbrowser/releases</url>
         </repository>
+
+        <repository>
+            <id>maven-central</id>
+            <url>https://repo.maven.apache.org/maven2</url>
+        </repository>
     </repositories>
+
 
 
     <properties>
@@ -92,17 +98,47 @@
             <version>23.3.0.23.09</version>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/com.oracle.oci.sdk/oci-hdfs-connector -->
         <dependency>
-            <groupId>com.oracle.oci.sdk</groupId>
-            <artifactId>oci-hdfs-connector</artifactId>
-            <version>3.3.4.1.4.0</version>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-controls</artifactId>
+            <version>19</version> <!-- Asegúrate de que esta versión sea compatible con tu JDK -->
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-web</artifactId>
+            <version>19</version> <!-- Asegúrate de que esta versión sea compatible con tu JDK -->
+            <scope>compile</scope>
         </dependency>
 
+        <!-- Dependencia para JavaFX Controls -->
 
-
-
-
+        <dependency>
+            <groupId>org.openjfx</groupId>
+            <artifactId>javafx-swing</artifactId>
+            <version>19</version> <!-- Usa la versión que coincida con tu JDK -->
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>non-mac-os</id>
+            <activation>
+                <os>
+                    <family>!mac</family>
+                </os>
+            </activation>
+            <dependencies>
+                <!-- Esta dependencia se incluirá solo si el sistema operativo NO es macOS -->
+                <dependency>
+                    <groupId>com.oracle.oci.sdk</groupId>
+                    <artifactId>oci-hdfs-connector</artifactId>
+                    <version>3.3.4.1.4.0</version>
+                </dependency>
+            </dependencies>
+        </profile>
+    </profiles>
+
 
 </project>

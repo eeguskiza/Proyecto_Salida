@@ -65,7 +65,7 @@ public class VentanaCarga extends JFrame {
             }
         };
 
-        timer.scheduleAtFixedRate(task, 0, 50);
+        timer.scheduleAtFixedRate(task, 0, 30);
     }
 
     public static void main(String[] args) {

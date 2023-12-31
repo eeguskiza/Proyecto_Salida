@@ -146,7 +146,7 @@ public class InicioSesion extends JFrame {
                             if (esDueño) {
                                 new VerLocales(dueño, almacenDeDatos).setVisible(true);
                             } else {
-                                new MainMenuCliente(almacen, null).setVisible(true);
+                                new MainMenuCliente(almacen, "https://www.openstreetmap.org/#map=17/43.27063/-2.93807").setVisible(true);
                             }
                             dispose();
                         } else {

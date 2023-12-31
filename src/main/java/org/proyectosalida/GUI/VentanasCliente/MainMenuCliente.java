@@ -22,6 +22,10 @@ import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import com.toedter.calendar.JCalendar;
+import javafx.application.Platform;
+import javafx.embed.swing.JFXPanel;
+import javafx.scene.Scene;
+import javafx.scene.web.WebView;
 import org.proyectosalida.Constructores.*;
 import org.proyectosalida.Datos.AlmacenDeDatos;
 import com.formdev.flatlaf.*;
@@ -44,6 +48,7 @@ public class MainMenuCliente extends JFrame {
     private Cliente usuario;
     private ArrayList<Visita> VSR;
     private DefaultTableModel modelo;
+    private final JFXPanel jfxPanel = new JFXPanel();
 
     public MainMenuCliente(AlmacenDeDatos almacenDeDatos, String url) {
         setTitle("Main Menu");
@@ -81,7 +86,7 @@ public class MainMenuCliente extends JFrame {
         salimos.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
         salimos.setPreferredSize(new Dimension(150, 40)); // Tamaño personalizado
 
-        //Este listene comun para todos, Alex escribe tu metodo y yo el mio de chill
+        //Este listener comun para todos, Alex escribe tu metodo y yo el mio de chill
         salimos.addActionListener(e -> {
             dispose();
 
@@ -141,13 +146,10 @@ public class MainMenuCliente extends JFrame {
 
         // --------------- MAPA ------------------
         JPanel panelMapa = new JPanel(new BorderLayout());
-        panelMapa.setBackground(Color.BLUE);
-        //BrowserView view = cargarMapa(url);
-        //panelMapa.add(view, BorderLayout.CENTER);
+        JFXPanel jfxPanelMapa = cargarMapa(url); // Llamada al método modificado
+        panelMapa.add(jfxPanelMapa, BorderLayout.CENTER); // Añadir JFXPanel a Swing
 
 
-
- 
         // Bottom panel
         JPanel bottomPanel = new JPanel();
         bottomPanel.setBackground(Color.RED);
@@ -181,7 +183,7 @@ public class MainMenuCliente extends JFrame {
         p1.setBorder(bordeExterno);
         p1.setBackground(colorExterno);
         // Crear la etiqueta y configurar el texto centrado
-        labelEncabezado = new JLabel("SAL Y DESCUBLE QUE HACE EL RESTO!");
+        labelEncabezado = new JLabel("SAL Y DESCUBRE QUE HACE EL RESTO!");
         labelEncabezado.setFont(new Font("Arial", Font.BOLD, sizeTitulos));
         labelEncabezado.setHorizontalAlignment(SwingConstants.CENTER);
 
@@ -396,29 +398,19 @@ public class MainMenuCliente extends JFrame {
     }
 
 
-    private BrowserView cargarMapa(String url){
-        // Configuración de JxBrowser
-        String LICENSE_KEY = "1BNDHFSC1G8G98OJJHDTF78DD0CDDPDLQF4P63L618XNXGIMI8JN9NMU9C1PKN6NQLIHWK";
-        EngineOptions options = EngineOptions.newBuilder(RenderingMode.HARDWARE_ACCELERATED)
-                .licenseKey(LICENSE_KEY)
-                .build();
+    private JFXPanel cargarMapa(String url) {
+        final JFXPanel jfxPanel = new JFXPanel(); // Este panel es el que se integrará en Swing
 
-        // Inicializando el motor del navegador con la clave de licencia
-        Engine engine = Engine.newInstance(options);
+        Platform.runLater(() -> {
+            WebView webView = new WebView();
+            webView.getEngine().load(url != null ? url : "https://www.google.com/maps/preview");
+            jfxPanel.setScene(new Scene(webView));
+        });
 
-        // Creando el navegador
-        Browser browser = engine.newBrowser();
-
-        // Crear la vista del navegador para Swing
-        BrowserView view = BrowserView.newInstance(browser);
-
-        if(url == null){
-            url = "https://www.google.es/maps/preview";
-        }
-        // Cargando la URL en el navegador
-        browser.navigation().loadUrl(url);
-        return view;
+        return jfxPanel;
     }
+
+
 
     public static void main(String[] args) {
         try {

@@ -76,8 +76,6 @@ public class VentanaAjustes {
         });
 
         btnBotonVolver.addActionListener(e -> {
-           // MenuPersonal mp = new MenuPersonal();
-            //mp.setVisible(true);
             frame.dispose();
             padre.setVisible(true);
         });

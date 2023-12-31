@@ -61,7 +61,6 @@ public class AlmacenDeDatos {
             JOptionPane.showMessageDialog(null, "No se ha podido conectar a la Base de Datos. \nCompruebe la conexión a Internet y vuelva a intentarlo.");
         }
 
-        System.out.println("ALMACEN CREADO");
         //descargarCaracteristicas();
 
         //BORRAR ESTE METODO LUEGO
@@ -73,23 +72,27 @@ public class AlmacenDeDatos {
 
     }
     //PROPERTIES
-    public static void guardarPropiedades(boolean miBoolean, String usuario, String contraseña) {
+    public static void guardarPropiedades(String usuario, String contraseña) {
         Properties prop = new Properties();
 
         // Establece las propiedades
-        prop.setProperty("miBoolean", String.valueOf(miBoolean));
         prop.setProperty("usuario", usuario);
         prop.setProperty("contraseña", contraseña);
 
         // Guarda las propiedades en un archivo
         try (FileOutputStream output = new FileOutputStream(PROPERTIES_PATH)) {
             prop.store(output, "Configuración de la aplicación");
+            logger.info("Sesión guardada para la proxima vez!");
+            System.out.println("yep, guardado");
         } catch (IOException ex) {
             ex.printStackTrace();
+            logger.warning("No se ha podido guardar la sesión.");
+            System.out.println("No, error");
         }
     }
 
     public Properties cargarPropiedades() {
+        logger.info("Cargando PATH de 'Properties'");
         Properties prop = new Properties();
 
         // Carga las propiedades desde un archivo
@@ -97,6 +100,7 @@ public class AlmacenDeDatos {
             prop.load(input);
         } catch (IOException ex) {
             ex.printStackTrace();
+            System.out.println(ex.getMessage());
         }
 
         return prop;
@@ -109,13 +113,6 @@ public class AlmacenDeDatos {
     }
     public void setValoresVotaciones(HashMap<String, Integer> valoresVotaciones) {
         this.valoresVotaciones = valoresVotaciones;
-    }
-
-    public boolean getVotoDiarioEncuesta() {
-        return votoDiarioEncuesta;
-    }
-    public void setVotoDiarioEncuesta(boolean votoDiarioEncuesta) {
-        this.votoDiarioEncuesta = votoDiarioEncuesta;
     }
 
 

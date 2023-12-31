@@ -24,6 +24,7 @@ public class InicioSesion extends JFrame {
     JTextField textFieldContraseña = new JTextField();
     protected JTable tabla;
     protected JTable tabla2;
+    private Boolean recordarSesion;
 
 
 
@@ -33,14 +34,15 @@ public class InicioSesion extends JFrame {
 
         Dueño dueño = new Dueño();
         Cliente cliente = new Cliente();
+        recordarSesion = false;
 
         this.setTitle("Inicia Sesión");
         this.setSize(500, 300);
         this.setLocationRelativeTo(padre);
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        JPanel panel = new JPanel(new GridLayout(3, 2, 10, 10)); // Layout para los campos y etiquetas
-        panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+        JPanel panelIDContraseña = new JPanel(new GridLayout(3, 2, 10, 10)); // Layout para los campos y etiquetas
+        panelIDContraseña.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
 
         JLabel idLabel = new JLabel("ID:                                       @");
         JTextField idField = new JTextField(20);
@@ -57,10 +59,10 @@ public class InicioSesion extends JFrame {
         JButton verContraseña = new JButton(); verContraseña.setBackground(Color.white); verContraseña.setIcon(new ImageIcon(image_hid));
         passPanel.add(passwordField); passPanel.add(verContraseña, BorderLayout.EAST);
 
-        panel.add(idLabel);
-        panel.add(idField);
-        panel.add(passLabel);
-        panel.add(passPanel);
+        panelIDContraseña.add(idLabel);
+        panelIDContraseña.add(idField);
+        panelIDContraseña.add(passLabel);
+        panelIDContraseña.add(passPanel);
 
         // Crear radio buttons
         JRadioButton rbtnCliente = new JRadioButton("Cliente", true); // Seleccionado por defecto
@@ -83,8 +85,26 @@ public class InicioSesion extends JFrame {
         panelBotones.add(aceptar);
         panelBotones.add(cancelar);
 
+        //Boton si quiere recordar sesion
+        JPanel panelCheck = new JPanel(new FlowLayout());
+        JCheckBox checkRecordad = new JCheckBox("Recordar Sesión"); panelCheck.add(checkRecordad);
+        checkRecordad.addActionListener(e -> {
+            if(checkRecordad.isSelected()){
+                recordarSesion = true;
+                System.out.println(recordarSesion);
+            }else{
+                recordarSesion = false;
+                System.out.println(recordarSesion);
+            }
+        });
+
+
+        JPanel panelMain = new JPanel(new BorderLayout());
+        panelMain.add(panelIDContraseña, BorderLayout.CENTER);
+        panelMain.add(panelCheck, BorderLayout.SOUTH);
+
         this.add(panelRadioButtons, BorderLayout.NORTH);
-        this.add(panel, BorderLayout.CENTER);
+        this.add(panelMain, BorderLayout.CENTER);
         this.add(panelBotones, BorderLayout.SOUTH);
 
 
@@ -117,6 +137,7 @@ public class InicioSesion extends JFrame {
 
         aceptar.addActionListener(e -> {
             boolean esDueño = rbtnDueño.isSelected();
+            System.out.println(recordarSesion);
 
             // Ocultar la ventana actual
             InicioSesion.this.setVisible(false);
@@ -141,6 +162,10 @@ public class InicioSesion extends JFrame {
                         boolean exito = get();
                         customOptionPaneLogin.dispose();
                         if (exito) {
+                            if(recordarSesion){
+                                System.out.println("Guardando propiedades?");
+                                almacen.guardarPropiedades(idField.getText(), String.valueOf(passwordField.getPassword()));
+                            }
                             if (esDueño) {
                                 new VerLocales(dueño, almacenDeDatos).setVisible(true);
                             } else {
@@ -170,7 +195,6 @@ public class InicioSesion extends JFrame {
             padre.setVisible(true);
         });
 
-        this.add(panel, BorderLayout.CENTER);
         this.add(panelBotones, BorderLayout.SOUTH);
 
     }

@@ -3,7 +3,7 @@ package org.proyectosalida.GUI;
 import javax.swing.*;
 import java.awt.*;
 
-public class CustomOptionPaneLogin {
+public class CustomOptionPaneLogin extends JFrame {
 
     private JDialog dialog;
 
@@ -28,6 +28,7 @@ public class CustomOptionPaneLogin {
         JPanel panelPanelTexto = new JPanel(new GridLayout(3, 1));
         panelPanelTexto.add(new JPanel());
         JLabel label = new JLabel(texto);
+        label.setFont(new Font("Arial", Font.BOLD, 20));
         JPanel panelTexto = new JPanel(new FlowLayout());
         panelTexto.add(label);
         panelPanelTexto.add(panelTexto);
@@ -38,7 +39,8 @@ public class CustomOptionPaneLogin {
         dialog.pack();
         dialog.setLocationRelativeTo(null); // Centrar en la pantalla
         dialog.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        dialog.setSize(250, 130);
+        dialog.setSize(500, 250);
+        dialog.setLocationRelativeTo(null);
     }
 
     public void show() {

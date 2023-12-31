@@ -1,5 +1,10 @@
 package org.proyectosalida.GUI.VentanasCliente;
 
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.proyectosalida.Constructores.Bar;
 import org.proyectosalida.Constructores.Cliente;
 import org.proyectosalida.Constructores.Dueño;
@@ -9,10 +14,13 @@ import org.proyectosalida.Pruebas.MenuPersonal;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableRowSorter;
 import java.awt.*;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.util.Arrays;
 import java.util.Comparator;
 import java.util.Date;
@@ -101,12 +109,65 @@ public class VentanaVisitas extends JFrame {
 
         JPanel botonera = new JPanel(new FlowLayout()); add(botonera, BorderLayout.SOUTH);
         JButton atras = new JButton("Atrás"); botonera.add(atras);
+        // Dentro del constructor de VentanaVisitas
+        JButton descargarVisitas = new JButton("Descargar visitas");
+        botonera.add(descargarVisitas);
+        descargarVisitas.addActionListener(e -> descargarVisitas(modelo));
+
 
         atras.addActionListener(e -> {
             dispose();
             padre.setVisible(true);
         });
     }
+
+    private void descargarVisitas(DefaultTableModel modelo) {
+        JFileChooser fileChooser = new JFileChooser();
+        fileChooser.setDialogTitle("Guardar como");
+        fileChooser.setFileFilter(new FileNameExtensionFilter("Archivo Excel", "xlsx"));
+        int userSelection = fileChooser.showSaveDialog(this);
+
+        if (userSelection == JFileChooser.APPROVE_OPTION) {
+            File fileToSave = fileChooser.getSelectedFile();
+            String filePath = fileToSave.getAbsolutePath();
+            if (!filePath.endsWith(".xlsx")) {
+                filePath += ".xlsx";
+            }
+            crearArchivoExcel(modelo, filePath);
+        }
+    }
+
+    private void crearArchivoExcel(DefaultTableModel modelo, String filePath) {
+        try (Workbook workbook = new XSSFWorkbook()) {
+            Sheet sheet = workbook.createSheet("Visitas");
+
+            // Crear fila de encabezados
+            Row headerRow = sheet.createRow(0);
+            for (int i = 0; i < modelo.getColumnCount(); i++) {
+                Cell cell = headerRow.createCell(i);
+                cell.setCellValue(modelo.getColumnName(i));
+            }
+
+            // Llenar filas con datos
+            for (int i = 0; i < modelo.getRowCount(); i++) {
+                Row row = sheet.createRow(i + 1);
+                for (int j = 0; j < modelo.getColumnCount(); j++) {
+                    Object value = modelo.getValueAt(i, j);
+                    String cellValue = (value == null) ? "" : value.toString();
+                    row.createCell(j).setCellValue(cellValue);
+                }
+            }
+
+            // Escribir archivo
+            try (FileOutputStream fileOut = new FileOutputStream(filePath)) {
+                workbook.write(fileOut);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Error al guardar el archivo.", "Error", JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
 
     public static void main(String[] args) {
         // Configuración del look and feel

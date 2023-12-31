@@ -460,22 +460,13 @@ public class AlmacenDeDatos {
 
 
     public static void cargarLocales(Connection conn, Boolean isDueño, Dueño dueño, AlmacenDeDatos almacenDeDatos) {
-        String sqlLocal = "";
-        if(isDueño){
-            sqlLocal = "SELECT * FROM LOCAL WHERE dueñoid = ?";
-        }else{
-            sqlLocal = "SELECT * FROM LOCAL";
-        }
+        String sqlLocal = isDueño ? "SELECT * FROM LOCAL WHERE dueñoid = ?" : "SELECT * FROM LOCAL";
 
         try (PreparedStatement pstmtLocales = conn.prepareStatement(sqlLocal)) {
-            if(isDueño){
+            if (isDueño) {
                 pstmtLocales.setString(1, dueño.getId());
             }
             ResultSet rsLocales = pstmtLocales.executeQuery();
-
-            if(!rsLocales.next()){
-                System.out.println("La tabla de LOCALES esta VACIA para esta busqueda.");
-            }
 
             while (rsLocales.next()) {
                 String tipo = rsLocales.getString("TIPO");
@@ -495,6 +486,7 @@ public class AlmacenDeDatos {
 
                 Bar bar = new Bar();
                 Discoteca disco = new Discoteca();
+
                 if("bar".equals(tipo)){
                     bar.setId(id);
                     bar.setNombre(nombre);
@@ -512,7 +504,7 @@ public class AlmacenDeDatos {
                     ArrayList<Horario> horariosLocal = cargarHorariosLocal(conn, bar);
                     bar.setHorarios(horariosLocal);
 
-                }else if("discoteca".equals(tipo)){
+                } else if ("discoteca".equals(tipo)){
                     disco.setId(id);
                     disco.setNombre(nombre);
                     disco.setDireccion(direccion);
@@ -529,26 +521,25 @@ public class AlmacenDeDatos {
                     disco.setHorarios(horariosLocal);
                     disco.setDjResidente(cargarDjBD(conn, true, disco.getId()));
                     disco.setDjInvitado(cargarDjBD(conn, false, disco.getId()));
-                }else{
+                } else {
                     System.out.println("Falla encontrar el tipo correctamente aqui");
                 }
 
-
-                if(isDueño){
-                    if("bar".equals(tipo)){
+                if (isDueño) {
+                    if ("bar".equals(tipo)){
                         dueño.getLocales().add(bar);
-                    }else if("discoteca".equals(tipo)){
+                    } else if ("discoteca".equals(tipo)){
                         dueño.getLocales().add(disco);
-                    }else{
+                    } else {
                         System.out.println("fallo 1");
                     }
                     System.out.println("1 BAR añadido: "+bar.getNombre());
-                }else{
-                    if("bar".equals(tipo)){
+                } else {
+                    if ("bar".equals(tipo)){
                         almacenDeDatos.getLocales().add(bar);
-                    }else if("discoteca".equals(tipo)){
+                    } else if ("discoteca".equals(tipo)){
                         almacenDeDatos.getLocales().add(disco);
-                    }else{
+                    } else {
                         System.out.println("Fallo 2");
                     }
                     System.out.println("1 DSICO añadido: "+disco.getNombre());
@@ -557,8 +548,8 @@ public class AlmacenDeDatos {
         } catch (SQLException e) {
             System.out.println(e.getMessage());
         }
-
     }
+
     public static boolean guardarLocalNuevoBD(Local local, Dueño dueño) {
         String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
 

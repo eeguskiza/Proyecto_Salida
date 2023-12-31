@@ -1,6 +1,5 @@
-package org.proyectosalida.Pruebas;
+package org.proyectosalida.GUI.VentanasGenerales;
 
-import org.proyectosalida.Constructores.Cliente;
 import org.proyectosalida.Constructores.Usuario;
 import org.proyectosalida.Datos.AlmacenDeDatos;
 
@@ -8,10 +7,6 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 

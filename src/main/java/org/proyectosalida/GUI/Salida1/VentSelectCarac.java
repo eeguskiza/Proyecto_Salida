@@ -1,4 +1,4 @@
-package org.proyectosalida.GUI.Salida2;
+package org.proyectosalida.GUI.Salida1;
 
 import org.jdesktop.swingx.JXSearchField;
 
@@ -12,7 +12,6 @@ import java.util.stream.Collectors;
 import org.proyectosalida.Constructores.Caracteristica;
 import org.proyectosalida.Constructores.Salida;
 import org.proyectosalida.Datos.AlmacenDeDatos;
-import org.proyectosalida.GUI.Salida1.VentLocalesRecomendados;
 
 public class VentSelectCarac extends JFrame {
 

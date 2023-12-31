@@ -1,15 +1,10 @@
-package org.proyectosalida.Pruebas;
+package org.proyectosalida.GUI.VentanasGenerales;
 
 import org.proyectosalida.Constructores.Cliente;
-import org.proyectosalida.Constructores.Dueño;
-import org.proyectosalida.Constructores.Local;
 import org.proyectosalida.Constructores.Usuario;
 import org.proyectosalida.Datos.AlmacenDeDatos;
 
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.util.ArrayList;
 
 import javax.swing.*;
 

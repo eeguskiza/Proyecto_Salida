@@ -1,12 +1,10 @@
-package org.proyectosalida.GUI;
+package org.proyectosalida.GUI.VentanasGenerales;
 
-import com.teamdev.jxbrowser.deps.org.checkerframework.checker.units.qual.C;
 import org.proyectosalida.Constructores.*;
 import org.proyectosalida.Datos.AlmacenDeDatos;
 import org.proyectosalida.GUI.Registro.Registro;
 import org.proyectosalida.GUI.VentanasCliente.MainMenuCliente;
 import org.proyectosalida.GUI.VentanasDueño.VerLocales;
-import org.slf4j.ILoggerFactory;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;

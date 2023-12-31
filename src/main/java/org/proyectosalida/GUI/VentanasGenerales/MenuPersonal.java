@@ -1,13 +1,9 @@
-package org.proyectosalida.Pruebas;
+package org.proyectosalida.GUI.VentanasGenerales;
 
 import org.proyectosalida.Constructores.*;
 import org.proyectosalida.Datos.AlmacenDeDatos;
-import org.proyectosalida.GUI.Bienvenido;
-import org.proyectosalida.GUI.InicioSesion;
-import org.proyectosalida.GUI.VentanasCliente.MainMenuCliente;
 import org.proyectosalida.GUI.VentanasCliente.VentanaVisitas;
 import org.proyectosalida.GUI.VentanasDueño.ModificarLocales;
-import org.proyectosalida.GUI.VentanasDueño.VerLocales;
 
 import javax.swing.*;
 import java.awt.*;

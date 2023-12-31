@@ -2,8 +2,6 @@ package org.proyectosalida.GUI.VentanasCliente;
 
 import javax.swing.*;
 import javax.swing.border.Border;
-import javax.swing.border.EmptyBorder;
-import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -16,10 +14,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
-import java.util.concurrent.TimeUnit;
-import java.util.stream.Collectors;
 
 import com.toedter.calendar.JCalendar;
 import javafx.application.Platform;
@@ -29,13 +23,8 @@ import javafx.scene.web.WebView;
 import org.proyectosalida.Constructores.*;
 import org.proyectosalida.Datos.AlmacenDeDatos;
 import com.formdev.flatlaf.*;
-import com.teamdev.jxbrowser.browser.Browser;
-import com.teamdev.jxbrowser.engine.Engine;
-import com.teamdev.jxbrowser.engine.EngineOptions;
-import com.teamdev.jxbrowser.engine.RenderingMode;
-import com.teamdev.jxbrowser.view.swing.BrowserView;
-import org.proyectosalida.GUI.Salida2.VentSelectCarac;
-import org.proyectosalida.Pruebas.MenuPersonal;
+import org.proyectosalida.GUI.Salida1.VentSelectCarac;
+import org.proyectosalida.GUI.VentanasGenerales.MenuPersonal;
 
 import static org.proyectosalida.Datos.AlmacenDeDatos.logger;
 

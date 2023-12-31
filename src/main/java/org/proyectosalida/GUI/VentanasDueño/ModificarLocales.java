@@ -4,7 +4,7 @@ import org.proyectosalida.Constructores.*;
 import org.proyectosalida.Datos.AlmacenDeDatos;
 import org.proyectosalida.GUI.Registro.VentanaAddHorarios;
 import org.proyectosalida.GUI.Registro.VentanaRegistrarDJ;
-import org.proyectosalida.GUI.Salida2.VentSelectCarac;
+import org.proyectosalida.GUI.Salida1.VentSelectCarac;
 
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
@@ -13,10 +13,6 @@ import javax.swing.event.TreeSelectionListener;
 import javax.swing.tree.DefaultMutableTreeNode;
 import javax.swing.tree.DefaultTreeModel;
 import java.awt.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 

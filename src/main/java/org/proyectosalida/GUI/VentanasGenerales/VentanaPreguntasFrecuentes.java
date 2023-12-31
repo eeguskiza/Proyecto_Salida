@@ -1,4 +1,4 @@
-package org.proyectosalida.Pruebas;
+package org.proyectosalida.GUI.VentanasGenerales;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;

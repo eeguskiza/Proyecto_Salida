@@ -2,7 +2,7 @@ package org.proyectosalida.GUI.VentanasDueño;
 
 import org.proyectosalida.Constructores.*;
 import org.proyectosalida.Datos.AlmacenDeDatos;
-import org.proyectosalida.Pruebas.MenuPersonal;
+import org.proyectosalida.GUI.VentanasGenerales.MenuPersonal;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
@@ -10,7 +10,6 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
 import java.awt.event.MouseEvent;
-import java.util.ArrayList;
 
 public class VerLocales extends JFrame {
 

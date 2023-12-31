@@ -2,6 +2,7 @@ package org.proyectosalida.GUI;
 
 import org.proyectosalida.Datos.AlmacenDeDatos;
 import org.proyectosalida.GUI.Registro.Registro;
+import org.proyectosalida.GUI.VentanasGenerales.InicioSesion;
 
 import java.awt.*;
 import javax.swing.*;

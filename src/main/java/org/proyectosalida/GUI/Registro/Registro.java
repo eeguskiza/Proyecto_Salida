@@ -5,17 +5,13 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 
 import com.toedter.calendar.JDateChooser;
 import org.proyectosalida.Constructores.*;
 import org.proyectosalida.Datos.AlmacenDeDatos;
-import org.proyectosalida.GUI.InicioSesion;
+import org.proyectosalida.GUI.VentanasGenerales.InicioSesion;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

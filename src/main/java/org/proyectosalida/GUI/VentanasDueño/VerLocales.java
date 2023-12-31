@@ -169,6 +169,7 @@ public class VerLocales extends JFrame {
     }
 
     private void cargarLocalesATabla(Dueño dueño, DefaultTableModel modelo){
+        System.out.println("LOCALES: " +dueño.getLocales().size());
         for(Local local : dueño.getLocales()){
             String horario = "";
             for(Horario dia : local.getHorarios()){

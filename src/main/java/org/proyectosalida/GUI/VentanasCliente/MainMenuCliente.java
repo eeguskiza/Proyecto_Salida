@@ -134,7 +134,7 @@ public class MainMenuCliente extends JFrame {
             public void actionPerformed(ActionEvent e) {
                 setVisible(false);
                 new MenuPersonal(almacenDeDatos.getUsuarios().get(0), almacenDeDatos, MainMenuCliente.this);
-                dispose();
+
             }
         });
 

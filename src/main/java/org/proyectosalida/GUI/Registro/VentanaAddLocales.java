@@ -24,7 +24,7 @@ public class VentanaAddLocales extends JFrame {
 
     public VentanaAddLocales(Dueño dueño, AlmacenDeDatos almacenDeDatos) {
         setTitle("Añadir locales");
-        setSize(500, 750);
+        setSize(550, 750);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         // Ejemplo local --> Bar Monty = new Bar("Monty", "Heros Kalea, 16, Bilbo, Bizkaia", "48009", 75, "944 23 63 36", 0, 0, link1, horariosMonty, true,caracteristicasMonty);
@@ -45,15 +45,19 @@ public class VentanaAddLocales extends JFrame {
         panel.add(new JLabel("Dirección:", JLabel.CENTER));
         panel.add(new JTextField(20));
         panel.add(new JLabel("Código Postal:", JLabel.CENTER));
-        panel.add(new JTextField(20));
+        JSpinner sCp = new JSpinner(); sCp.getModel().setValue(48000);
+        panel.add(sCp);
         panel.add(new JLabel("Aforo:", JLabel.CENTER));
-        panel.add(new JTextField(20));
+        JSpinner sAforo = new JSpinner(); sAforo.getModel().setValue(50);
+        panel.add(sAforo);
         panel.add(new JLabel("Teléfono:", JLabel.CENTER));
         panel.add(new JTextField(20));
         panel.add(new JLabel("Media de Edad:", JLabel.CENTER));
-        panel.add(new JTextField(20));
+        JSpinner sEdad = new JSpinner(); sEdad.getModel().setValue(20);
+        panel.add(sEdad);
         panel.add(new JLabel("Media de Precio:", JLabel.CENTER));
-        panel.add(new JTextField(20));
+        JSpinner sPrecio = new JSpinner(); sPrecio.getModel().setValue(48000);
+        panel.add(sPrecio);
         //panel.add(new JLabel("Página Web:", JLabel.CENTER));
         //panel.add(new JTextField(20));
         panel.add(new JLabel("Horarios:", JLabel.CENTER));
@@ -102,11 +106,11 @@ public class VentanaAddLocales extends JFrame {
             try {
                 String nombre = ((JTextField) panel.getComponent(3)).getText();
                 String direccion = ((JTextField) panel.getComponent(5)).getText();
-                String CP = ((JTextField) panel.getComponent(7)).getText();
-                int aforo = Integer.parseInt(((JTextField) panel.getComponent(9)).getText());
+                String CP = ((SpinnerNumberModel) sCp.getModel()).getNumber().toString();
+                int aforo = Integer.parseInt(((SpinnerNumberModel) sAforo.getModel()).getNumber().toString());
                 String telefono = ((JTextField) panel.getComponent(11)).getText();
-                int mediaEdad = Integer.parseInt(((JTextField) panel.getComponent(13)).getText());
-                int mediaPrecio = Integer.parseInt(((JTextField) panel.getComponent(15)).getText());
+                int mediaEdad = Integer.parseInt(((SpinnerNumberModel) sEdad.getModel()).getNumber().toString());
+                int mediaPrecio = Integer.parseInt(((SpinnerNumberModel) sPrecio.getModel()).getNumber().toString());
                 Boolean terraza = null;
                 Local local;
 

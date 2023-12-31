@@ -295,7 +295,7 @@ public class AlmacenDeDatos {
         String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
 
         // Mostrar mensaje de "Creando cliente..."
-        JOptionPane.showMessageDialog(null, "Creando cliente...", "Registro en progreso", JOptionPane.INFORMATION_MESSAGE);
+       // JOptionPane.showMessageDialog(null, "Creando cliente...", "Registro en progreso", JOptionPane.INFORMATION_MESSAGE);
 
             String sql = "INSERT INTO USUARIO (TIPO, ID, NOMBRE, APELLIDO, FECHANACIMIENTO, CONTRASEÑA, TELEFONO, EMAIL) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
@@ -490,6 +490,8 @@ public class AlmacenDeDatos {
                 String link = rsLocales.getString("LINKWEB");
                 int terrazaNum = rsLocales.getInt("TIENETERRAZA");
                 boolean terraza = (terrazaNum == 1);
+
+                System.out.println("Local encontrado: "+id+", "+nombre);
 
                 Bar bar = new Bar();
                 Discoteca disco = new Discoteca();

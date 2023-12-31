@@ -3,6 +3,7 @@ package org.proyectosalida.Pruebas;
 import org.proyectosalida.Constructores.*;
 import org.proyectosalida.Datos.AlmacenDeDatos;
 import org.proyectosalida.GUI.Bienvenido;
+import org.proyectosalida.GUI.VentanasCliente.MainMenuCliente;
 import org.proyectosalida.GUI.VentanasCliente.VentanaVisitas;
 import org.proyectosalida.GUI.VentanasDueño.ModificarLocales;
 
@@ -84,7 +85,7 @@ public class MenuPersonal extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 dispose();
-                padre.setVisible(true);
+                MainMenuCliente mm = new MainMenuCliente(almacenDeDatos, null);
             }
         });
         panel.add(atras);

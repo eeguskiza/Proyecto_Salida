@@ -61,6 +61,7 @@ org\proyectosalida\GUI\InicioSesion.class
 org\proyectosalida\Pruebas\PruebasInternalF.class
 org\proyectosalida\GUI\Salida1\VentLocalesRecomendados$4.class
 org\proyectosalida\GUI\Salida2\VentSelectCarac.class
+org\proyectosalida\GUI\VentanasCliente\MainMenuCliente$4.class
 org\proyectosalida\GUI\VentanasCliente\VentanaVisitas$2.class
 org\proyectosalida\Pruebas\Tabla.class
 org\proyectosalida\GUI\InicioSesion$1.class

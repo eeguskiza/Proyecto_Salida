@@ -75,7 +75,7 @@ public class Registro extends JFrame {
         panel.add(panelContraseña);
 
         panel.add(new JLabel("Comfirmar contraseña:", JLabel.CENTER));
-        JPanel panelConfirmarContraseña = new JPanel(new BorderLayout());JPasswordField passwordField2 = new JPasswordField(20); panelConfirmarContraseña.add(passwordField2); panel.add(panelConfirmarContraseña);
+        JPanel panelConfirmarContraseña = new JPanel(new BorderLayout());JPasswordField passwordField2 = new JPasswordField(20); panelConfirmarContraseña.add(passwordField2);
         panel.add(panelConfirmarContraseña);
 
         panel.add(new JLabel("Teléfono:", JLabel.CENTER));
@@ -170,7 +170,7 @@ public class Registro extends JFrame {
             }
 
             //String contraseña = new String(((JPasswordField) panel.getComponent(9)).getPassword());
-            String confirmarContraseña = new String(((JPasswordField) panel.getComponent(11)).getPassword());
+            String confirmarContraseña = new String(((JPasswordField) panelConfirmarContraseña.getComponent(0)).getPassword());
             String contraseña = null;
             if(viendoContraseña){
                 contraseña = ((JTextField) panelContraseña.getComponent(0)).getText();
@@ -240,7 +240,8 @@ public class Registro extends JFrame {
         panelBotones.add(cancelar);
 
         // Agregar el panel a la ventana
-        this.add(panel);
+        //this.add(panel);
+        System.out.println("SIIIII");
         this.add(panelBotones, BorderLayout.SOUTH);
 
         this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

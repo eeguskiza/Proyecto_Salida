@@ -10,6 +10,7 @@ import javax.swing.*;
 import java.awt.*;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.net.URI;
 
 public class MenuPersonal extends JFrame {
 
@@ -68,12 +69,11 @@ public class MenuPersonal extends JFrame {
         // ------------- APARTADOS DEL MENU - ETIQUETAS CLICKEABLES ---------------------
         if(usuario.getClass().equals(Cliente.class)){
             panel.add(clickableLabel("Lista de Visitados", 3));
-            panel.add(clickableLabel("Próximos Eventos", 4));
         }else{
             panel.add(clickableLabel("Añade Locales", 5));
-            panel.add(clickableLabel("Configura Proximos Eventos", 6));
         }
         panel.add(clickableLabel("Ajustes", 2));
+        panel.add(clickableLabel("Más Información", 4));
         panel.add(clickableLabel("Cerrar Sesión", 1));
         panel.add(new JPanel());
 
@@ -123,19 +123,20 @@ public class MenuPersonal extends JFrame {
                 }else if (code==3){ //Lista de visitados
                     new VentanaVisitas(almacen, getPadre()).setVisible(true);
                     setVisible(false);
-                }else if (code==6){ //Conf. Proximos eventos (Probando editar perfiil)
+                /*}else if (code==6){ //Conf. Proximos eventos (Probando editar perfiil)
                     EditarPerfil ep = new EditarPerfil( almacen,false, getPadre());
-                    setVisible(false);
+                    setVisible(false);*/
                 }else if(code==5){ //modifica locales
                     ModificarLocales modificarLocales = new ModificarLocales(almacen, getPadre());
                     modificarLocales.setVisible(true);
                     setVisible(false);
-
-                /*}else if(code==8){ //Ver todos los locales en una jtable
-                    System.out.println("Code:8");
-                    VerLocales ventanaVerLocales = new VerLocales((Dueño) usuario, almacen);
-                    ventanaVerLocales.setVisible(true);
-                  */
+                }else if(code==4){ //Ver Readme github
+                    try {
+                        String enlaceGoogle = "https://github.com/eeguskiza/Proyecto_Salida?tab=readme-ov-file#proyecto_salida";
+                        Desktop.getDesktop().browse(new URI(enlaceGoogle));
+                    } catch (Exception e2) {
+                        e2.printStackTrace();
+                    }
                 }
 
             }

@@ -75,6 +75,10 @@ public class VentanaAjustes {
 
         });
 
+        btnAyuda.addActionListener(e -> {
+            //VentanaPreguntasFrecuentes ventanaPreguntasFrecuentes = new VentanaPreguntasFrecuentes(getPadre());
+        });
+
         btnBotonVolver.addActionListener(e -> {
             frame.dispose();
             padre.setVisible(true);

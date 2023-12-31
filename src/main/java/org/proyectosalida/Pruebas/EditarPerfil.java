@@ -134,7 +134,7 @@ public class EditarPerfil extends JFrame {
                 System.out.println(usuario.toString());
 
                 //ACTUALIZAR EN BASE DE DATOS
-                actualizarDatosUsuarioBD(usuario, nombre, apellido, fechaNacimiento, contraseña, telefono, correo);
+                almacen.actualizarDatosUsuarioBD(usuario, nombre, apellido, fechaNacimiento, contraseña, telefono, correo);
 
                 new EditarPerfil(almacen, false, padre);
                 dispose();
@@ -148,43 +148,6 @@ public class EditarPerfil extends JFrame {
             dispose();
             padre.setVisible(true);
         });
-    }
-
-    public static boolean actualizarDatosUsuarioBD(Usuario usuario, String nombre, String apellido, Date fechaNacimiento, String contraseña, String tlf, String email) {
-        String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
-
-        try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
-            String sql = "";
-            if(usuario.getClass().equals(Cliente.class)){
-                sql = "UPDATE CLIENTE SET NOMBRE = ?, APELLIDO = ?, FECHANACIMIENTO = ?, CONTRASEÑA = ?, TELEFONO = ?, EMAIL = ? WHERE ID = ?";
-            }else{
-                sql = "UPDATE DUEÑO SET NOMBRE = ?, APELLIDO = ?, FECHANACIMIENTO = ?, CONTRASEÑA = ?, TELEFONO = ?, EMAIL = ? WHERE ID = ?";
-
-            }
-            try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
-                pstmt.setString(1, nombre);
-                pstmt.setString(2, apellido);
-                pstmt.setDate(3, new java.sql.Date(fechaNacimiento.getTime()));
-                pstmt.setString(4, contraseña);
-                pstmt.setString(5, tlf);
-                pstmt.setString(6, email);
-                pstmt.setString(7, usuario.getId());
-
-                int filasActualizadas = pstmt.executeUpdate();
-
-                if (filasActualizadas > 0) {
-                    System.out.println("Datos del cliente actualizados en la base de datos.");
-                    return true;
-                } else {
-                    System.out.println("No se pudo actualizar los datos del cliente.");
-                    return false;
-                }
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return false;
     }
 
     public static void main(String[] args) {

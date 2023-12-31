@@ -146,7 +146,7 @@ public class InicioSesion extends JFrame {
                             if (esDueño) {
                                 new VerLocales(dueño, almacenDeDatos).setVisible(true);
                             } else {
-                                new MainMenuCliente(almacen, null).setVisible(true);
+                                new MainMenuCliente(almacen, "https://www.google.es/maps/preview").setVisible(true);
                             }
                             dispose();
                         } else {

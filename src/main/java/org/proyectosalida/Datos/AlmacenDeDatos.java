@@ -55,7 +55,7 @@ public class AlmacenDeDatos {
         }
 
         System.out.println("ALMACEN CREADO");
-        descargarCaracteristicas();
+        //descargarCaracteristicas();
 
         //BORRAR ESTE METODO LUEGO
         //añadirEjemplos();
@@ -163,6 +163,9 @@ public class AlmacenDeDatos {
         String linkStage = "https://www.google.com/maps/place/Stage+Live/@43.2641429,-2.9311399,16.1z/data=!4m6!3m5!1s0xd4e4fc54aa9e77b:0x73e67015ad689356!8m2!3d43.2643475!4d-2.9275594!16s%2Fg%2F11fy_6ght3?entry=ttu";
         String linkBack = "https://www.google.com/maps/place/Back%26Stage/@43.264306,-2.9302868,17z/data=!3m2!4b1!5s0xd4e4fda648c70af:0x6b8148661f92eaae!4m6!3m5!1s0xd4e4fda73f10843:0xfdf73bd3595b6008!8m2!3d43.2643021!4d-2.9277119!16s%2Fg%2F1ptx16dgd?entry=ttu";
         ArrayList<Horario> horariosMonty = new ArrayList<>();
+        ArrayList<Horario> horariosDisco = new ArrayList<>();
+
+        /*
         horariosMonty.add(new Horario(1, "07:30", "23:30"));
         horariosMonty.add(new Horario(2, "07:30", "23:30"));
         horariosMonty.add(new Horario(3, "07:30", "23:30"));
@@ -171,7 +174,7 @@ public class AlmacenDeDatos {
         horariosMonty.add(new Horario(6, "07:30", "23:30"));
         horariosMonty.add(new Horario(7, "07:30", "16:00"));
 
-        ArrayList<Horario> horariosDisco = new ArrayList<>();
+
         horariosDisco.add(new Horario(1, "00:30", "05:30"));
         horariosDisco.add(new Horario(2, "00:30", "05:30"));
         horariosDisco.add(new Horario(3, "00:30", "05:30"));
@@ -179,6 +182,8 @@ public class AlmacenDeDatos {
         horariosDisco.add(new Horario(5, "00:30", "05:30"));
         horariosDisco.add(new Horario(6, "00:30", "05:30"));
         horariosDisco.add(new Horario(7, "00:30", "05:00"));
+
+         */
 
         ArrayList<Caracteristica>caracteristicasMonty=new ArrayList<>();
         /*

@@ -70,12 +70,6 @@ public class VentanaAjustes {
         });
 
 
-        btnNotificaciones.addActionListener(e -> {
-            //VentanaGestionNotificaciones v = new VentanaGestionNotificaciones();
-            //v.frame.setVisible(true);
-
-        });
-
         btnAyuda.addActionListener(e -> {
             VentanaPreguntasFrecuentes ventanaPreguntasFrecuentes = new VentanaPreguntasFrecuentes(getPadre());
             getPadre().setVisible(false);

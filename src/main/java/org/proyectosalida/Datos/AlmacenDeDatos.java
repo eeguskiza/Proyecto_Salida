@@ -881,9 +881,9 @@ public class AlmacenDeDatos {
     public static ArrayList<Visita> cargarVisitasCliente(Connection conn, Cliente cliente) {
        String sql = "";
         if(cliente == null){
-            sql = "SELECT * FROM VISITA WHERE VALORACION IS NOT NULL"; //Para pillar todas las visitas
+            sql = "SELECT * FROM VISITA WHERE VALORACION IS NOT NULL AND FECHAVALORACION IS NOT NULL ORDER BY FECHAVALORACION DESC"; //Para pillar todas las visitas
         }else{
-            sql = "SELECT * FROM visita WHERE CLIENTEID = ?";
+            sql = "SELECT * FROM visita WHERE CLIENTEID = ? ORDER BY FECHA DESC";
         }
 
         ArrayList<Visita> visitasConValoracion = new ArrayList<>();
@@ -953,11 +953,13 @@ public class AlmacenDeDatos {
         String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
 
         try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
-            String sql = "UPDATE VISITA SET VALORACION = ? WHERE ID = ?";
+            String sql = "UPDATE VISITA SET VALORACION = ?, FECHAVALORACION =? WHERE ID = ?";
 
             try (PreparedStatement pstmt = conn.prepareStatement(sql)) {
                     pstmt.setString(1, valoracion);
-                    pstmt.setString(2, idVisita);
+                     java.util.Date fechaActual = new java.util.Date();
+                     pstmt.setDate(2, new java.sql.Date(fechaActual.getTime()));
+                    pstmt.setString(3, idVisita);
 
                 int filasActualizadas = pstmt.executeUpdate();
 

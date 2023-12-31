@@ -49,6 +49,7 @@ public class MainMenuCliente extends JFrame {
     private ArrayList<Visita> VSR;
     private DefaultTableModel modelo;
     private final JFXPanel jfxPanel = new JFXPanel();
+    private Boolean ventanaIsVisible = true;
 
     public MainMenuCliente(AlmacenDeDatos almacenDeDatos, String url) {
         setTitle("Main Menu");
@@ -102,12 +103,14 @@ public class MainMenuCliente extends JFrame {
             );
 
             if (opcion == JOptionPane.YES_OPTION) {
+
                 Date fechaHoy = new Date();
                 System.out.println("El usuario quiere salir hoy: " + fechaHoy);
 
                 Salida salida = new Salida((Cliente) almacen.getUsuarios().get(0), almacen.getCaracteristicas(), fechaHoy, null);
                 //System.out.println(salida.toString());
                 VentSelectCarac v = new VentSelectCarac(caracteristicasSeleccionadas, false, almacenDeDatos, salida); //Le paso la salida para obtener los valores en la tabla de elecciones tambien
+                ventanaIsVisible = false;
             } else if (opcion == JOptionPane.NO_OPTION) {
                 JCalendar calendar = new JCalendar();
                 int result = JOptionPane.showConfirmDialog(null, calendar, "Seleccionar fecha", JOptionPane.OK_CANCEL_OPTION);
@@ -119,6 +122,7 @@ public class MainMenuCliente extends JFrame {
                     Salida salida = new Salida((Cliente) almacen.getUsuarios().get(0), almacen.getCaracteristicas(), fechaElegida, null);
                     System.out.println(salida.toString());
                     VentSelectCarac v = new VentSelectCarac(caracteristicasSeleccionadas, false, almacenDeDatos, salida);
+                    ventanaIsVisible=false;
                 } else {
                     System.out.println("No se ha seleccionado una opción");
                 }
@@ -250,12 +254,24 @@ public class MainMenuCliente extends JFrame {
         panelGrid.setBorder(bordeInterno);
 
         panelGrid.add(new JLabel("Cargando..."), BorderLayout.CENTER);
-        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
-        executorService.scheduleAtFixedRate(() -> {
-            panelGrid.removeAll();
-            cargarUltimasReviews(visitasConValoracion, almacenDeDatos, sizeEncabezadoTexto, panelGrid);
-        }, 0, 5, TimeUnit.SECONDS); // Ejecutar cada 5 segundos
 
+
+        Thread hilo = new Thread() {
+            public void run() {
+                while (ventanaIsVisible) {
+                    SwingUtilities.invokeLater(() -> {
+                        panelGrid.removeAll();
+                        cargarUltimasReviews(visitasConValoracion, almacenDeDatos, sizeEncabezadoTexto, panelGrid);
+                    });
+                    try {
+                        Thread.sleep(5000); // Esperar 5 segundos
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        hilo.start();
 
 
 

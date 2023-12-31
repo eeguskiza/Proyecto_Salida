@@ -131,6 +131,7 @@ public class VentanaGestionNotificaciones {
             padre.setVisible(true);
             frame.dispose();
         });
+        frame.setVisible(true);
 
     }
 

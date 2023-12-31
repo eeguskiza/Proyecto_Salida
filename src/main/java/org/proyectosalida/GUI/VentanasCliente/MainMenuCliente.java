@@ -16,6 +16,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 import com.toedter.calendar.JCalendar;
@@ -236,35 +239,21 @@ public class MainMenuCliente extends JFrame {
         p2.setBorder(bordeExterno);
         p2.setBackground(colorExterno);
         ArrayList<Visita> visitasConValoracion = new ArrayList<>();
-        String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
 
-                //Conexion tontorrona para sacar todas las visitas con reviews
-        try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
-            visitasConValoracion = almacen.cargarVisitasCliente(conn, null); //CLIENTE EN NULL == SE DESCARGA TODAS LAS VISITAS CON REVIEWS
-            //FALTA CARGAR TODOS LOS OBJ USUARIOS DE LAS VISITAS PARA SACAR EL NOMBRE
-        }catch (SQLException e){
-            System.out.println(e.getMessage());
-        }
 
         JLabel labelEncabezado2 = new JLabel("ÚLTIMAS REVIEWS PUBLICADAS:"); p2.add(labelEncabezado2, BorderLayout.NORTH);
         labelEncabezado2.setFont(new Font("Arial", Font.BOLD, sizeTitulos));
         labelEncabezado2.setHorizontalAlignment(SwingConstants.CENTER);
         JPanel panelGrid = new JPanel(new GridLayout(8,1)); p2.add(panelGrid, BorderLayout.CENTER);
         panelGrid.setBorder(bordeInterno);
-        if(visitasConValoracion.size()>0){
-            for(int i=0; i<3; i++){
-                Visita visita = visitasConValoracion.get(i);
-                String userId = visita.getClienteID();
-                Usuario usuarioDeLaVisita = almacenDeDatos.buscarUsuarioPorId(userId);
-                JLabel labelenunciadoReview = new JLabel(usuarioDeLaVisita.getNombre()+" para "+visita.getLocal().getNombre().toUpperCase()+":");
-                labelenunciadoReview.setFont(new Font("Arial", Font.BOLD, sizeEncabezadoTexto));
-                panelGrid.add(labelenunciadoReview);
-                panelGrid.add(new JLabel(visita.getValoracion()));
-                if(i!=2){
-                    panelGrid.add(new JPanel());
-                }
-            }
-        }
+
+        panelGrid.add(new JLabel("Cargando..."), BorderLayout.CENTER);
+        ScheduledExecutorService executorService = Executors.newSingleThreadScheduledExecutor();
+        executorService.scheduleAtFixedRate(() -> {
+            panelGrid.removeAll();
+            cargarUltimasReviews(visitasConValoracion, almacenDeDatos, sizeEncabezadoTexto, panelGrid);
+        }, 0, 5, TimeUnit.SECONDS); // Ejecutar cada 5 segundos
+
 
 
 
@@ -320,6 +309,35 @@ public class MainMenuCliente extends JFrame {
         this.setVisible(true);
     }
 
+    private void cargarUltimasReviews(ArrayList<Visita> visitasConValoracion, AlmacenDeDatos almacenDeDatos, int sizeEncabezadoTexto, JPanel panelGrid){
+        System.out.println("CARGANDO ULTIMAS REVIEWS");
+        String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
+
+        //Conexion tontorrona para sacar todas las visitas con reviews
+        try (Connection conn = DriverManager.getConnection(dbURL, "Admin", "Oiogorta2023")) {
+            visitasConValoracion = almacen.cargarVisitasCliente(conn, null); //CLIENTE EN NULL == SE DESCARGA TODAS LAS VISITAS CON REVIEWS
+        }catch (SQLException e){
+            System.out.println(e.getMessage());
+        }
+
+
+        if(visitasConValoracion.size()>0){
+            for(int i=0; i<3; i++){
+                Visita visita = visitasConValoracion.get(i);
+                String userId = visita.getClienteID();
+                Usuario usuarioDeLaVisita = almacenDeDatos.buscarUsuarioPorId(userId);
+                JLabel labelenunciadoReview = new JLabel(usuarioDeLaVisita.getNombre()+" para "+visita.getLocal().getNombre().toUpperCase()+":");
+                labelenunciadoReview.setFont(new Font("Arial", Font.BOLD, sizeEncabezadoTexto));
+                panelGrid.add(labelenunciadoReview);
+                panelGrid.add(new JLabel(visita.getValoracion()));
+                if(i!=2){
+                    panelGrid.add(new JPanel());
+                }
+                panelGrid.revalidate();
+                panelGrid.repaint();
+            }
+        }
+    }
     private Integer llenarTablaConReviewsPendientes(){
 
         int vsr=0;

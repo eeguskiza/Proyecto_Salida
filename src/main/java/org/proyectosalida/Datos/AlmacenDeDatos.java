@@ -115,9 +115,18 @@ public class AlmacenDeDatos {
         try (FileInputStream input = new FileInputStream(PROPERTIES_PATH)) {
             prop.load(input);
 
+            // Si el archivo de propiedades está vacío, no hacer nada
+            if (prop.isEmpty()) {
+                logger.info("El archivo de propiedades está vacío. No se realizará ninguna acción.");
+                return prop;
+            }
+
             String macGuardada = prop.getProperty("direccionMAC");
             if (macGuardada != null && !macGuardada.equals(obtenerDireccionMAC())) {
                 throw new IOException("La dirección MAC no coincide. Acceso denegado.");
+            } else {
+                logger.info("La dirección MAC coincide. Preparando para inicio de sesión automático.");
+
             }
         } catch (IOException ex) {
             ex.printStackTrace();
@@ -129,10 +138,17 @@ public class AlmacenDeDatos {
     }
 
 
-    public static String obtenerDireccionMAC() throws UnknownHostException, SocketException {
-        InetAddress direccionIP = InetAddress.getLocalHost();
-        NetworkInterface red = NetworkInterface.getByInetAddress(direccionIP);
+
+    public static String obtenerDireccionMAC() throws SocketException {
+        NetworkInterface red = NetworkInterface.getByName("en0"); // Selecciona la interfaz por nombre
+        if (red == null) {
+            throw new SocketException("Interfaz de red no encontrada.");
+        }
+
         byte[] mac = red.getHardwareAddress();
+        if (mac == null) {
+            throw new SocketException("No se pudo obtener la dirección MAC.");
+        }
 
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < mac.length; i++) {
@@ -140,6 +156,26 @@ public class AlmacenDeDatos {
         }
         return sb.toString();
     }
+
+
+
+    public static void mostrarDireccionesMAC() throws SocketException {
+        Enumeration<NetworkInterface> interfaces = NetworkInterface.getNetworkInterfaces();
+        while (interfaces.hasMoreElements()) {
+            NetworkInterface networkInterface = interfaces.nextElement();
+            // Filtra interfaces que no tienen dirección MAC o son loopback/virtuales
+            if (networkInterface.getHardwareAddress() != null && !networkInterface.isLoopback() && !networkInterface.isVirtual()) {
+                byte[] mac = networkInterface.getHardwareAddress();
+                System.out.print("Interface: " + networkInterface.getName());
+                System.out.print(" MAC: ");
+                for (int i = 0; i < mac.length; i++) {
+                    System.out.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : "");
+                }
+                System.out.println();
+            }
+        }
+    }
+
 
 
 
@@ -1493,14 +1529,18 @@ public class AlmacenDeDatos {
     }
 
     //main de pruebas
-    public static void main(String[] args) {
-        String contraseña = "0000";
+    public static void main(String[] args) throws SocketException {
+        /*
+        String contraseña = "Contraseña";
         String bites = encode(contraseña);
         String bites2 = decode(bites);
 
         System.out.println(contraseña);
         System.out.println(bites);
         System.out.println(bites2);
+
+         */
+        mostrarDireccionesMAC();
     }
 
 

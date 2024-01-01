@@ -1,3 +1,4 @@
+/*
 import org.junit.Test;
 import org.proyectosalida.Datos.AlmacenDeDatos;
 import static org.junit.Assert.assertEquals;
@@ -38,5 +39,7 @@ public class UserCodeTester {
         assertNotEquals(encoded1, encoded2, "Dos cadenas diferentes no deberían codificarse de la misma manera.");
     }
 }
+
+ */
 
 

@@ -1,6 +1,7 @@
 package org.proyectosalida.Datos;
 
 import org.proyectosalida.Constructores.*;
+import org.proyectosalida.GUI.VentanasGenerales.InicioSesion;
 
 import javax.swing.*;
 import java.io.FileInputStream;
@@ -61,7 +62,6 @@ public class AlmacenDeDatos {
             JOptionPane.showMessageDialog(null, "No se ha podido conectar a la Base de Datos. \nCompruebe la conexión a Internet y vuelva a intentarlo.");
         }
 
-        System.out.println("ALMACEN CREADO");
         //descargarCaracteristicas();
 
         //BORRAR ESTE METODO LUEGO
@@ -73,23 +73,26 @@ public class AlmacenDeDatos {
 
     }
     //PROPERTIES
-    public static void guardarPropiedades(boolean miBoolean, String usuario, String contraseña) {
+    public static void guardarPropiedades(String usuario, String contraseña, Boolean esDueño) {
         Properties prop = new Properties();
 
         // Establece las propiedades
-        prop.setProperty("miBoolean", String.valueOf(miBoolean));
+        prop.setProperty("esdueño", esDueño.toString());
         prop.setProperty("usuario", usuario);
         prop.setProperty("contraseña", contraseña);
 
         // Guarda las propiedades en un archivo
         try (FileOutputStream output = new FileOutputStream(PROPERTIES_PATH)) {
             prop.store(output, "Configuración de la aplicación");
+            logger.info("Sesión guardada para la proxima vez!");
         } catch (IOException ex) {
             ex.printStackTrace();
+            logger.warning("No se ha podido guardar la sesión.");
         }
     }
 
     public Properties cargarPropiedades() {
+        logger.info("Cargando PATH de 'Properties'");
         Properties prop = new Properties();
 
         // Carga las propiedades desde un archivo
@@ -97,6 +100,7 @@ public class AlmacenDeDatos {
             prop.load(input);
         } catch (IOException ex) {
             ex.printStackTrace();
+            System.out.println(ex.getMessage());
         }
 
         return prop;
@@ -109,13 +113,6 @@ public class AlmacenDeDatos {
     }
     public void setValoresVotaciones(HashMap<String, Integer> valoresVotaciones) {
         this.valoresVotaciones = valoresVotaciones;
-    }
-
-    public boolean getVotoDiarioEncuesta() {
-        return votoDiarioEncuesta;
-    }
-    public void setVotoDiarioEncuesta(boolean votoDiarioEncuesta) {
-        this.votoDiarioEncuesta = votoDiarioEncuesta;
     }
 
 
@@ -417,6 +414,19 @@ public class AlmacenDeDatos {
     }
 
 
+    public  static boolean inicioSesion(String usuario, String contraseña, Usuario u, AlmacenDeDatos almacenDeDatos){
+        Boolean done;
+        done =  inicioSesionCliente(usuario, contraseña, (Cliente) u, almacenDeDatos);
+        if(!done){
+            done = inicioSesionDueño(usuario, contraseña, (Dueño) u, almacenDeDatos);
+        }
+        if(!done){
+            logger.warning("Usuario no encontrado en la Base de Datos");
+            return false;
+        }else{
+            return true;
+        }
+    }
     public static boolean inicioSesionDueño(String usuario, String contraseña, Dueño dueño, AlmacenDeDatos almacen) {
         String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
 
@@ -1445,6 +1455,12 @@ public class AlmacenDeDatos {
         }
 
         return usuario;
+    }
+
+    //main de pruebas
+    public static void main(String[] args) {
+        String contraseña = "0000";
+        System.out.println(encode("0000"));
     }
 
 

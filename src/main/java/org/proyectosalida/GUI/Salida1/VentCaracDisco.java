@@ -19,39 +19,69 @@ public class VentCaracDisco extends JFrame {
 
         // Labels y TextFields para cada característica específica de la discoteca
         panelPrincipal.add(new JLabel("Nombre:"));
-        panelPrincipal.add(new JTextField(local.getNombre()));
+        panelPrincipal.add(new JTextField(local.getNombre()){{
+            setEditable(false);
+        }});
 
         panelPrincipal.add(new JLabel("Dirección:"));
-        panelPrincipal.add(new JTextField(local.getDireccion()));
+        panelPrincipal.add(new JTextField(local.getDireccion()){{
+            setEditable(false);
+        }});
 
         panelPrincipal.add(new JLabel("Código Postal:"));
-        panelPrincipal.add(new JTextField(local.getCP()));
+        panelPrincipal.add(new JTextField(local.getCP()){{
+            setEditable(false);
+        }});
 
         panelPrincipal.add(new JLabel("Aforo:"));
-        panelPrincipal.add(new JTextField(Integer.toString(local.getAforo())));
+        panelPrincipal.add(new JTextField(Integer.toString(local.getAforo())){{
+            setEditable(false);
+        }});
 
         panelPrincipal.add(new JLabel("Teléfono:"));
-        panelPrincipal.add(new JTextField(local.getTelefono()));
+        panelPrincipal.add(new JTextField(local.getTelefono()){{
+            setEditable(false);
+        }});
 
         panelPrincipal.add(new JLabel("Media de Edad:"));
-        panelPrincipal.add(new JTextField(Integer.toString(local.getMediaEdad())));
+        panelPrincipal.add(new JTextField(Integer.toString(local.getMediaEdad())){{
+            setEditable(false);
+        }});
 
         panelPrincipal.add(new JLabel("Precio Medio:"));
-        panelPrincipal.add(new JTextField(Integer.toString(local.getPrecioMedio())));
+        panelPrincipal.add(new JTextField(Integer.toString(local.getPrecioMedio())){{
+            setEditable(false);
+        }});
 
         panelPrincipal.add(new JLabel("Web:"));
-        panelPrincipal.add(new JTextField(local.getWeb()));
-/*
+        panelPrincipal.add(new JTextField(local.getWeb()){{
+            setEditable(false);
+        }});
+
         panelPrincipal.add(new JLabel("DJ Residente:"));
-        panelPrincipal.add(new JTextField(local.getDjResidente().getNombre()));
+        String nombre1 = "";
+        if(((Discoteca)local).getDjResidente() != null){
+            nombre1 = ((Discoteca)local).getDjResidente().getNombre();
+        }
+        panelPrincipal.add(new JTextField(nombre1){{
+            setEditable(false);
+        }});
+
 
         panelPrincipal.add(new JLabel("DJ Invitado:"));
-        panelPrincipal.add(new JTextField(local.getDjInvitado().getNombre()));
+        String nombre2 = "";
+        if(((Discoteca)local).getDjInvitado() != null){
+            nombre2 = ((Discoteca)local).getDjInvitado().getNombre();
+        }
+        panelPrincipal.add(new JTextField(nombre2){{
+            setEditable(false);
+        }});
 
 
- */
         panelPrincipal.add(new JLabel("Características:"));
-        panelPrincipal.add(new JTextField(obtenerCaracteristicas(local.getCaracteristicas())));
+        panelPrincipal.add(new JTextField(obtenerCaracteristicas(local.getCaracteristicas())){{
+            setEditable(false);
+        }});
         // Botón de Aceptar
         JButton btnAceptar = new JButton("Aceptar");
         btnAceptar.addActionListener(e -> dispose()); // Cierra la ventana al hacer clic en Aceptar
@@ -63,11 +93,11 @@ public class VentCaracDisco extends JFrame {
         // Hacer visible la ventana
         setVisible(true);
         setTitle("Vista Previa de Discoteca");
-        setSize(400, 400);
+        setSize(400, 600);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         //setLocationRelativeTo(null);
         Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
-        setLocation(screenSize.width - getSize().width - 20, (screenSize.height - getSize().height) /2 -150); //para poder abrir el mapa junto a esta ventana lo pongo en una esquina
+        setLocation(screenSize.width - getSize().width - 20, (screenSize.height - getSize().height) /2 -50); //para poder abrir el mapa junto a esta ventana lo pongo en una esquina
         setAlwaysOnTop(true);
     }
 

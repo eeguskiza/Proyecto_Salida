@@ -2,18 +2,12 @@ package org.proyectosalida.GUI.Registro;
 
 import org.proyectosalida.Constructores.*;
 import org.proyectosalida.Datos.AlmacenDeDatos;
-import org.proyectosalida.GUI.InicioSesion;
-import org.proyectosalida.GUI.Salida2.VentSelectCarac;
+import org.proyectosalida.GUI.VentanasGenerales.InicioSesion;
+import org.proyectosalida.GUI.Salida1.VentSelectCarac;
 
 import javax.swing.*;
 import java.awt.*;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 public class VentanaAddLocales extends JFrame {
     private ArrayList<Horario> horarios = new ArrayList<>();
@@ -141,7 +135,7 @@ public class VentanaAddLocales extends JFrame {
                     } else {
                         this.dispose();
                         JOptionPane.showMessageDialog(this, "Proceso completado.", "Finalizado", JOptionPane.INFORMATION_MESSAGE);
-                        new InicioSesion(null, almacenDeDatos).setVisible(true);
+                        new InicioSesion(null, almacenDeDatos, false).setVisible(true);
                     }
                 } else {
                     JOptionPane.showMessageDialog(this, "No se pudo agregar el local.", "Error", JOptionPane.ERROR_MESSAGE);

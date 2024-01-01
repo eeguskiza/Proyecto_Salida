@@ -5,17 +5,13 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.File;
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.PreparedStatement;
-import java.sql.SQLException;
 import java.util.ArrayList;
 
 
 import com.toedter.calendar.JDateChooser;
 import org.proyectosalida.Constructores.*;
 import org.proyectosalida.Datos.AlmacenDeDatos;
-import org.proyectosalida.GUI.InicioSesion;
+import org.proyectosalida.GUI.VentanasGenerales.InicioSesion;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -94,8 +90,8 @@ public class Registro extends JFrame {
         panelImagen.add(etiquetaImagen, BorderLayout.CENTER);
 
         JPanel panelBotones = new JPanel();
-        JButton aceptar = new JButton("Aceptar");
-        JButton cancelar = new JButton("Cancelar");
+        JButton aceptar = new JButton("Regístrame");
+        JButton cancelar = new JButton("Iniciar Sesión (Otra cuenta)");
 
         // Crear un contenedor principal para todos los paneles
         JPanel contenedorPrincipal = new JPanel(new BorderLayout());
@@ -204,14 +200,14 @@ public class Registro extends JFrame {
                         }else {
                             dispose();
                             //REDIRIGE DIRECTAMENTE A INICIA SESION HABIENDO GUARDADO LOS DATOS EN LA NUBE
-                            InicioSesion inicioSesion = new InicioSesion(this, almacenDeDatos);
+                            InicioSesion inicioSesion = new InicioSesion(this, almacenDeDatos, false);
                             inicioSesion.setVisible(true);
                         }
                     } else {
                         Cliente nuevoUsuario = new Cliente(id, nombre, apellido, fechaNacimiento, contraseña, telefono, correo, new ArrayList<>());
                         //Llama al metodo que lo añade en sql
                         almacenDeDatos.registrarCliente(nuevoUsuario);
-                        InicioSesion inicioSesion = new InicioSesion(padre, almacenDeDatos);
+                        InicioSesion inicioSesion = new InicioSesion(padre, almacenDeDatos, false);
                         this.dispose();
                         padre.dispose();
                         inicioSesion.setVisible(true);
@@ -231,7 +227,8 @@ public class Registro extends JFrame {
 
         cancelar.addActionListener(e -> {
             this.dispose();
-            padre.setVisible(true);
+            InicioSesion inicioSesion = new InicioSesion(null, almacenDeDatos, true);
+            inicioSesion.setVisible(true);
                 });
 
         panelBotones.add(aceptar);

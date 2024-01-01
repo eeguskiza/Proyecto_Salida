@@ -15,7 +15,7 @@ import java.util.HashMap;
 
 import org.proyectosalida.Constructores.*;
 import org.proyectosalida.Datos.AlmacenDeDatos;
-import org.proyectosalida.GUI.CustomOptionPaneLogin;
+import org.proyectosalida.GUI.VentanasGenerales.CustomOptionPaneLogin;
 import org.proyectosalida.GUI.VentanasCliente.MainMenuCliente;
 
 public class VentLocalesRecomendados extends JFrame {

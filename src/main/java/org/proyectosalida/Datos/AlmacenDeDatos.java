@@ -1,12 +1,18 @@
 package org.proyectosalida.Datos;
 
+import com.google.common.primitives.Bytes;
 import org.proyectosalida.Constructores.*;
 import org.proyectosalida.GUI.VentanasGenerales.InicioSesion;
 
 import javax.swing.*;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 import java.sql.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -73,7 +79,7 @@ public class AlmacenDeDatos {
 
     }
     //PROPERTIES
-    public static void guardarPropiedades(String usuario, String contraseña, Boolean esDueño) {
+    public static void guardarPropiedades(String usuario, String contraseña, Boolean esDueño) throws IOException {
         Properties prop = new Properties();
 
         // Establece las propiedades
@@ -81,29 +87,58 @@ public class AlmacenDeDatos {
         prop.setProperty("usuario", usuario);
         prop.setProperty("contraseña", contraseña);
 
+        // Guarda la dirección MAC actual
+        prop.setProperty("direccionMAC", obtenerDireccionMAC());
+
         // Guarda las propiedades en un archivo
         try (FileOutputStream output = new FileOutputStream(PROPERTIES_PATH)) {
             prop.store(output, "Configuración de la aplicación");
-            logger.info("Sesión guardada para la proxima vez!");
+            logger.info("Sesión guardada para la próxima vez!");
         } catch (IOException ex) {
             ex.printStackTrace();
             logger.warning("No se ha podido guardar la sesión.");
         }
     }
 
-    public Properties cargarPropiedades() {
-        logger.info("Cargando PATH de 'Properties'");
+    public Properties cargarPropiedades() throws IOException {
+        File archivoPropiedades = new File(PROPERTIES_PATH);
         Properties prop = new Properties();
 
-        // Carga las propiedades desde un archivo
+        // Verifica si el archivo existe
+        if (!archivoPropiedades.exists()) {
+            // Si no existe, retorna un objeto Properties vacío
+            logger.info("El archivo de propiedades no existe. Retornando un objeto Properties vacío.");
+            return prop;
+        }
+
+        // Carga las propiedades desde el archivo
         try (FileInputStream input = new FileInputStream(PROPERTIES_PATH)) {
             prop.load(input);
+
+            String macGuardada = prop.getProperty("direccionMAC");
+            if (macGuardada != null && !macGuardada.equals(obtenerDireccionMAC())) {
+                throw new IOException("La dirección MAC no coincide. Acceso denegado.");
+            }
         } catch (IOException ex) {
             ex.printStackTrace();
             System.out.println(ex.getMessage());
+            throw ex; // Re-lanzar la excepción para manejo externo
         }
 
         return prop;
+    }
+
+
+    public static String obtenerDireccionMAC() throws UnknownHostException, SocketException {
+        InetAddress direccionIP = InetAddress.getLocalHost();
+        NetworkInterface red = NetworkInterface.getByInetAddress(direccionIP);
+        byte[] mac = red.getHardwareAddress();
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < mac.length; i++) {
+            sb.append(String.format("%02X%s", mac[i], (i < mac.length - 1) ? "-" : ""));
+        }
+        return sb.toString();
     }
 
 
@@ -1460,7 +1495,12 @@ public class AlmacenDeDatos {
     //main de pruebas
     public static void main(String[] args) {
         String contraseña = "0000";
-        System.out.println(encode("0000"));
+        String bites = encode(contraseña);
+        String bites2 = decode(bites);
+
+        System.out.println(contraseña);
+        System.out.println(bites);
+        System.out.println(bites2);
     }
 
 

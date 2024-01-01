@@ -13,9 +13,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
+import java.io.IOException;
 import java.util.Properties;
 import java.util.concurrent.ExecutionException;
 import javax.swing.SwingWorker;
+
+import static org.proyectosalida.Datos.AlmacenDeDatos.encode;
 
 
 public class InicioSesion extends JFrame {
@@ -141,8 +144,12 @@ public class InicioSesion extends JFrame {
 
         aceptar.addActionListener(e -> {
             boolean esDueño = rbtnDueño.isSelected();
-            iniciarSesion(esDueño, almacen, idField.getText(), new String(passwordField.getPassword()), dueño, cliente);
+            String id = idField.getText();
+            String contraseña = new String(passwordField.getPassword());
+            String contraseñaCodificada = encode(contraseña); // Codifica la contraseña introducida
+            iniciarSesion(esDueño, almacen, id, contraseñaCodificada, dueño, cliente); // Usa la contraseña codificada para iniciar sesión
         });
+
 
 
         cancelar.addActionListener(e -> {
@@ -157,7 +164,11 @@ public class InicioSesion extends JFrame {
             @Override
             public void componentShown(ComponentEvent e) {
                if(!inicioSesionAutomaticoDesactivado){
-                   inicioSesionAutomaticoPorPropiedades(almacen, dueño, cliente);
+                   try {
+                       inicioSesionAutomaticoPorPropiedades(almacen, dueño, cliente);
+                   } catch (IOException ex) {
+                       throw new RuntimeException(ex);
+                   }
                }
             }
         });
@@ -209,6 +220,8 @@ public class InicioSesion extends JFrame {
                     // En caso de error, también mostrar la ventana de inicio de sesión
                     InicioSesion.this.setVisible(true);
                     ex.printStackTrace();
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
                 }
             }
         };
@@ -217,7 +230,7 @@ public class InicioSesion extends JFrame {
         customOptionPaneLogin.show();
     }
 
-    private void inicioSesionAutomaticoPorPropiedades(AlmacenDeDatos almacen, Dueño dueño, Cliente cliente){
+    private void inicioSesionAutomaticoPorPropiedades(AlmacenDeDatos almacen, Dueño dueño, Cliente cliente) throws IOException {
         prop = almacen.cargarPropiedades();
         if(!prop.isEmpty()){
             Boolean isdueño = new Boolean(prop.getProperty("esdueño"));

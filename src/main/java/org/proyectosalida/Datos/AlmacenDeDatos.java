@@ -1,6 +1,7 @@
 package org.proyectosalida.Datos;
 
 import org.proyectosalida.Constructores.*;
+import org.proyectosalida.GUI.VentanasGenerales.InicioSesion;
 
 import javax.swing.*;
 import java.io.FileInputStream;
@@ -1454,6 +1455,12 @@ public class AlmacenDeDatos {
         }
 
         return usuario;
+    }
+
+    //main de pruebas
+    public static void main(String[] args) {
+        String contraseña = "0000";
+        System.out.println(encode("0000"));
     }
 
 

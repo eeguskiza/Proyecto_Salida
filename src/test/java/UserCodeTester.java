@@ -1,7 +1,7 @@
-/*import org.proyectosalida.Datos.AlmacenDeDatos;
-import static org.junit.jupiter.api.Assertions.*;
-
-import org.junit.jupiter.api.Test;
+import org.junit.Test;
+import org.proyectosalida.Datos.AlmacenDeDatos;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 public class UserCodeTester {
 
@@ -39,4 +39,3 @@ public class UserCodeTester {
     }
 }
 
- */

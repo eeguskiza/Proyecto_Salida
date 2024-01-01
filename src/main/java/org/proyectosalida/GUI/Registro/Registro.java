@@ -227,7 +227,7 @@ public class Registro extends JFrame {
 
         cancelar.addActionListener(e -> {
             this.dispose();
-            InicioSesion inicioSesion = new InicioSesion(null, almacenDeDatos, false);
+            InicioSesion inicioSesion = new InicioSesion(null, almacenDeDatos, true);
             inicioSesion.setVisible(true);
                 });
 

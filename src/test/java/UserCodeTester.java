@@ -1,4 +1,3 @@
-/*
 import org.junit.Test;
 import org.proyectosalida.Datos.AlmacenDeDatos;
 import static org.junit.Assert.assertEquals;
@@ -40,5 +39,4 @@ public class UserCodeTester {
     }
 }
 
- */
 

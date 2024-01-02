@@ -27,3 +27,6 @@ bin/
 
 ### Mac OS ###
 .DS_Store
+
+# Nosotros
+src/main/java/org/proyectosalida/Datos/config.dat

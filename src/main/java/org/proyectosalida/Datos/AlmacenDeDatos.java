@@ -88,7 +88,7 @@ public class AlmacenDeDatos {
         prop.setProperty("contraseña", contraseña);
 
         // Guarda la dirección MAC actual
-        prop.setProperty("direccionMAC", obtenerDireccionMAC());
+        //prop.setProperty("direccionMAC", obtenerDireccionMAC());
 
         // Guarda las propiedades en un archivo
         try (FileOutputStream output = new FileOutputStream(PROPERTIES_PATH)) {
@@ -121,6 +121,7 @@ public class AlmacenDeDatos {
                 return prop;
             }
 
+            /*
             String macGuardada = prop.getProperty("direccionMAC");
             if (macGuardada != null && !macGuardada.equals(obtenerDireccionMAC())) {
                 throw new IOException("La dirección MAC no coincide. Acceso denegado.");
@@ -128,6 +129,8 @@ public class AlmacenDeDatos {
                 logger.info("La dirección MAC coincide. Preparando para inicio de sesión automático.");
 
             }
+
+             */
         } catch (IOException ex) {
             ex.printStackTrace();
             System.out.println(ex.getMessage());

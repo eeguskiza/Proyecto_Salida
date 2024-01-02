@@ -252,7 +252,7 @@ public class InicioSesion extends JFrame {
         }
 
         SwingUtilities.invokeLater(() -> {
-            new InicioSesion(null, new AlmacenDeDatos(), true).setVisible(true);
+            new InicioSesion(null, new AlmacenDeDatos(), false).setVisible(true);
         });
     }
 

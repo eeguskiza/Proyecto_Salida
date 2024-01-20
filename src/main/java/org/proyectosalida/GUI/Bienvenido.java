@@ -90,6 +90,7 @@ public class Bienvenido extends JFrame {
         backgroundPanel.add(mainPanel, BorderLayout.SOUTH);
 
         this.setContentPane(backgroundPanel);
+
         this.setVisible(true);
     }
 
@@ -104,7 +105,8 @@ public class Bienvenido extends JFrame {
         }
 
         SwingUtilities.invokeLater(() -> {
-            new Bienvenido();
+            Bienvenido nueva = new Bienvenido();
+            nueva.setVisible(true);
         });
     }
 

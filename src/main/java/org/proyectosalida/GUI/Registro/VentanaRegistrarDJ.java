@@ -11,7 +11,7 @@ import java.awt.*;
 public class VentanaRegistrarDJ extends JFrame {
 
     public VentanaRegistrarDJ(DJ dj, JFrame padre, Boolean esUnDJNuevo){
-        setTitle("Registra al nuevo pinchador de la noche");
+        setTitle("Registra un nuevo DJ");
         setSize(400, 450);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(new BorderLayout());

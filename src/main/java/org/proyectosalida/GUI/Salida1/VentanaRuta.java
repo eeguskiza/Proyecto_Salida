@@ -17,7 +17,7 @@ import static org.proyectosalida.Datos.AlmacenDeDatos.logger;
 
 public class VentanaRuta extends JFrame {
 
-    HashedMap<Local, Integer> itinerario;
+    ArrayList<ArrayList<Local>> itinerario;
 
     public VentanaRuta(ArrayList<Caracteristica> caracteristicasSeleccionadas, AlmacenDeDatos almacen, Salida salida, Integer nmax){
         setSize(700,700);
@@ -25,7 +25,7 @@ public class VentanaRuta extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        itinerario = new HashedMap<>();
+        itinerario = new ArrayList<>();
 
         DefaultTableModel modelo = new DefaultTableModel();
         JTable tabla = new JTable(modelo); add(tabla, BorderLayout.CENTER);
@@ -43,6 +43,20 @@ public class VentanaRuta extends JFrame {
         //Una vez la lista de locales seleccionados este completa es hacer un for para rellenar la tabla y registrar los locales en
         // la visita para que se registren
 
+        for(Local local : almacen.getLocales()){
+            ArrayList<Local> localesSeleccionados = new ArrayList<>();
+            encontrarLocalAux(almacen.getLocales(), caracteristicasSeleccionadas, nmax, localesSeleccionados);
+            if(!itinerario.contains(localesSeleccionados)){
+                itinerario.add(localesSeleccionados);
+            }
+        }
+
+        for(ArrayList<Local> lista : itinerario){
+            System.out.println("----");
+            for(Local local : lista){
+                System.out.println(local.getNombre());
+            }
+        }
 
 
         setVisible(true);

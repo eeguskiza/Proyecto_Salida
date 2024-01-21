@@ -5,6 +5,7 @@ org\proyectosalida\GUI\Salida1\VentCaracBar$1.class
 org\proyectosalida\GUI\VentanasCliente\RegistrarValoracion.class
 org\proyectosalida\GUI\VentanasCliente\MainMenuCliente$2.class
 org\proyectosalida\Constructores\Usuario.class
+org\proyectosalida\GUI\Salida1\VentanaRuta.class
 org\proyectosalida\GUI\Registro\VentanaAddHorarios$1.class
 org\proyectosalida\GUI\VentanasGenerales\InicioSesion$2.class
 org\proyectosalida\GUI\VentanasGenerales\VentanaPreguntasFrecuentes$1.class
@@ -30,6 +31,7 @@ org\proyectosalida\GUI\VentanasGenerales\VentanaPreguntasFrecuentes.class
 org\proyectosalida\GUI\Salida1\VentCaracBar$6.class
 org\proyectosalida\GUI\VentanasGenerales\InicioSesion$1.class
 org\proyectosalida\GUI\VentanasCliente\MainMenuCliente.class
+org\proyectosalida\GUI\VentanasDueño\VerLocales$5.class
 org\proyectosalida\GUI\Salida1\VentLocalesRecomendados$4.class
 org\proyectosalida\GUI\VentanasGenerales\MenuPersonal$2.class
 org\proyectosalida\GUI\Salida1\VentCaracDisco$7.class

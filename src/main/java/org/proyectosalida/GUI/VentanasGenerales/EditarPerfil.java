@@ -58,7 +58,7 @@ public class EditarPerfil extends JFrame {
          */
 
         JPanel botonera = new JPanel(new FlowLayout());
-        JButton atras = new JButton("Atzerakarga");
+        JButton atras = new JButton("Atras");
         JButton guardarCambios = new JButton("Actualizar");
         botonera.add(atras);botonera.add(guardarCambios);
         if(editable==false){

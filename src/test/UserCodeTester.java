@@ -1,4 +1,3 @@
-/*
 import org.junit.Test;
 import org.proyectosalida.Datos.AlmacenDeDatos;
 import static org.junit.Assert.assertEquals;
@@ -11,7 +10,7 @@ public class UserCodeTester {
         String original = "miContraseña123";
         String encoded = AlmacenDeDatos.encode(original);
         String decoded = AlmacenDeDatos.decode(encoded);
-        assertEquals(original, decoded, "La contraseña decodificada debería coincidir con la original.");
+        assertEquals("La contraseña decodificada debería coincidir con la original.",original, decoded );
     }
 
     @Test
@@ -19,7 +18,7 @@ public class UserCodeTester {
         String original = "";
         String encoded = AlmacenDeDatos.encode(original);
         String decoded = AlmacenDeDatos.decode(encoded);
-        assertEquals(original, decoded, "El proceso de codificación y decodificación de una cadena vacía debería funcionar.");
+        assertEquals("El proceso de codificación y decodificación de una cadena vacía debería funcionar.", original, decoded);
     }
 
     @Test
@@ -27,7 +26,7 @@ public class UserCodeTester {
         String original = "!@#$%^&*()_+";
         String encoded = AlmacenDeDatos.encode(original);
         String decoded = AlmacenDeDatos.decode(encoded);
-        assertEquals(original, decoded, "El proceso de codificación y decodificación debería manejar correctamente los caracteres especiales.");
+        assertEquals("El proceso de codificación y decodificación debería manejar correctamente los caracteres especiales.", original, decoded);
     }
 
     @Test
@@ -36,10 +35,8 @@ public class UserCodeTester {
         String string2 = "adios123";
         String encoded1 = AlmacenDeDatos.encode(string1);
         String encoded2 = AlmacenDeDatos.encode(string2);
-        assertNotEquals(encoded1, encoded2, "Dos cadenas diferentes no deberían codificarse de la misma manera.");
+        assertNotEquals("Dos cadenas diferentes no deberían codificarse de la misma manera.", encoded1, encoded2);
     }
 }
-
- */
 
 

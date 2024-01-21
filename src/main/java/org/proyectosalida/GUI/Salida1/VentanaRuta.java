@@ -28,7 +28,11 @@ public class VentanaRuta extends JFrame {
         itinerario = new ArrayList<>();
 
         DefaultTableModel modelo = new DefaultTableModel();
-        JTable tabla = new JTable(modelo); add(tabla, BorderLayout.CENTER);
+        JTable tabla = new JTable(modelo);
+
+        JScrollPane scrollPane = new JScrollPane(tabla);
+        getContentPane().add(scrollPane, BorderLayout.CENTER);
+
         Object[] encabezados = {"Orden", "Caracteristicas en Común", "Local"};
         modelo.setColumnIdentifiers(encabezados);
 

@@ -200,14 +200,14 @@ public class Registro extends JFrame {
                         }else {
                             dispose();
                             //REDIRIGE DIRECTAMENTE A INICIA SESION HABIENDO GUARDADO LOS DATOS EN LA NUBE
-                            InicioSesion inicioSesion = new InicioSesion(this, almacenDeDatos, false);
+                            InicioSesion inicioSesion = new InicioSesion(this, almacenDeDatos, true);
                             inicioSesion.setVisible(true);
                         }
                     } else {
                         Cliente nuevoUsuario = new Cliente(id, nombre, apellido, fechaNacimiento, contraseña, telefono, correo, new ArrayList<>());
                         //Llama al metodo que lo añade en sql
                         almacenDeDatos.registrarCliente(nuevoUsuario);
-                        InicioSesion inicioSesion = new InicioSesion(padre, almacenDeDatos, false);
+                        InicioSesion inicioSesion = new InicioSesion(padre, almacenDeDatos, true);
                         this.dispose();
                         padre.dispose();
                         inicioSesion.setVisible(true);

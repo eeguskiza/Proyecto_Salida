@@ -67,6 +67,7 @@ public class VentanaVisitas extends JFrame {
         sorter.setComparator(2, Comparator.nullsLast(Comparator.naturalOrder()));
         sorter.setSortKeys(Arrays.asList(new RowSorter.SortKey(2, SortOrder.ASCENDING))); // Aparece el icono automaticamente
 
+        table.getColumnModel().getColumn(4).setPreferredWidth(300);
         /*
         table.getColumnModel().getColumn(2).setPreferredWidth(10);
         table.getColumnModel().getColumn(3).setPreferredWidth(10);

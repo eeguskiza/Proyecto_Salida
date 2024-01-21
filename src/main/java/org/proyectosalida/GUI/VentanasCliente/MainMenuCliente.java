@@ -255,7 +255,7 @@ public class MainMenuCliente extends JFrame {
                         cargarUltimasReviews(visitasConValoracion, almacenDeDatos, sizeEncabezadoTexto, panelGrid);
                     });
                     try {
-                        Thread.sleep(15000); // Esperar 15 segundos
+                        Thread.sleep(3000); // Esperar 15 segundos
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     }
@@ -292,7 +292,7 @@ public class MainMenuCliente extends JFrame {
             labelEncabezado3 = new JLabel("TUS REVIEWS PENDIENTES:");
             p3.add(scrollReviews, BorderLayout.CENTER);
         }else{
-            labelEncabezado3 = new JLabel("FELICIDADES, NO TIENES REVIEWS PENDIENTES!");
+            labelEncabezado3 = new JLabel("NO TIENES REVIEWS PENDIENTES!");
         }
         p3.add(labelEncabezado3, BorderLayout.NORTH);
         labelEncabezado3.setFont(new Font("Arial", Font.BOLD, sizeTitulos));
@@ -319,7 +319,7 @@ public class MainMenuCliente extends JFrame {
     }
 
     private void cargarUltimasReviews(ArrayList<Visita> visitasConValoracion, AlmacenDeDatos almacenDeDatos, int sizeEncabezadoTexto, JPanel panelGrid){
-        logger.info("Cargando las últimas reviews publicadas");
+        //logger.info("Cargando las últimas reviews publicadas");
         String dbURL = "jdbc:oracle:thin:@proyectosalida_tpurgent?TNS_ADMIN=src/main/resources/Wallet_proyectoSalida";
 
         //Conexion tontorrona para sacar todas las visitas con reviews

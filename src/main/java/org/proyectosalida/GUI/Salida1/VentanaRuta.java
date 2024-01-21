@@ -12,6 +12,7 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import static org.proyectosalida.Datos.AlmacenDeDatos.logger;
 
@@ -47,41 +48,85 @@ public class VentanaRuta extends JFrame {
         //Una vez la lista de locales seleccionados este completa es hacer un for para rellenar la tabla y registrar los locales en
         // la visita para que se registren
 
-        for(Local local : almacen.getLocales()){
-            ArrayList<Local> localesSeleccionados = new ArrayList<>();
-            encontrarLocalAux(almacen.getLocales(), caracteristicasSeleccionadas, nmax, localesSeleccionados);
-            if(!itinerario.contains(localesSeleccionados)){
-                itinerario.add(localesSeleccionados);
-            }
-        }
+        ArrayList<Local> resutl = encontrarLocalesDefinitivos(almacen.getLocales(), caracteristicasSeleccionadas, nmax);
 
-        for(ArrayList<Local> lista : itinerario){
-            System.out.println("----");
-            for(Local local : lista){
-                System.out.println(local.getNombre());
-            }
+        for(Local local : resutl){
+            System.out.println(local.getNombre());
         }
 
 
         setVisible(true);
     }
 
-    private void encontrarLocalAux(ArrayList<Local> locales, ArrayList<Caracteristica> caracteristicasSeleccionadas, Integer max, ArrayList<Local> seleccionados){
-        if(seleccionados.size() > max){
+    private void encontrarLocalAux(ArrayList<Local> locales, ArrayList<Caracteristica> caracteristicasSeleccionadas, int max, ArrayList<Local> seleccionados, ArrayList<Local> combinacionActual) {
+        if (seleccionados.size() > max) {
             return;
         }
 
-        for(Local local : locales){ //Todos los que hay en nuestra bd
-            for(Caracteristica caracteristica : local.getCaracteristicas()){
-                if(caracteristicasSeleccionadas.contains(caracteristica) && !seleccionados.contains(local)){
-                    seleccionados.add(local);
-                    encontrarLocalAux(locales, caracteristicasSeleccionadas, max, seleccionados);
-                }
-                //Le falta algo por aqui para poder sacar todas las combinaciones posibles creo...
+        for (Local local : locales) {
+            if (!seleccionados.contains(local)) {
+                seleccionados.add(local);
+                encontrarLocalAux(locales, caracteristicasSeleccionadas, max, seleccionados, combinacionActual);
+                seleccionados.remove(local);  // Backtracking: eliminar el último local para probar otras combinaciones
             }
         }
 
+        // Al final de cada llamada recursiva, agrega la combinación actual a la lista de combinaciones
+        combinacionActual.addAll(seleccionados);
     }
+
+    // Método para calcular la distancia entre dos locales basándose en los códigos postales
+    private int calcularDistancia(Local local1, Local local2) {
+        // Supongamos que cada código postal es un número entero
+        int codigoPostal1 = Integer.parseInt(local1.getCP());
+        int codigoPostal2 = Integer.parseInt(local2.getCP());
+
+        // Calcula la diferencia absoluta entre los códigos postales
+        System.out.println("Distancia: "+Math.abs(codigoPostal1 - codigoPostal2));
+        return Math.abs(codigoPostal1 - codigoPostal2);
+    }
+
+    // Método para encontrar la combinación definitiva de locales
+    private ArrayList<Local> encontrarLocalesDefinitivos(ArrayList<Local> locales, ArrayList<Caracteristica> caracteristicasSeleccionadas, int max) {
+        ArrayList<Local> combinacionDefinitiva = new ArrayList<>();
+        ArrayList<Local> combinacionActual = new ArrayList<>();
+        int distanciaMinima = Integer.MAX_VALUE;
+
+        encontrarLocalAux(locales, caracteristicasSeleccionadas, max, new ArrayList<>(), combinacionActual);
+
+        // Itera sobre todas las combinaciones encontradas y selecciona la que cumple con el criterio de distancia mínima
+        int distanciaTotal;
+        for (int i = 0; i < combinacionActual.size(); i += max) {
+            ArrayList<Local> subCombinacion = new ArrayList<>(combinacionActual.subList(i, Math.min(i + max, combinacionActual.size())));
+
+            // Verifica si hay locales duplicados en la subcombinación
+            if (tieneDuplicados(subCombinacion)) {
+                continue;  // Si hay duplicados, pasa a la siguiente subcombinación
+            }
+
+            distanciaTotal = calcularDistancia(subCombinacion.get(0), subCombinacion.get(subCombinacion.size() - 1));
+
+            // Calcula la distancia total de la combinación actual
+            for (int j = 0; j < subCombinacion.size() - 1; j++) {
+                distanciaTotal += calcularDistancia(subCombinacion.get(j), subCombinacion.get(j + 1));
+            }
+
+            // Actualiza la combinación definitiva si cumple con los criterios
+            if (distanciaTotal < distanciaMinima || combinacionDefinitiva.isEmpty()) {
+                distanciaMinima = distanciaTotal;
+                combinacionDefinitiva = new ArrayList<>(subCombinacion);
+            }
+        }
+
+        return combinacionDefinitiva;
+    }
+
+    // Método para verificar si hay duplicados en una lista de locales
+    private boolean tieneDuplicados(ArrayList<Local> listaLocales) {
+        HashSet<Local> set = new HashSet<>(listaLocales);
+        return set.size() < listaLocales.size();
+    }
+
 
     public static void main(String[] args) {
         try {

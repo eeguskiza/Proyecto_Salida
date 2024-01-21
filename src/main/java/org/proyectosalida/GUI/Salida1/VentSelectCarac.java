@@ -83,7 +83,25 @@ public class VentSelectCarac extends JFrame {
         Aceptar.addActionListener(e->{
             dispose();
             if(!editandoLocal){ //Significa que no estas modificando un local, asik se pasa a la busqueda relacionada con las caracteristicas
-                new VentLocalesRecomendados(caracteristicasSeleccionadas, almacen, salida);
+                //AÑADIMOS OTRO PANEL PARA SABER SI QUIERE IR A UN LOCAL O A MAS A DE UNO (RUTA)
+                int opcion = JOptionPane.showOptionDialog(
+                        new JFrame(),
+                        "¿Quieres salir de ruta de establecimientos o a uno solo?",
+                        "Tipo de salida",
+                        JOptionPane.YES_NO_OPTION,
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        new String[]{"Único", "Ruta"},
+                        "Único"
+                );
+
+                if(opcion==0){
+                    new VentLocalesRecomendados(caracteristicasSeleccionadas, almacen, salida);
+                }else if(opcion==1){
+                    int n  = Integer.parseInt(JOptionPane.showInputDialog("¿Cuantos locales quieres recorrer?"));
+                    new VentanaRuta(caracteristicasSeleccionadas, almacen, salida, n);
+                }
+
             }
         });
         panel.add(searchField, BorderLayout.NORTH);

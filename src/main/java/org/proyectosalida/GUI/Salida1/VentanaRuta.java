@@ -2,15 +2,16 @@ package org.proyectosalida.GUI.Salida1;
 
 import com.formdev.flatlaf.FlatLightLaf;
 import org.apache.commons.collections4.map.HashedMap;
-import org.proyectosalida.Constructores.Caracteristica;
-import org.proyectosalida.Constructores.Local;
-import org.proyectosalida.Constructores.Salida;
+import org.proyectosalida.Constructores.*;
 import org.proyectosalida.Datos.AlmacenDeDatos;
 import org.proyectosalida.GUI.VentanasCliente.MainMenuCliente;
 
 import javax.swing.*;
+import javax.swing.border.EmptyBorder;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashSet;
 
@@ -18,7 +19,7 @@ import static org.proyectosalida.Datos.AlmacenDeDatos.logger;
 
 public class VentanaRuta extends JFrame {
 
-    ArrayList<ArrayList<Local>> itinerario;
+    ArrayList<Local> resultado = new ArrayList<>();
 
     public VentanaRuta(ArrayList<Caracteristica> caracteristicasSeleccionadas, AlmacenDeDatos almacen, Salida salida, Integer nmax){
         setSize(700,700);
@@ -26,37 +27,46 @@ public class VentanaRuta extends JFrame {
         setLocationRelativeTo(null);
         setLayout(new BorderLayout());
 
-        itinerario = new ArrayList<>();
+        JLabel titulo = new JLabel("Ruta de locales para hoy, "+salida.getFecha()); titulo.setHorizontalAlignment(SwingConstants.CENTER);
+        getContentPane().add(titulo, BorderLayout.NORTH);
 
+        JPanel paneltabla = new JPanel(new BorderLayout());
         DefaultTableModel modelo = new DefaultTableModel();
+
         JTable tabla = new JTable(modelo);
-
         JScrollPane scrollPane = new JScrollPane(tabla);
-        getContentPane().add(scrollPane, BorderLayout.CENTER);
 
-        Object[] encabezados = {"Orden", "Caracteristicas en Común", "Local"};
+        paneltabla.add(scrollPane, BorderLayout.CENTER);
+        paneltabla.setBorder(new EmptyBorder(20, 10, 10, 10));
+        getContentPane().add(paneltabla, BorderLayout.CENTER);
+
+        Object[] encabezados = {"Orden", "Local", "Dirección"};
         modelo.setColumnIdentifiers(encabezados);
 
-        //El metodo recursivo tiene en cuenta las caracteristicas que se encuentran en la lista de caracteristicasSeleccionadas y
-        // teniendo en cuenta todos los locales y todas las caracteristicas que tienen, se hace una ruta (todas las combinaciones
-        // posibles entre los locales con esas caracteristicas). El resultado se guardara en un hash map con el local y el numero
-        // de caracteristicas comunes encontradas, es decir algun local tendra todas y algun otro tendra solo algunas. En la tabla
-        // se ordenaran de mas a menos en comun encontradas.
-        // Sino tambien se pueden ordenar por CP, es decir por cercania entre ellos. Si lo piensas tiene mas logica para una ruta
-        // esto que lo de la cantidad de caracteristicas
+        tabla.getColumnModel().getColumn(0).setPreferredWidth(20);
+        tabla.getColumnModel().getColumn(1).setPreferredWidth(40);
 
-        //Una vez la lista de locales seleccionados este completa es hacer un for para rellenar la tabla y registrar los locales en
-        // la visita para que se registren
+        resultado = encontrarLocalesDefinitivos(almacen.getLocales(), caracteristicasSeleccionadas, nmax);
 
-        ArrayList<Local> resutl = encontrarLocalesDefinitivos(almacen.getLocales(), caracteristicasSeleccionadas, nmax);
 
-        for(Local local : resutl){
-            System.out.println(local.getNombre());
+        int index = 1;
+        for(Local local : resultado){
+            Object[] row = {index, local.getNombre(), local.getDireccion()};
+            modelo.addRow(row);
+            index++;
         }
 
+        registarVisitas(resultado, salida, almacen);
+
+        JButton volver = new JButton("Volver a inicio"); getContentPane().add(volver, BorderLayout.SOUTH);
+        volver.addActionListener(e -> {
+            dispose();
+            new MainMenuCliente(almacen, null);
+        });
 
         setVisible(true);
     }
+
 
     private void encontrarLocalAux(ArrayList<Local> locales, ArrayList<Caracteristica> caracteristicasSeleccionadas, int max, ArrayList<Local> seleccionados, ArrayList<Local> combinacionActual) {
         if (seleccionados.size() > max) {
@@ -75,18 +85,13 @@ public class VentanaRuta extends JFrame {
         combinacionActual.addAll(seleccionados);
     }
 
-    // Método para calcular la distancia entre dos locales basándose en los códigos postales
     private int calcularDistancia(Local local1, Local local2) {
-        // Supongamos que cada código postal es un número entero
         int codigoPostal1 = Integer.parseInt(local1.getCP());
         int codigoPostal2 = Integer.parseInt(local2.getCP());
 
-        // Calcula la diferencia absoluta entre los códigos postales
-        System.out.println("Distancia: "+Math.abs(codigoPostal1 - codigoPostal2));
         return Math.abs(codigoPostal1 - codigoPostal2);
     }
 
-    // Método para encontrar la combinación definitiva de locales
     private ArrayList<Local> encontrarLocalesDefinitivos(ArrayList<Local> locales, ArrayList<Caracteristica> caracteristicasSeleccionadas, int max) {
         ArrayList<Local> combinacionDefinitiva = new ArrayList<>();
         ArrayList<Local> combinacionActual = new ArrayList<>();
@@ -94,24 +99,20 @@ public class VentanaRuta extends JFrame {
 
         encontrarLocalAux(locales, caracteristicasSeleccionadas, max, new ArrayList<>(), combinacionActual);
 
-        // Itera sobre todas las combinaciones encontradas y selecciona la que cumple con el criterio de distancia mínima
         int distanciaTotal;
         for (int i = 0; i < combinacionActual.size(); i += max) {
             ArrayList<Local> subCombinacion = new ArrayList<>(combinacionActual.subList(i, Math.min(i + max, combinacionActual.size())));
 
-            // Verifica si hay locales duplicados en la subcombinación
             if (tieneDuplicados(subCombinacion)) {
-                continue;  // Si hay duplicados, pasa a la siguiente subcombinación
+                continue;
             }
 
             distanciaTotal = calcularDistancia(subCombinacion.get(0), subCombinacion.get(subCombinacion.size() - 1));
 
-            // Calcula la distancia total de la combinación actual
             for (int j = 0; j < subCombinacion.size() - 1; j++) {
                 distanciaTotal += calcularDistancia(subCombinacion.get(j), subCombinacion.get(j + 1));
             }
 
-            // Actualiza la combinación definitiva si cumple con los criterios
             if (distanciaTotal < distanciaMinima || combinacionDefinitiva.isEmpty()) {
                 distanciaMinima = distanciaTotal;
                 combinacionDefinitiva = new ArrayList<>(subCombinacion);
@@ -121,13 +122,22 @@ public class VentanaRuta extends JFrame {
         return combinacionDefinitiva;
     }
 
-    // Método para verificar si hay duplicados en una lista de locales
     private boolean tieneDuplicados(ArrayList<Local> listaLocales) {
         HashSet<Local> set = new HashSet<>(listaLocales);
         return set.size() < listaLocales.size();
     }
 
 
+
+
+    private void registarVisitas(ArrayList<Local> resultado, Salida salida, AlmacenDeDatos almacenDeDatos){
+        SimpleDateFormat formatoHora = new SimpleDateFormat("HH:mm");
+        String horaFormateada = formatoHora.format(salida.getFecha());
+        for (Local local : resultado){
+            Visita nueva = new Visita(almacenDeDatos.getUsuarios().get(0).getId(), local, salida.getFecha(), horaFormateada, "");
+            ((Cliente) almacenDeDatos.getUsuarios().get(0)).getVisitas().add(nueva);
+        }
+    }
     public static void main(String[] args) {
         try {
             // Establecer el look and feel de Nimbus

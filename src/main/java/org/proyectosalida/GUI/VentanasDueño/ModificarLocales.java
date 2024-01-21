@@ -33,7 +33,22 @@ public class ModificarLocales extends JFrame{
     private DJ djInvitado;
 
     private String instagramAntiguoDJ;
-    public ModificarLocales(AlmacenDeDatos almacn, JFrame padre){
+
+    private JTextField tNombre;
+    private JTextField tDireccion;
+    private JSpinner sCp;
+    private JSpinner sAforo;
+    private JTextField tTelefono;
+    private JSpinner sEdad;
+    private JSpinner sPrecio;
+    private JTextField tWeb;
+    private JButton bHorarios;
+    private JButton bInvitado;
+    private JButton bResidente;
+    private JButton bCaracteristicas;
+    private JButton guardar;
+
+    public ModificarLocales(AlmacenDeDatos almacn, JFrame padre, Local localSeleccionado){
         localSeleccionadoEnTree = false;
         //setTitle("Modifica o añade un nuevo local, "+almacn.getUsuarios().get(0).getNombre());
         setSize(700, 700);
@@ -58,6 +73,7 @@ public class ModificarLocales extends JFrame{
         djResidente = new DJ();
         djInvitado = new DJ();
 
+
         //TREE --- IZQ
         root = new DefaultMutableTreeNode("Tus Locales");
         modelo = new DefaultTreeModel(root);
@@ -77,26 +93,26 @@ public class ModificarLocales extends JFrame{
         panelFormulario.add(new JLabel("Tipo de Establecimiento"));
         JRadioButton bbar = new JRadioButton("Bar"); JRadioButton bdiscoteca = new JRadioButton("Discoteca"); ButtonGroup tipoLocal = new ButtonGroup(); tipoLocal.add(bbar); tipoLocal.add(bdiscoteca);
         JPanel panelTipoLocal = new JPanel(new FlowLayout()); panelTipoLocal.add(bbar); panelTipoLocal.add(bdiscoteca); panelFormulario.add(panelTipoLocal);
-        panelFormulario.add(new JLabel("Nombre")); JTextField tNombre = new JTextField(); panelFormulario.add(tNombre);
-        panelFormulario.add(new JLabel("Direccion"));  JTextField tDireccion = new JTextField(); panelFormulario.add(tDireccion);
-        panelFormulario.add(new JLabel("CP"));  JSpinner sCp = new JSpinner(); sCp.getModel().setValue(48000); panelFormulario.add(sCp);
-        panelFormulario.add(new JLabel("Aforo"));  JSpinner sAforo = new JSpinner(); sAforo.getModel().setValue(0); panelFormulario.add(sAforo);
-        panelFormulario.add(new JLabel("Tlf."));  JTextField tTelefono = new JTextField(); panelFormulario.add(tTelefono);
-        panelFormulario.add(new JLabel("Media de Edad"));  JSpinner sEdad = new JSpinner(); sEdad.getModel().setValue(0); panelFormulario.add(sEdad);
-        panelFormulario.add(new JLabel("Media de Precio"));  JSpinner sPrecio = new JSpinner(); sPrecio.getModel().setValue(0); panelFormulario.add(sPrecio);
-        panelFormulario.add(new JLabel("Pagina Web")); JTextField tWeb = new JTextField(); panelFormulario.add(tWeb);
-        panelFormulario.add(new JLabel("Horarios"));  JButton bHorarios = new JButton("Agregar Horarios"); panelFormulario.add(bHorarios);
+        panelFormulario.add(new JLabel("Nombre")); tNombre = new JTextField(); panelFormulario.add(tNombre);
+        panelFormulario.add(new JLabel("Direccion"));   tDireccion = new JTextField(); panelFormulario.add(tDireccion);
+        panelFormulario.add(new JLabel("CP"));   sCp = new JSpinner(); sCp.getModel().setValue(48000); panelFormulario.add(sCp);
+        panelFormulario.add(new JLabel("Aforo"));   sAforo = new JSpinner(); sAforo.getModel().setValue(0); panelFormulario.add(sAforo);
+        panelFormulario.add(new JLabel("Tlf."));   tTelefono = new JTextField(); panelFormulario.add(tTelefono);
+        panelFormulario.add(new JLabel("Media de Edad"));   sEdad = new JSpinner(); sEdad.getModel().setValue(0); panelFormulario.add(sEdad);
+        panelFormulario.add(new JLabel("Media de Precio"));   sPrecio = new JSpinner(); sPrecio.getModel().setValue(0); panelFormulario.add(sPrecio);
+        panelFormulario.add(new JLabel("Pagina Web"));  tWeb = new JTextField(); panelFormulario.add(tWeb);
+        panelFormulario.add(new JLabel("Horarios"));   bHorarios = new JButton("Agregar Horarios"); panelFormulario.add(bHorarios);
         panelFormulario.add(new JLabel("¿Terraza?"));
         JRadioButton bTerrazaSi = new JRadioButton("Si"); JRadioButton bTerrazaNo = new JRadioButton("No"); JPanel panelBotonesTerraza = new JPanel(new FlowLayout()); panelBotonesTerraza.add(bTerrazaSi); panelBotonesTerraza.add(bTerrazaNo); panelFormulario.add(panelBotonesTerraza);
         ButtonGroup botoneraTerraza = new ButtonGroup(); botoneraTerraza.add(bTerrazaSi); botoneraTerraza.add(bTerrazaNo);
-        panelFormulario.add(new JLabel("DJ (Residente)"));  JButton bResidente = new JButton("Agregar Datos"); panelFormulario.add(bResidente);
-        panelFormulario.add(new JLabel("DJ (Invitado)"));  JButton bInvitado = new JButton("Agregar Datos"); panelFormulario.add(bInvitado);
-        panelFormulario.add(new JLabel("Caracteristicas"));  JButton bCaracteristicas = new JButton("Agregar Características"); panelFormulario.add(bCaracteristicas);
+        panelFormulario.add(new JLabel("DJ (Residente)"));   bResidente = new JButton("Agregar Datos"); panelFormulario.add(bResidente);
+        panelFormulario.add(new JLabel("DJ (Invitado)"));   bInvitado = new JButton("Agregar Datos"); panelFormulario.add(bInvitado);
+        panelFormulario.add(new JLabel("Caracteristicas"));   bCaracteristicas = new JButton("Agregar Características"); panelFormulario.add(bCaracteristicas);
 
         //---------BOTONERA ----------------
         JPanel botonera = new JPanel(new FlowLayout()); add(botonera, BorderLayout.SOUTH);
         JButton atras = new JButton("Atrás"); botonera.add(atras);
-        JButton guardar = new JButton("Registrar Nuevo"); botonera.add(guardar);
+         guardar = new JButton("Registrar Nuevo"); botonera.add(guardar);
 
 
 
@@ -114,6 +130,39 @@ public class ModificarLocales extends JFrame{
             bTerrazaNo.setEnabled(false);
             botoneraTerraza.clearSelection();
         });
+
+        //Miramos si se ha seleccionado un local en la ventana anterior para mostrar sus datos
+        if(localSeleccionado!=null){
+            if(localSeleccionado.getClass().equals(Bar.class)){
+                        //activar lo correspondiente
+                        bTerrazaSi.setEnabled(true); bTerrazaNo.setEnabled(true);
+                        Bar local = (Bar) localSeleccionado;
+
+                        bbar.setSelected(true);
+                        if(local.getTerraza()){
+                            bTerrazaSi.setSelected(true);
+                        }else{
+                            bTerrazaNo.setSelected(true);
+                        }
+
+                        //Desactivar lo correspondiente (botones de DJ)
+                        bResidente.setEnabled(false);
+                        bInvitado.setEnabled(false);
+
+                    }else{
+                        bResidente.setEnabled(true);
+                        bInvitado.setEnabled(true);
+                        Discoteca disco = (Discoteca) localSeleccionado;
+                        djResidente = disco.getDjResidente();
+                        djInvitado = disco.getDjInvitado();
+                        bdiscoteca.setSelected(true);
+
+                        //desactivar lo correrspondiente
+                        botoneraTerraza.clearSelection(); bTerrazaSi.setEnabled(false); bTerrazaNo.setEnabled(false);
+                    }
+
+            cargarPropiedadesLocal(localSeleccionado);
+        }
 
         tree.addTreeSelectionListener(new TreeSelectionListener() {
             @Override
@@ -152,23 +201,7 @@ public class ModificarLocales extends JFrame{
                         botoneraTerraza.clearSelection(); bTerrazaSi.setEnabled(false); bTerrazaNo.setEnabled(false);
                     }
 
-                    tNombre.setText(localSelec.getNombre());
-                    tDireccion.setText(localSelec.getDireccion());
-                    ((SpinnerNumberModel) sCp.getModel()).setValue(Integer.parseInt(localSelec.getCP()));
-                    ((SpinnerNumberModel) sAforo.getModel()).setValue(localSelec.getAforo());
-                    tTelefono.setText(localSelec.getTelefono());
-                    ((SpinnerNumberModel) sEdad.getModel()).setValue(localSelec.getMediaEdad());
-                    ((SpinnerNumberModel) sPrecio.getModel()).setValue(localSelec.getPrecioMedio());
-                    tWeb.setText(String.valueOf(localSelec.getWeb()));
-                    horariosSelec = localSelec.getHorarios();
-                    caracteristicasSelec = localSelec.getCaracteristicas();
-
-
-                    bHorarios.setText("Ver Horarios");
-                    bInvitado.setText("Ver Invitado");
-                    bResidente.setText("Ver Residente");
-                    bCaracteristicas.setText("Ver Características");
-                    guardar.setText("Guardar Cambios");
+                    cargarPropiedadesLocal(localSelec);
 
 
                 }
@@ -177,11 +210,12 @@ public class ModificarLocales extends JFrame{
 
 
         bHorarios.addActionListener(e -> {
-            if(localSeleccionadoEnTree){
+            if(localSeleccionadoEnTree || localSeleccionado!=null){
                 VentanaAddHorarios ventanaAddHorarios = new VentanaAddHorarios(horariosSelec, this, false);
             }else{
                 VentanaAddHorarios ventanaAddHorarios = new VentanaAddHorarios(horariosSelec, this, true);
             }
+
             setVisible(false);
         });
 
@@ -190,7 +224,7 @@ public class ModificarLocales extends JFrame{
         });
 
         bResidente.addActionListener(e -> {
-            if(localSeleccionadoEnTree){
+            if(localSeleccionadoEnTree || localSeleccionado!=null){
                 VentanaRegistrarDJ v1 = new VentanaRegistrarDJ(djResidente, this, false);
                 v1.setVisible(true);
                 instagramAntiguoDJ = djResidente.getInstagram();
@@ -202,7 +236,7 @@ public class ModificarLocales extends JFrame{
         });
 
         bInvitado.addActionListener(e -> {
-            if(localSeleccionadoEnTree){
+            if(localSeleccionadoEnTree || localSeleccionado!=null){
                 VentanaRegistrarDJ v2 = new VentanaRegistrarDJ(djInvitado, this, false);
                 v2.setVisible(true);
                 instagramAntiguoDJ = djInvitado.getInstagram();
@@ -260,6 +294,26 @@ public class ModificarLocales extends JFrame{
         }
     }
 
+    private void cargarPropiedadesLocal(Local localSelec){
+        tNombre.setText(localSelec.getNombre());
+        tDireccion.setText(localSelec.getDireccion());
+        ((SpinnerNumberModel) sCp.getModel()).setValue(Integer.parseInt(localSelec.getCP()));
+        ((SpinnerNumberModel) sAforo.getModel()).setValue(localSelec.getAforo());
+        tTelefono.setText(localSelec.getTelefono());
+        ((SpinnerNumberModel) sEdad.getModel()).setValue(localSelec.getMediaEdad());
+        ((SpinnerNumberModel) sPrecio.getModel()).setValue(localSelec.getPrecioMedio());
+        tWeb.setText(String.valueOf(localSelec.getWeb()));
+        horariosSelec = localSelec.getHorarios();
+        caracteristicasSelec = localSelec.getCaracteristicas();
+
+
+        bHorarios.setText("Ver Horarios");
+        bInvitado.setText("Ver Invitado");
+        bResidente.setText("Ver Residente");
+        bCaracteristicas.setText("Ver Características");
+        guardar.setText("Guardar Cambios");
+    }
+
     private void actualizarLocalUsuario(Local nuevo, String instagramAntiguoDJ){
         for(int i=0; i<dueño.getLocales().size(); i++){
             Local local = dueño.getLocales().get(i);
@@ -315,7 +369,7 @@ public class ModificarLocales extends JFrame{
         SwingUtilities.invokeLater(() -> {
             //Conexion.conectar();
             AlmacenDeDatos almacen = new AlmacenDeDatos();
-            ModificarLocales ventana = new ModificarLocales(almacen, null);
+            ModificarLocales ventana = new ModificarLocales(almacen, null, null);
             ventana.setVisible(true);
         });
     }

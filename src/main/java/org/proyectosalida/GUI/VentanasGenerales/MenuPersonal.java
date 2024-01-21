@@ -129,7 +129,7 @@ public class MenuPersonal extends JFrame {
                     EditarPerfil ep = new EditarPerfil( almacen,false, getPadre());
                     setVisible(false);*/
                 }else if(code==5){ //modifica locales
-                    ModificarLocales modificarLocales = new ModificarLocales(almacen, getPadre());
+                    ModificarLocales modificarLocales = new ModificarLocales(almacen, getPadre(), null);
                     modificarLocales.setVisible(true);
                     setVisible(false);
                 }else if(code==4){ //Ver Readme github

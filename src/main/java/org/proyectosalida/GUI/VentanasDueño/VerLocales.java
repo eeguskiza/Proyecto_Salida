@@ -9,6 +9,7 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellRenderer;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
 public class VerLocales extends JFrame {
@@ -78,7 +79,7 @@ public class VerLocales extends JFrame {
         JButton registrarNuevo = new JButton("Registrar/Actualizar");
         botonera.add(registrarNuevo);
         registrarNuevo.addActionListener(e -> {
-            ModificarLocales vr = new ModificarLocales(almacen, this);
+            ModificarLocales vr = new ModificarLocales(almacen, this, null);
             vr.setVisible(true);
             dispose();
         });
@@ -121,6 +122,7 @@ public class VerLocales extends JFrame {
                 Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
                 Class tipo = almcn.getClasesDeLocales().get(row);
+                c.setForeground(Color.black);
                 if(tipo.equals(Bar.class)){
                     if(column==10 || column == 11){
                         c.setBackground(new Color(147, 147, 147));
@@ -136,7 +138,11 @@ public class VerLocales extends JFrame {
                 }
 
                 if(isSelected){
-                    c.setForeground(Color.BLACK);
+                    if(tipo.equals(Bar.class)){
+                        c.setBackground(new Color(125, 255, 125));
+                    }else{
+                        c.setBackground(new Color(154, 162, 255));
+                    }
                 }
 
                 //Expandir texto
@@ -162,6 +168,24 @@ public class VerLocales extends JFrame {
                         tabla.setToolTipText(text);
                     }
                 }
+            }
+        });
+
+        tabla.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseReleased(MouseEvent e) {
+               if(e.getClickCount() == 2){
+                   int fila = tabla.rowAtPoint(e.getPoint());
+                   String nombreLocal = (String) tabla.getValueAt(fila, 0);
+                   String tlfLocal = (String) tabla.getValueAt(fila, 4);
+
+                   for(Local local : dueño.getLocales()){
+                       if(local.getNombre().equals(nombreLocal) && local.getTelefono().equals(tlfLocal)){ //Comprobacion por num por si el nombre es repetido
+                           getpadre().setVisible(false);
+                           new ModificarLocales(almacen, getpadre(), local).setVisible(true);
+                       }
+                   }
+               }
             }
         });
 
@@ -238,6 +262,10 @@ public class VerLocales extends JFrame {
                 System.out.println("No son ninguna class (??)");
             }
         }
+    }
+
+    private JFrame getpadre(){
+        return this;
     }
 
     public static void main(String[] args) {
